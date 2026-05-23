@@ -6531,6 +6531,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'transform-to-sum-tree': {
+    intuition:
+      'Each node in a sum tree should store the sum of values in its left and right subtrees from the original tree. This naturally suggests a postorder traversal: compute children first, then update the current node. Returning subtree totals from recursion lets each parent compute its new value in one pass.',
+    algorithm: [
+      'Define a recursive function solve(node) that returns the total sum of the original subtree rooted at node after transformation.',
+      'Base case: if node is null, return 0.',
+      'Store old = node.data (original value).',
+      'Recursively compute leftSum = solve(node.left) and rightSum = solve(node.right).',
+      'Set node.data = leftSum + rightSum (sum-tree requirement).',
+      'Return node.data + old so parent receives total original subtree sum.',
+      'Call solve(root) from toSumTree(root).',
+    ],
+    example: {
+      input: 'Tree: 10 with left=2 and right=3',
+      steps: [
+        'Leaf 2: leftSum=0, rightSum=0, node becomes 0, return 0+2=2.',
+        'Leaf 3: leftSum=0, rightSum=0, node becomes 0, return 0+3=3.',
+        'Root 10: leftSum=2, rightSum=3, node becomes 5, return 5+10=15.',
+        'Final transformed tree values: root=5, left=0, right=0.',
+      ],
+      output: 'Root now stores 5; each leaf stores 0',
+    },
+    pitfalls: [
+      'Use postorder, not preorder; updating parent first would lose needed original child sums.',
+      'Store old node value before overwrite, otherwise parent total becomes incorrect.',
+      'Space is recursion stack O(h), not O(1), where h is tree height.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
