@@ -6560,6 +6560,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'last-coin-in-a-game-of-alternates': {
+    intuition:
+      'The implementation repeatedly compares the two ends and discards one side each step. If left value is greater than or equal to right, it advances left; otherwise it decreases right. This elimination continues until only one index remains, which is returned as the last coin value.',
+    algorithm: [
+      'Initialise two pointers i = 0 and j = n - 1.',
+      'While i < j:',
+      '  If arr[i] >= arr[j], increment i.',
+      '  Else decrement j.',
+      'When pointers meet, return arr[i] (or arr[j], same index).',
+    ],
+    example: {
+      input: 'arr = [5, 2, 9, 1, 7]',
+      steps: [
+        'i=0 (5), j=4 (7): 5<7 so j-- -> 3.',
+        'i=0 (5), j=3 (1): 5>=1 so i++ -> 1.',
+        'i=1 (2), j=3 (1): 2>=1 so i++ -> 2.',
+        'i=2 (9), j=3 (1): 9>=1 so i++ -> 3. Pointers meet at index 3.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'This explanation follows the current elimination logic exactly; if game rules differ, update logic and explanation together.',
+      'Use while(i < j); using <= can move pointers past each other and break return index.',
+      'Requires non-empty input array; otherwise pointer initialization is invalid.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

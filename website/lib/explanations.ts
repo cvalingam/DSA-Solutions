@@ -7328,6 +7328,37 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1340: {
+    intuition:
+      'From index i you can jump left/right up to distance d, but only to smaller heights, and the path is blocked by any height greater than or equal to arr[i]. This creates local visibility constraints. A monotonic stack processes bars by height boundaries and allows dynamic programming transitions to be relaxed exactly when a blocking boundary is known.',
+    algorithm: [
+      'Let dp[i] be maximum extra jumps starting from index i (answer is max(dp)+1 for counting nodes).',
+      'Maintain a decreasing stack of indices by arr value.',
+      'Iterate i from 0..n, using i==n as a sentinel flush step.',
+      'While stack top is lower than current height (or at sentinel), pop a group of equal-height indices.',
+      'For each popped index j:',
+      '  If current index i is within d of j, relax dp[i] = max(dp[i], dp[j] + 1).',
+      '  If new stack top exists and is within d of j, relax dp[top] = max(dp[top], dp[j] + 1).',
+      'Push current index to continue processing.',
+      'Return max(dp) + 1.',
+    ],
+    example: {
+      input: 'arr = [6,4,14,6,8,13,9,7,10,6,12], d = 2',
+      steps: [
+        'Index 2 (14) can jump to smaller heights within 2 steps until blocked, such as 1 (4), 3 (6), and 4 (8).',
+        'DP values from lower heights are computed/propagated first through stack pops.',
+        'Transitions are only applied when distance <= d and boundary rules allow it.',
+        'Maximum reachable chain length becomes 4 positions.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Equal heights must be handled as a group when popping; otherwise transitions between same heights can be mishandled.',
+      'Distance constraint (<= d) applies to every transition; skipping this check overestimates dp.',
+      'Return max(dp)+1 because dp counts jumps, while the problem asks for number of indices visited.',
+    ],
+  },
+
 }
 
 export default explanations
