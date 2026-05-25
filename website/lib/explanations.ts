@@ -7359,6 +7359,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1871: {
+    intuition:
+      'From each reachable index j, you can mark a future window [j + minJump, j + maxJump]. Directly iterating every window is too slow. Instead, for each index i, ask whether there exists at least one reachable j in [i - maxJump, i - minJump]. A prefix sum over reachable flags answers this in constant time per index.',
+    algorithm: [
+      'Let isReachable[i] indicate whether index i can be reached; set isReachable[0] = true.',
+      'Maintain prefixSum where prefixSum[k] = number of reachable indices in [0, k-1].',
+      'For each i from 1 to n-1:',
+      '  Only process if s[i] == "0".',
+      '  Compute left = max(0, i - maxJump), right = i - minJump.',
+      '  If left <= right and prefixSum[right + 1] - prefixSum[left] > 0, set isReachable[i] = true.',
+      '  Update prefixSum[i + 1] = prefixSum[i] + (isReachable[i] ? 1 : 0).',
+      'Return isReachable[n - 1].',
+    ],
+    example: {
+      input: 's = "011010", minJump = 2, maxJump = 3',
+      steps: [
+        'i=3 (s[3]=0): check j in [0,1]. Index 0 is reachable, so i=3 becomes reachable.',
+        'i=5 (s[5]=0): check j in [2,3]. Index 3 is reachable, so i=5 becomes reachable.',
+        'Last index becomes reachable, answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Skip positions where s[i] == "1"; they cannot be landed on.',
+      'Bounds for [i-maxJump, i-minJump] must be clamped correctly or range checks break.',
+      'A naive nested scan over each window is O(n*maxJump) and can time out; prefix sums are essential.',
+    ],
+  },
+
 }
 
 export default explanations

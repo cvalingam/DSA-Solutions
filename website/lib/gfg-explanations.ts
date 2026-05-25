@@ -6587,6 +6587,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'elements-in-the-range': {
+    intuition:
+      'The current solution counts how many array values fall inside [start, end] after sorting. It then compares this count with the target range length (end-start+1). Under this implementation logic, matching counts are treated as complete coverage.',
+    algorithm: [
+      'Sort the input array in non-decreasing order.',
+      'Initialise count = 0.',
+      'Traverse each value x in arr:',
+      '  If start <= x <= end, increment count.',
+      'After traversal, return count == (end - start + 1).',
+    ],
+    example: {
+      input: 'start = 2, end = 4, arr = [5, 2, 3, 4, 8]',
+      steps: [
+        'Sort arr -> [2, 3, 4, 5, 8].',
+        'Values in [2,4] are 2, 3, 4, so count = 3.',
+        'Range length is end-start+1 = 3, so function returns true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'This count-based check can produce false positives when duplicates exist and some value in the range is missing.',
+      'Sorting is not required for counting alone; it adds O(n log n) time.',
+      'Handle invalid ranges (start > end) explicitly if problem constraints allow them.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
