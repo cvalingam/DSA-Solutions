@@ -6613,6 +6613,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-toggle-to-partition': {
+    intuition:
+      'The implementation evaluates toggle cost by using global counts and running prefix counts while scanning possible partition points. For a split, it computes cost for the pattern left=0 and right=1: flip all 1s seen on the left plus all 0s remaining on the right. The minimum across splits (and baseline uniform cases considered in code) is returned.',
+    algorithm: [
+      'Count total zeros (cnt_total_0) and ones (cnt_total_1) in the whole array.',
+      'Initialise prefix counts till_cnt_0 and till_cnt_1 as 0.',
+      'Initialise minToggles with baseline values used in implementation.',
+      'Scan array from left to right, updating prefix counts at each element.',
+      'For each prefix boundary, compute toggles = till_cnt_1 + (cnt_total_0 - till_cnt_0).',
+      'Update minToggles with the minimum observed value.',
+      'Return minToggles.',
+    ],
+    example: {
+      input: 'arr = [1, 0, 1, 0]',
+      steps: [
+        'Totals: zeros=2, ones=2.',
+        'After processing prefix [1], till_cnt_1=1, till_cnt_0=0 -> cost = 1 + (2-0) = 3.',
+        'After prefix [1,0], till_cnt_1=1, till_cnt_0=1 -> cost = 1 + (2-1) = 2.',
+        'Continue all boundaries and keep the minimum cost.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'The formula shown is specifically for left=0, right=1 partition cost; changing target pattern needs a different expression.',
+      'Be consistent with whether split is before or after current index when updating prefix counts.',
+      'Duplicates and already-uniform arrays should still be handled by baseline minimum initialization.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
