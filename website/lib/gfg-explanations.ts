@@ -6642,6 +6642,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'wifi-range': {
+    intuition:
+      'Each router at position i covers a continuous interval [i-x, i+x] after clamping to the road boundaries. If the union of all router intervals covers every room from 0 to n-1 without gaps, then the WiFi range is sufficient. So this becomes an interval merge / coverage problem.',
+    algorithm: [
+      'Scan the string from left to right.',
+      'For every router character "1" at position i, compute its coverage interval [max(0, i-x), min(n-1, i+x)].',
+      'Keep a merged interval [l, r] for the coverage seen so far.',
+      'If the first router is seen, initialise [l, r] with its interval.',
+      'For later routers, if the new interval starts after a gap from r, return false.',
+      'Otherwise extend the merged interval with min(l, lx) and max(r, ry).',
+      'At the end, return true only if [l, r] spans the whole road.',
+    ],
+    example: {
+      input: 's = "1000101", x = 1',
+      steps: [
+        'Router at 0 covers [0,1].',
+        'Router at 4 covers [3,5]. There is a gap between 1 and 3.',
+        'Because coverage is not continuous, the answer is false.',
+      ],
+      output: 'false',
+    },
+    pitfalls: [
+      'Clamp every router interval to the road bounds before merging.',
+      'Touching intervals count as continuous coverage; only a gap larger than 1 breaks the range.',
+      'Do not return true just because the first and last routers exist; the middle must also be covered.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

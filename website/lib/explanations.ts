@@ -7390,11 +7390,11 @@ const explanations: Record<number, RichExplanation> = {
 
   3120: {
     intuition:
-      'Each alphabet letter can appear in lowercase, uppercase, both, or neither. A special character is simply one whose lowercase and uppercase forms are both present anywhere in the string. So we only need presence tracking, not frequency counting or position tracking.',
+      'Each alphabet letter can appear in lowercase, uppercase, both, or neither. In this variant, a letter is special only if the lowercase occurrence appears before the uppercase occurrence. So we need both presence tracking and order awareness, not just counts.',
     algorithm: [
       'Create two boolean arrays of size 26: lower[] and upper[].',
       'Traverse each character c in word:',
-      '  If c is lowercase, mark lower[c - "a"] = true.',
+      '  If c is lowercase, mark lower[c - "a"] only if the uppercase version has not been seen yet.',
       '  Otherwise mark upper[c - "A"] = true.',
       'After traversal, iterate i from 0 to 25 and count positions where lower[i] && upper[i].',
       'Return the count.',
@@ -7402,16 +7402,16 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'word = "aaAbcBC"',
       steps: [
-        'Seen lowercase: a, b, c.',
-        'Seen uppercase: A, B, C.',
-        'Matching pairs are a/A, b/B, c/C -> 3 special characters.',
+        'For a: lowercase appears before uppercase A, so a is special.',
+        'For b and c: lowercase appears before uppercase B/C, so both are special.',
+        'Total special characters = 3.',
       ],
       output: '3',
     },
     pitfalls: [
-      'Presence is enough; do not require equal counts of lowercase and uppercase.',
+      'Order matters in variant II; a lowercase after the uppercase should not count.',
       'Use separate arrays (or sets) for lowercase and uppercase to avoid accidental index mixing.',
-      'This problem ignores order, unlike variant II where order constraints matter.',
+      'Do not count a letter just because both cases appear somewhere; the lowercase must come first.',
     ],
   },
 
