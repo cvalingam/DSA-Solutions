@@ -6670,6 +6670,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'vertical-sum': {
+    intuition:
+      'Nodes on the same vertical line have the same horizontal distance from the root. If we assign root distance 0, then left child is -1 and right child is +1 relative to parent. A DFS can accumulate sums per distance in a map, and a sorted map naturally emits columns from left to right.',
+    algorithm: [
+      'Create a TreeMap<Integer, Integer> map to store column -> sum.',
+      'Run DFS with parameters (node, column).',
+      'At each node, do map[column] += node.data.',
+      'Recurse to left child with column-1.',
+      'Recurse to right child with column+1.',
+      'After DFS, return the TreeMap values in key order as the vertical sums.',
+    ],
+    example: {
+      input: 'Tree:    1 /\\ 2   3 / \\     4   5',
+      steps: [
+        'Column -1 has node 2, sum = 2.',
+        'Column 0 has nodes 1 and 4, sum = 5.',
+        'Column 1 has node 3, sum = 3.',
+        'Column 2 has node 5, sum = 5.',
+      ],
+      output: '[2, 5, 3, 5]',
+    },
+    pitfalls: [
+      'Use a sorted map (TreeMap) if output order must be left-to-right by column.',
+      'Column updates must be consistent: left decrements, right increments.',
+      'For deep trees, recursion depth can be large; iterative DFS/BFS is an alternative if stack depth is a concern.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

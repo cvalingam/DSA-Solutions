@@ -7415,6 +7415,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3093: {
+    intuition:
+      'Two words share a suffix when their reversed strings share a prefix. So we can turn suffix matching into prefix matching by inserting reversed container words into a trie. At each node, store the index of the shortest container word passing there (with earliest index tie behavior coming from insertion order updates), which gives the required answer for the best suffix match.',
+    algorithm: [
+      'Build a trie where each edge corresponds to a character of a word scanned from end to start.',
+      'During insertion, move through reversed characters and update node metadata (shortest length and its index).',
+      'Track minIndex globally as the shortest word in wordsContainer for full fallback.',
+      'For each query, traverse the trie from query end to start.',
+      'If traversal breaks, return the stored index of the deepest matched node; if none, fallback to minIndex.',
+      'If traversal completes, return the current node index.',
+    ],
+    example: {
+      input: 'wordsContainer = ["abcd","bcd","xbcd"], wordsQuery = ["cd","bcd","xyz"]',
+      steps: [
+        'Insert reversed container words: "dcba", "dcb", "dcbx" with node metadata tracking shortest candidate index.',
+        'Query "cd" -> reversed "dc": trie path exists, best index resolves to word "bcd" (shortest match).',
+        'Query "bcd" -> reversed "dcb": exact suffix path exists, again chooses shortest valid candidate.',
+        'Query "xyz" -> reversed "zyx": first edge missing, fallback to globally shortest container word index.',
+      ],
+      output: '[1, 1, 1]',
+    },
+    pitfalls: [
+      'This is suffix matching, so traversal must go from end to start; forward traversal solves a different problem.',
+      'Fallback behavior matters: when no suffix matches, return the shortest container word index.',
+      'Node metadata should represent the best candidate seen so far (shortest length, then earliest insertion semantics).',
+    ],
+  },
+
 }
 
 export default explanations
