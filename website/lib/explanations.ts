@@ -7443,6 +7443,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3300: {
+    intuition:
+      'Each element is independently replaced by the sum of its digits, then we need the minimum among transformed values. Since replacement does not depend on other elements, a single pass with a running minimum is optimal.',
+    algorithm: [
+      'Initialise ans = +infinity.',
+      'For each number num in nums:',
+      '  Compute digitSum(num) by repeatedly taking num % 10 and num /= 10.',
+      '  Update ans = min(ans, digitSum(num)).',
+      'Return ans after processing all elements.',
+    ],
+    example: {
+      input: 'nums = [10, 12, 13, 14]',
+      steps: [
+        'digitSum(10) = 1, ans = 1.',
+        'digitSum(12) = 3, ans stays 1.',
+        'digitSum(13) = 4, digitSum(14) = 5, ans stays 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Remember that digit sum for 0 is 0; guard if inputs can include 0.',
+      'Do not sort just to find a minimum transformed value; one pass is enough.',
+      'Digit-sum computation should use integer operations, not string conversion, for efficiency and simplicity.',
+    ],
+  },
+
 }
 
 export default explanations

@@ -6698,6 +6698,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-sorted-digit-groupings': {
+    intuition:
+      'We split the digit string into contiguous groups such that group sums are non-decreasing. At each index, choose the next cut position, compute current group sum, and recurse only if current sum is at least the previous group sum. This creates overlapping subproblems based on (index, previousSum), so memoization is effective.',
+    algorithm: [
+      'Define dfs(i, prevSum) = number of valid ways to partition substring starting at i.',
+      'Base case: if i == n, return 1 (a complete valid partition).',
+      'Iterate j from i to n-1, accumulating currSum of s[i..j].',
+      'If currSum >= prevSum, add dfs(j+1, currSum) to answer.',
+      'Memoize result for key (i, prevSum) and return it.',
+      'Initial call is dfs(0, -1) so the first group is always allowed.',
+    ],
+    example: {
+      input: 's = "1119"',
+      steps: [
+        'Possible groupings include [1|1|1|9] with sums 1,1,1,9 and [11|19] with sums 2,10.',
+        'Grouping [1|11|9] has sums 1,2,9 and is valid.',
+        'Any grouping with decreasing next sum is discarded during DFS checks.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Memo key must include both index and previous sum; index alone is insufficient.',
+      'Without memoization, recursion becomes exponential due to repeated states.',
+      'Be careful with sum accumulation inside loop; reset correctly per DFS call.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
