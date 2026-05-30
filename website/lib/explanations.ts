@@ -7469,6 +7469,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3161: {
+    intuition:
+      'If we process the queries backward, a type-1 obstacle insertion becomes a deletion that merges two adjacent free gaps. That makes the structure much easier to maintain. Fenwick trees provide fast predecessor/successor lookup and fast prefix-max gap queries, which are enough to answer each type-2 query in logarithmic time.',
+    algorithm: [
+      'Add sentinel obstacles at both ends so boundary gaps are represented naturally.',
+      'Preload all type-1 obstacles into a Fenwick tree that counts obstacle positions.',
+      'Use binary lifting on the count tree to find predecessor and successor obstacles.',
+      'Build an auxiliary Fenwick tree storing prefix maxima of gap lengths.',
+      'Process queries in reverse: type-1 removes an obstacle and merges gaps; type-2 checks whether a segment of size sz fits.',
+      'Reverse the answers list before returning it.',
+    ],
+    example: {
+      input: 'queries = [[1,2],[1,5],[2,5,2]]',
+      steps: [
+        'Load both type-1 insertions, so obstacles include the sentinels and positions 2 and 5.',
+        'In reverse, the type-2 query checks the largest gap up to predecessor of x=5 and the direct room before x.',
+        'If a free block of length 2 exists, the answer is true.',
+      ],
+      output: '[true]',
+    },
+    pitfalls: [
+      'Fenwick tree indices are 1-based internally; keep conversions consistent.',
+      'The reverse-processing trick is required to avoid hard dynamic interval maintenance in forward order.',
+      'Do not omit sentinels or the edge gaps at the boundaries will be missed.',
+    ],
+  },
+
 }
 
 export default explanations

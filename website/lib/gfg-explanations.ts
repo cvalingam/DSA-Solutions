@@ -6725,6 +6725,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'replace-with-xor-of-adjacent': {
+    intuition:
+      'Each output element depends only on the current original value and the next original value, so the array can be rewritten in place from left to right as long as we preserve the previous original value in a temporary variable. That makes the transformation linear time and constant extra space.',
+    algorithm: [
+      'Store the original arr[0] in prev.',
+      'For each i from 0 to n-2:',
+      '  Save arr[i] into temp before overwriting it.',
+      '  Set arr[i] = prev XOR arr[i+1].',
+      '  Update prev = temp so the next step still knows the original current value.',
+      'Set arr[n-1] = arr[n-1] XOR prev for the last position.',
+    ],
+    example: {
+      input: 'arr = [1, 2, 3, 4]',
+      steps: [
+        'prev = 1.',
+        'i=0 -> arr[0] = 1 XOR 2 = 3, prev stays original 1 for next step.',
+        'i=1 -> arr[1] = 1 XOR 3 = 2, prev becomes original 2.',
+        'i=2 -> arr[2] = 2 XOR 4 = 6, then last element becomes 4 XOR 3 = 7.',
+      ],
+      output: '[3, 2, 6, 7]',
+    },
+    pitfalls: [
+      'Do not read from the overwritten array values when advancing; always preserve the original current value first.',
+      'The last element uses the final saved previous original value, not the updated prefix.',
+      'No extra array should be allocated; the point of the task is in-place transformation.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
