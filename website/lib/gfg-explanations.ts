@@ -6753,6 +6753,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'express-as-consecutive-number-sum': {
+    intuition:
+      'A positive integer can be expressed as a sum of consecutive integers iff it is not a power of 2. This follows from number theory: if k >= 2 consecutive integers starting at a sum to n, then n = k*(2a+k-1)/2 = k*(a + (k-1)/2). For this to have an integer solution, n must not be purely a power of 2. The bitwise check n & (n-1) != 0 determines if n has more than one bit set.',
+    algorithm: [
+      'Use the bitwise property: a power of 2 has exactly one bit set.',
+      'If n & (n-1) == 0, then n is a power of 2 (including n=1), so return false.',
+      'Otherwise, n is not a power of 2, so return true.',
+    ],
+    example: {
+      input: 'n = 15',
+      steps: [
+        'n = 15 = 0b1111 (four bits set).',
+        'n & (n-1) = 15 & 14 = 0b1111 & 0b1110 = 0b1110 = 14 != 0.',
+        'So 15 is not a power of 2, return true.',
+        '15 can be expressed as 7+8 (consecutive) or 4+5+6 or 1+2+3+4+5.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'The number 1 is a special case: it is 2^0, so it cannot be expressed as a sum of k>=2 consecutive integers. n & (n-1) correctly returns 0 for n=1.',
+      'The bitwise trick is correct only because of the mathematical relationship between powers of 2 and consecutive-sum expressibility.',
+      'This solution assumes n >= 1; negative or zero inputs would need separate handling.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

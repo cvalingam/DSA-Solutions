@@ -7496,6 +7496,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2126: {
+    intuition:
+      'Larger asteroids block smaller ones only if they come before them. So if we sort asteroids by size and absorb them left-to-right, each successful absorption increases our mass for later asteroids. A greedy strategy of always absorbing in order works because the sorted order is optimal.',
+    algorithm: [
+      'Sort the asteroids array in ascending order.',
+      'Start with the given initial mass.',
+      'For each asteroid in sorted order:',
+      '  If current mass >= asteroid size, absorb it by adding to mass.',
+      '  Otherwise, return false (planet destroyed).',
+      'If all asteroids are absorbed, return true.',
+    ],
+    example: {
+      input: 'mass = 10, asteroids = [3, 9, 19, 5, 21]',
+      steps: [
+        'Sorted: [3, 5, 9, 19, 21].',
+        'Absorb 3: mass = 13.',
+        'Absorb 5: mass = 18.',
+        'Absorb 9: mass = 27, now strong enough for 19 and 21.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Without sorting, you cannot determine order of collisions in the array; sorting gives a valid sequence.',
+      'Greedy absorption is safe because sorted order ensures future asteroids are at least as large.',
+      'Use long for mass accumulation to avoid integer overflow.',
+    ],
+  },
+
 }
 
 export default explanations
