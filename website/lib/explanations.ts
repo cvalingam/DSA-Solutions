@@ -7552,6 +7552,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3633: {
+    intuition:
+      'You must complete one land ride and one water ride, but the order is flexible. For each order, only the earliest possible completion of the first ride type matters, because any later first completion cannot improve the final answer. Then evaluate all second rides against that earliest finish and take the minimum overall.',
+    algorithm: [
+      'Compute answer for order A->B and B->A separately, then return the smaller one.',
+      'For one order, scan all first-type rides and compute earliestFirst = min(start[i] + duration[i]).',
+      'Scan all second-type rides and compute finish = max(earliestFirst, secondStart[j]) + secondDuration[j].',
+      'Track the minimum finish over all second rides for that order.',
+      'Return min(order1Result, order2Result).',
+    ],
+    example: {
+      input: 'landStartTime = [2, 5], landDuration = [3, 2], waterStartTime = [4, 7], waterDuration = [4, 1]',
+      steps: [
+        'Land first: earliest land finish is min(2+3, 5+2) = 5.',
+        'Then water finishes at min(max(5,4)+4, max(5,7)+1) = min(9,8) = 8.',
+        'Water first: earliest water finish is min(4+4, 7+1) = 8.',
+        'Then land finishes at min(max(8,2)+3, max(8,5)+2) = min(11,10) = 10.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Do not force a single order; both land->water and water->land must be checked.',
+      'The second ride start time is constrained by both availability and your previous completion time, so use max(...).',
+      'Avoid O(n*m) pair enumeration; earliest first completion collapses each order to linear scans.',
+    ],
+  },
+
 }
 
 export default explanations

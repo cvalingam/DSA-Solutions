@@ -6805,6 +6805,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'pairs-with-certain-difference': {
+    intuition:
+      'Since each value can be used at most once, pairing larger numbers first is beneficial when valid. After sorting, if two adjacent large numbers differ by less than k, taking that pair greedily is optimal because skipping it cannot produce a better contribution from those elements later.',
+    algorithm: [
+      'Sort the array in non-decreasing order.',
+      'Traverse from right to left with index i = n-1.',
+      'If i-1 exists and arr[i] - arr[i-1] < k, include this pair in sum and decrement i by 2.',
+      'Otherwise, decrement i by 1 and continue.',
+      'Return the accumulated sum of chosen pair elements.',
+    ],
+    example: {
+      input: 'arr = [3, 5, 10, 15, 17, 12, 9], k = 4',
+      steps: [
+        'Sort -> [3, 5, 9, 10, 12, 15, 17].',
+        'Check (17,15): diff=2<4, take sum += 32.',
+        'Check (12,10): diff=2<4, take sum += 22.',
+        'Check (9,5): diff=4 not <4, skip 9.',
+        'Check (5,3): diff=2<4, take sum += 8.',
+      ],
+      output: '62',
+    },
+    pitfalls: [
+      'Condition is strictly less than k, not less than or equal to k.',
+      'Without sorting, greedy adjacency pairing is invalid.',
+      'After taking a pair, move two steps left so elements are not reused.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
