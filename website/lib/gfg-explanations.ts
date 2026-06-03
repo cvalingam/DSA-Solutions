@@ -6833,6 +6833,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'subarray-frequency-count-queries': {
+    intuition:
+      'Each query asks how many times a value x appears in an index range [l, r]. If we store all occurrence indices of each value in sorted order, then every query becomes a count of indices within a range, which can be answered quickly using two binary searches.',
+    algorithm: [
+      'Build a map from value to a sorted list of its indices while scanning the array once.',
+      'For each query [l, r, x], fetch x\'s index list from the map.',
+      'If x does not exist in the map, answer is 0.',
+      'Otherwise, find first index >= l (lower bound) and last index <= r (upper bound).',
+      'Frequency is upper - lower + 1, or 0 if bounds do not overlap.',
+    ],
+    example: {
+      input: 'arr = [1, 2, 1, 3, 1, 2], queries = [[0,5,1],[1,4,2],[2,3,1]]',
+      steps: [
+        'Preprocess positions: 1 -> [0,2,4], 2 -> [1,5], 3 -> [3].',
+        'Query [0,5,1]: positions in range are [0,2,4] -> 3.',
+        'Query [1,4,2]: positions in range are [1] -> 1.',
+        'Query [2,3,1]: positions in range are [2] -> 1.',
+      ],
+      output: '[3, 1, 1]',
+    },
+    pitfalls: [
+      'Range endpoints are inclusive; adjust upper-bound math carefully.',
+      'A missing value key must return 0 immediately, not cause null access.',
+      'Per-query linear scans over the whole array will time out for large input sizes.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

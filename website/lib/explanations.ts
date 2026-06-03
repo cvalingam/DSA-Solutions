@@ -7579,6 +7579,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3635: {
+    intuition:
+      'Even with larger constraints, the core observation is unchanged: for a chosen order of ride types, only the earliest possible finish of the first ride matters. Any slower first ride can only delay or equal the second ride start, never improve it. So each order reduces to two linear scans, and the final answer is the minimum over both orders.',
+    algorithm: [
+      'Define a helper for order A->B.',
+      'In that helper, compute earliestA = min(aStart[i] + aDuration[i]) over all A rides.',
+      'For each B ride, compute candidate = max(earliestA, bStart[j]) + bDuration[j].',
+      'Take the minimum candidate for that order.',
+      'Run helper twice: land->water and water->land, and return the smaller value.',
+    ],
+    example: {
+      input: 'landStartTime = [1, 8], landDuration = [5, 1], waterStartTime = [3, 10], waterDuration = [4, 2]',
+      steps: [
+        'Land first: earliest land finish = min(1+5, 8+1) = 6.',
+        'Water completion candidates: max(6,3)+4 = 10, max(6,10)+2 = 12 -> order result 10.',
+        'Water first: earliest water finish = min(3+4, 10+2) = 7.',
+        'Land completion candidates: max(7,1)+5 = 12, max(7,8)+1 = 9 -> order result 9.',
+      ],
+      output: '9',
+    },
+    pitfalls: [
+      'Do not attempt all pair combinations between both ride sets; that is unnecessary and too slow.',
+      'When chaining rides, start time is constrained by both availability and previous completion, so max(...) is mandatory.',
+      'Checking only one order can miss the optimal answer; always evaluate both directions.',
+    ],
+  },
+
 }
 
 export default explanations
