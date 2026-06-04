@@ -6860,6 +6860,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'substring-with-max-zero-one-diff': {
+    intuition:
+      'We need a substring maximizing zeros minus ones. If we map each character to a numeric gain (+1 for 0, -1 for 1), the problem becomes finding the maximum-sum contiguous subarray, which Kadane solves in linear time. If the string contains no 0, every substring has non-positive gain and the required result is -1.',
+    algorithm: [
+      'Initialize currentSum = 0, best = -1, and a flag hasZero = false.',
+      'Traverse characters in the string.',
+      'Map 0 to +1 (and set hasZero = true), map 1 to -1.',
+      'Update currentSum += mappedValue and best = max(best, currentSum).',
+      'If currentSum becomes negative, reset it to 0 (Kadane reset).',
+      'If hasZero is false after traversal, return -1; otherwise return best.',
+    ],
+    example: {
+      input: 's = "1100011"',
+      steps: [
+        'Mapped values: [-1, -1, +1, +1, +1, -1, -1].',
+        'Best subarray is the middle block [+1, +1, +1] with sum 3.',
+        'That corresponds to substring "000" where zeros-ones = 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Do not return 0 when all characters are 1; required output is -1.',
+      'Reset current sum only when it is negative, not when it is zero.',
+      'Character-to-value mapping must be exact: 0 -> +1 and 1 -> -1.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

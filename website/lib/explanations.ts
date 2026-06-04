@@ -7606,6 +7606,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3751: {
+    intuition:
+      'Total waviness over a range is additive, so we can evaluate each number independently and sum the counts. For one number, waviness is determined by local comparisons between each middle digit and its two neighbors. Counting local peaks and valleys directly matches the definition.',
+    algorithm: [
+      'Initialize answer = 0.',
+      'For each x from num1 to num2, compute F(x) and add it to answer.',
+      'In F(x), extract digits into an array from least significant to most significant.',
+      'If digit count is less than 3, waviness is 0.',
+      'For every index i from 1 to m-2, increment count if digit[i] is a strict local maximum or strict local minimum.',
+      'Return the accumulated range sum.',
+    ],
+    example: {
+      input: 'num1 = 120, num2 = 123',
+      steps: [
+        '120 -> digits [0,2,1], middle digit 2 is greater than both neighbors -> waviness 1.',
+        '121 -> digits [1,2,1], middle digit 2 is greater than both neighbors -> waviness 1.',
+        '122 -> digits [2,2,1], middle digit 2 is not strictly greater or smaller -> waviness 0.',
+        '123 -> digits [3,2,1], middle digit 2 is not local extremum -> waviness 0.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Comparisons must be strict; equal neighboring digits do not form waviness.',
+      'Numbers with fewer than three digits always contribute 0.',
+      'Digit extraction order does not matter for local-extremum counting as long as adjacency is preserved consistently.',
+    ],
+  },
+
 }
 
 export default explanations
