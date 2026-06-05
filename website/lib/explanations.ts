@@ -7634,6 +7634,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3753: {
+    intuition:
+      'Brute force over a large range is too slow, so we aggregate waviness contributions with digit DP. While building each number digit by digit, we only need the previous two significant digits to know whether the next digit creates a local peak/valley at the middle position. Summing these contributions across all DP paths gives total waviness up to a bound.',
+    algorithm: [
+      'Define Solve(num) = total waviness of all integers in [0, num].',
+      'Use digit DP state: (prevDigit, currDigit, tight, leadingZero) plus two aggregates: count of numbers and accumulated waviness sum.',
+      'Initialize with a sentinel state representing no significant digits yet.',
+      'For each position, try all allowed digits (respecting tight), update next state, and add waviness contribution when three significant digits are available.',
+      'After processing all positions, sum waviness totals over all terminal states.',
+      'Answer range query as Solve(num2) - Solve(num1 - 1).',
+    ],
+    example: {
+      input: 'num1 = 120, num2 = 123',
+      steps: [
+        'Compute prefix total up to 123 with digit DP.',
+        'Compute prefix total up to 119 with digit DP.',
+        'Subtract to isolate [120,123].',
+        'Within this range, 120 and 121 contribute 1 each, 122 and 123 contribute 0, total 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Leading zeros must not be treated as real digits in waviness comparisons.',
+      'Local-extremum contribution is for the middle of a 3-digit window, so state must remember two prior significant digits.',
+      'For range answers, always use prefix subtraction Solve(R) - Solve(L-1).',
+    ],
+  },
+
 }
 
 export default explanations

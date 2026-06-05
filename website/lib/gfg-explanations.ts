@@ -6887,6 +6887,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'lexicographically-smallest-after-removing-k': {
+    intuition:
+      'To minimize lexicographic order after deletions, remove earlier larger characters whenever a smaller incoming character can replace them. A stack naturally supports this greedy behavior. The problem-specific rule first transforms k depending on whether the string length is a power of two, then exactly that many removals are applied.',
+    algorithm: [
+      'Compute effective removals t: if n is power of 2, t = k/2; otherwise t = 2*k.',
+      'Traverse characters and maintain a stack of kept characters.',
+      'While stack top is greater than current character and removals used < t, pop stack (delete).',
+      'Push current character onto stack.',
+      'After traversal, if removals are still left, pop from the end until exactly t deletions are used.',
+      'Build final string from stack; if empty, return -1.',
+    ],
+    example: {
+      input: 's = "cbad", k = 1 (n=4, power of 2 => t=0)',
+      steps: [
+        'Effective deletions t = 0, so no removals are allowed.',
+        'Stack simply stores all characters in order: c, b, a, d.',
+        'Result is original string "cbad".',
+      ],
+      output: 'cbad',
+    },
+    pitfalls: [
+      'Use transformed deletion count t, not raw k.',
+      'Greedy pops must stop once deletion budget is exhausted.',
+      'If all characters are deleted, return -1 instead of empty string.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
