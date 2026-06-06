@@ -6914,6 +6914,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'nonattacking-black-and-white-knights': {
+    intuition:
+      'We need ordered placements of a black knight and a white knight that do not attack each other. Knight attacks are symmetric, but fixing which piece is black lets us count valid white positions independently for every cell. For a black knight at (i, j), any white square must avoid the black cell itself and all in-bounds knight-move attack squares.',
+    algorithm: [
+      'Let totalCell = n * m.',
+      'For each cell (i, j) in the board:',
+      '  Enumerate the 8 standard knight offsets.',
+      '  Count how many of those attack cells stay inside the board.',
+      '  Add (totalCell - attackCount - 1) to the answer.',
+      'Return the accumulated total.',
+    ],
+    example: {
+      input: 'n = 2, m = 2',
+      steps: [
+        'Board has 4 cells. Corner cells attack 2 squares; non-corner interior behavior depends on board size.',
+        'At corner (0,0): 2 valid attack cells in bounds, so white choices = 4 - 2 - 1 = 1.',
+        'Repeat for all 4 cells and sum the valid white placements.',
+        'Each non-attacking ordered pair is counted exactly once by the cell chosen as black.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Subtract 1 for the black knight cell itself in addition to its attack squares.',
+      'Only count attack destinations that lie inside the n x m grid.',
+      'Do not double-count unordered pairs unless the problem statement asks for ordered placements.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

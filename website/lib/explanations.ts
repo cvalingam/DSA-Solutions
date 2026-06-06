@@ -5744,6 +5744,35 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Remove elements appearing in BOTH lists. Merge and sort the remainders.'],
   },
 
+  2574: {
+    intuition:
+      'For each index i, we need the absolute difference between the sum of elements to the left and the sum of elements to the right. A naive solution recomputes both sums at every index in O(n^2). The key observation is that as we move one step right, only one element crosses from the right side to the left side, so both sums can be updated in O(1) per index.',
+    algorithm: [
+      'Initialize leftSum = 0 and rightSum = sum of all elements.',
+      'For each index i from 0 to n-1:',
+      '  Subtract nums[i] from rightSum so rightSum now represents the sum strictly to the right of i.',
+      '  Set answer[i] = |leftSum - rightSum|.',
+      '  Add nums[i] to leftSum so leftSum represents the sum of elements up to and including i for the next step.',
+      'Return the answer array.',
+    ],
+    example: {
+      input: 'nums = [10, 4, 8, 3]',
+      steps: [
+        'Start: leftSum = 0, rightSum = 25.',
+        'i = 0: rightSum = 15, ans[0] = |0 - 15| = 15, leftSum = 10.',
+        'i = 1: rightSum = 11, ans[1] = |10 - 11| = 1, leftSum = 14.',
+        'i = 2: rightSum = 3, ans[2] = |14 - 3| = 11, leftSum = 22.',
+        'i = 3: rightSum = 0, ans[3] = |22 - 0| = 22, leftSum = 25.',
+      ],
+      output: '[15, 1, 11, 22]',
+    },
+    pitfalls: [
+      'Subtract nums[i] from rightSum before computing the answer, not after.',
+      'Do not include nums[i] in either leftSum or rightSum when computing answer[i].',
+      'Using prefix and suffix arrays works but uses O(n) extra space; the running-sum method is enough.',
+    ],
+  },
+
   2579: {
     intuition: 'Count beautiful arrangements in grid: rows with same count of colored cells and same value modulo k.',
     algorithm: [
