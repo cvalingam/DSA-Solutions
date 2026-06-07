@@ -3400,6 +3400,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 274. Sort descending, h-index is the largest i where citations[i] >= i+1 (1-indexed).'],
   },
 
+  'finding-profession': {
+    intuition:
+      'The organization forms a perfect binary tree: level 1 starts with an Engineer at position 1. Each node has a left and right child whose professions follow fixed inheritance rules, but when a parent sits at an even position those left/right roles swap. Instead of simulating the entire tree down to the target level, walk upward from the given position and track how many right-child steps flip the starting profession.',
+    algorithm: [
+      'Initialize flip = 0 (starting profession at position 1 is Engineer).',
+      'While pos > 1:',
+      '  If pos is even, set flip = 1 - flip (right child toggles profession).',
+      '  Move to parent with pos = (pos + 1) / 2.',
+      'If flip is 0, return "Engineer"; otherwise return "Doctor".',
+    ],
+    example: {
+      input: 'level = 3, pos = 5',
+      steps: [
+        'Start at pos = 5 (odd): no flip, parent = (5 + 1) / 2 = 3.',
+        'At pos = 3 (odd): no flip, parent = 2.',
+        'At pos = 2 (even): flip becomes 1, parent = 1.',
+        'Reached root; one toggle from Engineer gives Doctor.',
+      ],
+      output: 'Doctor',
+    },
+    pitfalls: [
+      'Only even positions (right children) toggle flip while climbing upward.',
+      'Parent index is (pos + 1) / 2, not pos / 2.',
+      'Do not build the full tree level by level; the upward walk is O(log level).',
+    ],
+  },
+
   'game-of-xor': {
     intuition: 'XOR of XOR of all subarrays. Mathematical: element at index i contributes based on count of subarrays containing it.',
     algorithm: [
