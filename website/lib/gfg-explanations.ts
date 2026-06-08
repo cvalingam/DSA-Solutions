@@ -3605,6 +3605,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['O(1) deletion if pointer given. Update both prev and next neighbor pointers.'],
   },
 
+  'delete-nodes-with-greater-on-right': {
+    intuition:
+      'A node should be removed when some value to its right is strictly larger, so the surviving list is exactly the subsequence of nodes that are not dominated by anything on their right. Processing from right to left makes the decision local: once the suffix is already filtered, the current node stays only if it is at least as large as the suffix head.',
+    algorithm: [
+      'Base case: if head is null or head.next is null, return head.',
+      'Recursively filter the suffix starting at head.next; let tp be the returned head.',
+      'If tp.data > head.data, skip head and return tp.',
+      'Otherwise set head.next = tp and return head.',
+    ],
+    example: {
+      input: 'head = 12 -> 20 -> 4 -> 15 -> 10',
+      steps: [
+        'Filter suffix from 20: filtered tail becomes 20 -> 15 -> 10.',
+        'At 4: suffix head 20 > 4, so delete 4.',
+        'At 20: suffix head 15 is not greater than 20, keep 20 -> 15 -> 10.',
+        'At 12: suffix head 20 > 12, so delete 12.',
+      ],
+      output: '20 -> 15 -> 10',
+    },
+    pitfalls: [
+      'Compare against the filtered suffix head, not the original next node.',
+      'When tp.data > head.data, return tp directly; do not leave a dangling head reference.',
+      'An iterative right-to-left pass with a running maximum also works in O(1) extra space.',
+    ],
+  },
+
   'deletion-and-reverse-in-circular-linked-list': {
     intuition: 'Delete a node from and reverse a circular linked list.',
     algorithm: [
