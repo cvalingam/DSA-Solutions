@@ -6995,6 +6995,36 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'seating-arrangement': {
+    intuition:
+      'A new person can sit only on an empty seat whose immediate neighbors are also empty or outside the row. The greedy left-to-right strategy works because placing a person at the earliest valid seat cannot reduce a better future option: once a position is valid, choosing it only blocks its immediate next neighbor, which would also be blocked by any nearby valid placement. So we can scan the row once, seat people whenever possible, and stop as soon as k people are seated.',
+    algorithm: [
+      'First scan the seats and return false if the input already has two adjacent occupied seats, because that arrangement violates the rule before adding anyone.',
+      'Traverse seats from left to right while k is not zero.',
+      'For each empty seat, check its left neighbor if it exists and its right neighbor if it exists.',
+      'If both checked neighbors are not occupied, mark the current seat occupied, decrement k, and skip the next index because it can no longer be used.',
+      'Return true when k reaches 0; otherwise return false after the scan.',
+      'Time Complexity: O(n), where n is seats.length, because the row is scanned a constant number of times.',
+      'Space Complexity: O(1), because the seating is updated in place.',
+    ],
+    example: {
+      input: 'k = 2, seats = [0, 0, 0, 0, 0]',
+      steps: [
+        'There are no adjacent occupied seats initially.',
+        'Seat 0 is valid because it has no left neighbor and seat 1 is empty, so place one person there. Remaining k = 1.',
+        'Skip seat 1 because it is adjacent to the newly occupied seat 0.',
+        'Seat 2 is valid because seats 1 and 3 are both empty, so place the second person. Remaining k = 0.',
+        'Since everyone has been seated, the scan can stop successfully.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Boundary seats have only one neighbor, so avoid reading outside the array.',
+      'After placing someone, skip the next seat because adjacent seating is forbidden.',
+      'If the original arrangement already contains adjacent occupied seats, no additions can make it valid.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

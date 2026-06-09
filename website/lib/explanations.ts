@@ -7691,6 +7691,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3689: {
+    intuition:
+      'The value of any subarray is determined only by its maximum and minimum element. No subarray can have a larger difference than the global maximum minus the global minimum of the entire array, because every subarray element is still one of the original array elements. Since the problem asks for the maximum total value after choosing k subarrays and overlapping is allowed, we can choose a best-value subarray every time, so the answer is k multiplied by that single best possible difference.',
+    algorithm: [
+      'Scan nums once and track the largest element mx and the smallest element mn.',
+      'The maximum possible value for one chosen subarray is mx - mn.',
+      'Because the same optimal subarray can be chosen for each of the k selections, return k * (mx - mn).',
+      'Use long for the final multiplication so large k and value differences do not overflow an int result.',
+      'Time Complexity: O(n), where n is nums.length, because each element is visited once.',
+      'Space Complexity: O(1), because only two running values are stored.',
+    ],
+    example: {
+      input: 'nums = [1, 3, 2, 5], k = 3',
+      steps: [
+        'The global minimum is 1 and the global maximum is 5.',
+        'No subarray can have value greater than 5 - 1 = 4.',
+        'A subarray containing both 1 and 5 reaches that value, so the best value for one pick is 4.',
+        'Since overlapping/reusing the best choice is allowed, total value = 3 * 4 = 12.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Do not try to enumerate every subarray; the global max-min bound already gives the best possible value.',
+      'Do not greedily pick disjoint subarrays; the problem allows overlapping selections.',
+      'Cast before multiplying so the answer is computed as a long.',
+    ],
+  },
+
 }
 
 export default explanations
