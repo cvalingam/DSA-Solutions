@@ -7025,6 +7025,36 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'binary-searchable-count': {
+    intuition:
+      'An element is counted if a normal binary search on the given array can actually encounter that value. The array is not necessarily sorted, so being present is not enough: the search path may move left or right based on misleading comparisons and skip the target. The implementation directly simulates that search for each value and counts the values that are found.',
+    algorithm: [
+      'Initialize count = 0.',
+      'For every value arr[i], run a standard binary search over the whole array with target = arr[i].',
+      'During the search, compute mid = l + (r-l)/2.',
+      'If arr[mid] equals target, the value is binary searchable, so increment count.',
+      'If arr[mid] is less than target, move l to mid + 1; otherwise move r to mid - 1.',
+      'After all values are tested, return count.',
+      'Time Complexity: O(n log n), because n values each run one binary search.',
+      'Space Complexity: O(1), because only pointers and counters are used.',
+    ],
+    example: {
+      input: 'arr = [2, 1, 3]',
+      steps: [
+        'Target 2: mid is index 1 with value 1. Since 1 < 2, search moves right to index 2 with value 3, then moves left and fails. So 2 is not counted.',
+        'Target 1: the first mid is index 1 with value 1, so 1 is counted.',
+        'Target 3: mid value 1 sends the search right, then index 2 has value 3, so 3 is counted.',
+        'Two values are searchable by the binary-search path.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Do not assume every present value is searchable; binary search can fail on an unsorted array.',
+      'Use l + (r-l)/2 for the midpoint to avoid overflow in general binary-search code.',
+      'This implementation counts each original array value independently, even if equal values appear more than once.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

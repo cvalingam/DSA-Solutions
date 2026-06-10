@@ -7719,6 +7719,37 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3691: {
+    intuition:
+      'For a fixed left endpoint l, the subarray value max(nums[l..r]) - min(nums[l..r]) is largest when r is farthest to the right, and it never increases when we shrink r leftward. That means every left endpoint produces a sorted stream of candidate values. A max-heap can merge these n streams: always take the current best subarray, then reveal the next smaller candidate from the same left endpoint.',
+    algorithm: [
+      'Build a sparse table that can answer range maximum and range minimum queries in O(1).',
+      'For every left endpoint l, compute value(l, n-1) and push [value, l, n-1] into a max-heap.',
+      'Repeat up to k times while the heap is non-empty.',
+      'Pop the largest available candidate and add its value to the answer.',
+      'If its right endpoint r is still greater than l, compute value(l, r-1) and push that next candidate for the same left endpoint.',
+      'Return the accumulated answer as a long.',
+      'Time Complexity: O(n log n + (n + k) log n): sparse-table preprocessing plus heap initialization and k heap pops/pushes.',
+      'Space Complexity: O(n log n), dominated by the sparse tables for range max/min.',
+    ],
+    example: {
+      input: 'nums = [1, 3, 2], k = 3',
+      steps: [
+        'For l = 0, candidates by shrinking r are [1,3,2] -> 2, [1,3] -> 2, [1] -> 0.',
+        'For l = 1, candidates are [3,2] -> 1, [3] -> 0.',
+        'For l = 2, candidate is [2] -> 0.',
+        'The heap first contains values 2, 1, and 0. Pop 2 from l=0, then push the next l=0 value 2.',
+        'Pop 2 again, then pop 1. The top 3 total is 2 + 2 + 1 = 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Do not recompute max and min by scanning every subarray; that becomes too slow.',
+      'The heap entry must carry both l and r so the next candidate for the same left endpoint can be generated correctly.',
+      'Use long for the answer because the sum of k selected values can exceed int range.',
+    ],
+  },
+
 }
 
 export default explanations
