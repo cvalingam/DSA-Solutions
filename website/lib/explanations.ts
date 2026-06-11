@@ -7750,6 +7750,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3558: {
+    intuition:
+      'Only the path from node 1 to the deepest reachable node matters, because the answer depends on the maximum number of edges that may be assigned weights. If that path has d edges, each edge can be weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum: flipping any one edge toggles the parity, pairing every even-sum assignment with one odd-sum assignment. So the count is 2^(d-1).',
+    algorithm: [
+      'Build an undirected adjacency list from the edge list.',
+      'Run BFS starting at node 1 and mark visited nodes.',
+      'Process BFS level by level; the number of completed levels gives the maximum depth plus one, because level 0 contains the root.',
+      'Let d be the maximum depth in edges. The code computes d - 1 as step - 2 for the exponent.',
+      'Return 2^(d-1) modulo 1,000,000,007 using fast modular exponentiation.',
+      'Time Complexity: O(n + log n), where n is the number of nodes: BFS is linear and modular exponentiation is logarithmic in the depth.',
+      'Space Complexity: O(n), for the adjacency list, queue, and visited array.',
+    ],
+    example: {
+      input: 'edges = [[1,2],[1,3],[3,4]]',
+      steps: [
+        'BFS levels from node 1 are: level 0 -> [1], level 1 -> [2,3], level 2 -> [4].',
+        'The deepest path has d = 2 edges, for example 1 -> 3 -> 4.',
+        'There are 2^2 = 4 assignments of weights 1/2 on those two edges.',
+        'Odd sums occur for (1,2) and (2,1), so the answer is 2 = 2^(2-1).',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Depth should be counted in edges, not nodes.',
+      'Use modulo arithmetic for the power calculation.',
+      'The tree is undirected in the input, so add both u->v and v->u to the graph.',
+    ],
+  },
+
 }
 
 export default explanations

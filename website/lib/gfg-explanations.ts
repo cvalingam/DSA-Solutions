@@ -7055,6 +7055,37 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'equal-point-in-brackets': {
+    intuition:
+      'The equal point is a split position where the number of opening brackets before the split equals the number of closing brackets after the split. Instead of recomputing both sides for every index, count all closing brackets once, then move the split from left to right. When the split passes an opening bracket, the left-open count increases; when it passes a closing bracket, the right-close count decreases.',
+    algorithm: [
+      'Count the total number of closing brackets in the string and store it as close.',
+      'Initialize open = 0.',
+      'For each split index i from 0 to n inclusive, first check whether open == close.',
+      'If the counts match, return i as the equal point.',
+      'If i is still inside the string, consume s[i]: increment open for an opening bracket, otherwise decrement close for a closing bracket.',
+      'If no split matches, return -1.',
+      'Time Complexity: O(n), because the string is scanned once to count closings and once to move the split.',
+      'Space Complexity: O(1), because only counters are stored.',
+    ],
+    example: {
+      input: 's = "(()))("',
+      steps: [
+        'Initially open = 0 and close = 3 because the string has three closing brackets.',
+        'At split 0, counts are 0 and 3, so they do not match. Pass character 0: open becomes 1.',
+        'At split 1, counts are 1 and 3. Pass character 1: open becomes 2.',
+        'At split 2, counts are 2 and 3. Pass character 2, which is a closing bracket, so close becomes 2.',
+        'At split 3, open == close == 2, so the equal point is 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Check the split before consuming s[i]; index i represents the boundary before character i.',
+      'Include split n, the position after the last character.',
+      'Closing brackets on the left should be removed from the right-close count when the split passes them.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
