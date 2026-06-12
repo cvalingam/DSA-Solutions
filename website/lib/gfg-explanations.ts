@@ -7086,6 +7086,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'check-repeated-substring-with-k-replacements': {
+    intuition:
+      'The target structure is a string made by repeating one block of length k. If the string length is not divisible by k, such a structure is impossible. Otherwise, split the string into k-length blocks. The string is already valid when all blocks are the same, and it can be fixed with one block replacement when exactly two distinct block patterns exist and one of them occurs only once.',
+    algorithm: [
+      'Let n = s.length(). If n is not divisible by k, return false.',
+      'Traverse s in jumps of k and count each substring s[i..i+k) in a hash map.',
+      'If the map has one key, every block already matches, so return true.',
+      'If the map has more than two keys, one replacement cannot make all blocks equal, so return false.',
+      'For exactly two keys, return true if either frequency is 1 or totalBlocks - 1.',
+      'Otherwise, return false.',
+    ],
+    example: {
+      input: 's = "abcabcxyzabc", k = 3',
+      steps: [
+        'The length 12 is divisible by k = 3, so split into four blocks.',
+        'Blocks are ["abc", "abc", "xyz", "abc"].',
+        'There are exactly two distinct blocks: "abc" appears 3 times and "xyz" appears once.',
+        'Replacing the lone "xyz" block with "abc" makes every block equal, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Check divisibility by k before creating fixed-size blocks.',
+      'Counting character mismatches is unnecessary here; the implementation works at block level.',
+      'With more than two distinct block patterns, one replacement cannot normalize the string.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

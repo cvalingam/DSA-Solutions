@@ -7779,6 +7779,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3559: {
+    intuition:
+      'For any query path between nodes u and v, only the number of edges on that path matters. If the path has d edges, each edge can independently receive weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum, because flipping any one edge toggles the parity. Therefore each non-empty path contributes 2^(d-1), and the work is finding d quickly for every query.',
+    algorithm: [
+      'Build an undirected adjacency list for the tree.',
+      'Root the tree at node 1 and run DFS to fill depth[v] and the immediate parent parent[0][v].',
+      'Build the binary-lifting table where parent[k][v] is the 2^k-th ancestor of v.',
+      'For each query (u, v), return 0 immediately if u == v because the path has no edges.',
+      'Find lca = LCA(u, v) using the lifting table.',
+      'Compute path length d = depth[u] + depth[v] - 2 * depth[lca].',
+      'Return 2^(d-1) modulo 1,000,000,007.',
+    ],
+    example: {
+      input: 'edges = [[1,2],[1,3],[3,4]], queries = [[2,4],[3,3]]',
+      steps: [
+        'Root at 1. Depths are depth[1]=0, depth[2]=1, depth[3]=1, depth[4]=2.',
+        'For query [2,4], LCA is 1, so d = 1 + 2 - 2*0 = 3 edges.',
+        'A 3-edge path has 2^3 total assignments; half have odd sum, so answer is 2^(3-1) = 4.',
+        'For query [3,3], there are no path edges, so the answer is 0.',
+      ],
+      output: '[4, 0]',
+    },
+    pitfalls: [
+      'Return 0 for u == v; applying 2^(d-1) with d = 0 would be invalid.',
+      'Depth is measured in edges from the root.',
+      'Build the tree as undirected, then use parent tracking to avoid walking back during DFS.',
+    ],
+  },
+
 }
 
 export default explanations
