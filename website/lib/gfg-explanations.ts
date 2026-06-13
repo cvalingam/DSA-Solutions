@@ -7055,6 +7055,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'binary-strings-with-equal-sum-of-two-halves': {
+    intuition:
+      'A binary string of length 2n splits into two halves of length n. Equal sum means both halves contain the same number of 1s. If the first half has k ones, choose their positions in C(n, k) ways and independently choose k ones in the second half in another C(n, k) ways. Summing C(n, k)^2 over all k yields the closed form C(2n, n).',
+    algorithm: [
+      'Precompute factorials fact[i] = i! modulo MOD up to 2n.',
+      'Compute numerator = fact[2n].',
+      'Compute denominator = fact[n] * fact[n] modulo MOD.',
+      'Return numerator * denominator^(MOD - 2) modulo MOD using fast modular exponentiation.',
+    ],
+    example: {
+      input: 'n = 1',
+      steps: [
+        'Binary strings of length 2 are "00", "01", "10", "11".',
+        'Equal halves require the same number of 1s in each half of length 1.',
+        'Valid strings are "00" and "11", so the count is 2.',
+        'Formula check: C(2, 1) = 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Equal sum for binary strings means equal count of 1s, not equal numeric value of the substring.',
+      'Use modular inverse via Fermat: a^(-1) = a^(MOD - 2) when MOD is prime.',
+      'Precompute factorials only up to 2n, not higher.',
+    ],
+  },
+
   'equal-point-in-brackets': {
     intuition:
       'The equal point is a split position where the number of opening brackets before the split equals the number of closing brackets after the split. Instead of recomputing both sides for every index, count all closing brackets once, then move the split from left to right. When the split passes an opening bracket, the left-open count increases; when it passes a closing bracket, the right-close count decreases.',

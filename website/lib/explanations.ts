@@ -7808,6 +7808,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3838: {
+    intuition:
+      'Each word is mapped independently. Add the weight of every letter, reduce modulo 26, then convert that residue to a single output character using the reverse-alphabet formula 25 - sum. The only work per word is one pass over its characters plus constant-time modular arithmetic.',
+    algorithm: [
+      'Initialize an empty result string.',
+      'For each word, set sum = 0.',
+      'For each character c in the word, add weights[c - \'a\'] to sum and take sum modulo 26.',
+      'Append the character (char)(\'a\' + (25 - sum)) to the result.',
+      'Return the built string after all words are processed.',
+    ],
+    example: {
+      input: 'words = ["a", "b"], weights = [1,2,...,26]',
+      steps: [
+        'For "a": sum = weights[0] = 1, so mapped index is 25 - 1 = 24 -> \'y\'.',
+        'For "b": sum = weights[1] = 2, so mapped index is 25 - 2 = 23 -> \'x\'.',
+        'Concatenate the mapped letters in input order.',
+      ],
+      output: '"yx"',
+    },
+    pitfalls: [
+      'Apply modulo 26 after every addition to keep the sum in range.',
+      'The output index is 25 - sum, not sum itself.',
+      'weights[i] corresponds to the i-th lowercase letter starting from \'a\'.',
+    ],
+  },
+
 }
 
 export default explanations
