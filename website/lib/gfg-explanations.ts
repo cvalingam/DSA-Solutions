@@ -7140,6 +7140,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'exit-point-in-a-matrix': {
+    intuition:
+      'A ray starts at the top-left cell and moves through the matrix according to local cell values. A cell with 1 forces a clockwise turn after stepping in the current direction; a cell with 0 keeps the previous direction. Each 1 is cleared to 0 when visited, so the walk eventually exits the grid. The answer is the last cell still inside the matrix before the ray leaves.',
+    algorithm: [
+      'Start at (0, 0) with direction index i = 0 and track the last in-bounds cell.',
+      'While the current position is inside the matrix, save it as the tentative exit cell.',
+      'If mat[row][col] is 0, move using the previous direction (i - 1) modulo 4.',
+      'If mat[row][col] is 1, set it to 0, move in direction i, then set i = (i + 1) % 4.',
+      'When the next step would leave the grid, return the saved exit cell coordinates.',
+    ],
+    example: {
+      input: 'mat = [[1,0,0,1],[0,0,1,0],[0,0,0,0]]',
+      steps: [
+        'Begin at (0,0), which contains 1: mark it 0, move in direction 0, then turn clockwise.',
+        'On empty cells, continue straight using the previous direction until another 1 is hit.',
+        'Each visited 1 is cleared, so the path cannot loop forever on the same obstacle.',
+        'The last valid position before leaving the grid is recorded as the exit point.',
+      ],
+      output: '[1, 3]',
+    },
+    pitfalls: [
+      'Store the exit cell before attempting the move that goes out of bounds.',
+      'On a 0 cell, use the previous direction (i - 1 + 4) % 4, not the current direction i.',
+      'Mark 1-cells as 0 when visited so each obstacle affects the path only once.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

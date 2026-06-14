@@ -7834,6 +7834,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2130: {
+    intuition:
+      'Twin pairs are symmetric positions from the ends of the list: first with last, second with second-last, and so on. Finding every twin by indexing from both ends would need extra space or repeated traversals. Instead, locate the start of the second half with slow/fast pointers, reverse that half in place, and walk both halves together to evaluate each twin sum.',
+    algorithm: [
+      'Advance slow one step and fast two steps until fast reaches the end; slow then starts the second half.',
+      'Reverse the linked list beginning at slow and keep the new head as tail.',
+      'Initialize answer = 0.',
+      'While tail is not null, update answer with max(answer, head.val + tail.val).',
+      'Move head and tail one node forward each iteration.',
+      'Return answer.',
+    ],
+    example: {
+      input: 'head = [5, 4, 2, 1]',
+      steps: [
+        'Slow/fast split places slow at node 2, the start of the second half.',
+        'Reverse the second half: 2 -> 1 becomes 1 -> 2.',
+        'Compare twins: 5 + 1 = 6 and 4 + 2 = 6.',
+        'Maximum twin sum is 6.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Reverse only the second half, not the entire list.',
+      'After reversal, head still points to the original first node of the first half.',
+      'The loop should continue until tail becomes null, covering all twin pairs.',
+    ],
+  },
+
 }
 
 export default explanations
