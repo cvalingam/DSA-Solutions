@@ -4,6 +4,7 @@ import designUrlShortener from './design-url-shortener'
 import designRateLimiter from './design-rate-limiter'
 import cachingFundamentals from './caching-fundamentals'
 import fromLeetcodePatterns from './from-leetcode-patterns'
+import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   howToApproach,
@@ -11,7 +12,10 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designRateLimiter,
   cachingFundamentals,
   fromLeetcodePatterns,
-]
+].map(a => ({
+  ...a,
+  readMinutes: estimateReadMinutes(a.sections),
+}))
 
 export function getAllSystemDesignArticles(): SystemDesignArticle[] {
   return SYSTEM_DESIGN_ARTICLES

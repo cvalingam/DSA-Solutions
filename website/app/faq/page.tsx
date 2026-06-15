@@ -60,6 +60,14 @@ const jsonLd = {
         text: 'Use the language you will be interviewed in. If you are applying for .NET roles, practising in C# is the correct choice — your solutions will look natural and you will not need to mentally translate idioms. Python is faster to write but does not help you if the interview is conducted in C#.',
       },
     },
+    {
+      '@type': 'Question',
+      name: 'How do I prepare for system design interviews?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Start after you are comfortable with core DSA patterns. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, chat system). DSA Solutions publishes in-depth system design articles at dsasolved.com/system-design, including how LeetCode patterns map to real infrastructure.',
+      },
+    },
   ],
 }
 

@@ -1,10 +1,10 @@
 # DSA Solutions — dsasolved.com
 
-> Clean LeetCode C# and GeeksforGeeks Java solutions with algorithm explanations, complexity analysis, and interview prep guides.
+> Clean LeetCode C# and GeeksforGeeks Java solutions with algorithm explanations, system design interview guides, complexity analysis, and interview prep.
 
 ## About
 
-DSA Solutions is a free reference for coding interview preparation. Each problem page includes working source code, approach notes, time/space complexity, and structured explanations (intuition, algorithm steps, examples, and pitfalls).
+DSA Solutions is a free reference for coding interview preparation. Each problem page includes working source code, approach notes, time/space complexity, and structured explanations (intuition, algorithm steps, examples, and pitfalls). The site also publishes system design interview articles (frameworks, case studies, caching, rate limiting) at /system-design.
 
 Author: Sivalingam Ramasamy
 GitHub: https://github.com/cvalingam

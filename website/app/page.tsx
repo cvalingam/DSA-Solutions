@@ -10,7 +10,7 @@ const { lcCount, gfgCount } = getSiteStats()
 
 export const metadata: Metadata = {
   title: `LeetCode C# Solutions — ${lcCount}+ Problems Solved`,
-  description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems and ${gfgCount}+ GeeksforGeeks Java solutions. Step-by-step explanations, complexity analysis, and interview prep.`,
+  description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems and ${gfgCount}+ GeeksforGeeks Java solutions. Step-by-step explanations, system design articles, complexity analysis, and interview prep.`,
   alternates: { canonical: '/' },
   openGraph: {
     title: `LeetCode C# Solutions — ${lcCount}+ Problems | DSA Solutions`,
@@ -49,7 +49,7 @@ export default function HomePage() {
     '@type': 'WebSite',
     name: 'DSA Solutions',
     url: SITE_URL,
-    description: `${problems.length}+ LeetCode and ${gfgCount}+ GeeksforGeeks solutions for coding interview prep.`,
+    description: `${problems.length}+ LeetCode and ${gfgCount}+ GeeksforGeeks solutions plus system design interview guides for coding interview prep.`,
     potentialAction: {
       '@type': 'SearchAction',
       target: `${SITE_URL}/?q={search_term_string}`,

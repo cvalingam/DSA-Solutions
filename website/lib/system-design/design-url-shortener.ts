@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'The URL shortener is the "Two Sum" of system design interviews. It is simple enough to finish in forty-five minutes, yet rich enough to discuss hashing, databases, caching, and rate limiting. Interviewers use it to see whether you can move from requirements to a working architecture without over-engineering.',
+      text: 'The URL shortener is the "Two Sum" of system design interviews. It is simple enough to finish in forty-five minutes, yet rich enough to discuss hashing, databases, [caching](/system-design/caching-fundamentals-for-interviews), and [rate limiting](/system-design/design-rate-limiter). Interviewers use it to see whether you can move from requirements to a working architecture without over-engineering. If you have not read our [interview framework](/system-design/how-to-approach-system-design-interviews) yet, skim that first — this walkthrough follows the same steps.',
     },
     {
       type: 'p',
@@ -109,7 +109,7 @@ const article: SystemDesignArticle = {
         'API servers: horizontal scale behind load balancer; stateless.',
         'Database: primary for writes, multiple read replicas for redirect lookups on cache miss.',
         'Sharding: partition by short_code hash when single DB exhausts write IOPS or storage.',
-        'Rate limiting: token bucket per IP on POST to prevent abuse (see our rate limiter article).',
+        'Rate limiting: token bucket per IP on POST to prevent abuse — see [Design a Rate Limiter](/system-design/design-rate-limiter).',
       ],
     },
     { type: 'h2', text: 'Security and abuse' },
@@ -127,10 +127,62 @@ const article: SystemDesignArticle = {
       type: 'p',
       text: 'Redis down: fall through to database — slower but functional. Database primary down: fail writes, serve reads from replicas if replication lag acceptable. Region outage: multi-region active-passive with DNS failover — mention only if asked about disaster recovery.',
     },
+    { type: 'h2', text: 'Latency budget for the redirect path' },
+    {
+      type: 'p',
+      text: 'Redirects must feel instant. Break down a 100ms p99 budget: DNS + TLS ~20ms (CDN helps), load balancer ~5ms, Redis GET ~1ms, application logic ~2ms, HTTP 302 response ~1ms. That leaves headroom. On cache miss, add read replica query ~10–20ms — still acceptable if misses are rare. This is why [cache-aside](/system-design/caching-fundamentals-for-interviews) is non-negotiable at scale.',
+    },
+    {
+      type: 'table',
+      headers: ['Step', 'Component', 'Typical latency'],
+      rows: [
+        ['1', 'CDN edge (optional)', '5–15ms'],
+        ['2', 'Load balancer', '1–5ms'],
+        ['3', 'Redis cache hit', '0.5–2ms'],
+        ['4', 'PostgreSQL replica (miss)', '5–20ms'],
+        ['5', '302 redirect to client', '1ms'],
+      ],
+    },
+    { type: 'h2', text: 'Custom alias and reserved words' },
+    {
+      type: 'p',
+      text: 'Custom aliases (dsas.ly/my-portfolio) require a uniqueness check before insert. Reserve paths like /api, /admin, /health so they never collide with short codes. Reject profanity and impersonation domains. For interview depth: store reserved words in a small in-memory set loaded at startup — faster than a DB check on every create.',
+    },
+    { type: 'h2', text: 'Optional: click analytics without slowing redirects' },
+    {
+      type: 'p',
+      text: 'If the interviewer asks for analytics, never block the redirect on a write. Return 302 immediately, then publish a click event to a message queue (Kafka, SQS, RabbitMQ). A consumer batch-inserts into an analytics store (ClickHouse, BigQuery). Users perceive zero latency impact. Mention this pattern — it shows you understand async decoupling from your [system design framework](/system-design/how-to-approach-system-design-interviews).',
+    },
+    { type: 'h2', text: 'Multi-region considerations' },
+    {
+      type: 'p',
+      text: 'For global users, deploy read replicas and Redis clusters in multiple regions. Writes go to one primary region; replicas async replicate. Redirects served locally from regional cache. Conflict resolution on custom aliases requires global uniqueness — use the primary DB or a dedicated coordination service. Only discuss this if the interviewer raises global scale; otherwise it is scope creep.',
+    },
     { type: 'h2', text: 'What to say in the last five minutes' },
     {
       type: 'p',
-      text: 'Summarise: "We optimised for read latency with Redis and replicas, kept writes simple with base62 IDs in PostgreSQL, and added rate limiting plus URL validation for abuse. With more time I would add click analytics via an async queue so redirects stay fast." That closing shows product sense, not just diagram drawing.',
+      text: 'Summarise: "We optimised for read latency with Redis and replicas, kept writes simple with base62 IDs in PostgreSQL, and added [rate limiting](/system-design/design-rate-limiter) plus URL validation for abuse. With more time I would add click analytics via an async queue so redirects stay fast." That closing shows product sense, not just diagram drawing.',
+    },
+    { type: 'h2', text: 'Database indexing detail interviewers love' },
+    {
+      type: 'p',
+      text: 'The redirect query is SELECT long_url FROM url_mappings WHERE short_code = $1. B-tree index on short_code makes this O(log n) disk lookups — effectively constant for interview purposes. Mention covering indexes only if asked: if the index includes long_url, the query is index-only without heap fetch. PostgreSQL EXPLAIN ANALYZE is what you use in production to verify; in an interview, stating "unique index on short_code" is sufficient.',
+    },
+    { type: 'h2', text: 'Comparison to bit.ly and TinyURL' },
+    {
+      type: 'p',
+      text: 'Real products add link preview crawlers, malware scanning, and logged-in user dashboards. In an interview, acknowledge these as v2 features unless the prompt includes them. TinyURL launched on a single server; bit.ly scaled with caching and sharding. You are designing the core path that every shortener shares — do not apologise for skipping login unless required.',
+    },
+    {
+      type: 'ol',
+      items: [
+        'Clarified functional + non-functional requirements (5 min)',
+        'Did napkin math for writes, reads, storage (5 min)',
+        'Drew API + components: LB, app, Redis, PostgreSQL (10 min)',
+        'Explained short code generation and DB schema (10 min)',
+        'Deep dive on [caching](/system-design/caching-fundamentals-for-interviews) and redirect latency (10 min)',
+        'Mentioned abuse prevention, failure modes, analytics extension (5 min)',
+      ],
     },
   ],
 }

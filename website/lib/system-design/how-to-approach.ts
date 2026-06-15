@@ -158,7 +158,71 @@ article.sections.push(
   },
   {
     type: 'p',
-    text: 'Next in this series: a full walkthrough of designing a URL shortener, then a rate limiter, then caching fundamentals. Read those with this framework in mind and practise sketching one design per week out loud.',
+    text: 'Next in this series: a full walkthrough of [designing a URL shortener](/system-design/design-url-shortener), then a [rate limiter](/system-design/design-rate-limiter), then [caching fundamentals](/system-design/caching-fundamentals-for-interviews). Read those with this framework in mind and practise sketching one design per week out loud.',
+  },
+  { type: 'h2', text: 'A sample opening (first three minutes)' },
+  {
+    type: 'p',
+    text: 'Here is dialogue that signals competence. Interviewer: "Design a URL shortener." You: "Before I draw boxes, let me clarify scope. Are we building a consumer product like bit.ly, or an internal link service for one company? Do we need analytics on clicks, custom aliases, or expiration? For scale, should I assume millions or billions of links per month?" That opening buys trust and prevents you from designing the wrong system.',
+  },
+  {
+    type: 'p',
+    text: 'Then: "I will assume 100 million new links per month, read-heavy traffic, sub-100ms redirects, and no login requirement for v1. I will start with a simple API, PostgreSQL for storage, Redis for hot redirects, and discuss scaling if we have time." You have not drawn anything yet, but the interviewer knows you are structured.',
+  },
+  { type: 'h2', text: 'Common mistakes that fail candidates' },
+  {
+    type: 'ul',
+    items: [
+      'Jumping to microservices before proving you need them — a monolith with a cache often passes.',
+      'Naming technologies without explaining why — "we use Kafka" is worthless without the event flow.',
+      'Ignoring the write path on read-heavy systems — creation and redirect have different bottlenecks.',
+      'Forgetting failure modes — what happens when Redis or the database is unavailable?',
+      'Never checking back with the interviewer — treat it as a design review, not a solo exam.',
+    ],
+  },
+  { type: 'h2', text: 'Tools that help you practise' },
+  {
+    type: 'p',
+    text: 'Use Excalidraw or a whiteboard app and time yourself. Record a 45-minute mock and watch for long silences. Read one case study per week on this site, then redesign it from memory 48 hours later. Pair with our [From LeetCode Patterns to Real Systems](/system-design/from-leetcode-patterns-to-real-systems) article if DSA is your stronger side — it maps hash maps to indexes, BFS to fan-out, and heaps to schedulers.',
+  },
+  { type: 'h2', text: 'How interview difficulty maps to level' },
+  {
+    type: 'table',
+    headers: ['Level', 'Typical prompt', 'Depth expected'],
+    rows: [
+      ['Junior / new grad', 'Design a parking lot, pastebin', 'OOP, basic CRUD, one database'],
+      ['Mid-level', 'URL shortener, rate limiter, news feed', 'Caching, sharding basics, API design'],
+      ['Senior', 'Global chat, multi-region storage', 'Consistency models, CAP trade-offs, ops'],
+      ['Staff+', 'Design YouTube, ad bidding', 'Cost modelling, org constraints, migration'],
+    ],
+  },
+  {
+    type: 'p',
+    text: 'Match your preparation to the roles you apply for. A .NET developer interviewing for a product company at mid-level should nail URL shortener + rate limiter + caching — those three cover the majority of loop questions.',
+  },
+  { type: 'h2', text: 'Whiteboard layout that interviewers can follow' },
+  {
+    type: 'p',
+    text: 'Divide the board into three zones: left = requirements and estimates (bullets, numbers), centre = architecture diagram (left-to-right data flow), right = deep dive detail (schema, cache keys, one sequence diagram). Interviewers photograph the board or share the Excalidraw link — a messy board hurts even good ideas. Label every arrow: "HTTPS", "async event", "read replica".',
+  },
+  {
+    type: 'p',
+    text: 'Start the diagram only after requirements. Candidates who draw AWS icons first look like they memorised a blog post. Candidates who write "POST /urls → validate → DB insert → return short URL" look like engineers.',
+  },
+  { type: 'h2', text: 'Questions to ask every interviewer' },
+  {
+    type: 'ul',
+    items: [
+      'What scale should I design for — thousands, millions, or billions of users?',
+      'Is this mobile-first, web-only, or API for third parties?',
+      'What consistency level is acceptable — can reads be stale by a few seconds?',
+      'Are we optimising for time-to-market or maximum scalability?',
+      'Should I include analytics, admin tools, or stick to core user flows?',
+    ],
+  },
+  {
+    type: 'p',
+    text: 'Asking two or three of these is enough. Write the answers on the board — they become constraints that justify your later decisions.',
   },
 )
 

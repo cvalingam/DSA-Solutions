@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     template: '%s | DSA Solutions',
   },
   description:
-    `Clean, readable solutions to ${lcCount}+ LeetCode and ${gfgCount}+ GeeksforGeeks problems with explanations, complexity analysis, and interview prep guides. ${total}+ total solutions.`,
-  keywords: ['LeetCode', 'GeeksforGeeks', 'GFG', 'C#', 'csharp', 'Java', '.NET', 'solutions', 'interview prep', 'algorithms', 'data structures'],
+    `Clean, readable solutions to ${lcCount}+ LeetCode and ${gfgCount}+ GeeksforGeeks problems with explanations, system design guides, complexity analysis, and interview prep. ${total}+ total solutions.`,
+  keywords: ['LeetCode', 'GeeksforGeeks', 'GFG', 'C#', 'csharp', 'Java', '.NET', 'solutions', 'interview prep', 'algorithms', 'data structures', 'system design'],
   authors: [{ name: 'Sivalingam Ramasamy', url: 'https://github.com/cvalingam' }],
   openGraph: {
     type: 'website',

@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'DSA Solutions',
     short_name: 'DSA Solutions',
     description:
-      'LeetCode C# and GeeksforGeeks Java solutions with explanations for coding interview prep.',
+      'LeetCode C# and GeeksforGeeks Java solutions with explanations and system design interview guides.',
     start_url: '/',
     display: 'standalone',
     background_color: '#f9fafb',

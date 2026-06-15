@@ -15,7 +15,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'We will design a service that enforces rules like "100 requests per minute per API key" and returns HTTP 429 Too Many Requests when exceeded. This applies to public REST APIs, login endpoints, and internal microservice protection.',
+      text: 'We will design a service that enforces rules like "100 requests per minute per API key" and returns HTTP 429 Too Many Requests when exceeded. This applies to public REST APIs, login endpoints, and internal microservice protection. It pairs naturally with the [URL shortener](/system-design/design-url-shortener) design, where you rate-limit link creation, and relies on Redis — the same store used in our [caching](/system-design/caching-fundamentals-for-interviews) article.',
     },
     { type: 'h2', text: 'Requirements' },
     {
@@ -111,15 +111,58 @@ const article: SystemDesignArticle = {
         'Whitelists for internal services and health checks.',
       ],
     },
+    { type: 'h2', text: 'Sliding window counter (alternative worth knowing)' },
+    {
+      type: 'p',
+      text: 'Some teams prefer sliding window counter over token bucket: weight the previous minute and current minute by elapsed fraction. Example at 0:30 into the minute: count = 0.5 × (previous minute requests) + (current minute requests). Simpler Redis implementation with INCR and two keys, slightly approximate but very fast. Mention it if the interviewer asks for alternatives to token bucket.',
+    },
+    { type: 'h2', text: 'Real-world API examples' },
+    {
+      type: 'p',
+      text: 'Stripe returns rate limit headers on every response and uses 429 with Retry-After. GitHub documents primary and secondary limits per endpoint. Twitter API tiers map to different token buckets. Showing you have seen these in production APIs — even as a consumer — signals polish. In a .NET API, implement middleware that calls Redis before the controller and attaches headers in OnStarting.',
+    },
+    { type: 'h2', text: 'Hierarchical limits' },
+    {
+      type: 'ul',
+      items: [
+        'Global limit — protect the whole platform (e.g. 50k req/sec total).',
+        'Per-tenant limit — API key or subscription tier (100/min free, 10k/min pro).',
+        'Per-endpoint limit — stricter on POST /login than GET /search.',
+        'Per-IP limit — catch abuse when API keys are stolen or absent.',
+      ],
+    },
+    {
+      type: 'p',
+      text: 'Check limits in order from cheapest to most expensive. Reject early on IP before hitting database-backed tenant lookup. Senior candidates discuss cost: every Redis round-trip adds latency — batch or pipeline when checking multiple rules.',
+    },
     { type: 'h2', text: 'Connection to LeetCode' },
     {
       type: 'p',
-      text: 'This is sliding window and hash map thinking at infrastructure scale. If you have solved problems involving time-based expiry (LRU cache, hit counter), you already understand the core challenge: evicting stale state efficiently. The rate limiter is an LRU with a refill policy instead of capacity eviction.',
+      text: 'This is sliding window and hash map thinking at infrastructure scale. If you have solved problems involving time-based expiry (LRU cache, hit counter), you already understand the core challenge: evicting stale state efficiently. The rate limiter is an LRU with a refill policy instead of capacity eviction. Read [From LeetCode Patterns to Real Systems](/system-design/from-leetcode-patterns-to-real-systems) for the full mapping.',
     },
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
       text: 'Propose token bucket in Redis with atomic Lua scripts, enforce at the gateway, return standard headers, and discuss fail-open vs fail-closed. That answer is complete for most mid-level loops. Senior candidates can add hierarchical limits (per user AND per IP) and adaptive throttling under load.',
+    },
+    { type: 'h2', text: 'Fixed vs sliding window — when to mention each' },
+    {
+      type: 'p',
+      text: 'Fixed window is easiest to explain: reset counter every minute. Its flaw is boundary bursting. Sliding window log is accurate but memory-heavy. Token bucket is the sweet spot for APIs that allow controlled bursts — mobile clients batch requests on reconnect, for example. If the interviewer is a stickler for exact counts, propose sliding window counter; if they want simplicity, token bucket wins.',
+    },
+    {
+      type: 'p',
+      text: 'Interviewer: "Two requests arrive at the same millisecond with one token left." You: "That is why I use a Lua script in Redis — read, compute refill, decrement, and write happen atomically on the server. Without that, both app servers could pass." Interviewer: "Redis is down." You: "For a public blog API I fail open so the site stays up; for payments I fail closed. It depends on the product." Short answers with trade-offs beat long monologues.',
+    },
+    { type: 'h2', text: 'Where this appears in other designs' },
+    {
+      type: 'ul',
+      items: [
+        '[URL shortener](/system-design/design-url-shortener) — limit POST /urls per IP to stop spam links.',
+        'Login endpoint — 5 attempts per minute per account against credential stuffing.',
+        'Third-party API integration — respect provider limits with client-side token bucket.',
+        'Internal microservices — prevent one noisy neighbour from exhausting shared DB connections.',
+      ],
     },
   ],
 }

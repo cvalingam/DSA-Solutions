@@ -157,6 +157,7 @@ export default function ProblemList({
             </div>
             <div className="flex flex-wrap gap-2">
               <QuickLink href="/study-guide" label="Study Guide" />
+              <QuickLink href="/system-design" label="System Design" violet />
               <QuickLink href="/cheat-sheet" label="C# Cheat Sheet" />
               <QuickLink href="/topics"      label="Topics" />
               <QuickLink href="/gfg"         label="GFG Java" emerald />
@@ -256,14 +257,16 @@ function Stat({ value, label, dim }: { value: number; label: string; dim?: boole
   )
 }
 
-function QuickLink({ href, label, emerald }: { href: string; label: string; emerald?: boolean }) {
+function QuickLink({ href, label, emerald, violet }: { href: string; label: string; emerald?: boolean; violet?: boolean }) {
   return (
     <a
       href={href}
       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
         emerald
           ? 'bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/30 border border-emerald-400/20'
-          : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/10'
+          : violet
+            ? 'bg-violet-500/20 text-violet-100 hover:bg-violet-500/30 border border-violet-400/20'
+            : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/10'
       }`}
     >
       {label}
