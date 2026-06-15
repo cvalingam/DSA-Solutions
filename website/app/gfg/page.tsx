@@ -3,18 +3,22 @@ import { Suspense } from 'react'
 import { getAllGfgProblemsMeta } from '@/lib/gfg-problems'
 import GfgProblemList from '@/components/GfgProblemList'
 import gfgExplanations from '@/lib/gfg-explanations'
+import { SITE_URL } from '@/lib/constants'
+import { buildCollectionPageSchema, getSiteStats } from '@/lib/seo'
 
 export const dynamic = 'force-static'
 
+const { gfgCount } = getSiteStats()
+
 export const metadata: Metadata = {
-  title: 'GeeksforGeeks Java Solutions',
+  title: `GeeksforGeeks Java Solutions — ${gfgCount}+ Problems`,
   description:
-    'Clean Java solutions to GeeksforGeeks Problem of the Day — daily POTD solutions by Sivalingam Ramasamy.',
-  keywords: ['GeeksforGeeks', 'GFG', 'Java', 'POTD', 'Problem of the Day', 'interview prep'],
+    `Clean Java solutions to ${gfgCount}+ GeeksforGeeks problems with explanations, algorithm walkthroughs, and complexity analysis. Daily POTD and interview prep.`,
+  keywords: ['GeeksforGeeks', 'GFG', 'Java', 'POTD', 'Problem of the Day', 'interview prep', 'DSA'],
   alternates: { canonical: '/gfg' },
   openGraph: {
-    title: 'GeeksforGeeks Java Solutions — GFG POTD',
-    description: 'Clean Java solutions to GeeksforGeeks Problem of the Day.',
+    title: `GeeksforGeeks Java Solutions — ${gfgCount}+ Problems`,
+    description: `Clean Java solutions to ${gfgCount}+ GeeksforGeeks problems with explanations and complexity analysis.`,
     url: '/gfg',
     type: 'website',
   },
@@ -34,13 +38,15 @@ export default function GfgPage() {
   const problems = getAllGfgProblemsMeta()
   const explanationSlugs = new Set(Object.keys(gfgExplanations))
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'GeeksforGeeks Java Solutions',
-    description: 'Clean Java solutions to GeeksforGeeks Problem of the Day.',
-    url: 'https://dsasolved.com/gfg',
-  }
+  const jsonLd = buildCollectionPageSchema(
+    'GeeksforGeeks Java Solutions',
+    `Browse ${problems.length}+ GeeksforGeeks problems with Java solutions and explanations.`,
+    `${SITE_URL}/gfg`,
+    problems.slice(0, 20).map(p => ({
+      name: p.title,
+      url: `${SITE_URL}/gfg/${p.slug}`,
+    })),
+  )
 
   return (
     <>

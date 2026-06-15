@@ -2,12 +2,13 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllGfgProblems, getGfgProblemBySlug, getAdjacentGfgProblems } from '@/lib/gfg-problems'
-import { toLeetCodeSlug, SITE_URL } from '@/lib/constants'
+import { toLeetCodeSlug } from '@/lib/constants'
 import CodeBlockWithHeader from '@/components/CodeBlockWithHeader'
 import AdUnit from '@/components/AdUnit'
 import HelpfulWidget from '@/components/HelpfulWidget'
 import BackToTop from '@/components/BackToTop'
 import gfgExplanations from '@/lib/gfg-explanations'
+import { buildGfgArticleGraph, buildGfgDescription } from '@/lib/seo'
 
 interface Props {
   params: { slug: string }
@@ -23,20 +24,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const problem = getGfgProblemBySlug(params.slug)
   if (!problem) return {}
 
+  const rich = gfgExplanations[problem.slug]
   const title = problem.title
-  let desc = `GeeksforGeeks ${problem.title} – Java solution`
-  if (problem.approach) desc += `. ${problem.approach.split('\n')[0]}`
-  else desc += `. GFG Problem of the Day.`
+  const desc = buildGfgDescription(problem, rich)
+  const ogImage = `/gfg/${problem.slug}/opengraph-image`
 
   return {
     title,
     description: desc,
+    keywords: ['GeeksforGeeks', 'GFG', problem.title, 'Java solution', 'interview prep'],
     alternates: { canonical: `/gfg/${problem.slug}` },
     openGraph: {
       title: `${title} — GFG Java Solution`,
       description: desc,
       type: 'article',
       url: `/gfg/${problem.slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `GFG ${problem.title}` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} — GFG Java Solution`,
+      description: desc,
+      images: [ogImage],
     },
   }
 }
@@ -47,41 +56,15 @@ export default async function GfgProblemPage({ params }: Props) {
 
   const { prev, next } = getAdjacentGfgProblems(params.slug)
   const gfgSlug = toLeetCodeSlug(problem.title)
-  let schemaDesc = `GeeksforGeeks ${problem.title} – Java solution`
-  if (problem.approach) schemaDesc += `. ${problem.approach.split('\n')[0]}`
-  else schemaDesc += `. GFG Problem of the Day.`
+  const rich = gfgExplanations[problem.slug]
+  const articleJsonLd = buildGfgArticleGraph(problem, rich)
 
   return (
     <article className="max-w-3xl mx-auto py-8">
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'TechArticle',
-                headline: `${problem.title} — GFG Java Solution`,
-                description: schemaDesc,
-                author: { '@type': 'Person', name: 'Sivalingam Ramasamy', url: 'https://github.com/cvalingam' },
-                url: `${SITE_URL}/gfg/${problem.slug}`,
-                datePublished: '2025-01-01',
-                dateModified: '2025-06-01',
-                image: `${SITE_URL}/opengraph-image`,
-                programmingLanguage: 'Java',
-                proficiencyLevel: 'Beginner',
-              },
-              {
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'GFG Solutions', item: `${SITE_URL}/gfg` },
-                  { '@type': 'ListItem', position: 2, name: problem.title, item: `${SITE_URL}/gfg/${problem.slug}` },
-                ],
-              },
-            ],
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
       {/* Breadcrumb */}

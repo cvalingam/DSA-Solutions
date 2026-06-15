@@ -3,47 +3,47 @@ import { getAllProblemsMeta } from '@/lib/problems'
 import { getAllGfgProblemsMeta } from '@/lib/gfg-problems'
 import { getAllTags } from '@/lib/tags'
 import { SITE_URL } from '@/lib/constants'
+import { BUILD_DATE } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const problems = getAllProblemsMeta()
+  const buildDate = BUILD_DATE
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`,               lastModified: new Date('2025-01-01'), changeFrequency: 'weekly',  priority: 1.0 },
-    { url: `${SITE_URL}/study-guide`,    lastModified: new Date('2026-04-20'), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${SITE_URL}/cheat-sheet`,    lastModified: new Date('2026-04-20'), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/faq`,            lastModified: new Date('2026-04-20'), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/about`,          lastModified: new Date('2026-04-20'), changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${SITE_URL}/privacy-policy`, lastModified: new Date('2025-01-01'), changeFrequency: 'yearly',  priority: 0.2 },
-    { url: `${SITE_URL}/contact`,        lastModified: new Date('2025-01-01'), changeFrequency: 'yearly',  priority: 0.2 },
-    { url: `${SITE_URL}/terms`,           lastModified: new Date('2026-04-06'), changeFrequency: 'yearly',  priority: 0.2 },
-    { url: `${SITE_URL}/topics`,         lastModified: new Date('2026-03-22'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/`,               lastModified: buildDate, changeFrequency: 'daily',   priority: 1.0 },
+    { url: `${SITE_URL}/gfg`,            lastModified: buildDate, changeFrequency: 'daily',   priority: 0.95 },
+    { url: `${SITE_URL}/study-guide`,    lastModified: buildDate, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${SITE_URL}/cheat-sheet`,    lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/faq`,            lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/about`,          lastModified: buildDate, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${SITE_URL}/privacy-policy`, lastModified: buildDate, changeFrequency: 'yearly',  priority: 0.2 },
+    { url: `${SITE_URL}/contact`,        lastModified: buildDate, changeFrequency: 'yearly',  priority: 0.2 },
+    { url: `${SITE_URL}/terms`,          lastModified: buildDate, changeFrequency: 'yearly',  priority: 0.2 },
+    { url: `${SITE_URL}/topics`,         lastModified: buildDate, changeFrequency: 'weekly',  priority: 0.8 },
   ]
 
   const tags = getAllTags()
   const topicPages: MetadataRoute.Sitemap = tags.map(({ tag }) => ({
     url: `${SITE_URL}/topics/${tag}`,
-    lastModified: new Date('2026-03-22'),
-    changeFrequency: 'monthly' as const,
+    lastModified: buildDate,
+    changeFrequency: 'weekly' as const,
     priority: 0.6,
   }))
 
   const problemPages: MetadataRoute.Sitemap = problems.map(p => ({
     url: `${SITE_URL}/problems/${p.slug}`,
-    lastModified: new Date('2024-01-01'),
+    lastModified: buildDate,
     changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    priority: p.difficulty === 'Easy' ? 0.75 : p.difficulty === 'Medium' ? 0.7 : 0.65,
   }))
 
   const gfgProblems = getAllGfgProblemsMeta()
-  const gfgPages: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/gfg`, lastModified: new Date('2025-01-01'), changeFrequency: 'weekly', priority: 0.9 },
-    ...gfgProblems.map(p => ({
-      url: `${SITE_URL}/gfg/${p.slug}`,
-      lastModified: new Date('2025-06-01'),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
-  ]
+  const gfgPages: MetadataRoute.Sitemap = gfgProblems.map(p => ({
+    url: `${SITE_URL}/gfg/${p.slug}`,
+    lastModified: buildDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
 
   return [...staticPages, ...topicPages, ...problemPages, ...gfgPages]
 }

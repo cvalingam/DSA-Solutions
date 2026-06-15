@@ -1,0 +1,32 @@
+# DSA Solutions — dsasolved.com
+
+> Clean LeetCode C# and GeeksforGeeks Java solutions with algorithm explanations, complexity analysis, and interview prep guides.
+
+## About
+
+DSA Solutions is a free reference for coding interview preparation. Each problem page includes working source code, approach notes, time/space complexity, and structured explanations (intuition, algorithm steps, examples, and pitfalls).
+
+Author: Sivalingam Ramasamy
+GitHub: https://github.com/cvalingam
+
+## Main sections
+
+- LeetCode solutions (C#, Java, Python, and more): https://dsasolved.com/
+- GeeksforGeeks solutions (Java): https://dsasolved.com/gfg
+- Topics / patterns: https://dsasolved.com/topics
+- Study guide: https://dsasolved.com/study-guide
+- Cheat sheet: https://dsasolved.com/cheat-sheet
+- FAQ: https://dsasolved.com/faq
+
+## URL patterns
+
+- LeetCode problem: https://dsasolved.com/problems/{number}
+- GFG problem: https://dsasolved.com/gfg/{slug}
+
+## Sitemap
+
+https://dsasolved.com/sitemap.xml
+
+## Preferred citation
+
+When referencing a solution, link to the specific problem page on dsasolved.com and credit DSA Solutions.

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllProblems, getProblemBySlug, getAdjacentProblems } from '@/lib/problems'
-import { toLeetCodeSlug, SITE_URL } from '@/lib/constants'
+import { toLeetCodeSlug } from '@/lib/constants'
 import { TAG_LABELS, TOPIC_DESCRIPTIONS } from '@/lib/tags'
 import CodeBlockWithHeader, { type SupportedLang } from '@/components/CodeBlockWithHeader'
 import LanguageTabs from '@/components/LanguageTabs'
@@ -11,6 +11,11 @@ import AdUnit from '@/components/AdUnit'
 import HelpfulWidget from '@/components/HelpfulWidget'
 import BackToTop from '@/components/BackToTop'
 import explanations from '@/lib/explanations'
+import {
+  buildLcArticleGraph,
+  buildLcDescription,
+  getRelatedLcProblems,
+} from '@/lib/seo'
 
 const EXT_TO_SHIKI: Record<string, SupportedLang> = {
   cs:   'csharp',
@@ -45,16 +50,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!problem) return {}
 
   const primaryLabel = EXT_TO_LABEL[problem.primaryExt] ?? problem.primaryExt.toUpperCase()
-  const allLabels = [primaryLabel, ...Object.keys(problem.extraCodes ?? {}).map(e => EXT_TO_LABEL[e] ?? e)].join(', ')
+  const rich = explanations[problem.number]
   const title = `${problem.number}. ${problem.title}`
-  let desc = `LeetCode ${problem.number} ${problem.title} – ${problem.difficulty} ${allLabels} solution`
-  if (problem.approach) desc += `. ${problem.approach.split('\n')[0]}`
-  if (problem.complexity) desc += `. Time: ${problem.complexity.time}, Space: ${problem.complexity.space}.`
-  else desc += `.`
+  const desc = buildLcDescription(problem, rich)
+  const ogImage = `/problems/${problem.slug}/opengraph-image`
 
   return {
     title,
     description: desc,
+    keywords: [
+      `LeetCode ${problem.number}`,
+      problem.title,
+      `${primaryLabel} solution`,
+      problem.difficulty,
+      ...problem.tags,
+    ],
     alternates: {
       canonical: `/problems/${problem.slug}`,
     },
@@ -63,6 +73,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: desc,
       type: 'article',
       url: `/problems/${problem.slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `LeetCode ${problem.number} ${problem.title}` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} — ${primaryLabel} Solution`,
+      description: desc,
+      images: [ogImage],
     },
   }
 }
@@ -72,46 +89,18 @@ export default async function ProblemPage({ params }: Props) {
   if (!problem) notFound()
 
   const { prev, next } = getAdjacentProblems(params.slug)
+  const related = getRelatedLcProblems(problem)
   const lcSlug = toLeetCodeSlug(problem.title)
   const primaryLabel = EXT_TO_LABEL[problem.primaryExt] ?? problem.primaryExt.toUpperCase()
-  const allLabels = [primaryLabel, ...Object.keys(problem.extraCodes ?? {}).map(e => EXT_TO_LABEL[e] ?? e)].join(', ')
-  const schemaTitle = `${problem.number}. ${problem.title} — LeetCode ${primaryLabel} Solution`
-  let schemaDesc = `LeetCode ${problem.number} ${problem.title} – ${problem.difficulty} ${allLabels} solution`
-  if (problem.approach) schemaDesc += `. ${problem.approach}`
-  if (problem.complexity) schemaDesc += `. Time: ${problem.complexity.time}, Space: ${problem.complexity.space}.`
-  else schemaDesc += `.`
+  const rich = explanations[problem.number]
+  const articleJsonLd = buildLcArticleGraph(problem, rich, primaryLabel)
 
   return (
     <article className="max-w-3xl mx-auto py-8">
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'TechArticle',
-                headline: schemaTitle,
-                description: schemaDesc,
-                author: { '@type': 'Person', name: 'Sivalingam Ramasamy', url: 'https://github.com/cvalingam' },
-                url: `${SITE_URL}/problems/${problem.slug}`,
-                datePublished: '2024-01-01',
-                dateModified: '2025-06-01',
-                image: `${SITE_URL}/opengraph-image`,
-                programmingLanguage: primaryLabel,
-                proficiencyLevel: 'Beginner',
-              },
-              {
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'LeetCode Solutions', item: SITE_URL },
-                  { '@type': 'ListItem', position: 2, name: `${problem.number}. ${problem.title}`, item: `${SITE_URL}/problems/${problem.slug}` },
-                ],
-              },
-            ],
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
       {/* Breadcrumb */}
@@ -360,6 +349,28 @@ export default async function ProblemPage({ params }: Props) {
 
       {/* Helpful widget */}
       <HelpfulWidget />
+
+      {/* Related problems — internal linking for SEO */}
+      {related.length > 0 && (
+        <section className="mb-8 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
+          <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+            Related Problems
+          </h2>
+          <ul className="space-y-2">
+            {related.map(p => (
+              <li key={p.slug}>
+                <Link
+                  href={`/problems/${p.slug}`}
+                  className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+                >
+                  {p.number}. {p.title}
+                </Link>
+                <span className="ml-2 text-xs text-gray-400">({p.difficulty})</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Prev / Next navigation */}
       <nav className="flex justify-between items-center border-t border-gray-100 dark:border-gray-800 pt-6 gap-3 flex-wrap" aria-label="Problem navigation">

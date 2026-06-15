@@ -4,28 +4,19 @@ import ProblemList from '@/components/ProblemList'
 import { Suspense } from 'react'
 import { SITE_URL } from '@/lib/constants'
 import explanations from '@/lib/explanations'
+import { buildCollectionPageSchema, getSiteStats } from '@/lib/seo'
+
+const { lcCount, gfgCount } = getSiteStats()
 
 export const metadata: Metadata = {
-  title: 'LeetCode C# Solutions — 800+ Problems Solved',
-  description: 'Clean, readable C# solutions to 800+ LeetCode problems and 550+ GeeksforGeeks Java solutions. Built for .NET developers cracking the coding interview.',
+  title: `LeetCode C# Solutions — ${lcCount}+ Problems Solved`,
+  description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems and ${gfgCount}+ GeeksforGeeks Java solutions. Step-by-step explanations, complexity analysis, and interview prep.`,
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'LeetCode C# Solutions — DSA Solutions',
-    description: 'Clean, readable C# solutions to 800+ LeetCode problems and 550+ GeeksforGeeks Java solutions.',
+    title: `LeetCode C# Solutions — ${lcCount}+ Problems | DSA Solutions`,
+    description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems with explanations and complexity analysis.`,
     url: '/',
     type: 'website',
-  },
-}
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'DSA Solutions',
-  url: SITE_URL,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_URL}/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
   },
 }
 
@@ -43,11 +34,38 @@ export default function HomePage() {
   const problems = getAllProblemsMeta()
   const explanationNums = new Set(Object.keys(explanations).map(Number))
 
+  const collectionJsonLd = buildCollectionPageSchema(
+    'LeetCode Solutions',
+    `Browse ${problems.length}+ LeetCode problems with C# solutions, explanations, and complexity analysis.`,
+    SITE_URL,
+    problems.slice(0, 20).map(p => ({
+      name: `${p.number}. ${p.title}`,
+      url: `${SITE_URL}/problems/${p.slug}`,
+    })),
+  )
+
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'DSA Solutions',
+    url: SITE_URL,
+    description: `${problems.length}+ LeetCode and ${gfgCount}+ GeeksforGeeks solutions for coding interview prep.`,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${SITE_URL}/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
       />
 
       <Suspense fallback={<LoadingFallback />}>

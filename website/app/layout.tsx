@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
 import { SITE_URL } from '@/lib/constants'
 import { GTMScript, GTMNoScript } from '@/components/GoogleTagManager'
+import { buildOrganizationSchema, getSiteStats } from '@/lib/seo'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -13,14 +14,16 @@ const inter = Inter({
   display: 'swap',
 })
 
+const { lcCount, gfgCount, total } = getSiteStats()
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'DSA Solutions — LeetCode C# & GFG Java',
+    default: `DSA Solutions — ${lcCount}+ LeetCode C# & ${gfgCount}+ GFG Java`,
     template: '%s | DSA Solutions',
   },
   description:
-    'Clean, readable C# and Java solutions to 800+ LeetCode and 550+ GeeksforGeeks problems. Built for developers preparing for coding interviews.',
+    `Clean, readable solutions to ${lcCount}+ LeetCode and ${gfgCount}+ GeeksforGeeks problems with explanations, complexity analysis, and interview prep guides. ${total}+ total solutions.`,
   keywords: ['LeetCode', 'GeeksforGeeks', 'GFG', 'C#', 'csharp', 'Java', '.NET', 'solutions', 'interview prep', 'algorithms', 'data structures'],
   authors: [{ name: 'Sivalingam Ramasamy', url: 'https://github.com/cvalingam' }],
   openGraph: {
@@ -41,9 +44,15 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const organizationJsonLd = buildOrganizationSchema()
+
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         {/* Anti-flash: apply saved theme before first paint */}
         <script
           dangerouslySetInnerHTML={{
