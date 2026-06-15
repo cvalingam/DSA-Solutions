@@ -35,6 +35,34 @@ export default function Header() {
   const isLc  = pathname === '/' || pathname.startsWith('/problems')
   const isGfg = pathname.startsWith('/gfg')
   const isSd  = pathname.startsWith('/system-design')
+  const isGuides =
+    pathname === '/study-guide' ||
+    pathname === '/cheat-sheet' ||
+    pathname === '/faq' ||
+    isSd
+
+  const [guidesOpen, setGuidesOpen] = useState(false)
+  const guidesRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!guidesOpen) return
+    function onClickOutside(e: MouseEvent) {
+      if (guidesRef.current && !guidesRef.current.contains(e.target as Node)) {
+        setGuidesOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [guidesOpen])
+
+  useEffect(() => { setGuidesOpen(false) }, [pathname])
+
+  const guideLinks = [
+    { href: '/study-guide', label: 'Study Guide', active: pathname === '/study-guide' },
+    { href: '/system-design', label: 'System Design', active: isSd },
+    { href: '/cheat-sheet', label: 'C# Cheat Sheet', active: pathname === '/cheat-sheet' },
+    { href: '/faq', label: 'FAQ', active: pathname === '/faq' },
+  ]
 
   return (
     <>
@@ -82,12 +110,43 @@ export default function Header() {
           <nav className="ml-auto hidden sm:flex items-center gap-0.5 text-sm">
             <NavLink href="/"       active={isLc}  label="LeetCode" />
             <NavLink href="/gfg"    active={isGfg} label="GFG" activeColor="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40" hoverColor="hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/30" />
-            <NavLink href="/topics"      active={pathname.startsWith('/topics')} label="Topics"      className="hidden md:inline-flex" />
-            <NavLink href="/study-guide" active={pathname === '/study-guide'}    label="Study Guide" className="hidden lg:inline-flex" />
-            <NavLink href="/system-design" active={isSd} label="System Design" className="hidden lg:inline-flex" activeColor="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/40" hoverColor="hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50/60 dark:hover:bg-violet-950/30" />
-            <NavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'}    label="Cheat Sheet" className="hidden xl:inline-flex" />
-            <NavLink href="/faq"         active={pathname === '/faq'}            label="FAQ"         className="hidden xl:inline-flex" />
-            <NavLink href="/about"       active={pathname === '/about'}          label="About"       className="hidden lg:inline-flex" />
+            <NavLink href="/topics" active={pathname.startsWith('/topics')} label="Topics" className="hidden md:inline-flex" />
+            <div ref={guidesRef} className="relative hidden lg:block">
+              <button
+                type="button"
+                onClick={() => setGuidesOpen(v => !v)}
+                aria-expanded={guidesOpen}
+                aria-haspopup="true"
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  isGuides
+                    ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50/60 dark:hover:bg-indigo-950/30'
+                }`}
+              >
+                Guides
+                <svg className={`w-3.5 h-3.5 transition-transform ${guidesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {guidesOpen && (
+                <div className="absolute right-0 top-full mt-1 w-52 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg z-50">
+                  {guideLinks.map(({ href, label, active }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      className={`block px-3.5 py-2 text-sm transition-colors ${
+                        active
+                          ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50/80 dark:bg-indigo-950/40 font-medium'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/60'
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <NavLink href="/about" active={pathname === '/about'} label="About" className="hidden lg:inline-flex" />
             <a
               href="https://github.com/cvalingam/DSA-Solutions"
               target="_blank" rel="noopener noreferrer" aria-label="GitHub"
@@ -171,11 +230,12 @@ export default function Header() {
             <div className="px-4 py-3 space-y-0.5">
               <MobileNavLink href="/"            active={isLc}  label="LeetCode C#" icon="🟦" />
               <MobileNavLink href="/gfg"         active={isGfg} label="GFG Java"    icon="🟩" />
-              <MobileNavLink href="/topics"      active={pathname.startsWith('/topics')} label="Topics"      icon="🏷️" />
-              <MobileNavLink href="/study-guide" active={pathname === '/study-guide'}    label="Study Guide" icon="📚" />
+              <MobileNavLink href="/topics" active={pathname.startsWith('/topics')} label="Topics" icon="🏷️" />
+              <p className="px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Guides</p>
+              <MobileNavLink href="/study-guide" active={pathname === '/study-guide'} label="Study Guide" icon="📚" />
               <MobileNavLink href="/system-design" active={isSd} label="System Design" icon="🏗️" />
-              <MobileNavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'}    label="C# Cheat Sheet" icon="📋" />
-              <MobileNavLink href="/faq"         active={pathname === '/faq'}            label="FAQ"         icon="❓" />
+              <MobileNavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'} label="C# Cheat Sheet" icon="📋" />
+              <MobileNavLink href="/faq" active={pathname === '/faq'} label="FAQ" icon="❓" />
               <MobileNavLink href="/about"       active={pathname === '/about'}          label="About"       icon="ℹ️" />
               <MobileNavLink href="/contact"     active={pathname === '/contact'}        label="Contact"     icon="✉️" />
             </div>
