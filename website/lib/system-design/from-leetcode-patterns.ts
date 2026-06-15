@@ -1,0 +1,99 @@
+import type { SystemDesignArticle } from './types'
+
+const article: SystemDesignArticle = {
+  slug: 'from-leetcode-patterns-to-real-systems',
+  title: 'From LeetCode Patterns to Real Systems',
+  description:
+    'How binary search, BFS, heaps, hash maps, and LRU cache problems map to production system design — databases, queues, caches, and load balancers explained for developers who learned DSA first.',
+  readMinutes: 12,
+  published: '2026-06-06',
+  category: 'bridge',
+  sections: [
+    {
+      type: 'p',
+      text: 'If you have spent months on LeetCode, you have built an intuition for algorithms that many system design candidates lack. The gap is vocabulary: the same ideas appear in distributed systems under different names. This article bridges that gap so your DSA prep feels like preparation for system design, not a separate universe.',
+    },
+    { type: 'h2', text: 'Hash maps → indexes and caches' },
+    {
+      type: 'p',
+      text: 'Two Sum asks: can I find a complement in O(1) time? You use a hash map. In production, a database index is a sorted or hashed structure that avoids full table scans. Redis is literally an in-memory hash map with optional persistence. When you design a URL shortener redirect, you are doing Two Sum in reverse — O(1) lookup by key — at millions of requests per second.',
+    },
+    {
+      type: 'p',
+      text: 'Interview translation: "We need fast lookup by short code, so primary key index on short_code, plus Redis cache-aside for hot keys." You just described a hash map at two layers.',
+    },
+    { type: 'h2', text: 'Binary search → partitioning and load balancing' },
+    {
+      type: 'p',
+      text: 'Binary search works because the answer space is monotonic: if X is too small, everything below is too small. In systems, consistent hashing partitions keys across servers — given a key, you binary-search (or hash-mod) to find the right shard. Load balancers use similar logic to route requests to healthy backends.',
+    },
+    {
+      type: 'p',
+      text: 'LeetCode 410 (Split Array Largest Sum) and "binary search on answer" problems train you to recognise monotonic predicates. System design uses the same skill: "Find the minimum cache size such that p99 latency stays under 50ms."',
+    },
+    { type: 'h2', text: 'BFS and DFS → message propagation and dependency graphs' },
+    {
+      type: 'p',
+      text: 'Number of Islands is BFS on a grid. In systems, BFS models level-by-level fan-out: infecting neighbours, propagating config updates, or finding shortest path in an unweighted service dependency graph. Topological sort (Course Schedule) is how build systems and workflow engines detect circular dependencies before deployment.',
+    },
+    {
+      type: 'p',
+      text: 'Designing a news feed? Fan-out on write is BFS from the poster to all followers. Fan-out on read is DFS/BFS from the reader merging multiple timelines. You have done both — just on adjacency lists instead of microservices.',
+    },
+    { type: 'h2', text: 'Heaps → priority queues and scheduling' },
+    {
+      type: 'p',
+      text: 'Merge K Sorted Lists and Find Median from Data Stream use heaps. In production: task schedulers, rate limiter token refill queues, Dijkstra priority queues for routing. Kubernetes schedules pods by priority and resource fit — a heap problem with extra constraints.',
+    },
+    {
+      type: 'p',
+      text: 'When an interviewer asks how you would process urgent jobs first, say priority queue backed by a heap — O(log n) insert — and mention that .NET 6+ has PriorityQueue<TElement, TPriority> built in, the same abstraction you use on LeetCode.',
+    },
+    { type: 'h2', text: 'LRU Cache → distributed caching' },
+    {
+      type: 'p',
+      text: 'LeetCode 146 implements get/put in O(1) with a hash map plus doubly linked list. Redis LRU eviction policies (allkeys-lru, volatile-lru) solve the same problem at server scale: limited memory, evict least recently used keys. The interview insight: caching is not magic — it is an LRU with TTL and network latency.',
+    },
+    { type: 'h2', text: 'Sliding window → rate limiting and log aggregation' },
+    {
+      type: 'p',
+      text: 'Longest Substring Without Repeating Characters maintains a window with frequency counts. Rate limiters count requests in a sliding time window. Log aggregators bucket events per minute. Same invariant: add on enter, remove on exit, check constraint on the window.',
+    },
+    { type: 'h2', text: 'Union-Find → network connectivity and disjoint services' },
+    {
+      type: 'p',
+      text: 'Union-Find detects connected components. In infrastructure, it appears in percolation models, network reliability analysis, and grouping related accounts for fraud detection. Mention it when discussing "are these two users in the same cluster?" problems.',
+    },
+    { type: 'h2', text: 'Dynamic programming → capacity planning' },
+    {
+      type: 'p',
+      text: 'DP optimises over subproblems with overlap. Autoscaling rules optimise cost vs latency. CDN cache placement optimises hit ratio vs storage cost. You will not write recurrence relations on a whiteboard for these, but the mindset — break into states, avoid recomputation — transfers.',
+    },
+    { type: 'h2', text: 'What does not transfer directly' },
+    {
+      type: 'p',
+      text: 'Be honest about the gaps. LeetCode ignores network latency, partial failures, and operational cost. A O(n) algorithm that ships 10GB over the wire is worse than O(n log n) with aggressive caching. System design adds CAP theorem trade-offs, replication lag, and human factors (on-call, deployments). Learn those separately — but your pattern recognition is already half the battle.',
+    },
+  ],
+}
+
+// Add closing section with links to study resources
+article.sections.push(
+  { type: 'h2', text: 'A practical study plan' },
+  {
+    type: 'ol',
+    items: [
+      'Finish core DSA patterns on this site (arrays through graphs).',
+      'Read the system design framework article and one case study per week.',
+      'For each pattern you learn, write one sentence: "In production this looks like ___."',
+      'Mock one 45-minute design out loud — record yourself and check for silence gaps.',
+      'Skim real postmortems (AWS, Cloudflare blogs) to see how failures happen in practice.',
+    ],
+  },
+  {
+    type: 'p',
+    text: 'You are not starting from zero. You are translating skills you already have into a new interview format. That is much faster than learning system design cold.',
+  },
+)
+
+export default article

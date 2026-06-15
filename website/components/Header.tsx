@@ -34,6 +34,7 @@ export default function Header() {
 
   const isLc  = pathname === '/' || pathname.startsWith('/problems')
   const isGfg = pathname.startsWith('/gfg')
+  const isSd  = pathname.startsWith('/system-design')
 
   return (
     <>
@@ -83,6 +84,7 @@ export default function Header() {
             <NavLink href="/gfg"    active={isGfg} label="GFG" activeColor="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40" hoverColor="hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/30" />
             <NavLink href="/topics"      active={pathname.startsWith('/topics')} label="Topics"      className="hidden md:inline-flex" />
             <NavLink href="/study-guide" active={pathname === '/study-guide'}    label="Study Guide" className="hidden lg:inline-flex" />
+            <NavLink href="/system-design" active={isSd} label="System Design" className="hidden lg:inline-flex" activeColor="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/40" hoverColor="hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50/60 dark:hover:bg-violet-950/30" />
             <NavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'}    label="Cheat Sheet" className="hidden xl:inline-flex" />
             <NavLink href="/faq"         active={pathname === '/faq'}            label="FAQ"         className="hidden xl:inline-flex" />
             <NavLink href="/about"       active={pathname === '/about'}          label="About"       className="hidden lg:inline-flex" />
@@ -171,6 +173,7 @@ export default function Header() {
               <MobileNavLink href="/gfg"         active={isGfg} label="GFG Java"    icon="🟩" />
               <MobileNavLink href="/topics"      active={pathname.startsWith('/topics')} label="Topics"      icon="🏷️" />
               <MobileNavLink href="/study-guide" active={pathname === '/study-guide'}    label="Study Guide" icon="📚" />
+              <MobileNavLink href="/system-design" active={isSd} label="System Design" icon="🏗️" />
               <MobileNavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'}    label="C# Cheat Sheet" icon="📋" />
               <MobileNavLink href="/faq"         active={pathname === '/faq'}            label="FAQ"         icon="❓" />
               <MobileNavLink href="/about"       active={pathname === '/about'}          label="About"       icon="ℹ️" />

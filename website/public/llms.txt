@@ -15,6 +15,7 @@ GitHub: https://github.com/cvalingam
 - GeeksforGeeks solutions (Java): https://dsasolved.com/gfg
 - Topics / patterns: https://dsasolved.com/topics
 - Study guide: https://dsasolved.com/study-guide
+- System design: https://dsasolved.com/system-design
 - Cheat sheet: https://dsasolved.com/cheat-sheet
 - FAQ: https://dsasolved.com/faq
 
@@ -22,6 +23,7 @@ GitHub: https://github.com/cvalingam
 
 - LeetCode problem: https://dsasolved.com/problems/{number}
 - GFG problem: https://dsasolved.com/gfg/{slug}
+- System design article: https://dsasolved.com/system-design/{slug}
 
 ## Sitemap
 

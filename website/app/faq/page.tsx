@@ -111,7 +111,21 @@ const faqs: { q: string; a: React.ReactNode }[] = [
           <li><strong>10–12 weeks:</strong> Full readiness including system design awareness</li>
         </ul>
         <p className="mt-2">
-          The <Link href="/study-guide" className="text-indigo-600 dark:text-indigo-400 hover:underline">30-day intensive plan</Link> on this site works for candidates who can dedicate 2–3 hours per day and already have programming experience.
+          The <Link href="/study-guide" className="text-indigo-600 dark:text-indigo-400 hover:underline">30-day intensive plan</Link> on this site works for candidates who can dedicate 2–3 hours per day and already have programming experience. For system design, see our{' '}
+          <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design guide</Link>.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: 'How do I prepare for system design interviews?',
+    a: (
+      <>
+        <p>
+          Start after you are comfortable with core DSA patterns — usually week 8–10 of a structured prep plan. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, chat system). The goal is structured communication, not memorising AWS service names.
+        </p>
+        <p className="mt-2">
+          Our <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design section</Link> has five in-depth articles written for developers coming from LeetCode practice, including how DSA patterns map to real infrastructure.
         </p>
       </>
     ),

@@ -308,6 +308,32 @@ export default function StudyGuidePage() {
         </div>
       </section>
 
+      {/* Section 8b — System Design */}
+      <section className="mb-12">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 pb-2 border-b border-gray-100 dark:border-gray-800">
+          Phase 2: System Design (Weeks 10–12)
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+          Once you can recognise DSA patterns under time pressure, add system design. Most mid-level and
+          senior loops include at least one design round. You do not need to know every AWS service —
+          you need a repeatable framework and the ability to discuss trade-offs.
+        </p>
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+          We have a dedicated{' '}
+          <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline font-medium">
+            System Design section
+          </Link>{' '}
+          with human-written articles: interview framework, URL shortener walkthrough, rate limiter,
+          caching fundamentals, and how your LeetCode patterns translate to production systems.
+        </p>
+        <Link
+          href="/system-design"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors"
+        >
+          Read System Design Articles →
+        </Link>
+      </section>
+
       {/* Section 8 */}
       <section className="mb-12">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 pb-2 border-b border-gray-100 dark:border-gray-800">

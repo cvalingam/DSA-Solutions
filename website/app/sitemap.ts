@@ -5,6 +5,7 @@ import { getAllTags } from '@/lib/tags'
 import { SITE_URL } from '@/lib/constants'
 import { BUILD_DATE } from '@/lib/seo'
 import { isGfgPageIndexable, isLcPageIndexable } from '@/lib/content-quality'
+import { getAllSystemDesignArticles } from '@/lib/system-design'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const buildDate = BUILD_DATE
@@ -12,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`,               lastModified: buildDate, changeFrequency: 'daily',   priority: 1.0 },
     { url: `${SITE_URL}/study-guide`,    lastModified: buildDate, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${SITE_URL}/system-design`,  lastModified: buildDate, changeFrequency: 'weekly',  priority: 0.9 },
     { url: `${SITE_URL}/cheat-sheet`,    lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/faq`,            lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/about`,          lastModified: buildDate, changeFrequency: 'monthly', priority: 0.3 },
@@ -47,5 +49,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     }))
 
-  return [...staticPages, ...topicPages, ...problemPages, { url: `${SITE_URL}/gfg`, lastModified: buildDate, changeFrequency: 'daily' as const, priority: 0.95 }, ...gfgPages]
+  const systemDesignPages: MetadataRoute.Sitemap = getAllSystemDesignArticles().map(a => ({
+    url: `${SITE_URL}/system-design/${a.slug}`,
+    lastModified: buildDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+
+  return [...staticPages, ...topicPages, ...systemDesignPages, ...problemPages, { url: `${SITE_URL}/gfg`, lastModified: buildDate, changeFrequency: 'daily' as const, priority: 0.95 }, ...gfgPages]
 }

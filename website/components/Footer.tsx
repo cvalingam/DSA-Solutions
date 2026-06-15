@@ -42,6 +42,7 @@ export default function Footer() {
               <li><Link href="/"            className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">All Problems</Link></li>
               <li><Link href="/topics"      className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Browse by Topic</Link></li>
               <li><Link href="/study-guide" className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Study Guide</Link></li>
+              <li><Link href="/system-design" className="text-sm text-gray-500 dark:text-gray-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">System Design</Link></li>
               <li><Link href="/cheat-sheet" className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">C# Cheat Sheet</Link></li>
             </ul>
           </div>
