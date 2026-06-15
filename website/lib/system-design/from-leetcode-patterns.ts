@@ -62,12 +62,16 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Union-Find → network connectivity and disjoint services' },
     {
       type: 'p',
-      text: 'Union-Find detects connected components. In infrastructure, it appears in percolation models, network reliability analysis, and grouping related accounts for fraud detection. Mention it when discussing "are these two users in the same cluster?" problems.',
+      text: 'Union-Find detects connected components in O(α(n)) amortized time. In infrastructure, it models network reliability (which nodes stay reachable after a failure), fraud rings (are these accounts in the same cluster?), and shard rebalancing (group keys that must move together).',
+    },
+    {
+      type: 'p',
+      text: 'Interview phrase: "I would model service dependencies as an undirected graph and use Union-Find to detect if removing one node splits the system into disconnected components."',
     },
     { type: 'h2', text: 'Dynamic programming → capacity planning' },
     {
       type: 'p',
-      text: 'DP optimises over subproblems with overlap. Autoscaling rules optimise cost vs latency. CDN cache placement optimises hit ratio vs storage cost. You will not write recurrence relations on a whiteboard for these, but the mindset — break into states, avoid recomputation — transfers.',
+      text: 'DP optimises over overlapping subproblems. Autoscaling rules optimise cost vs latency — same structure, different objective. CDN cache placement: which keys to keep at edge given storage budget? You will not write recurrence relations on a whiteboard, but the mindset — define state, avoid recomputation — transfers directly.',
     },
     { type: 'h2', text: 'What does not transfer directly' },
     {
@@ -79,9 +83,14 @@ const article: SystemDesignArticle = {
       type: 'p',
       text: 'Two pointers converge from both ends of a sorted array. Read replicas split read load from a primary writer — same "divide the work" intuition. A load balancer round-robins across healthy app instances. When you explain horizontal scaling, you are describing algorithmic partitioning applied to servers.',
     },
+    { type: 'h2', text: 'Graphs → service maps and dependency chains' },
     {
       type: 'p',
-      text: 'Course Schedule II gives you a topological order. Your CI/CD pipeline and microservice startup order use the same algorithm — service B cannot start until service A is healthy. When an interviewer asks "what breaks if the payment service goes down?", you are traversing a dependency graph. Number of Islands on a grid maps to region failure in cloud availability zones: flood-fill from an outage and see what else loses connectivity.',
+      text: 'Course Schedule II gives you a topological order. Your CI/CD pipeline and microservice startup order use the same algorithm — service B cannot start until service A is healthy. When an interviewer asks "what breaks if the payment service goes down?", you are traversing a dependency graph.',
+    },
+    {
+      type: 'p',
+      text: 'Number of Islands on a grid maps to region failure in cloud availability zones: flood-fill from an outage and see what else loses connectivity. BFS from the failed node lists all impacted services within N hops.',
     },
     { type: 'h2', text: 'Trie → autocomplete and routing tables' },
     {
@@ -91,7 +100,11 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Monotonic stack → request scheduling' },
     {
       type: 'p',
-      text: 'Daily Temperatures finds the next greater element for each position. In systems, "next greater" appears in stack-based scheduling: when does the next higher-priority job preempt the current one? Less common in interviews than hash maps or BFS, but a strong bonus mention for senior loops.',
+      text: 'Daily Temperatures finds the next greater element for each position in O(n). In systems, "next greater" appears when a higher-priority job preempts the current one, or when a load spike exceeds the previous max — stack-based schedulers process events in order without re-scanning.',
+    },
+    {
+      type: 'p',
+      text: 'Less common in interviews than hash maps or BFS, but a strong bonus mention for senior loops when discussing job queues or event-driven architectures.',
     },
     { type: 'h2', text: 'Practice exercise: pick one LeetCode pattern per day' },
     {

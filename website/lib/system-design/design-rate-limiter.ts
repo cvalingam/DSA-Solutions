@@ -94,12 +94,68 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'p',
-      text: 'Client → API Gateway → Rate Limiter check (Redis) → if allowed, forward to backend; else 429. Optionally log denials to analytics for abuse detection. Hot keys (one viral API key) can shard Redis keys: rate_limit:{clientId}:{ruleId}:{shard} where shard = hash(requestId) % N, then sum allowances — advanced topic, mention if pressed.',
+      text: 'Draw the request path left to right. Every box should have one job. In an interview, narrate the flow before adding detail — interviewers follow you more easily than when you jump straight to Redis key names.',
+    },
+    {
+      type: 'ol',
+      items: [
+        'Client sends HTTPS request with API key (header or query param).',
+        'API Gateway terminates TLS, authenticates the key, and extracts clientId.',
+        'Gateway calls the rate limiter (inline middleware or sidecar) before routing to backend.',
+        'Rate limiter runs atomic Lua against Redis: allow → forward; deny → 429 with headers.',
+        'Backend processes the business request only if the gateway forwards it.',
+        'Optional: async publish denial events to Kafka for abuse dashboards.',
+      ],
+    },
+    { type: 'h3', text: 'Components and responsibilities' },
+    {
+      type: 'table',
+      headers: ['Component', 'Role', 'Why separate it'],
+      rows: [
+        ['API Gateway', 'Auth, TLS, routing, rate-limit hook', 'Single choke point for all public traffic'],
+        ['Rate limiter service', 'Token bucket logic, header injection', 'Keeps policy out of every microservice'],
+        ['Redis cluster', 'Shared counters per clientId + ruleId', 'Atomic updates across N app servers'],
+        ['Backend services', 'Business logic only', 'Never trust clients to self-limit'],
+        ['Analytics queue', 'Log 429s and near-limit clients', 'Ops and fraud teams need visibility'],
+      ],
+    },
+    {
+      type: 'p',
+      text: 'Latency budget: Redis round-trip is ~1–3ms in-region. Lua script adds sub-millisecond CPU on the Redis node. Total added p99 should stay under 5ms — acceptable on a 200ms API. If Redis is remote or cross-region, consider local caching of "definitely blocked" clients with short TTL (advanced).',
+    },
+    {
+      type: 'callout',
+      title: 'Hot keys (mention if senior loop)',
+      text: 'One viral API key creates a Redis hot key — single shard overloaded. Mitigations: shard counters as rate_limit:{clientId}:{ruleId}:{shard} where shard = hash(requestId) % N, then aggregate allowances; or use Redis Cluster so keys hash to different nodes automatically.',
     },
     { type: 'h2', text: 'Response contract' },
     {
       type: 'p',
-      text: 'On success: HTTP 200 with X-RateLimit-Limit: 100, X-RateLimit-Remaining: 42, X-RateLimit-Reset: 1717693200 (Unix epoch when bucket refills). On failure: HTTP 429, Retry-After: 30 (seconds). This matches Stripe and GitHub API conventions — interviewers notice when you know real-world polish.',
+      text: 'Clients need predictable signals to back off and retry. Returning bare 429 without headers forces exponential guesswork. Stripe, GitHub, and Twitter all document standard headers — use the same names in your interview answer.',
+    },
+    {
+      type: 'table',
+      headers: ['Header', 'When sent', 'Meaning'],
+      rows: [
+        ['X-RateLimit-Limit', 'Every response', 'Max requests allowed in the current window (e.g. 100)'],
+        ['X-RateLimit-Remaining', 'Every response', 'Requests left before limit (e.g. 42)'],
+        ['X-RateLimit-Reset', 'Every response', 'Unix epoch when the bucket/window resets'],
+        ['Retry-After', '429 only', 'Seconds until the client should retry'],
+      ],
+    },
+    { type: 'h3', text: 'Example: allowed request' },
+    {
+      type: 'p',
+      text: 'HTTP/1.1 200 OK — X-RateLimit-Limit: 100 — X-RateLimit-Remaining: 42 — X-RateLimit-Reset: 1717693200 — body: { "data": "..." }. Remaining decrements on every call, even on 200, so clients can throttle themselves proactively.',
+    },
+    { type: 'h3', text: 'Example: rate limited request' },
+    {
+      type: 'p',
+      text: 'HTTP/1.1 429 Too Many Requests — Retry-After: 30 — X-RateLimit-Limit: 100 — X-RateLimit-Remaining: 0 — X-RateLimit-Reset: 1717693200 — body: { "error": "rate_limit_exceeded", "message": "Try again in 30 seconds" }. Well-behaved SDKs sleep for Retry-After before retrying; poorly behaved bots get blocked longer at the WAF layer.',
+    },
+    {
+      type: 'p',
+      text: 'In ASP.NET Core, set headers in middleware via context.Response.Headers before calling next() or short-circuiting with 429. Attach headers on success too — not only on failure — so monitoring tools can graph consumption per API key.',
     },
     { type: 'h2', text: 'Edge cases to mention' },
     {

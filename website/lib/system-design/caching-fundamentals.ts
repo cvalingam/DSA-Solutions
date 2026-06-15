@@ -48,10 +48,30 @@ const article: SystemDesignArticle = {
       ],
     },
     { type: 'h2', text: 'The main caching patterns' },
-    { type: 'h3', text: 'Cache-aside (lazy loading)' },
+    { type: 'h3', text: 'Cache-aside (lazy loading) — default in interviews' },
     {
       type: 'p',
-      text: 'Application manages cache. On read: check cache → on miss, read DB → write to cache → return. On write: update DB → delete cache key (or update cache). This is the default pattern in interviews because it is simple and the application controls consistency.',
+      text: 'The application owns cache logic. This is what you use in [URL shortener](/system-design/design-url-shortener) redirects and most REST APIs.',
+    },
+    { type: 'h3', text: 'Cache-aside read path' },
+    {
+      type: 'ol',
+      items: [
+        'App checks cache for key (e.g. url:abc123).',
+        'Hit → return cached value immediately.',
+        'Miss → query database.',
+        'Write result to cache with TTL.',
+        'Return value to client.',
+      ],
+    },
+    { type: 'h3', text: 'Cache-aside write path' },
+    {
+      type: 'ol',
+      items: [
+        'App writes to database first (source of truth).',
+        'On success: DELETE cache key, or UPDATE cache with new value.',
+        'Never update cache before DB commit — crash between steps causes permanent inconsistency.',
+      ],
     },
     { type: 'h3', text: 'Read-through' },
     {
@@ -103,16 +123,17 @@ const article: SystemDesignArticle = {
     },
     { type: 'h2', text: 'Redis vs CDN vs in-process' },
     {
-      type: 'p',
-      text: 'Redis: sub-millisecond shared state, rich data structures (sorted sets for leaderboards, HyperLogLog for counts). Use for API response caching, sessions, rate limits.',
+      type: 'table',
+      headers: ['Layer', 'Latency', 'Shared?', 'Best for'],
+      rows: [
+        ['In-process (IMemoryCache)', 'Nanoseconds', 'No — per pod only', 'Config, reference data, L1 hot keys'],
+        ['Redis / Memcached', 'Sub-ms to 1ms', 'Yes — all app servers', 'Sessions, API cache, rate limits'],
+        ['CDN edge', '5–30ms globally', 'Yes — per PoP', 'Static assets, cacheable GET responses'],
+      ],
     },
     {
       type: 'p',
-      text: 'CDN (Cloudflare, CloudFront): caches HTTP responses at edge PoPs. Perfect for static files and cacheable GET APIs with proper Cache-Control. Cannot run your business logic.',
-    },
-    {
-      type: 'p',
-      text: 'In-process (IMemoryCache, Caffeine): zero network hop but not shared across pods. Good for config, reference data, and L1 in front of Redis. In .NET: register IMemoryCache for hot keys, IDistributedCache backed by Redis for shared state.',
+      text: 'In .NET: register IMemoryCache for L1, IDistributedCache backed by StackExchange.Redis for L2. CDN handles Cache-Control headers on static files — your API still sets TTL for cacheable JSON if needed.',
     },
     { type: 'h2', text: 'Consistency vocabulary' },
     {
@@ -156,8 +177,9 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Cache stampede — step-by-step mitigation' },
     {
       type: 'p',
-      text: 'Step 1: hot key expires. Step 2: 10,000 concurrent requests miss. Step 3: all 10,000 hit PostgreSQL. Step 4: database latency spikes, timeouts cascade. Mitigation A: single-flight — first miss acquires a lock, others wait for reload. Mitigation B: stale-while-revalidate — serve stale value while one worker refreshes. Mitigation C: jittered TTL so keys do not expire simultaneously. Mention at least one in every design that uses [caching](/system-design/caching-fundamentals-for-interviews).',
+      text: 'Step 1: hot key expires. Step 2: 10,000 concurrent requests miss. Step 3: all 10,000 hit PostgreSQL. Step 4: database latency spikes, timeouts cascade. Mitigation A: single-flight — first miss acquires a lock, others wait for reload. Mitigation B: stale-while-revalidate — serve stale value while one worker refreshes. Mitigation C: jittered TTL so keys do not expire simultaneously.',
     },
+    { type: 'h2', text: 'CAP theorem in one interview sentence' },
     {
       type: 'p',
       text: 'You cannot simultaneously guarantee perfect consistency, full availability, and tolerance to network partitions. Caches choose availability + partition tolerance with eventual consistency. Bank ledgers choose consistency over availability during a partition. Saying which letter you sacrifice — and why — is often enough at mid-level without a full lecture.',

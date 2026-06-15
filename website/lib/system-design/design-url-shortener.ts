@@ -61,15 +61,42 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'p',
-      text: 'Client → CDN (optional) → Load Balancer → Stateless API servers → Redis cache → PostgreSQL (primary + replicas). The redirect path should avoid hitting the primary database on every click.',
+      text: 'Split the design into two paths — **create** (write-heavy, rare) and **redirect** (read-heavy, constant). Interviewers care more about the redirect path. Draw both, but spend 70% of your time on GET /{code}.',
     },
+    { type: 'h3', text: 'Write path: create a short URL' },
     {
       type: 'ol',
       items: [
-        'User POSTs long URL to API tier.',
-        'API validates URL (length, scheme, not on blocklist), generates short code, inserts row.',
-        'API returns full short URL.',
-        'On GET /{code}: check Redis → on miss, read replica → populate cache → redirect.',
+        'Client POSTs { url, customAlias?, expiresInDays? } to POST /v1/urls.',
+        'API validates URL scheme, length, blocklist, and SSRF rules.',
+        '[Rate limiter](/system-design/design-rate-limiter) checks IP / API key — reject 429 if abusive.',
+        'Generate short code (base62 ID) or validate custom alias uniqueness.',
+        'INSERT into PostgreSQL primary — short_code, long_url, created_at, expires_at.',
+        'Return 201 { shortUrl: "https://dsas.ly/abc123" } — no need to warm cache yet; link is cold.',
+      ],
+    },
+    { type: 'h3', text: 'Read path: redirect (the critical path)' },
+    {
+      type: 'ol',
+      items: [
+        'Browser or bot GETs https://dsas.ly/abc123.',
+        'Optional CDN edge — cache 302 Location for viral links only.',
+        'Load balancer routes to any stateless API server.',
+        'Redis GET url:abc123 — on hit, return long URL immediately.',
+        'On miss: SELECT long_url FROM read replica WHERE short_code = $1.',
+        'Populate Redis (TTL 24h), respond HTTP 302 with Location: long_url.',
+      ],
+    },
+    {
+      type: 'table',
+      headers: ['Component', 'Role', 'Write path', 'Read path'],
+      rows: [
+        ['Load balancer', 'Distributes traffic', 'Yes', 'Yes'],
+        ['API servers', 'Validation, business logic', 'Insert mapping', 'Lookup + redirect'],
+        ['Redis', 'Hot redirect cache', 'Optional invalidate', 'Primary lookup'],
+        ['PostgreSQL primary', 'Source of truth', 'INSERT new links', 'Not on hot path'],
+        ['Read replicas', 'Scale reads', 'No', 'Fallback on cache miss'],
+        ['CDN', 'Edge cache for 302', 'No', 'Optional for viral URLs'],
       ],
     },
     { type: 'h2', text: 'Generating short codes' },
@@ -89,13 +116,47 @@ const article: SystemDesignArticle = {
     },
     { type: 'h2', text: 'Database schema' },
     {
+      type: 'table',
+      headers: ['Column', 'Type', 'Purpose'],
+      rows: [
+        ['short_code', 'VARCHAR(10) PK', 'Public identifier in the URL — indexed for redirect lookup'],
+        ['long_url', 'TEXT NOT NULL', 'Original destination — can be long'],
+        ['user_id', 'UUID NULL', 'Owner if authenticated; NULL for anonymous'],
+        ['created_at', 'TIMESTAMPTZ', 'Audit, analytics, TTL calculation'],
+        ['expires_at', 'TIMESTAMPTZ NULL', 'Optional link expiry — cron deletes expired rows'],
+      ],
+    },
+    { type: 'h3', text: 'Key queries' },
+    {
+      type: 'ul',
+      items: [
+        'Redirect: SELECT long_url FROM url_mappings WHERE short_code = $1 — must use unique index on short_code.',
+        'Create: INSERT … ON CONFLICT (short_code) DO NOTHING — return 409 for taken custom aliases.',
+        'Cleanup: DELETE FROM url_mappings WHERE expires_at < NOW() — batch nightly job.',
+      ],
+    },
+    {
       type: 'p',
-      text: 'Table url_mappings: short_code VARCHAR(10) PRIMARY KEY, long_url TEXT NOT NULL, user_id UUID NULL, created_at TIMESTAMPTZ, expires_at TIMESTAMPTZ NULL. Index on expires_at for cleanup jobs. For custom aliases, uniqueness constraint on short_code handles conflicts — return 409 Conflict.',
+      text: 'Do not store click counts in this table if redirects are hot — updates on every read would kill write throughput. Use async analytics instead.',
     },
     { type: 'h2', text: 'Caching strategy' },
     {
       type: 'p',
-      text: 'Cache-aside with Redis: on redirect, GET short_code. Miss → query read replica → SET with TTL (e.g. 24 hours). Hot links stay in memory; long tail may miss cache often but DB load stays bounded. Use a CDN in front for the most viral links if the interviewer pushes on global latency.',
+      text: 'Use [cache-aside](/system-design/caching-fundamentals-for-interviews) on the redirect path. Key format: url:{shortCode} → long URL string.',
+    },
+    {
+      type: 'ol',
+      items: [
+        'GET redirect: Redis GET url:abc123.',
+        'Hit → build 302 Location header, return immediately.',
+        'Miss → query read replica, SET Redis with 24h TTL, then redirect.',
+        'POST create: write to DB primary; cache optional (link not yet clicked).',
+        'DELETE / update: DEL url:abc123 in Redis + purge CDN edge if used.',
+      ],
+    },
+    {
+      type: 'p',
+      text: 'TTL choice: 24 hours balances freshness vs hit ratio. Viral links get millions of hits within hours — one cache fill serves them all. Long-tail links may expire from Redis unused; that is fine — occasional DB miss is cheap.',
     },
     {
       type: 'callout',
@@ -124,8 +185,14 @@ const article: SystemDesignArticle = {
     },
     { type: 'h2', text: 'Failure modes' },
     {
-      type: 'p',
-      text: 'Redis down: fall through to database — slower but functional. Database primary down: fail writes, serve reads from replicas if replication lag acceptable. Region outage: multi-region active-passive with DNS failover — mention only if asked about disaster recovery.',
+      type: 'table',
+      headers: ['Failure', 'Create path', 'Redirect path', 'Mitigation'],
+      rows: [
+        ['Redis down', 'Works — writes go to DB', 'Slower — fall through to replica', 'Auto-failover Redis; replicas handle miss load'],
+        ['DB primary down', 'Fail writes (503)', 'Reads OK via replica + cache', 'Promote replica or queue writes'],
+        ['Replica lag', 'N/A', 'Rare stale redirect after edit', 'Invalidate cache on write; accept brief staleness'],
+        ['Region outage', 'Writes fail in region', 'DNS failover to secondary region', 'Multi-region replicas + cache — advanced'],
+      ],
     },
     { type: 'h2', text: 'Latency budget for the redirect path' },
     {
@@ -173,6 +240,7 @@ const article: SystemDesignArticle = {
       type: 'p',
       text: 'Real products add link preview crawlers, malware scanning, and logged-in user dashboards. In an interview, acknowledge these as v2 features unless the prompt includes them. TinyURL launched on a single server; bit.ly scaled with caching and sharding. You are designing the core path that every shortener shares — do not apologise for skipping login unless required.',
     },
+    { type: 'h2', text: 'Mock interview checklist' },
     {
       type: 'ol',
       items: [
