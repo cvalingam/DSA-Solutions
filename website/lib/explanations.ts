@@ -4990,6 +4990,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Sort descending and take first k. Or use partition.'],
   },
 
+  2095: {
+    intuition:
+      'The middle node of a linked list is found with the classic slow/fast pointer technique: when fast reaches the end, slow sits on the node to remove. A dummy node before the head handles the edge case where the middle is the first node. If the target has a successor, copy its value and skip the next node; otherwise unlink the tail through the tracked predecessor.',
+    algorithm: [
+      'Create dummy start pointing to head; initialize slow, fast, and prev at head.',
+      'While fast and fast.next exist, advance prev to slow, slow by one, and fast by two.',
+      'If slow.next is not null, copy slow.next.val into slow and set slow.next = slow.next.next.',
+      'Else if slow is the head node, set start.next = null.',
+      'Else set prev.next = null to remove the tail middle.',
+      'Return start.next.',
+    ],
+    example: {
+      input: 'head = [1, 3, 4, 7, 1, 2, 6]',
+      steps: [
+        'Seven nodes: slow/fast stops with slow on node 4 (the middle).',
+        'slow.next exists, so copy 7 into slow and skip the next node.',
+        'Result list is 1 -> 3 -> 4 -> 1 -> 2 -> 6.',
+      ],
+      output: '[1, 3, 4, 1, 2, 6]',
+    },
+    pitfalls: [
+      'Use a dummy node so deleting the first/middle node does not lose the list head.',
+      'Track prev during the slow/fast walk for tail-deletion cases.',
+      'When slow.next is null, do not copy-delete; unlink with prev or dummy instead.',
+    ],
+  },
+
   2109: {
     intuition: 'Add spaces at given indices in a string. Build result character by character, inserting spaces at specified positions.',
     algorithm: [

@@ -4757,6 +4757,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 1547. Interval DP on sorted cut positions. O(m^3) where m = number of cuts.'],
   },
 
+  'minimum-cost-to-fill-given-weight': {
+    intuition:
+      'Each cost[i] gives the price of buying weight i+1 directly. To fill exactly weight w, either buy one available package or combine two smaller achievable weights. This is a shortest-path style DP over weights: once the minimum cost for x and y is known, weight x + y can be improved by paying mem[x] + mem[y].',
+    algorithm: [
+      'Create mem[1..w], initialized to -1 for unreachable weights.',
+      'For each weight x from 1 to w, if cost[x-1] exists, set mem[x] = min(mem[x], cost[x-1]).',
+      'For every pair 1 <= x <= y with x + y <= w, if mem[x] and mem[y] are reachable, relax mem[x + y].',
+      'Use mem[x + y] = min(mem[x + y], mem[x] + mem[y]).',
+      'Return mem[w]; -1 means weight w cannot be formed.',
+    ],
+    example: {
+      input: 'cost = [1, 2, 4], w = 5',
+      steps: [
+        'Direct costs: weight 1 costs 1, weight 2 costs 2, weight 3 costs 4.',
+        'Weight 4 is best formed as 2 + 2 with cost 2 + 2 = 4.',
+        'Weight 5 is best formed as 2 + 3 with cost 2 + 4 = 6, or 1 + 4 with cost 1 + 4 = 5.',
+        'Minimum cost to reach weight 5 is 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Treat -1 as unreachable; never add two unreachable subweights.',
+      'cost[i] corresponds to weight i + 1, not weight i.',
+      'Check all pairs x <= y so combinations like 2 + 3 and 3 + 2 are not double-counted incorrectly.',
+    ],
+  },
+
   'minimum-cost-to-merge-stones': {
     intuition: 'Merge stones with minimum cost where k adjacent stones merge at once. Interval DP.',
     algorithm: [
