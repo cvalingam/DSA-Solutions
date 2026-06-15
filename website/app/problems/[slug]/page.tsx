@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllProblems, getProblemBySlug, getAdjacentProblems } from '@/lib/problems'
 import { toLeetCodeSlug } from '@/lib/constants'
-import { TAG_LABELS, TOPIC_DESCRIPTIONS } from '@/lib/tags'
+import { TAG_LABELS } from '@/lib/tags'
 import CodeBlockWithHeader, { type SupportedLang } from '@/components/CodeBlockWithHeader'
 import LanguageTabs from '@/components/LanguageTabs'
 import DifficultyBadge from '@/components/DifficultyBadge'
@@ -16,6 +16,12 @@ import {
   buildLcDescription,
   getRelatedLcProblems,
 } from '@/lib/seo'
+import {
+  buildLcProblemOverview,
+  hasRichLcExplanation,
+  isLcPageIndexable,
+  shouldShowAdsOnLcPage,
+} from '@/lib/content-quality'
 
 const EXT_TO_SHIKI: Record<string, SupportedLang> = {
   cs:   'csharp',
@@ -54,6 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${problem.number}. ${problem.title}`
   const desc = buildLcDescription(problem, rich)
   const ogImage = `/problems/${problem.slug}/opengraph-image`
+  const indexable = isLcPageIndexable(problem)
 
   return {
     title,
@@ -68,6 +75,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `/problems/${problem.slug}`,
     },
+    robots: indexable
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       title: `${title} — LeetCode ${primaryLabel} Solution`,
       description: desc,
@@ -93,6 +103,8 @@ export default async function ProblemPage({ params }: Props) {
   const lcSlug = toLeetCodeSlug(problem.title)
   const primaryLabel = EXT_TO_LABEL[problem.primaryExt] ?? problem.primaryExt.toUpperCase()
   const rich = explanations[problem.number]
+  const showAds = shouldShowAdsOnLcPage(problem)
+  const overview = buildLcProblemOverview(problem, rich)
   const articleJsonLd = buildLcArticleGraph(problem, rich, primaryLabel)
 
   return (
@@ -168,10 +180,23 @@ export default async function ProblemPage({ params }: Props) {
         </div>
       )}
 
-      {/* Ad: leaderboard — placed after metadata, before explanation */}
-      <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />
+      {/* Problem overview — original summary, not copied from LeetCode */}
+      <section className="mb-6 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
+        <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
+          Problem Overview
+        </h2>
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{overview}</p>
+        {!hasRichLcExplanation(problem.number) && (
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            A full step-by-step explanation is being added. See the{' '}
+            <Link href="/study-guide" className="text-indigo-600 dark:text-indigo-400 hover:underline">study guide</Link>
+            {' '}for pattern-based practice.
+          </p>
+        )}
+      </section>
 
-      {/* Rich explanation (structured) or plain approach fallback */}
+      {/* Explanation — ads only after substantive content on rich pages */}
+      {showAds && <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />}
       {(() => {
         const rich = explanations[problem.number]
         if (rich) {
@@ -255,66 +280,31 @@ export default async function ProblemPage({ params }: Props) {
                 </div>
               </div>
               {problem.tags.length > 0 && (
-                <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
-                  <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">Key Techniques</h2>
-                  <div className="space-y-4">
-                    {problem.tags.slice(0, 3).map(tag => {
-                      const desc = TOPIC_DESCRIPTIONS[tag]
-                      if (!desc) return null
-                      return (
-                        <div key={tag}>
-                          <a href={`/topics/${tag}`} className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline mb-1">{TAG_LABELS[tag] ?? tag}</a>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{desc}</p>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Related patterns:{' '}
+                  {problem.tags.slice(0, 3).map((tag, i) => (
+                    <span key={tag}>
+                      {i > 0 && ', '}
+                      <Link href={`/topics/${tag}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                        {TAG_LABELS[tag] ?? tag}
+                      </Link>
+                    </span>
+                  ))}
+                </p>
               )}
             </div>
           )
         }
 
-        // Generated description for problems that have no hand-written explanation yet
-        {
-          const tagNames = problem.tags.map(t => TAG_LABELS[t] ?? t)
-          const tagPhrase = tagNames.length > 0
-            ? ` covering the ${tagNames.slice(0, 3).join(', ')} pattern${tagNames.length > 1 ? 's' : ''}`
-            : ''
-          const complexityPhrase = problem.complexity
-            ? ` The solution runs in ${problem.complexity.time} time and uses ${problem.complexity.space} extra space.`
-            : ''
-          const langLabel = EXT_TO_LABEL[problem.primaryExt] ?? problem.primaryExt.toUpperCase()
-          return (
-            <div className="mb-8 space-y-4">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
-                <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">About this solution</h2>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {problem.title} is a {problem.difficulty.toLowerCase()}-difficulty LeetCode problem{tagPhrase}.
-                  The {langLabel} solution below uses an idiomatic approach that is clean, readable, and directly submittable on LeetCode.{complexityPhrase}{' '}
-                  Study the logic carefully — recognising the underlying pattern is the key skill that transfers to similar problems in interviews.
-                </p>
-              </div>
-              {problem.tags.length > 0 && (
-                <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
-                  <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">Key Techniques</h2>
-                  <div className="space-y-4">
-                    {problem.tags.slice(0, 3).map(tag => {
-                      const desc = TOPIC_DESCRIPTIONS[tag]
-                      if (!desc) return null
-                      return (
-                        <div key={tag}>
-                          <a href={`/topics/${tag}`} className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline mb-1">{TAG_LABELS[tag] ?? tag}</a>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{desc}</p>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        }
+        return (
+          <div className="mb-8 p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40">
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              Read the solution code below and trace through it on paper before submitting.
+              For structured interview prep, follow our{' '}
+              <Link href="/study-guide" className="text-indigo-600 dark:text-indigo-400 hover:underline">30-day study guide</Link>.
+            </p>
+          </div>
+        )
       })()}
 
       {/* Code */}
@@ -344,8 +334,7 @@ export default async function ProblemPage({ params }: Props) {
         )}
       </section>
 
-      {/* Ad: rectangle */}
-        <AdUnit slot="1364902808" style="rectangle" className="mb-6" />
+      {showAds && <AdUnit slot="1364902808" style="rectangle" className="mb-6" />}
 
       {/* Helpful widget */}
       <HelpfulWidget />

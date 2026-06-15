@@ -7,8 +7,14 @@ import CodeBlockWithHeader from '@/components/CodeBlockWithHeader'
 import AdUnit from '@/components/AdUnit'
 import HelpfulWidget from '@/components/HelpfulWidget'
 import BackToTop from '@/components/BackToTop'
-import gfgExplanations from '@/lib/gfg-explanations'
 import { buildGfgArticleGraph, buildGfgDescription } from '@/lib/seo'
+import {
+  buildGfgProblemOverview,
+  hasQualityGfgExplanation,
+  isGfgPageIndexable,
+  resolveGfgExplanation,
+  shouldShowAdsOnGfgPage,
+} from '@/lib/content-quality'
 
 interface Props {
   params: { slug: string }
@@ -24,16 +30,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const problem = getGfgProblemBySlug(params.slug)
   if (!problem) return {}
 
-  const rich = gfgExplanations[problem.slug]
+  const rich = resolveGfgExplanation(problem.slug)
   const title = problem.title
   const desc = buildGfgDescription(problem, rich)
   const ogImage = `/gfg/${problem.slug}/opengraph-image`
+  const indexable = isGfgPageIndexable(problem, problem.slug)
 
   return {
     title,
     description: desc,
     keywords: ['GeeksforGeeks', 'GFG', problem.title, 'Java solution', 'interview prep'],
     alternates: { canonical: `/gfg/${problem.slug}` },
+    robots: indexable
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       title: `${title} — GFG Java Solution`,
       description: desc,
@@ -56,7 +66,9 @@ export default async function GfgProblemPage({ params }: Props) {
 
   const { prev, next } = getAdjacentGfgProblems(params.slug)
   const gfgSlug = toLeetCodeSlug(problem.title)
-  const rich = gfgExplanations[problem.slug]
+  const rich = resolveGfgExplanation(problem.slug)
+  const showAds = shouldShowAdsOnGfgPage(problem.slug)
+  const overview = buildGfgProblemOverview(problem, rich)
   const articleJsonLd = buildGfgArticleGraph(problem, rich)
 
   return (
@@ -67,7 +79,6 @@ export default async function GfgProblemPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
         <Link href="/gfg" className="hover:text-emerald-600 transition-colors">GFG</Link>
         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -99,39 +110,37 @@ export default async function GfgProblemPage({ params }: Props) {
         </a>
       </div>
 
-      {/* Complexity */}
       {problem.complexity && (
         <div className="flex flex-wrap gap-3 mb-5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-100 dark:bg-emerald-950/50 dark:border-emerald-900">
-            <svg className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-              <circle cx="12" cy="12" r="10" />
-            </svg>
             <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">Time: <span className="font-mono">{problem.complexity.time}</span></span>
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-violet-50 border border-violet-100 dark:bg-violet-950/50 dark:border-violet-900">
-            <svg className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h10M4 17h6" />
-            </svg>
             <span className="text-xs font-medium text-violet-700 dark:text-violet-300">Space: <span className="font-mono">{problem.complexity.space}</span></span>
           </div>
         </div>
       )}
 
-      {/* Ad — after metadata, before explanation */}
-      <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />
+      <section className="mb-6 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
+        <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
+          Problem Overview
+        </h2>
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{overview}</p>
+        {!hasQualityGfgExplanation(problem.slug) && (
+          <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            See our <Link href="/study-guide" className="text-emerald-600 dark:text-emerald-400 hover:underline">study guide</Link> for structured GFG and LeetCode practice.
+          </p>
+        )}
+      </section>
 
-      {/* Explanation — rich cards or plain fallback */}
+      {showAds && <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />}
+
       {(() => {
-        const rich = gfgExplanations[problem.slug]
         if (rich) {
           return (
             <div className="mb-8 space-y-4">
               <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
-                <h2 className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                  Intuition
-                </h2>
+                <h2 className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">Intuition</h2>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{rich.intuition}</p>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
@@ -147,17 +156,11 @@ export default async function GfgProblemPage({ params }: Props) {
               </div>
               {rich.example && (
                 <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50">
-                  <h2 className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                    Example Walkthrough
-                  </h2>
+                  <h2 className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">Example Walkthrough</h2>
                   <p className="text-xs font-mono text-blue-800 dark:text-blue-300 bg-blue-100/60 dark:bg-blue-900/40 rounded px-3 py-1.5 mb-3 break-all">Input: {rich.example.input}</p>
                   <ol className="space-y-1.5 list-none mb-3">
                     {rich.example.steps.map((step, i) => (
-                      <li key={i} className="flex gap-2.5 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                        <span className="flex-shrink-0 text-blue-400 dark:text-blue-500 font-mono text-xs mt-0.5">{i + 1}.</span>
-                        <span>{step}</span>
-                      </li>
+                      <li key={i} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{i + 1}. {step}</li>
                     ))}
                   </ol>
                   <p className="text-xs font-mono text-blue-800 dark:text-blue-300 bg-blue-100/60 dark:bg-blue-900/40 rounded px-3 py-1.5 break-all">Output: {rich.example.output}</p>
@@ -165,16 +168,10 @@ export default async function GfgProblemPage({ params }: Props) {
               )}
               {rich.pitfalls && rich.pitfalls.length > 0 && (
                 <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50">
-                  <h2 className="flex items-center gap-1.5 text-[11px] font-semibold text-red-600 dark:text-red-400 uppercase tracking-wider mb-3">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    Common Pitfalls
-                  </h2>
+                  <h2 className="text-[11px] font-semibold text-red-600 dark:text-red-400 uppercase tracking-wider mb-3">Common Pitfalls</h2>
                   <ul className="space-y-2">
                     {rich.pitfalls.map((p, i) => (
-                      <li key={i} className="flex gap-2.5 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                        <span className="flex-shrink-0 text-red-400 dark:text-red-500 mt-0.5">&bull;</span>
-                        <span>{p}</span>
-                      </li>
+                      <li key={i} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">• {p}</li>
                     ))}
                   </ul>
                 </div>
@@ -184,88 +181,45 @@ export default async function GfgProblemPage({ params }: Props) {
         }
         if (problem.approach) {
           return (
-            <div className="mb-8 space-y-4">
-              <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900">
-                <h2 className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                  Approach
-                </h2>
-                <div className="space-y-1.5">
-                  {problem.approach.split('\n').map((para, i) => (
-                    <p key={i} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{para}</p>
-                  ))}
-                </div>
+            <div className="mb-8 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900">
+              <h2 className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">Approach</h2>
+              <div className="space-y-1.5">
+                {problem.approach.split('\n').map((para, i) => (
+                  <p key={i} className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{para}</p>
+                ))}
               </div>
             </div>
           )
         }
-
-        // Generated description for problems that have no hand-written explanation yet
-        const complexityPhrase = problem.complexity
-          ? ` The solution runs in ${problem.complexity.time} time and uses ${problem.complexity.space} extra space.`
-          : ''
         return (
-          <div className="mb-8 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
-            <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">About this solution</h2>
+          <div className="mb-8 p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40">
             <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-              {problem.title} is a GeeksforGeeks problem commonly asked in technical interviews.
-              The Java solution below implements an efficient algorithm that is clean, well-structured, and directly submittable on GeeksforGeeks.{complexityPhrase}{' '}
-              Understanding the approach here builds pattern recognition skills that apply across similar data structures and algorithms problems.
+              Trace through the Java solution below on paper, then try re-implementing without looking.
             </p>
           </div>
         )
       })()}
 
-      {/* complexity already rendered above */}
-
       <section className="mb-8">
-        <CodeBlockWithHeader
-          code={problem.code}
-          lang="java"
-          filename={`${problem.title}.java`}
-        />
+        <CodeBlockWithHeader code={problem.code} lang="java" filename={`${problem.title}.java`} />
       </section>
 
-        <AdUnit slot="1364902808" style="rectangle" className="mb-6" />
+      {showAds && <AdUnit slot="1364902808" style="rectangle" className="mb-6" />}
 
-      {/* Helpful widget */}
       <HelpfulWidget />
 
       <nav className="flex justify-between items-center border-t border-gray-100 dark:border-gray-800 pt-6 gap-3 flex-wrap" aria-label="Problem navigation">
         {prev ? (
-          <Link
-            href={`/gfg/${prev.slug}`}
-            className="group flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-300 hover:border-emerald-300 dark:hover:border-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all shadow-sm max-w-[46%]"
-          >
-            <svg className="w-4 h-4 shrink-0 text-gray-400 group-hover:text-emerald-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
+          <Link href={`/gfg/${prev.slug}`} className="group flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-300 hover:border-emerald-300 transition-all shadow-sm max-w-[46%]">
             <span className="truncate">{prev.title}</span>
           </Link>
-        ) : (
-          <span />
-        )}
-
-        <Link
-          href="/gfg"
-          className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-500 dark:text-gray-400 hover:border-emerald-300 dark:hover:border-emerald-600 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all shadow-sm hidden sm:block"
-        >
-          All GFG Problems
-        </Link>
-
+        ) : <span />}
+        <Link href="/gfg" className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-500 hidden sm:block">All GFG Problems</Link>
         {next ? (
-          <Link
-            href={`/gfg/${next.slug}`}
-            className="group flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-300 hover:border-emerald-300 dark:hover:border-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all shadow-sm max-w-[46%]"
-          >
+          <Link href={`/gfg/${next.slug}`} className="group flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-300 hover:border-emerald-300 transition-all shadow-sm max-w-[46%]">
             <span className="truncate">{next.title}</span>
-            <svg className="w-4 h-4 shrink-0 text-gray-400 group-hover:text-emerald-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
           </Link>
-        ) : (
-          <span />
-        )}
+        ) : <span />}
       </nav>
 
       <BackToTop />

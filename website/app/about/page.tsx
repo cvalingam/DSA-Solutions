@@ -57,7 +57,7 @@ export default function AboutPage() {
         </p>
         <ul className="space-y-3">
           {[
-            ['Explanation first', 'Every page shows a plain-English explanation — why the algorithm works, what data structure is used, and how to recognise when to apply this pattern.'],
+            ['Explanation first', '600+ problems include full step-by-step explanations (intuition, algorithm, examples, pitfalls). Remaining pages include approach notes and complexity analysis.'],
             ['Complexity stated explicitly', 'Time and Space complexity are shown as badges on every solution page.'],
             ['Idiomatic C# code', 'Solutions use the most readable C# idiom available — not a Java translation. The goal is code that a .NET engineer would write and be comfortable reviewing.'],
             ['Daily updates', 'New solutions for LeetCode and GeeksforGeeks POTD are added every day.'],
@@ -76,8 +76,8 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">What you will find here</h2>
         <ul className="space-y-2">
           {[
-            '800+ clean C# LeetCode solutions covering Easy, Medium, and Hard difficulty',
-            '550+ Java GeeksforGeeks POTD solutions, updated daily',
+            '600+ LeetCode problems with full step-by-step explanations (intuition, algorithm steps, examples)',
+            'Approach notes and complexity on every indexed solution page',
             'Topic pages for 60+ DSA patterns (Array, DP, Trees, Graphs, and more)',
             'Difficulty filtering and instant search to find any problem in seconds',
             'Syntax-highlighted code with one-click copy on every page',

@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { getAllGfgProblemsMeta } from '@/lib/gfg-problems'
 import GfgProblemList from '@/components/GfgProblemList'
-import gfgExplanations from '@/lib/gfg-explanations'
 import { SITE_URL } from '@/lib/constants'
 import { buildCollectionPageSchema, getSiteStats } from '@/lib/seo'
+import { hasQualityGfgExplanation } from '@/lib/content-quality'
 
 export const dynamic = 'force-static'
 
@@ -36,7 +36,11 @@ function LoadingFallback() {
 
 export default function GfgPage() {
   const problems = getAllGfgProblemsMeta()
-  const explanationSlugs = new Set(Object.keys(gfgExplanations))
+  const explanationSlugs = new Set(
+    getAllGfgProblemsMeta()
+      .map(p => p.slug)
+      .filter(slug => hasQualityGfgExplanation(slug)),
+  )
 
   const jsonLd = buildCollectionPageSchema(
     'GeeksforGeeks Java Solutions',

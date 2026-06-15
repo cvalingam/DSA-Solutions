@@ -144,12 +144,13 @@ export default function ProblemList({
             LeetCode <span className="text-indigo-200">C# Solutions</span>
           </h1>
           <p className="text-indigo-200 text-sm sm:text-base mb-8 max-w-xl">
-            Clean, readable C# solutions — built for .NET developers cracking the coding interview.
-            Every problem includes plain-English explanations and complexity analysis.
+            Clean, readable C# solutions for .NET developers preparing for coding interviews.
+            {explanationNums.size}+ problems include full step-by-step explanations; all solutions include approach notes and complexity where available.
           </p>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="flex gap-8 flex-wrap">
               <Stat value={problems.length} label="Solved"  />
+              <Stat value={explanationNums.size} label="Explained" dim />
               <Stat value={easy}            label="Easy"    dim />
               <Stat value={medium}          label="Medium"  dim />
               <Stat value={hard}            label="Hard"    dim />

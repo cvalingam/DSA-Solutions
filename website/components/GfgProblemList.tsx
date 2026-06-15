@@ -38,12 +38,19 @@ export default function GfgProblemList({
             GeeksforGeeks <span className="text-emerald-200">Java Solutions</span>
           </h1>
           <p className="text-emerald-200 text-sm sm:text-base mb-8 max-w-xl">
-            Daily Problem of the Day solutions — clean Java code with explanations and complexity analysis for every GFG POTD.
+            Java solutions for GeeksforGeeks problems with step-by-step explanations on {explanationSlugs.size}+ problems,
+            plus approach notes and complexity analysis across the full archive.
           </p>
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <div className="text-2xl font-bold tabular-nums text-white">{problems.length}</div>
-              <div className="text-[11px] uppercase tracking-widest mt-0.5 text-white/60">Solved</div>
+            <div className="flex gap-8 flex-wrap">
+              <div>
+                <div className="text-2xl font-bold tabular-nums text-white">{problems.length}</div>
+                <div className="text-[11px] uppercase tracking-widest mt-0.5 text-white/60">Solved</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold tabular-nums text-white">{explanationSlugs.size}</div>
+                <div className="text-[11px] uppercase tracking-widest mt-0.5 text-white/60">Explained</div>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               <QuickLink href="/" label="LeetCode C#" />
