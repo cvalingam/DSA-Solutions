@@ -7889,6 +7889,37 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3612: {
+    intuition:
+      'Process the string left to right and maintain the current result as a mutable sequence. Letters append. The * character removes the last character if any exist. The # character duplicates the current result by appending it to itself. The % character reverses the entire current result in place. After all characters, convert the mutable result to a string.',
+    algorithm: [
+      'Create an empty mutable result (StringBuilder).',
+      'Scan characters from left to right.',
+      'If the character is a lowercase English letter, append it to result.',
+      'If the character is the * operator and result is not empty, remove the last character.',
+      'If the character is the # operator, append the current result to itself to duplicate it.',
+      'If the character is the % operator, reverse the entire current result in place.',
+      'Return result as a string.',
+    ],
+    example: {
+      input: 's = "a#b%*"',
+      steps: [
+        'Start result = "".',
+        'Read a → append → "a".',
+        'Read # → duplicate → "aa".',
+        'Read b → append → "aab".',
+        'Read % → reverse → "baa".',
+        'Read * → remove last → "ba".',
+      ],
+      output: '"ba"',
+    },
+    pitfalls: [
+      'If * appears when result is empty, do nothing.',
+      'For #, duplicate the current content by appending a copy of the builder, not only one character.',
+      'For %, reverse the whole current result, not only the next segment.',
+    ],
+  },
+
 }
 
 export default explanations

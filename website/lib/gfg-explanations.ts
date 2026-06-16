@@ -7194,6 +7194,38 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'construct-list-using-xor-queries': {
+    intuition:
+      'Every type-1 query applies XOR to all elements currently in the list. Since XOR is associative and commutative, you can flip the perspective: process queries from right to left while maintaining a cumulative xor (xr) of all type-1 values you have seen. When you encounter a type-0 insertion of x, the value that x ends up with is x XOR xr (because xr represents the XOR operations that will be applied to it later). Finally, include the initial element 0 XOR xr and sort the results.',
+    algorithm: [
+      'Initialise xr = 0 and an empty results list.',
+      'Traverse queries from the last query down to the first:',
+      'If query type is 1 with value x, update xr ^= x.',
+      'If query type is 0 with value x, append (x ^ xr) to results.',
+      'After the loop, append xr to results to represent the initial element 0 XOR xr.',
+      'Sort results in increasing order and return it.',
+    ],
+    example: {
+      input: 'q = 5, queries = [[0,6],[0,3],[0,2],[1,4],[1,5]]',
+      steps: [
+        'Start xr = 0, results = [].',
+        'Process {1,5} → xr = 0 ^ 5 = 5.',
+        'Process {1,4} → xr = 5 ^ 4 = 1.',
+        'Process {0,2} → add 2 ^ 1 = 3.',
+        'Process {0,3} → add 3 ^ 1 = 2.',
+        'Process {0,6} → add 6 ^ 1 = 7.',
+        'Add initial 0 ^ xr → add 1.',
+        'Sort: [3,2,7,1] → [1,2,3,7].',
+      ],
+      output: '1 2 3 7',
+    },
+    pitfalls: [
+      'Traverse from right to left so you can accumulate XOR operations instead of updating every element forward.',
+      'Include the initial element 0 (add xr at the end).',
+      'Sort the final list before returning.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
