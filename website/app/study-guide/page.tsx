@@ -323,8 +323,8 @@ export default function StudyGuidePage() {
           <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline font-medium">
             System Design section
           </Link>{' '}
-          with human-written articles: interview framework, URL shortener walkthrough, rate limiter,
-          caching fundamentals, and how your LeetCode patterns translate to production systems.
+          with 10 human-written articles: interview framework, URL shortener, rate limiter, news feed, chat,
+          caching, SQL vs NoSQL, load balancing, API design, and how LeetCode patterns translate to production systems.
         </p>
         <Link
           href="/system-design"

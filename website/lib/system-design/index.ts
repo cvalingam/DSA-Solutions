@@ -4,6 +4,11 @@ import designUrlShortener from './design-url-shortener'
 import designRateLimiter from './design-rate-limiter'
 import cachingFundamentals from './caching-fundamentals'
 import fromLeetcodePatterns from './from-leetcode-patterns'
+import sqlVsNosql from './sql-vs-nosql-for-interviews'
+import loadBalancing from './load-balancing-and-scaling'
+import designNewsFeed from './design-news-feed'
+import designChatMessaging from './design-chat-messaging'
+import apiDesignRest from './api-design-rest-interviews'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -12,6 +17,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designRateLimiter,
   cachingFundamentals,
   fromLeetcodePatterns,
+  sqlVsNosql,
+  loadBalancing,
+  designNewsFeed,
+  designChatMessaging,
+  apiDesignRest,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

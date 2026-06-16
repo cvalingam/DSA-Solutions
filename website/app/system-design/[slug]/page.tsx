@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
-import { AUTHOR } from '@/lib/seo'
+import { AUTHOR, truncateDescription, buildSystemDesignBreadcrumb } from '@/lib/seo'
 import {
   getAllSystemDesignArticles,
   getSystemDesignArticle,
@@ -23,11 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) return {}
   return {
     title: article.title,
-    description: article.description,
+    description: truncateDescription(article.description),
+    keywords: [
+      'system design interview',
+      'system design',
+      article.category === 'case-study' ? 'system design case study' : 'system design fundamentals',
+    ],
     alternates: { canonical: `/system-design/${article.slug}` },
     openGraph: {
       title: article.title,
-      description: article.description,
+      description: truncateDescription(article.description),
       url: `/system-design/${article.slug}`,
       type: 'article',
       publishedTime: article.published,
@@ -44,19 +49,29 @@ export default function SystemDesignArticlePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
-    description: article.description,
+    description: truncateDescription(article.description),
     author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    publisher: { '@type': 'Organization', name: 'DSA Solutions', url: SITE_URL },
     url: `${SITE_URL}/system-design/${article.slug}`,
+    mainEntityOfPage: `${SITE_URL}/system-design/${article.slug}`,
     datePublished: article.published,
     dateModified: article.published,
     image: `${SITE_URL}/opengraph-image`,
+    articleSection: 'System Design',
+    keywords: article.title,
   }
+
+  const breadcrumbLd = buildSystemDesignBreadcrumb(article.slug, article.title)
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
       <SystemDesignArticleView article={article} />
     </>

@@ -103,7 +103,14 @@ export default function SystemDesignArticleView({ article }: Props) {
   const idx = all.findIndex(a => a.slug === article.slug)
   const prev = idx > 0 ? all[idx - 1] : null
   const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null
-  const related = all.filter(a => a.slug !== article.slug).slice(0, 3)
+  const related = all
+    .filter(a => a.slug !== article.slug)
+    .sort((a, b) => {
+      const aScore = a.category === article.category ? 0 : 1
+      const bScore = b.category === article.category ? 0 : 1
+      return aScore - bScore
+    })
+    .slice(0, 4)
 
   const mid = Math.floor(article.sections.length / 2)
   const firstHalf = article.sections.slice(0, mid)

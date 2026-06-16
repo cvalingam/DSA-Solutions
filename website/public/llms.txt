@@ -4,7 +4,7 @@
 
 ## About
 
-DSA Solutions is a free reference for coding interview preparation. Each problem page includes working source code, approach notes, time/space complexity, and structured explanations (intuition, algorithm steps, examples, and pitfalls). The site also publishes system design interview articles (frameworks, case studies, caching, rate limiting) at /system-design.
+DSA Solutions is a free reference for coding interview preparation. Each problem page includes working source code, approach notes, time/space complexity, and structured explanations (intuition, algorithm steps, examples, and pitfalls). The site also publishes system design interview articles (frameworks, URL shortener, rate limiter, caching, news feed, chat, SQL vs NoSQL, load balancing, API design) at /system-design.
 
 Author: Sivalingam Ramasamy
 GitHub: https://github.com/cvalingam

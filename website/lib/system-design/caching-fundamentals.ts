@@ -187,7 +187,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'When the interviewer says "design a news feed"' },
     {
       type: 'p',
-      text: 'Feeds are a caching and fan-out problem. Precompute timelines (fan-out on write) and cache per user in Redis — fast reads, heavy writes when celebrities post. Or assemble on read (fan-out on read) — lighter writes, slower reads for users following thousands. Most answers blend both: cache hot users, assemble cold ones. Tie back to [caching patterns](/system-design/caching-fundamentals-for-interviews) and our [LeetCode-to-systems bridge](/system-design/from-leetcode-patterns-to-real-systems) (BFS fan-out).',
+      text: 'Feeds are a caching and fan-out problem. Precompute timelines (fan-out on write) and cache per user in Redis — fast reads, heavy writes when celebrities post. Or assemble on read (fan-out on read) — lighter writes, slower reads for users following thousands. Most answers blend both: cache hot users, assemble cold ones. Read our full [news feed walkthrough](/system-design/design-news-feed) and the [LeetCode-to-systems bridge](/system-design/from-leetcode-patterns-to-real-systems) (BFS fan-out).',
     },
   ],
 }

@@ -134,7 +134,8 @@ article.sections.push(
     items: [
       'Finish core DSA patterns on this site (arrays through graphs).',
       'Read the [system design framework](/system-design/how-to-approach-system-design-interviews) and one case study per week.',
-      'Work through [URL shortener](/system-design/design-url-shortener), [rate limiter](/system-design/design-rate-limiter), and [caching](/system-design/caching-fundamentals-for-interviews) in order.',
+      'Work through [URL shortener](/system-design/design-url-shortener), [rate limiter](/system-design/design-rate-limiter), [news feed](/system-design/design-news-feed), and [chat](/system-design/design-chat-messaging) as case studies.',
+      'Read [caching](/system-design/caching-fundamentals-for-interviews), [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews), [load balancing](/system-design/load-balancing-and-scaling), and [API design](/system-design/api-design-rest-interviews) for fundamentals.',
       'For each pattern you learn, write one sentence: "In production this looks like ___."',
       'Mock one 45-minute design out loud — record yourself and check for silence gaps.',
       'Skim real postmortems (AWS, Cloudflare blogs) to see how failures happen in practice.',

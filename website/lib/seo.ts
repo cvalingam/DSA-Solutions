@@ -261,3 +261,41 @@ export function getRelatedLcProblems(problem: ProblemMeta, limit = 6): ProblemMe
     .filter(p => p.slug !== problem.slug && p.tags.some(t => tagSet.has(t)))
     .slice(0, limit)
 }
+
+export function buildSystemDesignBreadcrumb(slug: string, title: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'System Design', item: `${SITE_URL}/system-design` },
+      { '@type': 'ListItem', position: 3, name: title, item: `${SITE_URL}/system-design/${slug}` },
+    ],
+  }
+}
+
+export function buildSystemDesignHubSchema(
+  articleCount: number,
+  articles: { slug: string; title: string; description: string }[],
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'System Design Interview Guide',
+    description:
+      `${articleCount} practical system design articles for coding interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, SQL vs NoSQL, load balancing, and API design.`,
+    url: `${SITE_URL}/system-design`,
+    author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    numberOfItems: articleCount,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: articles.map((a, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: a.title,
+        description: a.description,
+        url: `${SITE_URL}/system-design/${a.slug}`,
+      })),
+    },
+  }
+}

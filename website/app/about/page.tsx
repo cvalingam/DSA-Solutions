@@ -96,7 +96,7 @@ export default function AboutPage() {
             <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">
               System design interview articles
             </Link>{' '}
-            — framework, URL shortener, rate limiter, caching, and DSA-to-systems bridge (5 in-depth guides)
+            — 10 in-depth guides: framework, case studies (URL shortener, rate limiter, news feed, chat), and fundamentals (caching, SQL vs NoSQL, load balancing, API design)
           </li>
           <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
             <svg className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

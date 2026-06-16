@@ -158,7 +158,7 @@ article.sections.push(
   },
   {
     type: 'p',
-    text: 'Next in this series: a full walkthrough of [designing a URL shortener](/system-design/design-url-shortener), then a [rate limiter](/system-design/design-rate-limiter), then [caching fundamentals](/system-design/caching-fundamentals-for-interviews). Read those with this framework in mind and practise sketching one design per week out loud.',
+    text: 'Next in this series: [URL shortener](/system-design/design-url-shortener), [rate limiter](/system-design/design-rate-limiter), [caching](/system-design/caching-fundamentals-for-interviews), then [news feed](/system-design/design-news-feed) and [chat](/system-design/design-chat-messaging). For fundamentals, read [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews), [load balancing](/system-design/load-balancing-and-scaling), and [API design](/system-design/api-design-rest-interviews). Practise one design per week out loud.',
   },
   { type: 'h2', text: 'A sample opening (first three minutes)' },
   {

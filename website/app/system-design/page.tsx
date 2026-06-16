@@ -1,38 +1,43 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE_URL } from '@/lib/constants'
-import { AUTHOR } from '@/lib/seo'
+import { buildSystemDesignHubSchema } from '@/lib/seo'
 import {
   getAllSystemDesignArticles,
   CATEGORY_LABELS,
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — Practical Articles for Developers',
+  title: 'System Design Interview Guide — 10 Practical Articles for Developers',
   description:
-    'Human-written system design articles for coding interview prep: frameworks, URL shortener and rate limiter walkthroughs, caching fundamentals, and how LeetCode patterns map to real systems.',
+    'System design interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, SQL vs NoSQL, load balancing, and REST API design — written for developers who practise LeetCode.',
+  keywords: [
+    'system design interview',
+    'system design',
+    'URL shortener system design',
+    'rate limiter design',
+    'news feed system design',
+    'chat system design',
+    'SQL vs NoSQL',
+    'load balancing',
+    'REST API design',
+  ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide',
+    title: 'System Design Interview Guide — 10 Articles',
     description:
-      'Practical system design articles for developers preparing for technical interviews — written to complement DSA practice.',
+      'Practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'System Design Interview Guide',
-  description:
-    'Practical system design articles for coding interview preparation, complementing LeetCode DSA practice.',
-  url: `${SITE_URL}/system-design`,
-  author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
-}
-
 export default function SystemDesignHubPage() {
   const articles = getAllSystemDesignArticles()
+
+  const jsonLd = buildSystemDesignHubSchema(
+    articles.length,
+    articles.map(a => ({ slug: a.slug, title: a.title, description: a.description })),
+  )
 
   return (
     <div className="max-w-3xl mx-auto py-10">
@@ -105,6 +110,11 @@ export default function SystemDesignHubPage() {
           <li>Caching Fundamentals — you will need this on almost every design</li>
           <li>Design a Rate Limiter — distributed state and atomicity</li>
           <li>From LeetCode Patterns to Real Systems — connect what you already know</li>
+          <li>SQL vs NoSQL — pick the right store for each component</li>
+          <li>Load Balancing and Horizontal Scaling — scale the app tier correctly</li>
+          <li>Design a News Feed — fan-out on write vs read and the celebrity problem</li>
+          <li>Design a Chat / Messaging System — WebSockets, delivery, and groups</li>
+          <li>API Design and REST Best Practices — endpoints interviewers expect you to name</li>
         </ol>
       </section>
 
