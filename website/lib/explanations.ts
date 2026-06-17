@@ -7920,6 +7920,39 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3614: {
+    intuition:
+      'The processed string can grow exponentially, so building it is impossible. Instead, run two passes on the operation string. First pass computes only the final length m by simulating * (delete last), # (double length), and letter inserts; % does not change length. If k >= m, return ".". Second pass walks backward: undo each operator to map index k to the correct position — % mirrors k (k = m - 1 - k), # maps the second half to the first, * restores a deleted slot, and letters are returned when k equals the current length after shrinking.',
+    algorithm: [
+      'Forward scan: maintain length m. On letter (not %), m += 1. On *, m = max(0, m - 1). On #, m <<= 1. Ignore % for length.',
+      'If k >= m, return \'.\'.',
+      'Backward scan from the last character of s:',
+      'On *, increment m (undo delete).',
+      'On #, set m /= 2; if k >= m, subtract m from k (index lies in the second copy).',
+      'On %, set k = m - 1 - k (undo reverse).',
+      'On a letter, decrement m; if k == m, return that character.',
+    ],
+    example: {
+      input: 's = "a#b%", k = 2',
+      steps: [
+        'Forward: a → m=1; # → m=2; b → m=3; % → m=3 (reverse does not change length).',
+        'k=2 < m=3, so continue.',
+        'Backward at %: k = 3 - 1 - 2 = 0.',
+        'Backward at b: m=2, k≠2.',
+        'Backward at #: m=1, k < m.',
+        'Backward at a: m=0, k==0 → return \'a\'.',
+        '(Forward-built string is "baa"; index 2 is \'a\'.)',
+      ],
+      output: '"a"',
+    },
+    pitfalls: [
+      'Do not materialise the string — length can overflow memory.',
+      'In the forward pass, % must not change m.',
+      'When undoing #, subtract m from k only when k >= m (k indexes the duplicated half).',
+      'Use long for m and k if the problem allows very large results.',
+    ],
+  },
+
 }
 
 export default explanations

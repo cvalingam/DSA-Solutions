@@ -7226,6 +7226,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'cut-rope-to-maximise-product': {
+    intuition:
+      'To maximise the product of positive integer piece lengths that sum to n, greedy works: 3 is the optimal chunk size. Use as many 3s as possible. The only awkward remainder is 1 — then borrow one 3 and make a 4 instead (2+2 beats 3+1). For n = 2 or n = 3, the answer is n - 1. Compute 3^count with fast exponentiation and multiply by 2 or 4 when a leftover remainder remains.',
+    algorithm: [
+      'If n is 2 or 3, return n - 1.',
+      'Set cnt3 = n / 3 and rem = n % 3.',
+      'If rem == 1, decrement cnt3 and set rem = 4 (use one 4 instead of 3+1).',
+      'Compute product = 3^cnt3 using binary exponentiation.',
+      'If rem is 2 or 4, multiply product by rem.',
+      'Return product.',
+    ],
+    example: {
+      input: 'n = 10',
+      steps: [
+        'n / 3 → cnt3 = 3, rem = 1.',
+        'rem == 1 → cnt3 = 2, rem = 4.',
+        '3^2 = 9; multiply by 4 → 36.',
+        'Pieces 3 + 3 + 4 sum to 10; product 36 beats 3+3+3+1 = 27.',
+      ],
+      output: '36',
+    },
+    pitfalls: [
+      'Remainder 1 needs cnt3-- and rem = 4 — do not leave a lone 1 segment.',
+      'Base cases n = 2 and n = 3 return n - 1, not 1.',
+      'Use long or BigInteger if n is large enough to overflow int product.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
