@@ -7889,6 +7889,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1344: {
+    intuition:
+      'A clock face is 360° with 12 hour marks (30° apart) and 60 minute marks (6° apart). The hour hand moves continuously: at hour h and minute m it sits at (h mod 12 + m/60) × 30 degrees. The minute hand sits at m × 6 degrees. The angle between them is the absolute difference; return the smaller of that difference and 360 minus the difference to get the acute angle.',
+    algorithm: [
+      'Compute hourHand = (hour % 12 + minutes / 60.0) * 30.',
+      'Compute minuteHand = minutes * 6.0.',
+      'Set diff = |hourHand - minuteHand|.',
+      'Return min(diff, 360 - diff).',
+    ],
+    example: {
+      input: 'hour = 12, minutes = 30',
+      steps: [
+        'hourHand = (0 + 30/60) × 30 = 15°.',
+        'minuteHand = 30 × 6 = 180°.',
+        'diff = |15 - 180| = 165°.',
+        'min(165, 195) = 165°.',
+      ],
+      output: '165',
+    },
+    pitfalls: [
+      'Use hour % 12 so 12 o\'clock is treated as 0 for position math.',
+      'Include minutes in the hour-hand position (fractional hour).',
+      'Return the smaller angle, not always the raw difference.',
+    ],
+  },
+
   3612: {
     intuition:
       'Process the string left to right and maintain the current result as a mutable sequence. Letters append. The * character removes the last character if any exist. The # character duplicates the current result by appending it to itself. The % character reverses the entire current result in place. After all characters, convert the mutable result to a string.',

@@ -3580,12 +3580,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
   },
 
   'coverage-of-all-zeros-in-a-binary-matrix': {
-    intuition: 'Find minimum number of flips to cover all zeros. BFS from all ones simultaneously (multi-source BFS).',
+    intuition:
+      'Coverage measures how many 1-cells are immediately next to each 0-cell. Scan the grid; for every zero, check the four orthogonal neighbors (left, right, up, down). Each neighbor that equals 1 adds one to the answer. The result is the total number of zero–one adjacencies counted from the zero side.',
     algorithm: [
-      'Multi-source BFS from all 1-cells. For each 0-cell: distance = BFS steps to reach it.',
-      'Minimum flips = max distance to cover all zeros.',
+      'Initialise count = 0.',
+      'For each cell (i, j) where matrix[i][j] == 0:',
+      'If j > 0 and matrix[i][j - 1] == 1, increment count.',
+      'If j < m - 1 and matrix[i][j + 1] == 1, increment count.',
+      'If i > 0 and matrix[i - 1][j] == 1, increment count.',
+      'If i < n - 1 and matrix[i + 1][j] == 1, increment count.',
+      'Return count.',
     ],
-    pitfalls: ['Standard multi-source BFS. Each 0 is "covered" when a 1 spreads to it. Count layers needed.'],
+    example: {
+      input: 'matrix = [[0,1],[1,0]]',
+      steps: [
+        'Zero at (0,0): right is 1 → +1; bottom is 1 → +1.',
+        'Zero at (1,1): left is 1 → +1; top is 1 → +1.',
+        'Total coverage = 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Check array bounds before each neighbor access.',
+      'Only four directions — diagonals do not count.',
+      'This is adjacency counting, not multi-source BFS distance.',
+    ],
   },
 
   'delete-alternate-nodes': {
