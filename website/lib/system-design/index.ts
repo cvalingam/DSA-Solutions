@@ -9,6 +9,11 @@ import loadBalancing from './load-balancing-and-scaling'
 import designNewsFeed from './design-news-feed'
 import designChatMessaging from './design-chat-messaging'
 import apiDesignRest from './api-design-rest-interviews'
+import designNotificationSystem from './design-notification-system'
+import designUniqueIdGenerator from './design-unique-id-generator'
+import designTypeaheadAutocomplete from './design-typeahead-autocomplete'
+import designFileStorageDropbox from './design-file-storage-dropbox'
+import messageQueuesAsync from './message-queues-async-processing'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -22,6 +27,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designNewsFeed,
   designChatMessaging,
   apiDesignRest,
+  designUniqueIdGenerator,
+  messageQueuesAsync,
+  designNotificationSystem,
+  designTypeaheadAutocomplete,
+  designFileStorageDropbox,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

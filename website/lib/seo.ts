@@ -283,7 +283,7 @@ export function buildSystemDesignHubSchema(
     '@type': 'CollectionPage',
     name: 'System Design Interview Guide',
     description:
-      `${articleCount} practical system design articles for coding interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, SQL vs NoSQL, load balancing, and API design.`,
+      `${articleCount} practical system design articles for coding interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, notifications, file storage, typeahead, Snowflake IDs, Kafka, SQL vs NoSQL, load balancing, and API design.`,
     url: `${SITE_URL}/system-design`,
     author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
     numberOfItems: articleCount,

@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'system design interview',
       'system design',
       article.category === 'case-study' ? 'system design case study' : 'system design fundamentals',
+      ...(article.seoKeywords ?? []),
     ],
     alternates: { canonical: `/system-design/${article.slug}` },
     openGraph: {
@@ -58,7 +59,7 @@ export default function SystemDesignArticlePage({ params }: Props) {
     dateModified: article.published,
     image: `${SITE_URL}/opengraph-image`,
     articleSection: 'System Design',
-    keywords: article.title,
+    keywords: article.seoKeywords?.join(', ') ?? article.title,
   }
 
   const breadcrumbLd = buildSystemDesignBreadcrumb(article.slug, article.title)

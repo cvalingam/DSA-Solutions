@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 10 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 15 Practical Articles for Developers',
   description:
-    'System design interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, SQL vs NoSQL, load balancing, and REST API design — written for developers who practise LeetCode.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, notifications, file storage, typeahead, Snowflake IDs, Kafka, caching, SQL vs NoSQL, load balancing, and REST API design.',
   keywords: [
     'system design interview',
     'system design',
@@ -17,15 +17,20 @@ export const metadata: Metadata = {
     'rate limiter design',
     'news feed system design',
     'chat system design',
+    'notification system design',
+    'file storage system design',
+    'autocomplete system design',
+    'Snowflake ID generator',
+    'Kafka system design',
     'SQL vs NoSQL',
     'load balancing',
     'REST API design',
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 10 Articles',
+    title: 'System Design Interview Guide — 15 Articles',
     description:
-      'Practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '15 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -115,6 +120,11 @@ export default function SystemDesignHubPage() {
           <li>Design a News Feed — fan-out on write vs read and the celebrity problem</li>
           <li>Design a Chat / Messaging System — WebSockets, delivery, and groups</li>
           <li>API Design and REST Best Practices — endpoints interviewers expect you to name</li>
+          <li>Design a Unique ID Generator — Snowflake, UUID, and when to use each</li>
+          <li>Message Queues and Async Processing — Kafka, ordering, and idempotent consumers</li>
+          <li>Design a Notification System — push, email, SMS, and idempotency</li>
+          <li>Design Typeahead / Autocomplete — trie, ranking, and hot-prefix caching</li>
+          <li>Design File Storage (Dropbox) — chunked upload, metadata vs blobs, sync</li>
         </ol>
       </section>
 

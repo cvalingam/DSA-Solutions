@@ -158,7 +158,7 @@ article.sections.push(
   },
   {
     type: 'p',
-    text: 'Next in this series: [URL shortener](/system-design/design-url-shortener), [rate limiter](/system-design/design-rate-limiter), [caching](/system-design/caching-fundamentals-for-interviews), then [news feed](/system-design/design-news-feed) and [chat](/system-design/design-chat-messaging). For fundamentals, read [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews), [load balancing](/system-design/load-balancing-and-scaling), and [API design](/system-design/api-design-rest-interviews). Practise one design per week out loud.',
+    text: 'Next in this series: case studies ([URL shortener](/system-design/design-url-shortener), [rate limiter](/system-design/design-rate-limiter), [news feed](/system-design/design-news-feed), [chat](/system-design/design-chat-messaging), [notifications](/system-design/design-notification-system), [file storage](/system-design/design-file-storage-dropbox), [typeahead](/system-design/design-typeahead-autocomplete)) and fundamentals ([caching](/system-design/caching-fundamentals-for-interviews), [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews), [load balancing](/system-design/load-balancing-and-scaling), [API design](/system-design/api-design-rest-interviews), [unique IDs](/system-design/design-unique-id-generator), [message queues](/system-design/message-queues-async-processing)). Practise one design per week out loud.',
   },
   { type: 'h2', text: 'A sample opening (first three minutes)' },
   {

@@ -14,5 +14,6 @@ export interface SystemDesignArticle {
   readMinutes: number
   published: string
   category: 'fundamentals' | 'case-study' | 'bridge'
+  seoKeywords?: string[]
   sections: ArticleBlock[]
 }
