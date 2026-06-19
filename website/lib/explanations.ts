@@ -7946,6 +7946,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1732: {
+    intuition:
+      'The biker begins at altitude 0 before any road segment. Each gain[i] adds to the current altitude — that is a prefix sum over the gain array. The highest altitude is the maximum prefix sum encountered, including the starting altitude 0 before the first segment.',
+    algorithm: [
+      'Set ans = 0 and currAltitude = 0 (starting point).',
+      'For each g in gain: add g to currAltitude.',
+      'Update ans = max(ans, currAltitude) after each step.',
+      'Return ans.',
+    ],
+    example: {
+      input: 'gain = [-5, 1, 5, 0, -7]',
+      steps: [
+        'Start at altitude 0 → ans = 0.',
+        'After -5 → altitude -5 → ans still 0.',
+        'After +1 → altitude -4.',
+        'After +5 → altitude 1 → ans = 1.',
+        'After 0 → altitude 1.',
+        'After -7 → altitude -6.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Initialize ans to 0 — the answer can be 0 if the biker never climbs above the start.',
+      'Update the maximum after each gain, not only at the end.',
+      'Do not assume the peak is at the last index.',
+    ],
+  },
+
   3614: {
     intuition:
       'The processed string can grow exponentially, so building it is impossible. Instead, run two passes on the operation string. First pass computes only the final length m by simulating * (delete last), # (double length), and letter inserts; % does not change length. If k >= m, return ".". Second pass walks backward: undo each operator to map index k to the correct position — % mirrors k (k = m - 1 - k), # maps the second half to the first, * restores a deleted slot, and letters are returned when k equals the current length after shrinking.',

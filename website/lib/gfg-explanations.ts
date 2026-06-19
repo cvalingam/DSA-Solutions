@@ -3700,6 +3700,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Two binary searches. Same as LC 34 extended to a range. O(log n).'],
   },
 
+  'equalize-all-prefix-sums': {
+    intuition:
+      'For each prefix arr[0..i], the optimal target to minimize total adjustment cost is the middle element arr[j] where j = floor(i/2). Split the prefix into a left segment [0..j] and right segment [j+1..i]. The cost to make every element equal to arr[j] is the sum of absolute differences on both sides, computed in O(1) with running prefix sums.',
+    algorithm: [
+      'Maintain sumUpToI (prefix sum through index i) and sumUpToHalf (prefix sum through j = i/2).',
+      'When i is even, extend sumUpToHalf by arr[i/2] and set j = i/2.',
+      'Let midEle = arr[j], leftSize = j + 1, rightSize = i - j.',
+      'leftCost = |midEle * leftSize - sumUpToHalf|.',
+      'rightCost = |(sumUpToI - sumUpToHalf) - midEle * rightSize|.',
+      'Append leftCost + rightCost to the answer for this prefix.',
+    ],
+    example: {
+      input: 'arr = [2, 4, 6]',
+      steps: [
+        'i = 0: j = 0, single element → cost 0.',
+        'i = 1: j = 0, left [2] cost 0, right [4] needs |4 − 2| = 2 → total 2.',
+        'i = 2: j = 1, left [2,4] with target 4 costs |6 − 8| = 2, right [6] costs |6 − 4| = 2 → total 4.',
+      ],
+      output: '[0, 2, 4]',
+    },
+    pitfalls: [
+      'Extend sumUpToHalf only on even i — j stays floor(i/2) on odd indices.',
+      'rightWindowSum = sumUpToI − sumUpToHalf, not a separate loop.',
+      'Use long if values are large enough to overflow int products.',
+    ],
+  },
+
   'equalize-the-towers': {
     intuition: 'Minimum cost to equalize tower heights where cost = sum of |final - original| for each tower.',
     algorithm: [
