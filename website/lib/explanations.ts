@@ -7946,6 +7946,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1840: {
+    intuition:
+      'Buildings sit on positions 1..n. Height can change by at most 1 per step, and position 1 starts at height 0 — so position i can never exceed i − 1 without restrictions. Each restriction [id, height] caps that position. After adding sentinels at (1, 0) and (n, n − 1), propagate caps left-to-right and right-to-left so neighboring limits are consistent with the slope-1 rule. The maximum height between two consecutive caps is the peak of the best “mountain” that fits between them.',
+    algorithm: [
+      'Append sentinels [1, 0] and [n, n − 1] to restrictions; sort by position then height.',
+      'Forward: for i = 1..end, set cap[i] = min(cap[i], cap[i−1] + position[i] − position[i−1]).',
+      'Backward: for i = end−1..0, set cap[i] = min(cap[i], cap[i+1] + position[i+1] − position[i]).',
+      'For each adjacent pair (l, hL) and (r, hR), update ans with max(hL, hR) + (r − l − |hL − hR|) / 2.',
+      'Return ans.',
+    ],
+    example: {
+      input: 'n = 5, restrictions = [[2,1],[4,1]]',
+      steps: [
+        'Sentinels → (1,0), (2,1), (4,1), (5,4). Forward/backward passes keep caps (1,0), (2,1), (4,1), (5,2).',
+        'Segment 1→2: max(0,1) + (1 − 1)/2 = 1.',
+        'Segment 2→4: max(1,1) + (2 − 0)/2 = 2.',
+        'Segment 4→5: max(1,2) + (1 − 1)/2 = 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Include sentinel at position 1 with height 0 — the problem starts there.',
+      'Position n is capped at n − 1 by the slope rule even without user restrictions.',
+      'Integer division in the peak formula — (r − l − |hL − hR|) must be even when caps are feasible.',
+    ],
+  },
+
   1732: {
     intuition:
       'The biker begins at altitude 0 before any road segment. Each gain[i] adds to the current altitude — that is a prefix sum over the gain array. The highest altitude is the maximum prefix sum encountered, including the starting altitude 0 before the first segment.',

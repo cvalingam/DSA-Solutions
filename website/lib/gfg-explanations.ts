@@ -3453,6 +3453,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 525. Transform then use prefix sum hashmap. Initialize map with {0: -1}.'],
   },
 
+  'last-digit-of-ab': {
+    intuition:
+      'The last digit of a^b depends only on the last digit of a and the exponent modulo 4 (for bases 2, 3, 7, 8). a and b can be huge strings — never parse them fully. Special cases: b = "0" gives last digit 1; a = "0" gives 0. Reduce b using its last two digits mod 4; if the remainder is 0, use 4 instead so the power cycle is correct.',
+    algorithm: [
+      'If b equals "0", return 1.',
+      'If a equals "0", return 0.',
+      'Let num1 = last digit of a.',
+      'Let num2 = last two digits of b (or last digit if shorter); set num2 = num2 % 4, then if num2 == 0 use 4.',
+      'Return (num1^num2) % 10.',
+    ],
+    example: {
+      input: 'a = "12", b = "34"',
+      steps: [
+        'Last digit of a → 2.',
+        'Last two digits of b → 34; 34 % 4 = 2.',
+        '2^2 = 4 → last digit 4.',
+        'Check: 12^34 ends in 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'b = "0" means a^0 → last digit 1, not 0.',
+      'When b % 4 == 0, use exponent 4 — a^0 would break the 2/3/7/8 cycle.',
+      'Only the last one or two digits of b are needed for mod 4; do not use BigInteger for full b.',
+    ],
+  },
+
   'last-moment-before-all-ants-fall-out': {
     intuition: 'Ants on a plank walk to edges; when they collide they reverse. Key insight: collision = pass-through. Answer = max distance any ant travels.',
     algorithm: [
