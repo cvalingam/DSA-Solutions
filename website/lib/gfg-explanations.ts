@@ -4159,6 +4159,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 1463 (Cherry Pickup II). DP[r][c1][c2]. O(n*m^2) with memoization.'],
   },
 
+  'choose-and-swap': {
+    intuition:
+      'You may perform one global swap: pick two distinct letters and replace every occurrence of the first with the second and vice versa. To get the lexicographically smallest result, scan from \'a\' upward. The first time the string at index i is not the smallest letter still available, swapping that position\'s letter with the missing smaller letter is the optimal single swap.',
+    algorithm: [
+      'Count frequency of each lowercase letter.',
+      'Scan letters f from 0 to 25; advance index i past matching letters.',
+      'When freq[f] > 0 and s[i] != (char)(f + \'a\'), set first = (char)(f + \'a\'), second = s.charAt(i), and break.',
+      'If no pair found, return s.',
+      'Build result swapping every first ↔ second in the string.',
+    ],
+    example: {
+      input: 's = "ccad"',
+      steps: [
+        'At f = 0 (letter a): i = 0, s[0] = \'c\' != \'a\'.',
+        'Swap all a ↔ c: "ccad" → "aacd".',
+        'That is the best single global swap.',
+      ],
+      output: '"aacd"',
+    },
+    pitfalls: [
+      'Swap is global — every occurrence of both letters changes, not just one index.',
+      'If first or second stays \'0\', the string is already optimal — return s.',
+      'Single-character strings need no swap — return s immediately.',
+    ],
+  },
+
   'clone-list-with-next-and-random': {
     intuition: 'Deep clone linked list with next and random pointers. Interleave cloned nodes then separate.',
     algorithm: [

@@ -7946,6 +7946,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1833: {
+    intuition:
+      'Buy as many ice cream bars as possible with a fixed coin budget. Each bar has a cost — always take the cheapest available bars first. Sort costs ascending, subtract each cost from coins while you can afford it, and stop at the first bar that exceeds the remaining coins. The index where you stop is the count of bars bought.',
+    algorithm: [
+      'Sort costs in ascending order.',
+      'Loop i from 0 to n − 1: if coins >= costs[i], subtract costs[i]; else return i.',
+      'If the loop finishes, return costs.Length (afforded all bars).',
+    ],
+    example: {
+      input: 'costs = [1,3,2,4,1], coins = 7',
+      steps: [
+        'Sorted costs → [1, 1, 2, 3, 4].',
+        'Buy at 1 → coins = 6 (count 1).',
+        'Buy at 1 → coins = 5 (count 2).',
+        'Buy at 2 → coins = 3 (count 3).',
+        'Buy at 3 → coins = 0 (count 4).',
+        'Cannot afford 4 → return 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Sort first — greedy on unsorted costs is wrong.',
+      'Return the index i when you cannot afford costs[i], not i − 1.',
+      'If all bars fit, return costs.Length, not costs.Length − 1.',
+    ],
+  },
+
   1840: {
     intuition:
       'Buildings sit on positions 1..n. Height can change by at most 1 per step, and position 1 starts at height 0 — so position i can never exceed i − 1 without restrictions. Each restriction [id, height] caps that position. After adding sentinels at (1, 0) and (n, n − 1), propagate caps left-to-right and right-to-left so neighboring limits are consistent with the slope-1 rule. The maximum height between two consecutive caps is the peak of the best “mountain” that fits between them.',
