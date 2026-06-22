@@ -65,7 +65,7 @@ const jsonLd = {
       name: 'How do I prepare for system design interviews?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Start after you are comfortable with core DSA patterns. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, news feed, chat). DSA Solutions publishes 15 in-depth system design articles at dsasolved.com/system-design, including notifications, file storage, typeahead, Snowflake IDs, Kafka, SQL vs NoSQL, load balancing, and how LeetCode patterns map to real infrastructure.',
+        text: 'Start after you are comfortable with core DSA patterns. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, news feed, chat). DSA Solutions publishes 20 in-depth system design articles at dsasolved.com/system-design, including payments, Uber, web crawler, CAP theorem, sharding, notifications, Kafka, and how LeetCode patterns map to real infrastructure.',
       },
     },
   ],
@@ -133,7 +133,7 @@ const faqs: { q: string; a: React.ReactNode }[] = [
           Start after you are comfortable with core DSA patterns — usually week 8–10 of a structured prep plan. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, chat system). The goal is structured communication, not memorising AWS service names.
         </p>
         <p className="mt-2">
-          Our <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design section</Link> has 15 in-depth articles — frameworks, case studies (URL shortener, rate limiter, news feed, chat, notifications, file storage, typeahead), and fundamentals (caching, SQL vs NoSQL, load balancing, Kafka, Snowflake IDs, API design).
+          Our <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design section</Link> has 20 in-depth articles — frameworks, case studies (URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, notifications, file storage, typeahead), and fundamentals (caching, CAP theorem, sharding, Kafka, Snowflake IDs, SQL vs NoSQL, load balancing, API design).
         </p>
       </>
     ),

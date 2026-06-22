@@ -14,6 +14,11 @@ import designUniqueIdGenerator from './design-unique-id-generator'
 import designTypeaheadAutocomplete from './design-typeahead-autocomplete'
 import designFileStorageDropbox from './design-file-storage-dropbox'
 import messageQueuesAsync from './message-queues-async-processing'
+import designWebCrawler from './design-web-crawler'
+import designRideHailingUber from './design-ride-hailing-uber'
+import capTheoremConsistency from './cap-theorem-consistency-models'
+import databaseShardingReplication from './database-sharding-replication'
+import designPaymentSystem from './design-payment-system'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -32,6 +37,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designNotificationSystem,
   designTypeaheadAutocomplete,
   designFileStorageDropbox,
+  designWebCrawler,
+  designRideHailingUber,
+  capTheoremConsistency,
+  databaseShardingReplication,
+  designPaymentSystem,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 15 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 20 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, notifications, file storage, typeahead, Snowflake IDs, Kafka, caching, SQL vs NoSQL, load balancing, and REST API design.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -22,15 +22,20 @@ export const metadata: Metadata = {
     'autocomplete system design',
     'Snowflake ID generator',
     'Kafka system design',
+    'payment system design',
+    'Uber system design',
+    'web crawler system design',
+    'CAP theorem',
+    'database sharding',
     'SQL vs NoSQL',
     'load balancing',
     'REST API design',
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 15 Articles',
+    title: 'System Design Interview Guide — 20 Articles',
     description:
-      '15 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '20 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -125,6 +130,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Notification System — push, email, SMS, and idempotency</li>
           <li>Design Typeahead / Autocomplete — trie, ranking, and hot-prefix caching</li>
           <li>Design File Storage (Dropbox) — chunked upload, metadata vs blobs, sync</li>
+          <li>Design a Web Crawler — URL frontier, politeness, and deduplication</li>
+          <li>Design Ride Hailing (Uber) — geospatial matching and trip state machine</li>
+          <li>Design a Payment System — idempotency, ledger, and authorize/capture</li>
+          <li>CAP Theorem and Consistency Models — CP vs AP per component</li>
+          <li>Database Sharding and Replication — shard keys, replicas, and hot spots</li>
         </ol>
       </section>
 
