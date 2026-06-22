@@ -4653,6 +4653,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 1870 / allocation problems. Sort, then binary search on gap, greedy feasibility check.'],
   },
 
+  'maximum-area-between-bars': {
+    intuition:
+      'Given bar heights, find the largest rectangular area strictly between two bars (not including the bars themselves). With pointers i and j, the width is j − i − 1 and height is limited by the shorter bar — same two-pointer idea as container with water, but width excludes both endpoints. Move the pointer at the shorter bar inward.',
+    algorithm: [
+      'Set i = 0, j = n − 1, area = 0.',
+      'While i < j: update area with min(height[i], height[j]) * (j − i − 1).',
+      'If height[i] <= height[j], increment i; else decrement j.',
+      'Return area.',
+    ],
+    example: {
+      input: 'height = [2, 5, 1, 3, 4]',
+      steps: [
+        'i=0, j=4: min(2,4)*3 = 6.',
+        'Move i (shorter left): i=1, j=4: min(5,4)*2 = 8.',
+        'Move j: continue until i >= j.',
+        'Maximum area between bars = 8.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Width is (j − i − 1), not (j − i) — bars at i and j are excluded.',
+      'Move the shorter side; keeping the short bar fixes the height cap.',
+      'Empty or single-bar lists need no special two-pointer loop.',
+    ],
+  },
+
   'maximum-difference': {
     intuition: 'Find maximum difference arr[j] - arr[i] where j > i. Track running minimum from left.',
     algorithm: [

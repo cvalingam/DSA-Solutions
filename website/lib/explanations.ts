@@ -3841,6 +3841,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Level is 1-indexed. Return first level with max sum if there are ties.'],
   },
 
+  1189: {
+    intuition:
+      'Each "balloon" uses one b, one a, one n, and two each of l and o. Count every letter in text, then see how many complete words you can form. The bottleneck is whichever required letter runs out first — l and o each contribute count/2 because two are needed per word.',
+    algorithm: [
+      'Count frequency of each lowercase letter in text.',
+      'Initialize ans to a large value.',
+      'For b, a, n: ans = min(ans, count[letter]).',
+      'For o and l: ans = min(ans, count[letter] / 2).',
+      'Return ans.',
+    ],
+    example: {
+      input: 'text = "nlaebolko"',
+      steps: [
+        'Counts: b=1, a=1, l=2, o=2, n=1 (and extras).',
+        'b, a, n each allow 1 word.',
+        'l: 2/2 = 1, o: 2/2 = 1.',
+        'Minimum quota = 1 → one "balloon".',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'l and o need integer division by 2 — two per balloon.',
+      'Do not forget n — it is easy to only check b, a, l, o.',
+      'Initialize ans with int.MaxValue before taking mins.',
+    ],
+  },
+
   1190: {
     intuition: 'Stack-based: on close paren, pop until open paren, reverse, push back. Build result from remaining characters.',
     algorithm: [
