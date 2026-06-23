@@ -19,6 +19,11 @@ import designRideHailingUber from './design-ride-hailing-uber'
 import capTheoremConsistency from './cap-theorem-consistency-models'
 import databaseShardingReplication from './database-sharding-replication'
 import designPaymentSystem from './design-payment-system'
+import designVideoStreamingNetflix from './design-video-streaming-netflix'
+import designSearchEngine from './design-search-engine'
+import designTicketBookingSystem from './design-ticket-booking-system'
+import designDistributedCacheRedis from './design-distributed-cache-redis'
+import designEcommerceShoppingCart from './design-ecommerce-shopping-cart'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -42,6 +47,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   capTheoremConsistency,
   databaseShardingReplication,
   designPaymentSystem,
+  designVideoStreamingNetflix,
+  designSearchEngine,
+  designTicketBookingSystem,
+  designDistributedCacheRedis,
+  designEcommerceShoppingCart,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

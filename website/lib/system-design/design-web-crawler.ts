@@ -127,7 +127,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Handoff to indexer' },
     {
       type: 'p',
-      text: 'Crawler does not rank pages — it produces `(url, content_hash, fetch_time, raw_html_s3_key)` events on a [Kafka topic](/system-design/message-queues-async-processing). Indexer tokenizes, builds inverted index, computes PageRank offline. Decouple so fetch spikes do not block indexing. Poison pages (infinite SPA shells) detected by content-type and size limits.',
+      text: 'Crawler does not rank pages — it produces `(url, content_hash, fetch_time, raw_html_s3_key)` events on a [Kafka topic](/system-design/message-queues-async-processing). Indexer tokenizes, builds inverted index, computes PageRank offline. See [search engine design](/system-design/design-search-engine) for the query side. Decouple so fetch spikes do not block indexing. Poison pages (infinite SPA shells) detected by content-type and size limits.',
     },
     { type: 'h2', text: 'Latency budget per fetch' },
     {

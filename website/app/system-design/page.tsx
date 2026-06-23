@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 20 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 25 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     'payment system design',
     'Uber system design',
     'web crawler system design',
+    'Netflix system design',
+    'search engine system design',
+    'ticket booking system design',
+    'Redis system design',
+    'e-commerce system design',
     'CAP theorem',
     'database sharding',
     'SQL vs NoSQL',
@@ -33,9 +38,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 20 Articles',
+    title: 'System Design Interview Guide — 25 Articles',
     description:
-      '20 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '25 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -135,6 +140,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Payment System — idempotency, ledger, and authorize/capture</li>
           <li>CAP Theorem and Consistency Models — CP vs AP per component</li>
           <li>Database Sharding and Replication — shard keys, replicas, and hot spots</li>
+          <li>Design a Video Streaming Platform (Netflix) — transcoding, HLS, and CDN delivery</li>
+          <li>Design a Search Engine — inverted index, ranking, and query fan-out</li>
+          <li>Design a Ticket Booking System — seat holds, flash sales, and strong consistency</li>
+          <li>Design a Distributed Cache (Redis) — consistent hashing, eviction, and stampede</li>
+          <li>Design an E-Commerce Platform — catalog, cart, inventory, and checkout</li>
         </ol>
       </section>
 

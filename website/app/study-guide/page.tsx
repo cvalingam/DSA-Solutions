@@ -323,7 +323,7 @@ export default function StudyGuidePage() {
           <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline font-medium">
             System Design section
           </Link>{' '}
-          with 20 human-written articles: interview framework, URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, notifications, file storage, typeahead, CAP theorem, sharding, Snowflake IDs, Kafka, caching, SQL vs NoSQL, load balancing, API design, and how LeetCode patterns translate to production systems.
+          with 25 human-written articles: interview framework, URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, notifications, file storage, typeahead, CAP theorem, sharding, Snowflake IDs, Kafka, caching, SQL vs NoSQL, load balancing, API design, and how LeetCode patterns translate to production systems.
         </p>
         <Link
           href="/system-design"
