@@ -111,7 +111,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '10K payments/sec peak × 500 bytes metadata ≈ 5 MB/sec to ledger DB — need sharded ledger or partitioned table by merchant_id. Idempotency Redis: 10K keys/sec × 1 KB × 24h ≈ few GB memory. Processor API often limits TPS — queue bursts and smooth with [rate limiter](/system-design/design-rate-limiter) on outbound calls.',
+      text: '10K payments/sec peak × 500 bytes metadata ≈ 5 MB/sec to ledger DB — need sharded ledger or partitioned table by merchant_id. Idempotency Redis: most keys are retries of the same operation, so steady-state memory is far below worst case; budget for unique keys during peak hour, not 24h of unique IDs per second. Processor API often limits TPS — queue bursts and smooth with [rate limiter](/system-design/design-rate-limiter) on outbound calls.',
     },
     { type: 'h2', text: 'API sketch' },
     {

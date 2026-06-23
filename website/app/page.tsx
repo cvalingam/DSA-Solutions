@@ -4,6 +4,7 @@ import ProblemList from '@/components/ProblemList'
 import { Suspense } from 'react'
 import { SITE_URL } from '@/lib/constants'
 import explanations from '@/lib/explanations'
+import { hasSubstantialLcExplanation } from '@/lib/content-quality'
 import { buildCollectionPageSchema, getSiteStats } from '@/lib/seo'
 
 const { lcCount, gfgCount } = getSiteStats()
@@ -32,7 +33,9 @@ function LoadingFallback() {
 
 export default function HomePage() {
   const problems = getAllProblemsMeta()
-  const explanationNums = new Set(Object.keys(explanations).map(Number))
+  const explanationNums = new Set(
+    Object.keys(explanations).map(Number).filter(hasSubstantialLcExplanation),
+  )
 
   const collectionJsonLd = buildCollectionPageSchema(
     'LeetCode Solutions',

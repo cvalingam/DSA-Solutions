@@ -126,7 +126,7 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Hot keys (mention if senior loop)',
-      text: 'One viral API key creates a Redis hot key — single shard overloaded. Mitigations: shard counters as rate_limit:{clientId}:{ruleId}:{shard} where shard = hash(requestId) % N, then aggregate allowances; or use Redis Cluster so keys hash to different nodes automatically.',
+      text: 'One viral API key creates a Redis hot key — single shard overloaded. Mitigations: local token bucket per gateway node with periodic sync to Redis; dedicate a replica for read-heavy hot keys; or rate-limit at the API gateway before Redis. Do not shard one client\'s counter by request ID — that bypasses the limit entirely.',
     },
     { type: 'h2', text: 'Response contract' },
     {

@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
+import { countQualityGfgExplanations, countRichLcExplanations } from '@/lib/content-quality'
 
 export const metadata: Metadata = {
   title: 'About DSA Solutions',
@@ -15,6 +16,8 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
+  const lcExplained = countRichLcExplanations()
+  const gfgExplained = countQualityGfgExplanations()
   return (
     <div className="max-w-2xl mx-auto py-10">
 
@@ -57,7 +60,7 @@ export default function AboutPage() {
         </p>
         <ul className="space-y-3">
           {[
-            ['Explanation first', '600+ problems include full step-by-step explanations (intuition, algorithm, examples, pitfalls). Remaining pages include approach notes and complexity analysis.'],
+            ['Explanation first', `${lcExplained}+ LeetCode and ${gfgExplained}+ GFG problems include full step-by-step explanations (intuition, algorithm, examples, pitfalls). Other solution pages include approach notes and complexity where available.`],
             ['Complexity stated explicitly', 'Time and Space complexity are shown as badges on every solution page.'],
             ['Idiomatic C# code', 'Solutions use the most readable C# idiom available — not a Java translation. The goal is code that a .NET engineer would write and be comfortable reviewing.'],
             ['Daily updates', 'New solutions for LeetCode and GeeksforGeeks POTD are added every day.'],
@@ -76,7 +79,7 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">What you will find here</h2>
         <ul className="space-y-2">
           {[
-            '600+ LeetCode problems with full step-by-step explanations (intuition, algorithm steps, examples)',
+            `${lcExplained}+ LeetCode problems with full step-by-step explanations (intuition, algorithm steps, examples)`,
             'Approach notes and complexity on every indexed solution page',
             'Topic pages for 60+ DSA patterns (Array, DP, Trees, Graphs, and more)',
             'Difficulty filtering and instant search to find any problem in seconds',

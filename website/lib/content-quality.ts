@@ -5,12 +5,38 @@ import type { Problem } from './problems'
 import type { GfgProblem } from './gfg-problems'
 import { TAG_LABELS, type Tag } from './tags'
 
-/** Minimum characters in an approach comment to count as substantive. */
-export const MIN_APPROACH_CHARS = 60
+/** Minimum characters in an approach comment to count as substantive (AdSense / thin-content bar). */
+export const MIN_APPROACH_CHARS = 120
+
+/** Minimum words across intuition, algorithm, example, and pitfalls for a “full” explanation. */
+export const MIN_RICH_WORDS = 80
+
+export function countRichExplanationWords(exp: RichExplanation): number {
+  const text = [
+    exp.intuition,
+    ...exp.algorithm,
+    ...(exp.example?.steps ?? []),
+    ...(exp.pitfalls ?? []),
+  ].join(' ')
+  return text.trim() ? text.trim().split(/\s+/).length : 0
+}
+
+export function isSubstantialRichExplanation(exp: RichExplanation): boolean {
+  return (
+    !!exp.intuition &&
+    exp.algorithm.length > 0 &&
+    countRichExplanationWords(exp) >= MIN_RICH_WORDS
+  )
+}
 
 export function hasRichLcExplanation(number: number): boolean {
   const exp = explanations[number]
   return !!exp?.intuition && exp.algorithm.length > 0
+}
+
+export function hasSubstantialLcExplanation(number: number): boolean {
+  const exp = explanations[number]
+  return !!exp && isSubstantialRichExplanation(exp)
 }
 
 /** GFG entry whose algorithm is only a LeetCode cross-reference. */
@@ -48,7 +74,7 @@ export function resolveGfgExplanation(slug: string): RichExplanation | undefined
 export function hasQualityGfgExplanation(slug: string): boolean {
   const exp = resolveGfgExplanation(slug)
   if (!exp) return false
-  return !!exp.intuition && exp.algorithm.length > 0 && !isGfgExplanationStub(exp)
+  return isSubstantialRichExplanation(exp) && !isGfgExplanationStub(exp)
 }
 
 export function hasSubstantialApproach(approach?: string): boolean {
@@ -57,8 +83,10 @@ export function hasSubstantialApproach(approach?: string): boolean {
 
 /** Pages safe to index in Google / AdSense review. */
 export function isLcPageIndexable(problem: Problem): boolean {
-  return hasRichLcExplanation(problem.number) ||
+  return (
+    hasSubstantialLcExplanation(problem.number) ||
     (hasSubstantialApproach(problem.approach) && !!problem.complexity)
+  )
 }
 
 export function isGfgPageIndexable(problem: GfgProblem, slug: string): boolean {
@@ -68,7 +96,7 @@ export function isGfgPageIndexable(problem: GfgProblem, slug: string): boolean {
 
 /** Show AdSense units only on pages with full step-by-step explanations. */
 export function shouldShowAdsOnLcPage(problem: Problem): boolean {
-  return hasRichLcExplanation(problem.number)
+  return hasSubstantialLcExplanation(problem.number)
 }
 
 export function shouldShowAdsOnGfgPage(slug: string): boolean {
@@ -112,7 +140,9 @@ export function getTopicStudyTips(tag: Tag, label: string): string {
 }
 
 export function countRichLcExplanations(): number {
-  return Object.keys(explanations).length
+  return Object.keys(explanations).filter(n =>
+    hasSubstantialLcExplanation(Number(n)),
+  ).length
 }
 
 export function countQualityGfgExplanations(): number {

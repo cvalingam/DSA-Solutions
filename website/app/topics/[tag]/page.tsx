@@ -5,8 +5,7 @@ import { getAllTags, getProblemNumbersByTag, TAG_LABELS, TOPIC_DESCRIPTIONS } fr
 import { getAllProblemsMeta } from '@/lib/problems'
 import DifficultyBadge from '@/components/DifficultyBadge'
 import { SITE_URL } from '@/lib/constants'
-import { getTopicStudyTips } from '@/lib/content-quality'
-import explanations from '@/lib/explanations'
+import { getTopicStudyTips, hasSubstantialLcExplanation } from '@/lib/content-quality'
 import type { Tag } from '@/lib/tags'
 
 interface Props {
@@ -51,7 +50,7 @@ export default function TopicPage({ params }: Props) {
 
   const description = TOPIC_DESCRIPTIONS[tag]
   const studyTips = getTopicStudyTips(tag, label)
-  const explained = problems.filter(p => explanations[p.number])
+  const explained = problems.filter(p => hasSubstantialLcExplanation(p.number))
   const starters = explained.filter(p => p.difficulty === 'Easy').slice(0, 5)
   const easy = problems.filter(p => p.difficulty === 'Easy').length
   const medium = problems.filter(p => p.difficulty === 'Medium').length
@@ -148,7 +147,7 @@ export default function TopicPage({ params }: Props) {
                 <span className="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-indigo-700 dark:group-hover:text-indigo-400 transition-colors truncate">
                   {p.title}
                 </span>
-                {explanations[p.number] && (
+                {hasSubstantialLcExplanation(p.number) && (
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" title="Full explanation" />
                 )}
               </span>

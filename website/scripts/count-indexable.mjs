@@ -17,7 +17,7 @@ for (const f of folders) {
   const code = fs.readFileSync(path.join(SOLUTIONS, f, codeFile), 'utf8')
   const approach = code.match(/\/\/ Approach:([\s\S]*?)(?=\/\/ Time:|$)/)?.[1]?.replace(/\/\/\s?/gm, '').trim() || ''
   const hasCx = /\/\/ Time:/.test(code)
-  if (approach.length >= 60 && hasCx) indexable++
+  if (approach.length >= 120 && hasCx) indexable++
   else noindex++
 }
 console.log(JSON.stringify({ total: folders.length, rich: rich.size, indexable, noindex }))

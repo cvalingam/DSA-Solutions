@@ -1927,18 +1927,25 @@ const explanations: Record<number, RichExplanation> = {
   // --- 263. Ugly Number --------------------------------------------------------
   263: {
     intuition:
-      'An ugly number\'s only prime factors are 2, 3, and 5. Repeatedly divide out all factors of 2, then 3, then 5. If the result is 1, it was an ugly number. Non-positive numbers are not ugly.',
+      'An ugly number has no prime factors other than 2, 3, and 5. Divide n by each of those primes repeatedly until it no longer divides evenly. If what remains is 1, n was ugly; any other remainder (e.g. 7) means a forbidden prime factor. Non-positive n is not ugly.',
     algorithm: [
       'If n <= 0, return false.',
-      'For each factor in [2, 3, 5]: while n % factor == 0, n /= factor.',
-      'Return n == 1.',
+      'For each prime in [2, 3, 5]: while n % prime == 0, set n = n / prime.',
+      'After all three loops, return true iff n == 1.',
     ],
     example: {
-      input: 'n = 6',
-      steps: ['6 / 2 = 3. 3 / 3 = 1. Result = 1 -> ugly.'],
-      output: 'true',
+      input: 'n = 14',
+      steps: [
+        '14 / 2 = 7. No further division by 2, 3, or 5.',
+        'Remaining 7 ≠ 1 → 14 has prime factor 7.',
+      ],
+      output: 'false',
     },
-    pitfalls: ['n=1 is ugly (2^0*3^0*5^0). n<=0 is not ugly.'],
+    pitfalls: [
+      'n = 1 is ugly (empty product of 2, 3, 5).',
+      'n <= 0 is not ugly.',
+      'Check factors in any order; division order does not matter.',
+    ],
   },
 
   // --- 264. Ugly Number II -----------------------------------------------------
@@ -2994,11 +3001,27 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 709. To Lower Case ------------------------------------------------------
   709: {
-    intuition: 'For each character, if it\'s uppercase (A-Z), convert to lowercase by adding 32 (or OR with 32).',
+    intuition:
+      'Convert every uppercase letter in the string to lowercase and leave all other characters unchanged. ASCII uppercase A–Z are codes 65–90; lowercase a–z are 97–122 — the offset is 32. In interviews you can mention `ToLowerCase()` in C# or implement the manual loop to show you understand character codes.',
     algorithm: [
-      'For each char c: if c is between A and Z, result += (char)(c + 32). Else result += c.',
+      'Allocate a result builder (or char array) the same length as the input.',
+      'For each character c: if c is between \'A\' and \'Z\', append (char)(c + 32).',
+      'Otherwise append c unchanged (digits, symbols, already-lowercase letters).',
+      'Return the built string.',
     ],
-    pitfalls: ['Or simply use String.toLowerCase(). For manual: uppercase letters are ASCII 65-90, lowercase 97-122.'],
+    example: {
+      input: 's = "Hello"',
+      steps: [
+        'H is uppercase → h (72 + 32 = 104).',
+        'e, l, l, o are already lowercase → unchanged.',
+      ],
+      output: '"hello"',
+    },
+    pitfalls: [
+      'Do not subtract 32 — that would upper-case lowercase letters incorrectly.',
+      'Non-letters must pass through unchanged (spaces, punctuation, digits).',
+      'Unicode letters outside ASCII need culture-aware APIs; this problem assumes ASCII.',
+    ],
   },
 
   // --- 712. Minimum ASCII Delete Sum for Two Strings ---------------------------
@@ -3128,28 +3151,77 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 784. Letter Case Permutation --------------------------------------------
   784: {
-    intuition: 'Backtracking: for each character, if it\'s a letter, branch into lowercase and uppercase versions.',
+    intuition:
+      'Each letter can be lower or upper case; digits stay fixed. Backtracking explores both branches for every letter position. At the end of the string, append the built combination to the answer list.',
     algorithm: [
-      'Recursive DFS: at each position, if digit add as-is. If letter, recurse with lower and upper case.',
-      'Base case: position == length ? add to results.',
+      'DFS from index 0 with a mutable char array (or StringBuilder).',
+      'If current char is a digit, append as-is and recurse to index + 1.',
+      'If current char is a letter, recurse once with lowercase and once with uppercase (toggle with XOR 32 or ToLower/ToUpper).',
+      'When index == length, add the current string to results.',
     ],
-    pitfalls: ['Digits are added without branching. Converting between cases: XOR with 32.'],
+    example: {
+      input: 's = "a1b2"',
+      steps: [
+        'Branch a → A; digit 1 fixed; branch b → B; digit 2 fixed.',
+        'Four combinations: a1b2, a1B2, A1b2, A1B2.',
+      ],
+      output: '["a1b2","a1B2","A1b2","A1B2"]',
+    },
+    pitfalls: [
+      'Do not branch on digits — only letters double the search tree.',
+      'Total combinations up to 2^(number of letters) — fine for small inputs.',
+      'Copy the char array when branching if using shared mutable state.',
+    ],
   },
 
   // --- 788. Rotated Digits -----------------------------------------------------
   788: {
-    intuition: 'A number is "good" if it\'s valid when rotated (all digits are 0,1,2,5,6,8,9) AND different from original (has at least one 2,5,6,9).',
+    intuition:
+      'A rotated digit is valid only for 0, 1, 2, 5, 6, 8, 9 (3, 4, 7 break when flipped upside-down). A "good" number must use only valid digits and contain at least one of 2, 5, 6, or 9 so that rotating 180° produces a different number — all 0/1/8 digits would look the same.',
     algorithm: [
-      'For each n from 1 to N: check if all digits are in {0,1,2,5,6,8,9} and at least one digit is in {2,5,6,9}.',
+      'Loop n from 1 to N inclusive.',
+      'For each n, scan digits: reject if any digit is 3, 4, or 7.',
+      'Track whether any digit is 2, 5, 6, or 9 (forces rotation to differ).',
+      'If both checks pass, increment the count.',
+      'Return total count.',
     ],
-    pitfalls: ['Digits 3,4,7 make a number invalid. Must also have 2,5,6, or 9 to ensure rotated != original.'],
+    example: {
+      input: 'N = 10',
+      steps: [
+        '1, 2, 5, 6, 9 are good among 1..10 (2→5, 5→2, 6→9, 9→6 when rotated).',
+        '0 is invalid as a positive integer in the range; 3, 4, 7 have bad digits.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Digits 3, 4, 7 invalidate the entire number.',
+      'A number made only of 0, 1, 8 rotates to itself — exclude unless a 2/5/6/9 appears.',
+      'Leading zeros do not appear in the integer range 1..N.',
+    ],
   },
 
   // --- 796. Rotate String ------------------------------------------------------
   796: {
-    intuition: 'A is a rotation of B iff A is a substring of B+B.',
-    algorithm: ['Return len(A)==len(B) && (B+B).contains(A).'],
-    pitfalls: ['Check length first. Using KMP or indexOf both work.'],
+    intuition:
+      'String rotation means shifting characters cyclically — e.g. "abcde" rotated by 2 is "cdeab". Key insight: every rotation of B appears as a contiguous substring inside B+B, so A is a rotation of B iff lengths match and A occurs in B+B.',
+    algorithm: [
+      'If A.Length != B.Length, return false immediately.',
+      'Concatenate B + B into one string.',
+      'Return whether that concatenation contains A as a substring (IndexOf / KMP).',
+    ],
+    example: {
+      input: 's = "rotation", goal = "tionrota"',
+      steps: [
+        'Lengths both 8 — OK.',
+        'goal + goal contains "rotation" as substring starting at index 3.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Always check equal lengths first — avoids false positives on different sizes.',
+      'Empty strings: two empty strings are rotations of each other.',
+      'IndexOf is O(n²) worst case; KMP is O(n) if interviewer asks for optimization.',
+    ],
   },
 
   // --- 799. Champagne Tower ----------------------------------------------------
@@ -3424,17 +3496,49 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   905: {
-    intuition: 'Two pointers: move evens to front, odds to back.',
+    intuition:
+      'Partition the array in-place so all even numbers appear before odd numbers. Two pointers from both ends swap misplaced elements — even values belong on the left, odd on the right. Relative order within evens or odds does not need to be preserved.',
     algorithm: [
-      'lo=0, hi=n-1. While lo<hi: if A[lo] is even, lo++. If A[hi] is odd, hi--. Else swap.',
+      'Set lo = 0, hi = n - 1.',
+      'While lo < hi: if A[lo] is even, lo++. Else if A[hi] is odd, hi--. Else swap A[lo] and A[hi], then lo++ and hi--.',
+      'Return the modified array.',
     ],
-    pitfalls: ['In-place O(1) space solution.'],
+    example: {
+      input: 'nums = [3,1,2,4]',
+      steps: [
+        'Swap 3 and 4 → [4,1,2,3]. lo advances past 4, hi past 3.',
+        '1 and 3 are odd/even pair → swap → [4,3,2,1] or similar partition.',
+      ],
+      output: '[4,2,3,1] (any valid even-before-odd order)',
+    },
+    pitfalls: [
+      'Use modulo 2 to test parity: n % 2 == 0.',
+      'O(n) time, O(1) extra space — do not allocate a second array unless allowed.',
+      'Stable order is not required by the problem.',
+    ],
   },
 
   908: {
-    intuition: 'Each element can shift by at most k. Minimum possible score = max(0, max-min-2k).',
-    algorithm: ['Return max(0, max(A) - min(A) - 2*k).'],
-    pitfalls: ['Result cannot be negative.'],
+    intuition:
+      'Each element may be increased or decreased by at most k. The smallest achievable spread is max(A) - min(A) - 2*k — we can raise the minimum by k and lower the maximum by k. If that value is negative, the answer is 0.',
+    algorithm: [
+      'Find min and max of the array.',
+      'Compute candidate = max - min - 2 * k.',
+      'Return max(0, candidate).',
+    ],
+    example: {
+      input: 'nums = [1,3,6], k = 3',
+      steps: [
+        'max - min = 5. With k = 3, can shrink spread by 6 at most in theory, but bound is 2k = 6.',
+        '5 - 6 = -1 → clamp to 0.',
+      ],
+      output: '0',
+    },
+    pitfalls: [
+      'Result is never negative — use max(0, ...).',
+      'Single-element array always yields 0.',
+      'k = 0 means no change; return max - min.',
+    ],
   },
 
   909: {
@@ -3466,21 +3570,50 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   917: {
-    intuition: 'Two pointers from both ends, skip non-letters, swap letter pairs.',
+    intuition:
+      'Reverse only the letters in the string; keep non-letters (digits, punctuation) in place. Two pointers from both ends swap letter pairs after skipping non-letters inward.',
     algorithm: [
-      'lo=0, hi=n-1. Skip non-letters at each end. Swap if both letters. Advance both pointers.',
+      'Convert string to char array. Set lo = 0, hi = n - 1.',
+      'While lo < hi: advance lo past non-letters; advance hi past non-letters.',
+      'If lo < hi, swap s[lo] and s[hi]. Increment lo and decrement hi.',
+      'Return new string from char array.',
     ],
-    pitfalls: ['Check lo<hi after skipping to avoid crossing.'],
+    example: {
+      input: 's = "ab-cd"',
+      steps: [
+        'Letters at indices 0,1,3,4 are a,b,c,d. Non-letters: hyphen stays at index 2.',
+        'Swap a↔d and b↔c around the fixed hyphen → "dc-ba".',
+      ],
+      output: '"dc-ba"',
+    },
+    pitfalls: [
+      'Re-check lo < hi after skipping — pointers can cross.',
+      'Only swap when both positions hold letters.',
+      'Strings are immutable in Java — use char[] in place.',
+    ],
   },
 
   921: {
-    intuition: 'Count unmatched opens and closes. Each needs one addition.',
+    intuition:
+      'Scan left to right maintaining how many unmatched opening parentheses remain. A closing bracket without a matching open must be fixed by inserting an open earlier; leftover opens need closing brackets appended. Minimum additions = unmatched opens + unmatched closes.',
     algorithm: [
-      'open=0, close=0.',
-      'For open bracket: open++. For close: if open>0, open-- else close++.',
-      'Return open+close.',
+      'Initialize open = 0, close = 0.',
+      'For each char: if \'(\', open++. If \')\' and open > 0, open-- (match). Else close++ (unmatched close).',
+      'Return open + close.',
     ],
-    pitfalls: ['Greedy match close brackets with pending opens first.'],
+    example: {
+      input: 's = "())"',
+      steps: [
+        '\'(\' → open=1. \')\' → open=0. \')\' → close=1 (no open to match).',
+        'Need 1 insert for extra close; 0 leftover opens.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Greedy: always match a close with the nearest pending open.',
+      'Do not count matched pairs toward additions.',
+      'Empty string needs 0 additions.',
+    ],
   },
 
   928: {
@@ -3494,11 +3627,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   944: {
-    intuition: 'Count columns where any adjacent row pair has decreasing characters.',
+    intuition:
+      'Each column must be non-decreasing top to bottom (lexicographically sorted as strings). If any column has a character above a smaller character in the next row, delete that entire column. Count how many columns fail this check.',
     algorithm: [
-      'For each column j: if strs[i][j] > strs[i+1][j] for any i, delete this column.',
+      'For each column index j from 0 to max width - 1:',
+      'Scan rows i from 0 to n-2: if strs[i][j] > strs[i+1][j], increment delete count and break inner loop.',
+      'Return total columns marked for deletion.',
     ],
-    pitfalls: ['Simple per-column check.'],
+    example: {
+      input: 'strs = ["cba","daf","ghi"]',
+      steps: [
+        'Column 0: c>d — delete. Column 1: a<a? a<f OK. Column 2: b<i OK.',
+        'Only column 0 is unsorted.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Delete whole columns, not individual cells.',
+      'Rows may differ in length — problem usually pads or uses same width.',
+      'O(n * m) scan is sufficient.',
+    ],
   },
 
   947: {
@@ -3814,12 +3962,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1128: {
-    intuition: 'Normalize dominoes (min, max). Count pairs with same normalized form using C(n,2).',
+    intuition:
+      'A domino [a,b] is equivalent to [b,a]. Normalize each domino to (min, max) so [2,1] and [1,2] share a key. Count pairs of indices with the same normalized domino using combinations: for frequency f, add f×(f−1)/2.',
     algorithm: [
-      'Normalize: (min(a,b), max(a,b)).',
-      'Frequency map. For freq f: add f*(f-1)/2.',
+      'For each domino [a,b]: key = (min(a,b), max(a,b)) or min*10+max when values are 1–9.',
+      'Increment frequency map for each key.',
+      'For each frequency f: add f * (f - 1) / 2 to the answer.',
+      'Return total equivalent pairs.',
     ],
-    pitfalls: ['Key: min*10+max works since values 1-9.'],
+    example: {
+      input: 'dominoes = [[1,2],[2,1],[3,4],[5,6]]',
+      steps: [
+        '[1,2] and [2,1] normalize to (1,2) — one pair.',
+        '(3,4) and (5,6) each alone — no pairs.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Normalize before counting — order of endpoints does not matter.',
+      'Use long for answer if domino count is large.',
+      'Key encoding min*10+max works when values ≤ 9.',
+    ],
   },
 
   1140: {
@@ -4920,11 +5083,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1920: {
-    intuition: 'Build array where ans[i] = nums[nums[i]]. Simple indexing.',
+    intuition:
+      'The input is a permutation of indices 0..n-1. The answer at position i is the value found by following the permutation once: nums[nums[i]]. This is a direct array lookup — no sorting or modification of the source array required.',
     algorithm: [
-      'For each i: ans[i] = nums[nums[i]].',
+      'Create a new array ans of length n.',
+      'For each index i from 0 to n-1, set ans[i] = nums[nums[i]].',
+      'Return ans without mutating nums (unless the problem allows in-place tricks).',
     ],
-    pitfalls: ['Cannot modify nums in-place without careful handling. Use new array.'],
+    example: {
+      input: 'nums = [0,2,1,5,3,4]',
+      steps: [
+        'ans[0] = nums[nums[0]] = nums[0] = 0.',
+        'ans[1] = nums[nums[1]] = nums[2] = 1.',
+        'ans[2] = nums[nums[2]] = nums[1] = 2.',
+        'Continue similarly for remaining indices.',
+      ],
+      output: '[0,1,2,4,5,3]',
+    },
+    pitfalls: [
+      'Use a new output array — overwriting nums while reading breaks double lookups.',
+      'Indices are 0-based; nums[i] is always a valid index because input is a permutation.',
+      'O(n) time and O(n) space is optimal for this definition.',
+    ],
   },
 
   1930: {
@@ -5523,11 +5703,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2418: {
-    intuition: 'Sort people by height descending. Return sorted names.',
+    intuition:
+      'Each name is paired with a height. Sort by height in descending order and return the names in that order — the tallest person first. This is standard sort-by-key with a custom comparator on the height field while preserving name association.',
     algorithm: [
-      'Zip (name, height), sort by height descending, extract names.',
+      'Build pairs (name[i], height[i]) for each index.',
+      'Sort pairs by height descending (taller first).',
+      'Extract the name from each pair in sorted order into the result array.',
+      'Return the reordered names.',
     ],
-    pitfalls: ['Sort pairs together to maintain correspondence between names and heights.'],
+    example: {
+      input: 'names = ["Mary","John","Emma"], heights = [180,165,170]',
+      steps: [
+        'Pairs: (Mary,180), (John,165), (Emma,170).',
+        'Sort by height: Mary 180, Emma 170, John 165.',
+      ],
+      output: '["Mary","Emma","John"]',
+    },
+    pitfalls: [
+      'Sort pairs together — never sort heights and names independently.',
+      'Stable sort is not required but names must stay matched to heights.',
+      'Equal heights: any order among ties is usually acceptable.',
+    ],
   },
 
   2419: {

@@ -168,7 +168,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity back-of-envelope' },
     {
       type: 'p',
-      text: '10K events/sec × 1KB payload ≈ 10 MB/sec ingress — modest for Kafka. Retain 7 days at 86GB/day per topic tier — tune retention. Partition count ≈ max desired parallel consumers in one group. Too few partitions → consumer scaling ceiling; too many → broker metadata overhead.',
+      text: '10K events/sec × 1KB payload ≈ 10 MB/sec ingress — modest for Kafka. Retain 7 days at roughly 860 GB/day per topic tier at that rate — tune retention. Partition count ≈ max desired parallel consumers in one group. Too few partitions → consumer scaling ceiling; too many → broker metadata overhead.',
     },
     { type: 'h2', text: 'Exactly-once when payments matter' },
     {

@@ -145,7 +145,7 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         '"What if two machines get the same worker ID?" — Partition ID assignment must be exclusive; ZooKeeper ephemeral znodes prevent duplicates.',
-        '"Can IDs run out?" — 64-bit space with timestamp ms is centuries; sequence overflow per ms waits 1ms.',
+        '"Can IDs run out?" — 41-bit millisecond timestamp covers ~69 years from epoch; sequence overflow per ms waits 1ms.',
         '"Why not UUID for messages?" — Fine at moderate scale; Snowflake gives compact numeric sort for indexes.',
         '"How do shards use IDs?" — Each shard generates locally; no central coordinator per insert.',
       ],
