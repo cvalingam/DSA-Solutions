@@ -7804,6 +7804,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3699: {
+    intuition:
+      'Count zigzag arrays of length n with values in [l, r]: adjacent elements differ, and no three consecutive elements are strictly increasing or decreasing. Track the last value and whether the previous step went up or down. If the last step was up, the next value must be smaller (otherwise a < b < c). If the last step was down, the next must be larger. Prefix and suffix sums over values make each extension O(r − l).',
+    algorithm: [
+      'Initialize up[v] and down[v] from all length-2 pairs (a, b) with a ≠ b.',
+      'up[b] counts arrays ending at b with a < b; down[b] counts a > b.',
+      'For each additional position: nextUp[w] = sum of down[v] for v < w (prefix).',
+      'nextDown[w] = sum of up[v] for v > w (suffix).',
+      'Repeat for n − 2 extension steps.',
+      'Return sum of up[v] + down[v] over v ∈ [l, r], modulo 10⁹ + 7.',
+    ],
+    example: {
+      input: 'n = 3, l = 4, r = 5',
+      steps: [
+        'Length-2 pairs: (4,5) and (5,4) only.',
+        'From (5, up): next value must be < 5 → 4 gives [4,5,4].',
+        'From (4, down): next value must be > 4 → 5 gives [5,4,5].',
+        'Total = 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'From “last step up” only allow w < v — not w > v (creates strictly increasing triple).',
+      'Use long for DP counts before the final modulo.',
+      'Initialize with pairs at length 2, then loop n − 2 times (not n − 1).',
+    ],
+  },
+
   3558: {
     intuition:
       'Only the path from node 1 to the deepest reachable node matters, because the answer depends on the maximum number of edges that may be assigned weights. If that path has d edges, each edge can be weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum: flipping any one edge toggles the parity, pairing every even-sum assignment with one odd-sum assignment. So the count is 2^(d-1).',

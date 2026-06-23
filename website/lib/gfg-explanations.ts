@@ -4703,6 +4703,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Combine palindrome detection (Manacher) with non-overlapping interval DP. Consider all odd-length palindromes.'],
   },
 
+  'maximum-number-of-people-defeated': {
+    intuition:
+      'Defeating people 1, 2, …, n costs 1² + 2² + … + n² total power. Given power budget p, find the largest n such that the sum of squares does not exceed p. Use the closed form n(n+1)(2n+1)/6 ≤ p instead of looping and adding squares.',
+    algorithm: [
+      'Start n = 1 and increment while n(n+1)(2n+1) ≤ 6 * p.',
+      'When the inequality fails, return n - 1.',
+      'Equivalently: largest n with sum of squares 1..n at most p.',
+    ],
+    example: {
+      input: 'p = 14',
+      steps: [
+        '1² = 1 ≤ 14 → n = 1 OK.',
+        '1² + 2² = 5 ≤ 14 → n = 2 OK.',
+        '1² + 2² + 3² = 14 ≤ 14 → n = 3 OK.',
+        'Adding 4² would give 30 > 14 → answer n - 1 = 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Compare n(n+1)(2n+1) to 6*p — multiply p by 6 to avoid fractions.',
+      'Return n - 1 after the loop breaks, not n.',
+      'Use int or long for the cubic check; p can be large.',
+    ],
+  },
+
   'maximum-number-of-overlapping-intervals': {
     intuition: 'Find maximum number of intervals that overlap at any single point. Sweep line.',
     algorithm: [
