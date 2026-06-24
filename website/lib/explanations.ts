@@ -2034,17 +2034,25 @@ const explanations: Record<number, RichExplanation> = {
   // --- 303. Range Sum Query  -  Immutable ----------------------------------------
   303: {
     intuition:
-      'Precompute prefix sums: prefix[i] = nums[0]+...+nums[i-1]. Then SumRange(l,r) = prefix[r+1] - prefix[l] in O(1).',
+      'Prefix sums let any range sum query run in O(1) after O(n) preprocessing. prefix[i] stores sum of nums[0..i-1], so sum(l,r) = prefix[r+1] - prefix[l]. The array never changes after construction.',
     algorithm: [
-      'Constructor: prefix[0]=0. For i from 1 to n: prefix[i]=prefix[i-1]+nums[i-1].',
-      'SumRange(l,r): return prefix[r+1]-prefix[l].',
+      'Build prefix array of length n+1 with prefix[0]=0.',
+      'For i from 1 to n: prefix[i] = prefix[i-1] + nums[i-1].',
+      'SumRange(l,r): return prefix[r+1] - prefix[l].',
     ],
     example: {
       input: 'nums = [-2,0,3,-5,2,-1], l=0, r=2',
-      steps: ['prefix=[0,-2,-2,1,-4,-2,-3]. SumRange(0,2)=prefix[3]-prefix[0]=1-0=1.'],
+      steps: [
+        'prefix = [0,-2,-2,1,-4,-2,-3].',
+        'SumRange(0,2) = prefix[3]-prefix[0] = 1-0 = 1.',
+      ],
       output: '1',
     },
-    pitfalls: ['prefix array has length n+1 with prefix[0]=0 as sentinel  -  avoids boundary checks.'],
+    pitfalls: [
+      'prefix has length n+1; prefix[0]=0 sentinel simplifies range formula.',
+      'Use long if values can overflow int in prefix.',
+      'Immutable — no updates to nums after build.',
+    ],
   },
 
   // --- 304. Range Sum Query 2D  -  Immutable -------------------------------------
@@ -2626,13 +2634,29 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 515. Find Largest Value in Each Tree Row --------------------------------
   515: {
-    intuition: 'BFS level by level, tracking the maximum value at each level.',
+    intuition:
+      'Each tree row is a BFS level. Level-order traversal visits nodes left-to-right, top-to-bottom — so grouping by depth naturally yields one row per level. Track the maximum value seen while processing each level before moving to the next.',
     algorithm: [
-      'Standard level-order BFS.',
-      'For each level, track the maximum node value.',
-      'Append max to result for each level.',
+      'If root is null, return empty list.',
+      'BFS queue starting with root.',
+      'For each level: snapshot queue size, initialize rowMax to negative infinity.',
+      'Dequeue exactly that many nodes; update rowMax with each value; enqueue non-null children.',
+      'Append rowMax to result after finishing the level.',
     ],
-    pitfalls: ['Initialize max as Integer.MIN_VALUE, not 0, since values can be negative.'],
+    example: {
+      input: 'root = [1,3,2,5,3,null,9]',
+      steps: [
+        'Level 0: nodes [1] -> max = 1.',
+        'Level 1: nodes [3,2] -> max = 3.',
+        'Level 2: nodes [5,3,9] -> max = 9.',
+      ],
+      output: '[1, 3, 9]',
+    },
+    pitfalls: [
+      'Initialize row max to Integer.MIN_VALUE — node values can be negative.',
+      'Snapshot queue size before the inner loop; dequeuing changes the count mid-level.',
+      'Do not mix nodes from different depths in one iteration.',
+    ],
   },
 
   // --- 539. Minimum Time Difference --------------------------------------------
@@ -2788,13 +2812,25 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 627. Swap Salary --------------------------------------------------------
   627: {
-    intuition: 'SQL UPDATE using CASE or XOR trick to swap \'m\' and \'f\' values.',
+    intuition:
+      'Swap every employee sex from m to f and f to m in one SQL UPDATE. Use CASE or IF — no temporary column needed.',
     algorithm: [
-      'UPDATE Salary SET sex = CASE WHEN sex = "m" THEN "f" ELSE "m" END.',
-      'Or: UPDATE Salary SET sex = IF(sex="m", "f", "m").',
+      'UPDATE Salary SET sex = CASE WHEN sex = \'m\' THEN \'f\' ELSE \'m\' END;',
+      'Alternatively: SET sex = IF(sex = \'m\', \'f\', \'m\').',
+      'Single statement updates all rows atomically.',
     ],
-    pitfalls: ['Single UPDATE statement with CASE is most efficient � no need to create temp values.'],
+    example: {
+      input: 'Rows with sex m and f mixed',
+      steps: ['Each m becomes f; each f becomes m in one pass.'],
+      output: 'All sex values toggled',
+    },
+    pitfalls: [
+      'Assume only m and f appear in the column.',
+      'One UPDATE — no temp table required.',
+      'CASE must cover both branches.',
+    ],
   },
+
 
   // --- 632. Smallest Range Covering Elements from K Lists ----------------------
   632: {
@@ -2854,12 +2890,23 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 657. Robot Return to Origin ---------------------------------------------
   657: {
-    intuition: 'Track x and y offsets. After all moves, return to origin iff x==0 and y==0.',
+    intuition:
+      'The robot only moves on a 2D grid. Track net displacement in x (L/R) and y (U/D). After all moves, the robot returns to the origin exactly when both coordinates are zero.',
     algorithm: [
-      'Parse each character: L/R ? x--, x++; U/D ? y++, y--.',
-      'Return x==0 && y==0.',
+      'Initialize x = 0, y = 0.',
+      'For each character: L decrements x, R increments x, U increments y, D decrements y.',
+      'Return true iff x == 0 and y == 0 after the full string.',
     ],
-    pitfalls: ['Simple simulation � no tricks needed.'],
+    example: {
+      input: 'moves = "UD"',
+      steps: ['U: y=1. D: y=0. x stays 0.'],
+      output: 'true',
+    },
+    pitfalls: [
+      'Empty moves string returns true.',
+      'Only final displacement matters, not visit order.',
+      'Input is always valid moves only.',
+    ],
   },
 
   // --- 658. Find K Closest Elements --------------------------------------------
@@ -3428,12 +3475,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   884: {
-    intuition: 'A word is uncommon if it appears exactly once across both sentences combined.',
+    intuition:
+      'A word is uncommon if it appears exactly once across both sentences combined. Concatenate both strings, count global frequencies, and return every word whose count equals one. Words appearing in both sentences twice still fail the uniqueness test.',
     algorithm: [
-      'Split both sentences, combine, count word frequencies.',
-      'Return words with count == 1.',
+      'Split sentence A and B on spaces into word lists.',
+      'Combine into one list (or count both in one pass).',
+      'Build frequency map word -> count.',
+      'Collect all keys where count == 1.',
+      'Return as string array (order typically does not matter).',
     ],
-    pitfalls: ['No need to track which sentence - just global count of 1.'],
+    example: {
+      input: 's = "s apple is apple", t = "s orange is orange"',
+      steps: [
+        'Counts: s=1, apple=2, is=2, orange=2 — only "s" has count 1.',
+      ],
+      output: '["s"]',
+    },
+    pitfalls: [
+      'Count globally across both sentences — not per-sentence uniqueness.',
+      'Punctuation is absent in problem constraints; split on whitespace only.',
+      'Words with count 0 never appear; only count == 1 qualifies.',
+    ],
   },
 
   885: {
@@ -3552,12 +3614,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   912: {
-    intuition: 'Implement merge sort or heap sort. QuickSort may TLE on adversarial inputs.',
+    intuition:
+      'LeetCode expects O(n log n) sorting. Merge sort guarantees O(n log n) worst case and is stable. QuickSort can degrade to O(n²) on sorted or adversarial input unless you randomize pivots — merge sort is the safer interview default here.',
     algorithm: [
-      'Merge sort: split at midpoint, recurse, merge two sorted halves.',
-      'Merge: two pointers, pick smaller element.',
+      'Define MergeSort(arr, lo, hi): if lo >= hi return.',
+      'mid = (lo + hi) / 2. Recurse on [lo, mid] and [mid+1, hi].',
+      'Merge the two sorted halves into a temp buffer with two pointers.',
+      'Copy merged segment back into arr.',
+      'Call MergeSort on full array and return arr.',
     ],
-    pitfalls: ['Avoid naive QuickSort - use randomized pivot or merge sort.'],
+    example: {
+      input: 'nums = [5,2,3,1]',
+      steps: [
+        'Split [5,2|3,1] -> [5|2] and [3|1].',
+        'Merge to [2,5] and [1,3], then final merge -> [1,2,3,5].',
+      ],
+      output: '[1, 2, 3, 5]',
+    },
+    pitfalls: [
+      'Naive Lomuto QuickSort may TLE — prefer merge sort or randomized quicksort.',
+      'Merge step needs O(n) auxiliary space per level.',
+      'In-place merge sort variants exist but standard top-down merge is clearest.',
+    ],
   },
 
   916: {
@@ -3695,13 +3773,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   976: {
-    intuition: 'Sort descending. First consecutive triple satisfying triangle inequality gives maximum perimeter.',
+    intuition:
+      'For three sides to form a triangle, the sum of the two smaller sides must exceed the largest side (triangle inequality). Sort descending so the first triple checked has the largest possible perimeter. The first valid consecutive triple after sorting is optimal.',
     algorithm: [
-      'Sort descending.',
-      'For each i: if A[i] < A[i+1]+A[i+2], return sum of three.',
-      'Return 0 if none.',
+      'Sort array in descending order.',
+      'For i from 0 to n-3: let a = A[i], b = A[i+1], c = A[i+2].',
+      'If a < b + c, return a + b + c (largest sides first maximizes sum).',
+      'If inequality fails, skip — a is too large relative to b and c; try next i.',
+      'Return 0 if no triple satisfies the inequality.',
     ],
-    pitfalls: ['Largest sides first maximizes perimeter. Only consecutive triples after sorting.'],
+    example: {
+      input: 'nums = [2,1,2]',
+      steps: [
+        'Sorted desc: [2,2,1]. Check 2 < 2+1 -> true.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Only check consecutive triples after sorting — non-consecutive triples cannot beat the greedy choice.',
+      'Use long for sum if values are large (not needed for typical constraints).',
+      'Strict inequality: equality (a == b+c) is NOT a valid triangle.',
+    ],
   },
 
   981: {
@@ -4043,13 +4135,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1200: {
-    intuition: 'Sort array. Minimum difference is always between adjacent elements in sorted order.',
+    intuition:
+      'After sorting, the minimum absolute difference between any two elements always occurs between neighbors. Scan adjacent pairs for the minimum diff, then collect every pair achieving that diff.',
     algorithm: [
-      'Sort.',
-      'Find min difference from adjacent pairs.',
-      'Collect all pairs with that difference.',
+      'Sort nums ascending.',
+      'One pass: track minDiff = min(nums[i+1]-nums[i]).',
+      'Second pass: add [nums[i], nums[i+1]] whenever nums[i+1]-nums[i] == minDiff.',
+      'Return list of pairs (order as in sorted array).',
     ],
-    pitfalls: ['Sort first. Adjacent elements in sorted order give minimum possible difference.'],
+    example: {
+      input: 'nums = [4,2,1,3]',
+      steps: [
+        'Sorted: [1,2,3,4]. Adjacent diffs: 1,1,1.',
+        'All adjacent pairs have diff 1.',
+      ],
+      output: '[[1,2],[2,3],[3,4]]',
+    },
+    pitfalls: [
+      'Sort first — unsorted scan misses global minimum diff.',
+      'Only compare adjacent elements after sort.',
+      'Include all pairs tied for minimum difference.',
+    ],
   },
 
   1233: {
@@ -4162,12 +4268,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1305: {
-    intuition: 'In-order traversal of each BST produces a sorted list. Merge the two sorted lists.',
+    intuition:
+      'In-order traversal of a BST yields sorted values. Traverse both trees to get two sorted arrays, then merge with the standard two-pointer technique — same as merging two sorted lists in merge sort.',
     algorithm: [
-      'In-order traverse BST1 and BST2 to get two sorted arrays.',
-      'Merge the two sorted arrays.',
+      'In-order DFS on root1 into list A; same for root2 into list B.',
+      'Initialize pointers i = 0, j = 0 and empty result.',
+      'While both pointers in range: append smaller of A[i], B[j] and advance that pointer.',
+      'Append remaining elements from whichever list is not exhausted.',
+      'Return merged array.',
     ],
-    pitfalls: ['Standard two-pointer merge on the two sorted sequences.'],
+    example: {
+      input: 'root1 = [2,1,4], root2 = [1,3]',
+      steps: [
+        'In-order: A = [1,2,4], B = [1,3].',
+        'Merge: 1,1,2,3,4.',
+      ],
+      output: '[1, 1, 2, 3, 4]',
+    },
+    pitfalls: [
+      'Do not use a heap unless asked — two sorted arrays merge in O(m+n).',
+      'Iterative in-order avoids stack overflow on skewed trees.',
+      'Duplicates are kept — merge does not deduplicate.',
+    ],
   },
 
   1310: {
@@ -4368,12 +4490,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1399: {
-    intuition: 'Digit sum of numbers 1..n. Count which digit sum appears most frequently.',
+    intuition:
+      'For each integer from 1 to n, compute the sum of its decimal digits. Group numbers by digit sum and count group sizes. The answer is how many integers share the most common digit sum (largest group).',
     algorithm: [
-      'Compute digit sum for each number 1..n.',
-      'Frequency map. Return key with maximum frequency.',
+      'Create frequency map digitSum -> count, size at most 46 for n <= 10^4.',
+      'For num from 1 to n: compute digit sum by repeated mod/div by 10.',
+      'Increment freq[digitSum].',
+      'Track max frequency while iterating (or scan map at end).',
+      'Return the maximum frequency value.',
     ],
-    pitfalls: ['Maximum digit sum for n<=10^5 is at most 45 (99999). Simple iteration.'],
+    example: {
+      input: 'n = 13',
+      steps: [
+        'Digit sums: 1..9 -> sum equals self; 10->1, 11->2, 12->3, 13->4.',
+        'Largest group size is 2 (several sums tie at 2).',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Return count of members in largest group, not the digit sum itself.',
+      'Ties for max group size still return that shared count.',
+      'Brute force over 1..n is fine for n <= 10^4.',
+    ],
   },
 
   1400: {
@@ -4472,11 +4610,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1450: {
-    intuition: 'Count students whose start time <= queryTime and end time >= queryTime.',
+    intuition:
+      'A student is doing homework at queryTime if they started on or before that minute and have not finished yet (end time is still on or after queryTime). Linear scan with two interval checks per student.',
     algorithm: [
-      'For each student i: if startTime[i] <= queryTime && endTime[i] >= queryTime: count++.',
+      'Initialize count = 0.',
+      'For each index i: if startTime[i] <= queryTime && endTime[i] >= queryTime, count++.',
+      'Return count.',
     ],
-    pitfalls: ['Simple O(n) scan. Both conditions must hold.'],
+    example: {
+      input: 'start = [1,2,3], end = [3,2,7], queryTime = 4',
+      steps: [
+        'Student 0: 1≤4≤3? end 3 < 4 — no.',
+        'Student 2: 3≤4≤7 — yes.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Both inequalities are inclusive on start and end.',
+      'O(n) scan is fine for constraints.',
+      'Do not confuse with overlap of intervals across students.',
+    ],
   },
 
   1455: {
@@ -4603,13 +4756,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1514: {
-    intuition: 'Maximum probability path. Dijkstra with probabilities (max-heap). Probability multiplies instead of adds.',
+    intuition:
+      'Find the path from src to dst with maximum probability product. This is shortest-path with weights inverted — use Dijkstra on negative log probabilities, or a max-heap that always expands the most promising partial path first.',
     algorithm: [
-      'Max-heap by probability. Start from src with prob 1.0.',
-      'Relax: prob[v] = max(prob[v], prob[u] * edge_prob).',
-      'Return prob[dst].',
+      'Build adjacency list: each edge (u,v,p) adds (v,p) to u and (u,p) to v.',
+      'Initialize prob[src] = 1.0, others 0. Max-priority queue by probability.',
+      'Pop highest-prob node u. For each neighbor v with edge prob w:',
+      'newProb = prob[u] * w. If newProb > prob[v], update prob[v] and push v.',
+      'Return prob[dst] when done (or when dst is popped).',
     ],
-    pitfalls: ['Maximize probability (multiply), not minimize distance. Use max-heap.'],
+    example: {
+      input: 'n=3, edges=[[0,1,0.5],[1,2,0.5],[0,2,0.2]], src=0, dst=2',
+      steps: [
+        'Path 0->1->2: 0.5*0.5 = 0.25 beats direct 0->2 at 0.2.',
+      ],
+      output: '0.25',
+    },
+    pitfalls: [
+      'Multiply probabilities — do not add edge weights like distance Dijkstra.',
+      'Use max-heap, not min-heap.',
+      'Floating point is fine; compare with epsilon if needed on some platforms.',
+    ],
   },
 
   1523: {
@@ -4649,11 +4816,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1534: {
-    intuition: 'Count triplets (i<j<k) where abs(arr[i]-arr[j]) <= a, abs(arr[j]-arr[k]) <= b, abs(arr[i]-arr[k]) <= c.',
+    intuition:
+      'Count triplets (i, j, k) with i < j < k where all three pairwise differences are within limits a, b, and c. Constraints are small (n <= 100), so checking every triplet is acceptable. All three conditions must hold simultaneously.',
     algorithm: [
-      'Three nested loops (O(n^3)) checking all triplets since n <= 100.',
+      'Initialize count = 0.',
+      'Triple loop: for i in 0..n-3, j in i+1..n-2, k in j+1..n-1.',
+      'If abs(arr[i]-arr[j]) <= a AND abs(arr[j]-arr[k]) <= b AND abs(arr[i]-arr[k]) <= c: count++.',
+      'Return count.',
     ],
-    pitfalls: ['Brute force works for small n. Check all three conditions for each triplet.'],
+    example: {
+      input: 'arr = [3,0,1,1,9,7], a=7, b=2, c=3',
+      steps: [
+        'Valid triplets include (0,2,3) -> |3-1|,|1-1|,|3-1| all within limits.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Check all three pairwise gaps — not just adjacent pairs in the triplet.',
+      'Indices must be strictly increasing i < j < k.',
+      'Brute force O(n^3) is intended for n <= 100.',
+    ],
   },
 
   1545: {
@@ -4769,11 +4951,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1636: {
-    intuition: 'Sort by frequency descending, then by value descending for ties.',
+    intuition:
+      'Sort the array by how often each value appears — higher frequency first. When two values tie in frequency, the larger value comes first. Count frequencies with a hash map, then sort with a custom comparator.',
     algorithm: [
-      'Count frequencies. Sort with custom comparator: by (-freq, -value).',
+      'Build frequency map: value → count.',
+      'Sort nums with comparator: compare (-freq[a], -a) vs (-freq[b], -b).',
+      'Negative freq sorts descending frequency; negative value breaks ties by larger value first.',
+      'Return the sorted array.',
     ],
-    pitfalls: ['Ties broken by larger value first (descending by value).'],
+    example: {
+      input: 'nums = [2,3,1,3,2]',
+      steps: [
+        'Frequencies: 3→2, 2→2, 1→1.',
+        'Tie on freq 2: 3 before 2 (larger value). Then 1.',
+      ],
+      output: '[3,3,2,2,1]',
+    },
+    pitfalls: [
+      'Tie-break is by value descending, not ascending.',
+      'Comparator must use frequency first, then value.',
+      'O(n log n) from sorting; counting is O(n).',
+    ],
   },
 
   1639: {
@@ -4814,11 +5012,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1678: {
-    intuition: 'Interpret the programming language: "G"=write G, "()!"=write !,  "()"=write o, "(al)"=write al. Map each pattern.',
+    intuition:
+      'The goal parser maps fixed tokens to output characters: G stays G, () becomes o, (al) becomes al, and ()! becomes !. Scan left to right and match the longest pattern first so (al) is not mistaken for ().',
     algorithm: [
-      'Parse left to right. Match patterns: "(al)"->al, "()"->o, "()!"->!, G->G.',
+      'Initialize empty result and index i = 0.',
+      'While i < length: if s[i] == G, append G and i++.',
+      'Else if s starts with "(al)" at i, append "al", i += 4.',
+      'Else if s starts with "()" at i, check next char for !.',
+      'If "()!", append ! and i += 4; else append o and i += 2.',
+      'Return result string.',
     ],
-    pitfalls: ['Check longest match first: "(al)" before "()". Simple string parsing.'],
+    example: {
+      input: 'command = "G()(al)"',
+      steps: [
+        'G -> G. () -> o. (al) -> al.',
+      ],
+      output: '"Goal"',
+    },
+    pitfalls: [
+      'Match "(al)" before bare "()" — order of pattern checks matters.',
+      'Input is guaranteed valid — no error handling needed.',
+      'StringBuilder avoids repeated string concatenation in loops.',
+    ],
   },
 
   1680: {
@@ -4968,11 +5183,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1768: {
-    intuition: 'Merge two strings alternately: take one character from each string in turns.',
+    intuition:
+      'Merge word1 and word2 by alternating characters. When one string runs out, append the rest of the other. Two pointers walk both strings in lockstep.',
     algorithm: [
-      'Two pointers i=0, j=0. Alternate appending word1[i] and word2[j]. Append remaining characters.',
+      'Initialize i = 0, j = 0 and empty result.',
+      'While i < word1.Length && j < word2.Length: append word1[i], then word2[j]; i++, j++.',
+      'Append remaining characters from whichever string is not exhausted.',
+      'Return merged string.',
     ],
-    pitfalls: ['When one string runs out, append remaining characters of the other.'],
+    example: {
+      input: 'word1 = "abc", word2 = "pqr"',
+      steps: [
+        'Merge a,p,b,q,c,r → "apbqcr".',
+      ],
+      output: '"apbqcr"',
+    },
+    pitfalls: [
+      'Alternate starting with word1 first.',
+      'Do not forget the tail of the longer string.',
+      'O(n+m) time, O(n+m) output space.',
+    ],
   },
 
   1780: {
@@ -5116,11 +5346,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1971: {
-    intuition: 'Check if there is a valid path (edge sequence) from source to destination. BFS/DFS or Union-Find.',
+    intuition:
+      'Undirected graph connectivity: determine whether destination is reachable from source using any sequence of edges. BFS or DFS from source is sufficient; Union-Find also works if you prefer offline connectivity.',
     algorithm: [
-      'BFS from source. If destination is reached: return true.',
+      'Build adjacency list from bi-directional edges.',
+      'BFS: queue starting with source, visited set.',
+      'Dequeue node u; if u == destination return true.',
+      'Enqueue unvisited neighbors of u.',
+      'If queue empties without reaching destination, return false.',
     ],
-    pitfalls: ['Simple reachability check. BFS, DFS, or Union-Find all work.'],
+    example: {
+      input: 'n=3, edges=[[0,1],[1,2],[2,0]], source=0, destination=2',
+      steps: [
+        'From 0 reach 1 and 2 via edges — destination found.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Edges are undirected — add both directions to adjacency list.',
+      'Source equals destination should return true immediately.',
+      'No edge weights — plain reachability, not shortest path.',
+    ],
   },
 
   1976: {
@@ -5296,27 +5542,73 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2200: {
-    intuition: 'Find all indices i where nums[i] is in range [lower, upper]. Simple scan.',
+    intuition:
+      'Index i is k-distant if some index j with |i-j| <= k has nums[j] == key. Equivalently, every occurrence of key marks all indices within distance k. Collect marked indices in sorted order.',
     algorithm: [
-      'For each i: if nums[i] >= lower && nums[i] <= upper: add i to result.',
+      'For each index i from 0 to n-1:',
+      'Check if any j in [max(0,i-k), min(n-1,i+k)] has nums[j] == key.',
+      'If yes, append i to the answer list.',
+      'Return the list (indices are naturally increasing).',
     ],
-    pitfalls: ['Both bounds are inclusive. Return list of all valid indices.'],
+    example: {
+      input: 'nums = [3,4,9,5,7,1,9], key = 9, k = 1',
+      steps: [
+        '9 at indices 2 and 6. Within k=1 of index 2: 1,2,3. Of index 6: 5,6.',
+      ],
+      output: '[1, 2, 3, 4, 5, 6]',
+    },
+    pitfalls: [
+      'Condition is existence of key within distance k — not nums[i] itself.',
+      'Use inclusive bounds on j: |i-j| <= k.',
+      'O(n*k) or O(n^2) is fine for typical constraints.',
+    ],
   },
 
   2206: {
-    intuition: 'Count pairs with equal elements. For each value, count occurrences - pairs = count*(count-1)/2.',
+    intuition:
+      'Divide array into pairs of equal values. For each distinct value appearing c times, you can form c/2 pairs (integer division). Sum pair counts across all values — order of pairing does not matter.',
     algorithm: [
-      'Frequency map. For each value v with count c: pairs += c*(c-1)/2.',
+      'Build frequency map value -> count.',
+      'Initialize pairs = 0.',
+      'For each count c in map: pairs += c / 2 (integer division).',
+      'Return pairs.',
     ],
-    pitfalls: ['C(n,2) = n*(n-1)/2 gives number of pairs from n elements.'],
+    example: {
+      input: 'nums = [3,2,3,2,2,2]',
+      steps: [
+        'Counts: 3 appears 2 -> 1 pair. 2 appears 4 -> 2 pairs. Total 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Use integer division c/2, not combinations formula on whole array.',
+      'Odd leftover elements cannot form a pair — discard them.',
+      'Frequency map handles unsorted input.',
+    ],
   },
 
   2210: {
-    intuition: 'Count the peaks (local maxima) in array: nums[i-1] < nums[i] > nums[i+1]. Return count.',
+    intuition:
+      'A hill is a local peak: nums[i] is strictly greater than both neighbors. Valleys are local minima with the same strict inequality. Endpoints cannot be hills or valleys because they lack two neighbors. Count both types in one pass.',
     algorithm: [
-      'For i from 1 to n-2: if nums[i] > nums[i-1] && nums[i] > nums[i+1]: count++.',
+      'If n < 3, return 0.',
+      'count = 0. For i from 1 to n-2:',
+      'If nums[i] > nums[i-1] && nums[i] > nums[i+1]: hill, count++.',
+      'Else if nums[i] < nums[i-1] && nums[i] < nums[i+1]: valley, count++.',
+      'Return count.',
     ],
-    pitfalls: ['Endpoints cannot be peaks. Only interior elements qualify.'],
+    example: {
+      input: 'nums = [6,2,7,9,4,5]',
+      steps: [
+        'i=1: 2 < 6 and 2 < 7 -> valley. i=2: 7 peak. i=4: 4 valley.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Strict inequalities — equal neighbors are neither hill nor valley.',
+      'Indices 0 and n-1 are never counted.',
+      'Plateaus (flat runs) contribute nothing at interior points.',
+    ],
   },
 
   2211: {
@@ -5328,19 +5620,50 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2220: {
-    intuition: 'Minimum bit flips to convert start to goal. Count differing bits (XOR then popcount).',
+    intuition:
+      'Flipping bits where start and goal differ is exactly the number of 1-bits in start XOR goal. Each differing bit needs one flip; matching bits need zero.',
     algorithm: [
-      'Return Integer.bitCount(start ^ goal).',
+      'Compute xor = start ^ goal.',
+      'Return population count (Hamming weight) of xor.',
+      'In C#: BitOperations.PopCount((uint)xor) or loop with xor &= xor-1.',
     ],
-    pitfalls: ['XOR gives bits that differ. Count 1-bits in XOR result.'],
+    example: {
+      input: 'start = 3 (011), goal = 4 (100)',
+      steps: [
+        '3 ^ 4 = 7 (111) — three bits differ.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'XOR marks differing bits; do not flip bit-by-bit in a loop unless asked.',
+      'Works for non-negative integers in problem constraints.',
+      'O(1) bit operations vs O(log n) per-bit loop.',
+    ],
   },
 
   2225: {
-    intuition: 'Count wins per team. HashMap team -> wins. Return teams with max wins.',
+    intuition:
+      'Count wins per team from match results. Track frequency in a map; find maximum win count; return all teams tied at that maximum (sorted by index or name per problem).',
     algorithm: [
-      'For each match: wins[winner]++. Find max wins. Return all teams with max wins.',
+      'Initialize wins map.',
+      'For each match [winner, loser]: wins[winner]++.',
+      'Find maxWin = max of map values.',
+      'Collect all teams with wins[team] == maxWin into result list.',
+      'Return result (often sorted by team index).',
     ],
-    pitfalls: ['Losers might not appear as winners. Only track winner counts.'],
+    example: {
+      input: 'matches with Alice/Bob wins',
+      steps: [
+        'Tally wins per name.',
+        'Return every team with the highest tally.',
+      ],
+      output: 'list of top teams',
+    },
+    pitfalls: [
+      'Losers are not inserted unless they win elsewhere.',
+      'Ties return multiple teams.',
+      'Team ids may be integers — map accordingly.',
+    ],
   },
 
   2226: {
@@ -5353,11 +5676,25 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2236: {
-    intuition: 'Check if root value equals sum of its two children values.',
+    intuition:
+      'Binary tree root equals sum of children only when both children exist and root.val == left.val + right.val. Missing child or null root means false.',
     algorithm: [
-      'If root is null or has no children: return false. Return root.val == root.left.val + root.right.val.',
+      'If root is null, return false.',
+      'If left or right child is null, return false.',
+      'Return root.val == root.left.val + root.right.val.',
     ],
-    pitfalls: ['Both children must exist. Root with one child: return false.'],
+    example: {
+      input: 'root = [10,4,-6]',
+      steps: [
+        'Both children exist: 10 == 4 + (-6)? 10 == -2 — false.',
+      ],
+      output: 'false',
+    },
+    pitfalls: [
+      'Leaf node (no children) → false, not vacuously true.',
+      'Only exactly two children qualify.',
+      'Values can be negative — sum still valid.',
+    ],
   },
 
   2257: {
@@ -5471,11 +5808,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2326: {
-    intuition: 'Fill matrix in spiral order. Simulate spiral: right, down, left, up, shrinking boundaries.',
+    intuition:
+      'Fill an m×n matrix in spiral order using values from a linked list head. Walk the spiral boundary (right, down, left, up) shrinking limits; place the next list value at each cell until list or matrix is exhausted.',
     algorithm: [
-      'Standard spiral fill. LinkedList traversal. Place head value at current spiral position.',
+      'Track top, bottom, left, right boundaries and direction index.',
+      'While list not empty and boundaries valid: place head.val at (r,c), advance list, move in current direction.',
+      'When hitting boundary, turn direction and shrink the corresponding edge.',
+      'Return matrix (or list remainder if sizes mismatch per problem).',
     ],
-    pitfalls: ['Fill in spiral order using direction arrays and boundary tracking.'],
+    example: {
+      input: 'm=3, n=4, list 1→2→3→...',
+      steps: [
+        'Spiral fills row 0 left-to-right, then right column, etc.',
+      ],
+      output: '3×4 matrix in spiral order',
+    },
+    pitfalls: [
+      'Standard spiral boundary template — same as Spiral Matrix II.',
+      'Check list length vs m*n if problem requires exact fit.',
+      'Update boundaries when turning direction.',
+    ],
   },
 
   2327: {
@@ -5670,11 +6022,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2409: {
-    intuition: 'Count days from day 1 to day n. Simple: answer is n.',
+    intuition:
+      'Count calendar days both Alice and Bob are present in Rome. Convert MM-DD strings to day-of-year numbers, then count days d where arriveAlice ≤ d ≤ leaveAlice and arriveBob ≤ d ≤ leaveBob.',
     algorithm: [
-      'Return n (every day from 1 to n counts).',
+      'Parse each date to day index 1..365 using month length table.',
+      'Loop day from 1 to 365 (or use overlap formula: max(0, min(leaveA,leaveB) - max(arriveA,arriveB) + 1)).',
+      'Increment when day lies in both inclusive intervals.',
+      'Return count.',
     ],
-    pitfalls: ['The problem asks to count days that can be covered - usually direct counting or DP.'],
+    example: {
+      input: 'Alice 08-06 to 08-09, Bob 08-01 to 08-09',
+      steps: [
+        'Overlap days 08-06 through 08-09 → 4 days together.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Non-leap-year calendar in problem — fixed month lengths.',
+      'Intervals are inclusive on both ends.',
+      'Overlap formula avoids loop if you prefer O(1).',
+    ],
   },
 
   2410: {
@@ -5770,11 +6137,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2438: {
-    intuition: 'Product of all elements equals product of array. The product of all prefix/suffix products.',
+    intuition:
+      'Write n in binary; each set bit is a power of two. Extract powers in increasing order into an array. Each query asks for product of powers[left..right] modulo 10^9+7.',
     algorithm: [
-      'ans[i] = prefix[i-1] * suffix[i+1]. Build prefix and suffix product arrays.',
+      'While n > 0: isolate lowest set bit with n & -n, push to powers[], subtract from n.',
+      'For each query [l,r]: multiply powers[l..r] with modular arithmetic.',
+      'Return answer array.',
     ],
-    pitfalls: ['Standard product-except-self. No division allowed. O(n) with two passes.'],
+    example: {
+      input: 'n = 22 (10110), query [1,2]',
+      steps: [
+        'Powers: 2, 4, 16 (bits set in 22).',
+        'Product powers[1]*powers[2] = 4*16 = 64 mod MOD.',
+      ],
+      output: '64',
+    },
+    pitfalls: [
+      'Use long for intermediate product before mod.',
+      'Powers array is sorted by increasing bit position.',
+      'MOD = 1e9+7 on every multiply.',
+    ],
   },
 
   2444: {
@@ -5937,11 +6319,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2558: {
-    intuition: 'Pick n gifts: each pick replaces max with floor(sqrt(max)). Use max-heap.',
+    intuition:
+      'Repeat k times: take the largest pile, replace it with floor(sqrt(value)). Use a max-heap to fetch the maximum in O(log n) each round. After k operations, sum everything left in the heap.',
     algorithm: [
-      'Max-heap. Repeat k times: pop max, push floor(sqrt(max)). Sum remaining.',
+      'Push all gifts into a max-priority queue.',
+      'Repeat k times: pop max, push (int)Math.Floor(Math.Sqrt(max)).',
+      'Drain heap and sum remaining values (use long for sum).',
+      'Return total.',
     ],
-    pitfalls: ['After k operations, sum all remaining elements. Use PriorityQueue (max-heap).'],
+    example: {
+      input: 'gifts = [25,64,9], k = 2',
+      steps: [
+        'Pop 64 → push 8. Pop 25 → push 5.',
+        'Remaining piles 9, 8, 5 → sum 22.',
+      ],
+      output: '22',
+    },
+    pitfalls: [
+      'Use floor of square root, not round.',
+      'Sum can exceed int — accumulate in long.',
+      'k operations, not until heap empty.',
+    ],
   },
 
   2559: {
@@ -6065,11 +6463,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2625: {
-    intuition: 'Flatten nested array recursively. Each element is either integer or array. Recursive or iterative flattening.',
+    intuition:
+      'Flatten a nested array to depth n (or fully if depth is large). Each element is either an integer or another array — recurse into sub-arrays with depth-1 until depth is 0 or value is not an array.',
     algorithm: [
-      'Recursive: for each item, if array recurse, else add to result.',
+      'Define Flatten(arr, depth): if depth==0 or arr is int, return [arr].',
+      'Otherwise iterate items: if item is array, extend result with Flatten(item, depth-1); else push item.',
+      'Return accumulated list.',
     ],
-    pitfalls: ['Straightforward recursion. Handle arbitrary nesting depth.'],
+    example: {
+      input: 'arr = [1,[2,[3]]], depth = 2',
+      steps: [
+        'Depth 2: flatten outer → [1,2,[3]].',
+        'Inner [3] stays nested because depth exhausted.',
+      ],
+      output: '[1,2,[3]]',
+    },
+    pitfalls: [
+      'Depth counts how many levels of nesting you may unwrap.',
+      'At depth 0, leave arrays as-is in the result.',
+      'Recursive or explicit stack both work.',
+    ],
   },
 
   2640: {
@@ -6132,12 +6545,26 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2685: {
-    intuition: 'Count number of connected components in undirected graph. Union-Find or BFS/DFS.',
+    intuition:
+      'Count connected components in an undirected graph given edges. Union-Find merges endpoints; number of distinct roots after all unions is the answer. Isolated nodes (not in any edge) still count as their own component if included in node count n.',
     algorithm: [
-      'Union-Find: for each edge, union. Count distinct roots.',
-      'Or BFS/DFS from each unvisited node.',
+      'Initialize parent[i]=i for i in 0..n-1.',
+      'For each edge [u,v]: union(u,v).',
+      'Count distinct find(i) for all i — or decrement component count on successful unions.',
+      'Return component count.',
     ],
-    pitfalls: ['Standard connected components. Include isolated nodes (nodes not in any edge) in count.'],
+    example: {
+      input: 'n = 5, edges = [[0,1],[1,2],[3,4]]',
+      steps: [
+        'Component {0,1,2} and {3,4} → 2 components.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Nodes with no edges are still components if 0..n-1 all exist.',
+      'Path compression in find speeds large graphs.',
+      'Undirected — union(a,b) once per edge.',
+    ],
   },
 
   2696: {
@@ -6184,11 +6611,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2765: {
-    intuition: 'Alternating groups: find subarrays where colors strictly alternate. Count subarrays of length >= 3.',
+    intuition:
+      'Find the longest subarray where consecutive differences strictly alternate between +1 and -1 (not general sign flips). Track the current run length: extend when the next diff matches the expected +1 or -1; otherwise reset to a new run of length 2 or 1. Return -1 if no alternating subarray of length >= 2 exists.',
     algorithm: [
-      'Count consecutive alternating groups. For run of length L: groups of size 3 = L-2.',
+      'Initialize ans = 1, dp = 1 (length of run ending at previous index).',
+      'For i from 1 to n-1: expected diff is +1 if dp is odd length, -1 if even.',
+      'If nums[i] - nums[i-1] == expected: dp++.',
+      'Else if diff == +1: reset dp = 2 (start new run at i-1..i).',
+      'Else: reset dp = 1. Update ans = max(ans, dp).',
+      'Return ans == 1 ? -1 : ans.',
     ],
-    pitfalls: ['Circular array: handle wrap-around. Count alternating runs.'],
+    example: {
+      input: 'nums = [1,2,3,4,3,2,1]',
+      steps: [
+        'Diffs +1,+1 break alternation; best run may be shorter segments like 1,2,3,4,3 (diffs +1,+1,-1).',
+      ],
+      output: 'length of longest valid alternating subarray',
+    },
+    pitfalls: [
+      'Only +1 and -1 diffs count — zero or larger gaps reset the pattern.',
+      'Return -1 when no subarray of length >= 2 alternates.',
+      'Subarray must be contiguous, not subsequence.',
+    ],
   },
 
   2779: {
@@ -6326,10 +6770,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2901: {
-    intuition: 'Longest unequal adjacent groups subsequence: pick maximum subsequence where adjacent groups differ.',
+    intuition:
+      'Pick the longest subsequence of words where adjacent picked words belong to different groups AND differ in exactly one character (same length, Hamming distance 1). This is DP on indices: extend word i from j when groups differ and words are one edit apart.',
     algorithm: [
-      'Greedy: include word[i] if groups[i] != groups[i-1] (or first element). Take all alternating.'],
-    pitfalls: ['Greedy works: always take element when group differs from last taken. O(n) solution.'],
+      'dp[i] = length of best subsequence ending at words[i]; prev[i] for reconstruction.',
+      'For each i, for each j < i: skip if groups[i] == groups[j].',
+      'Require words[i].Length == words[j].Length and HammingDist == 1.',
+      'If dp[j]+1 > dp[i]: update dp[i] and prev[i] = j.',
+      'Reconstruct from index with maximum dp[i].',
+    ],
+    example: {
+      input: 'words with groups; adjacent picks must differ in group and by one char',
+      steps: [
+        'Try all prior words as predecessor; keep best chain satisfying both constraints.',
+      ],
+      output: 'longest valid word subsequence (lex order not required in answer list)',
+    },
+    pitfalls: [
+      'Hamming distance exactly 1 — not subsequence edit distance on strings.',
+      'Groups must differ between consecutive picks — same group cannot chain.',
+      'O(n^2 * L) is acceptable; return the actual word list, not just length.',
+    ],
   },
 
   2906: {
@@ -6558,11 +7019,25 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3024: {
-    intuition: 'Check if three sides can form a triangle: any permutation where sum of two > third.',
+    intuition:
+      'Given three stick lengths, they form a non-zero area triangle iff the sum of the two smaller sides exceeds the largest. Sort three numbers and check nums[0]+nums[1] > nums[2].',
     algorithm: [
-      'Sort. Check nums[0]+nums[1] > nums[2].',
+      'Sort the three sides ascending.',
+      'If nums[0] + nums[1] > nums[2], return the triangle type required (e.g. "yes" / specific label).',
+      'Else degenerate or impossible triangle.',
     ],
-    pitfalls: ['After sorting, only need to check if smallest two sum > largest.'],
+    example: {
+      input: 'nums = [2,3,4]',
+      steps: [
+        'Sorted: 2,3,4. 2+3=5 > 4 — valid triangle.',
+      ],
+      output: 'valid triangle classification',
+    },
+    pitfalls: [
+      'After sorting, only one inequality check needed.',
+      'Equality (2+3=5) is degenerate — not a valid triangle for positive area.',
+      'Exactly three sides in problem.',
+    ],
   },
 
   3025: {
@@ -6740,28 +7215,76 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3169: {
-    intuition: 'Count days without meetings. Sort meetings, merge overlapping intervals, count gaps.',
+    intuition:
+      'Count days in [1, days] with no meetings. Sort meeting intervals, sweep in order, and add gap lengths between non-overlapping busy spans. After the last meeting, add remaining free days until day `days`. Overlapping meetings merge implicitly by tracking prevEnd.',
     algorithm: [
-      'Sort meetings by start. Merge overlapping. Days without meeting = total - sum of merged interval lengths.',
+      'Sort meetings by start day.',
+      'freeDays = 0, prevEnd = 0.',
+      'For each [start, end]: if start > prevEnd + 1, add start - prevEnd - 1 to freeDays.',
+      'Set prevEnd = max(prevEnd, end).',
+      'After loop: add max(0, days - prevEnd) for trailing free days.',
+      'Return freeDays.',
     ],
-    pitfalls: ['Merge overlapping intervals. Days free = days - covered days.'],
+    example: {
+      input: 'days = 10, meetings = [[5,7],[1,3],[9,10]]',
+      steps: [
+        'Sorted: [1,3],[5,7],[9,10]. Gap before 5: day 4. After day 7 until 9: day 8. None after 10.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Meetings are inclusive [start, end] — gap between prevEnd and next start is start - prevEnd - 1.',
+      'Overlapping meetings: prevEnd = max(prevEnd, end) without double-counting busy days.',
+      'Do not subtract from days naively without handling overlaps.',
+    ],
   },
 
   3170: {
-    intuition: 'Remove stars: each star removes the closest non-star to its left. Stack simulation.',
+    intuition:
+      'Each * removes the nearest non-star character to its left. Process left to right with a stack: push letters, pop on star. Same pattern as removing adjacent pairs but stars only delete to the left. Build result from stack contents.',
     algorithm: [
-      'Stack. For each char: if star, pop stack. Else push char.',
-      'Return stack as string.',
+      'Stack<char> st.',
+      'For each character c in s:',
+      'If c is * and stack not empty: pop.',
+      'Else if c is not *: push c.',
+      'Return new string from stack (in order).',
     ],
-    pitfalls: ['Same as LC 2390. Stack naturally handles the removal order.'],
+    example: {
+      input: 's = "leet**o*eet"',
+      steps: [
+        'Push l,e,e,t. * pops t. * pops e. Continue until stars remove left neighbors.',
+      ],
+      output: '"leetoeet" (per problem examples)',
+    },
+    pitfalls: [
+      'Only remove when stack is non-empty — extra stars are ignored.',
+      'Stars never get pushed onto the stack.',
+      'Equivalent to LC 2390 Removing Stars From a String.',
+    ],
   },
 
   3174: {
-    intuition: 'Clear digits: each digit removes the first non-digit to its left. Stack simulation.',
+    intuition:
+      'Each digit character removes the closest non-digit to its left (if any). Scan left to right with a stack: push non-digits, pop one character when you see a digit. Remaining stack is the answer — digits themselves are never kept.',
     algorithm: [
-      'Stack. For each char: if digit, pop top (if non-empty). Else push char.',
+      'Stack<char> st.',
+      'For each character c:',
+      'If c is a digit and st not empty: pop once.',
+      'Else if c is not a digit: push c.',
+      'Return string built from stack.',
     ],
-    pitfalls: ['Digit removes nearest non-digit to its left. Stack handles LIFO order naturally.'],
+    example: {
+      input: 's = "abc"',
+      steps: [
+        'No digits — nothing removed. Output "abc".',
+      ],
+      output: '"abc"',
+    },
+    pitfalls: [
+      'Digit triggers removal but is not added to result.',
+      'If stack empty on digit, skip removal.',
+      'Use char.IsDigit or compare to 0-9 range.',
+    ],
   },
 
   3191: {
@@ -6782,11 +7305,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3201: {
-    intuition: 'Find maximum length alternating subarray. Greedy: count consecutive alternating pairs.',
+    intuition:
+      'Find the longest subsequence (not necessarily contiguous) where the sum of every adjacent pair is divisible by k (k = 2 in constraints). Track DP by residues mod k: when adding nums[i], extend chains whose previous residue pairs to sum 0 mod k.',
     algorithm: [
-      'Track current run length. If nums[i] != nums[i-1]: extend run. Else: reset to 2.',
+      'Let freq[r1,r2] = longest valid subsequence length ending with residues r1 then r2.',
+      'For each num in nums: r = num % k.',
+      'For each prior residue j: y = (j - r + k) % k; update freq[r,y] = freq[y,r] + 1.',
+      'Track global maximum length across all states.',
+      'Return max length found.',
     ],
-    pitfalls: ['Maximum length of subarray with alternating 0s and 1s. Single element counts as length 1.'],
+    example: {
+      input: 'nums with k=2 (parity)',
+      steps: [
+        'Valid pairs must sum to even — chain even-even or odd-odd extensions.',
+      ],
+      output: 'maximum valid subsequence length',
+    },
+    pitfalls: [
+      'Subsequence — elements need not be adjacent in the array.',
+      'Modular arithmetic: use (j - r + k) % k for complement residue.',
+      'Single-element subsequence length is 1 baseline.',
+    ],
   },
 
   3208: {
@@ -6873,11 +7412,27 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3342: {
-    intuition: 'Same as 3341 but different starting conditions or grid type.',
+    intuition:
+      'Grid shortest-path with Dijkstra. You can enter cell (x,y) only after time moveTime[x][y]. Moving to a neighbor costs 1 or 2 seconds depending on parity of (i+j). The answer is minimum arrival time at the bottom-right cell.',
     algorithm: [
-      'Dijkstra with parity constraint. Handle waiting to satisfy parity requirements.',
+      'Run Dijkstra from (0,0) with dist[0][0] = 0 in a min-heap.',
+      'When relaxing edge to (x,y): newDist = max(moveTime[x][y], currentDist) + ((i+j) % 2 + 1).',
+      'Skip stale heap entries. Return dist at destination when popped.',
+      'Four-directional moves only; bounds check each neighbor.',
     ],
-    pitfalls: ['Minimum time dijkstra with the wait-for-parity trick.'],
+    example: {
+      input: 'moveTime grid with blocked early cells',
+      steps: [
+        'Cannot enter a cell before its moveTime — wait is baked into max(...).',
+        'Parity of current cell toggles step cost between 1 and 2.',
+      ],
+      output: 'Minimum seconds to reach last room',
+    },
+    pitfalls: [
+      'Use max(moveTime[neighbor], dist[u]) — not just dist[u] + edge.',
+      'Edge weight depends on source cell parity (i+j), not destination.',
+      'Dijkstra, not BFS, because weights vary.',
+    ],
   },
 
   3346: {
@@ -6947,11 +7502,25 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3396: {
-    intuition: 'Minimum operations to make values <= k. Same as 3375 essentially.',
+    intuition:
+      'Each operation removes the first 3 elements of the current array. Scan from the right; when you see a duplicate, the prefix up to and including that index must be cleared in chunks of 3 — answer is ceil((i+1)/3) operations. If no duplicate, 0.',
     algorithm: [
-      'Count distinct values > k. If any value < k that cannot be changed: -1.',
+      'Use a set while iterating i from n-1 down to 0.',
+      'On first duplicate (set.Add fails): return (i + 1 + 2) / 3 using integer ceiling.',
+      'If loop finishes, return 0.',
     ],
-    pitfalls: ['Each distinct value > k requires one operation (set-to-k op).'],
+    example: {
+      input: 'nums = [1,2,3,4,2,3,4,4]',
+      steps: [
+        'Scan right: first repeat is 2 at some index; prefix length needing cleanup → ceil(len/3) ops.',
+      ],
+      output: 'operations needed',
+    },
+    pitfalls: [
+      'Right-to-left finds the earliest duplicate in the suffix sense for minimal ops.',
+      'Formula (i+1+2)/3 is integer ceil of (i+1)/3.',
+      'Distinct entire array → 0 operations.',
+    ],
   },
 
   3432: {
@@ -6995,19 +7564,52 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3461: {
-    intuition: 'Check if string contains a given pattern as subsequence. Two pointer subsequence check.',
+    intuition:
+      'Repeatedly replace each adjacent pair (a,b) with (a+b) mod 10 until two digits remain. All strings in the input must end with the same two digits after this process. Simulate the triangular reduction on each string and compare finals.',
     algorithm: [
-      'Two pointers i=0 (pattern) j=0 (s). Advance j, when s[j]==pattern[i]: i++. Return i==pattern.length.',
+      'For each string, copy to char array.',
+      'While length > 2: for i = 0..len-2, set s[i] = (s[i]+s[i+1]) % 10 as char (shrink effective length by 1 per outer loop).',
+      'After reduction, check s[0] == s[1].',
+      'Return true only if every string matches the first string\'s final pair.',
     ],
-    pitfalls: ['Standard subsequence check. O(n+m).'],
+    example: {
+      input: 's = "3902", compare with other strings',
+      steps: [
+        'Reduce "3902" → adjacent sums mod 10 until 2 chars remain.',
+        'Repeat for each string; all final pairs must be equal.',
+      ],
+      output: 'true if all match',
+    },
+    pitfalls: [
+      'Mod 10 after each adjacent sum — not raw sum.',
+      'Outer loop reduces length by one per pass (triangle/Pascal style).',
+      'Compare all strings to the same target final two digits.',
+    ],
   },
 
   3507: {
-    intuition: 'Find intersection of two sets represented as arrays. Return elements in both sets.',
+    intuition:
+      'While the array is not non-decreasing, remove one adjacent pair with the minimum sum and replace them by their sum. Count operations until no inversion remains. Each removal shortens the list by one element.',
     algorithm: [
-      'Set from nums1. For each in nums2: if in set, add to result.',
+      'Loop while array has inversion (nums[i] > nums[i+1]).',
+      'Among all adjacent pairs, find index i with minimum nums[i]+nums[i+1] (smallest index on ties if required).',
+      'Replace pair at i with their sum; delete nums[i+1].',
+      'Increment operation count.',
+      'Return count when sorted.',
     ],
-    pitfalls: ['Return unique elements in intersection. Use HashSet.'],
+    example: {
+      input: 'nums = [5,2,3,1]',
+      steps: [
+        'Inversion exists. Min adjacent sum might be 2+3=5 at index 1.',
+        'Repeat until non-decreasing.',
+      ],
+      output: 'minimum operations',
+    },
+    pitfalls: [
+      'Pick globally minimum pair sum among adjacent pairs each step.',
+      'Check sorted with adjacent compare, not full sort each time.',
+      'Simulation O(n²) per step is acceptable for small n in problem.',
+    ],
   },
 
   3546: {
