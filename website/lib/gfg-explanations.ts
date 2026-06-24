@@ -960,6 +960,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Add directions in sorted order (D,L,R,U) to get paths in lexicographic order.'],
   },
 
+  // ─── Rat Maze With Multiple Jumps ─────────────────────────────────────────────
+  'rat-maze-with-multiple-jumps': {
+    intuition:
+      'From each cell the rat may jump 1..mat[r][c] steps right or down; landing on 0 is blocked (cells jumped over may be 0). Among valid paths, prefer shorter jump lengths first, then right before down. Naive backtracking TLEs on large grids — precompute canReach[r][c] (can this cell still reach the destination?) by DP on decreasing r+c, then greedily take the first move in tie-break order that keeps canReach true.',
+    algorithm: [
+      'If mat[0][0] == 0, return [[-1]].',
+      'Set canReach[n-1][n-1] = true; for sum from 2n−3 down to 0, mark canReach[r][c] if some jump right/down lands on a reachable cell.',
+      'If !canReach[0][0], return [[-1]].',
+      'Build path: start at (0,0). While not at (n−1,n−1), try jump = 1..mat[r][c]: right then down; pick first landing with canReach true.',
+      'Return path matrix as ArrayList<ArrayList<Integer>> with 1 on the path.',
+    ],
+    example: {
+      input: 'mat = [[2,1,0,0],[3,0,0,1],[0,1,0,1],[0,0,0,1]]',
+      steps: [
+        '(0,0) jump 1 down → (1,0).',
+        '(1,0) jump 3 right → (1,3) over zeros.',
+        '(1,3) down → (2,3) → (3,3) destination.',
+      ],
+      output: '[[1,0,0,0],[1,0,0,1],[0,0,0,1],[0,0,0,1]]',
+    },
+    pitfalls: [
+      'Only the landing cell must be non-zero — intermediate cells under a jump can be 0.',
+      'Greedy works only with canReach pruning; plain backtracking is too slow for n = 50.',
+      'Return [[-1]] as a single-row list when no path exists.',
+    ],
+  },
+
   // ─── Reverse a linked list ────────────────────────────────────────────────────
   'reverse-a-linked-list': {
     intuition:

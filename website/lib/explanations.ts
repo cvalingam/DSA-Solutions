@@ -8630,6 +8630,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3700: {
+    intuition:
+      'Same zigzag rules as LC 3699, but n can be up to 10⁹ — iterating the DP n times is impossible. Each extension step is linear: nextUp = prefix sum of down, nextDown = suffix sum of up. That step is encoded by V×V matrices U (lower-triangular prefix) and D (upper-triangular suffix). Two steps compose as UD; binary-exponentiate UD for (n−1)/2 steps, multiply by U when n−1 is odd, then sum all matrix entries and double for up/down symmetry.',
+    algorithm: [
+      'Let m = r − l + 1 (at most 75). Build U[i][j] = 1 if j < i and D[i][j] = 1 if j > i.',
+      'Compute UD = U × D (one pair of up/down extensions).',
+      'Decrement n once; mat = UD^(n/2) via binary matrix exponentiation.',
+      'If n is odd after decrement, mat = mat × U.',
+      'Answer = 2 × (sum of all entries of mat) mod 10⁹ + 7.',
+    ],
+    example: {
+      input: 'n = 3, l = 4, r = 5',
+      steps: [
+        'm = 2 values {4,5}. After one extension from length-2 pairs, only [4,5,4] and [5,4,5] survive.',
+        'Matrix sum × 2 gives total 2 zigzag arrays.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Do not loop n − 2 DP steps when n ≤ 10⁹ — matrix exponentiation is required.',
+      'Multiply the final matrix sum by 2 to account for both up-ending and down-ending states.',
+      'After n--, use n/2 and n&1 for the exponent split; off-by-one here breaks large n.',
+    ],
+  },
+
   3558: {
     intuition:
       'Only the path from node 1 to the deepest reachable node matters, because the answer depends on the maximum number of edges that may be assigned weights. If that path has d edges, each edge can be weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum: flipping any one edge toggles the parity, pairing every even-sum assignment with one odd-sum assignment. So the count is 2^(d-1).',
