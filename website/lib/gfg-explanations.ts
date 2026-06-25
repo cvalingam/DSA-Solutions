@@ -3116,6 +3116,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 43. Use int array of size m+n. Handle carry propagation. Check for "0" inputs.'],
   },
 
+  'n-digit-numbers-with-increasing-digits': {
+    intuition:
+      'List every n-digit number whose decimal digits strictly increase left to right. For n = 1, single digits 0 through 9 qualify. For n > 1, the first digit cannot be 0 (otherwise it would not be n digits long). Backtracking appends the next digit from a minimum bound upward — each choice must be larger than the previous digit.',
+    algorithm: [
+      'If n == 1: return 0, 1, …, 9.',
+      'Else call generate(st = 1, length n): when current string length is n, push Integer.valueOf(current).',
+      'For digit d from st to 9: recurse with next bound st = d + 1 and append d.',
+      'Return the collected list in generation order.',
+    ],
+    example: {
+      input: 'n = 2',
+      steps: [
+        'Start with 1 → append 2..9 giving 12..19.',
+        'Start with 2 → append 3..9 giving 23..29.',
+        'Continue until first digit 8 → only 89.',
+      ],
+      output: '[12, 13, …, 89] (36 numbers = C(9,2))',
+    },
+    pitfalls: [
+      'Handle n = 1 separately — 0 is valid only for single-digit output.',
+      'Next digit loop starts at st, not st − 1, to keep strict increase.',
+      'Use StringBuilder or string concat; Integer.valueOf parses the finished n-digit string.',
+    ],
+  },
+
   'n-meetings-in-one-room': {
     intuition: 'Maximum meetings in one room (activity selection). Greedy: sort by end time, greedily pick non-overlapping.',
     algorithm: [

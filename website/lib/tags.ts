@@ -1273,6 +1273,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3714: ['string'],
   3719: ['array'],
   3721: ['array', 'dynamic-programming'],
+  3737: ['array', 'prefix-sum', 'binary-indexed-tree'],
 }
 
 /** Return tags for a given problem number. Returns [] if not in the map. */

@@ -8655,6 +8655,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3737: {
+    intuition:
+      'Target is a strict majority in subarray [l, r] when its count exceeds half the length. Encode +1 for target and −1 for every other value: the subarray sum is positive exactly in that case (2·count − length > 0). Scan left to right with a running prefix sum s; each new position starts subarrays ending here whose earlier prefix is strictly less than s — count those with a Fenwick tree on shifted indices.',
+    algorithm: [
+      'Initialize Fenwick tree and prefix sum s = n + 1 (offset so indices stay positive).',
+      'Record one occurrence of the empty prefix: tree.Update(s, 1).',
+      'For each x in nums: s += 1 if x == target else −1.',
+      'Add tree.Query(s − 1) to the answer (earlier prefixes smaller than current).',
+      'tree.Update(s, 1) and continue.',
+      'Return the total count.',
+    ],
+    example: {
+      input: 'nums = [1,2,2,3], target = 2',
+      steps: [
+        'Subarrays where 2 is strict majority: [2,2], [2,2,3], [1,2,2], [1,2,2,3] — four total.',
+        'Transformed +1/−1 prefix sums stay positive only on those windows.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Strict majority needs sum > 0, not ≥ 0 — query prefixes < s, not ≤ s.',
+      'Offset prefix sums by n + 1 so Fenwick indices never go negative.',
+      'Use long for the answer if n is large; counts can exceed int.',
+    ],
+  },
+
   3558: {
     intuition:
       'Only the path from node 1 to the deepest reachable node matters, because the answer depends on the maximum number of edges that may be assigned weights. If that path has d edges, each edge can be weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum: flipping any one edge toggles the parity, pairing every even-sum assignment with one odd-sum assignment. So the count is 2^(d-1).',
