@@ -3616,6 +3616,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['A run of length L has L*(L+1)/2 strictly increasing subarrays (length 1,2,...,L). Sum over all runs.'],
   },
 
+  'count-matching-subsequences': {
+    intuition:
+      'Count how many ways s2 appears as a subsequence of s1 (not necessarily contiguous). Process s1 left to right: dp[j] stores match counts for prefix s2[0..j−1]. When the current s1 character equals s2[j−1], every prior way to match s2[0..j−2] can extend with this character, so add dp[j−1] to dp[j].',
+    algorithm: [
+      'Let n = |s1|, m = |s2|. dp[0] = 1 (empty subsequence of s2).',
+      'For each character charS1 in s1:',
+      'Loop j from m down to 1; if charS1 == s2[j−1]: dp[j] = (dp[j] + dp[j−1]) % MOD.',
+      'Return dp[m] modulo 10⁹ + 7.',
+    ],
+    example: {
+      input: 's1 = "rabbbit", s2 = "rabbit"',
+      steps: [
+        'Three ways to pick the extra b positions among matches for rabbit.',
+        'Each matching s1 index choice yields one distinct subsequence alignment.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Iterate j backwards so dp[j−1] still reflects the previous s1 prefix.',
+      'dp[j] keeps its value when characters do not match (implicit skip).',
+      'Apply modulo on every addition — counts grow quickly.',
+    ],
+  },
+
   'count-indices-to-balance-even-and-odd-sums': {
     intuition: 'Count indices where prefix sum of even-indexed and odd-indexed elements are equal.',
     algorithm: [

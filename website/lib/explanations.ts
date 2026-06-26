@@ -8681,6 +8681,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3739: {
+    intuition:
+      'Identical counting rule to LC 3737: target is a strict majority in a subarray when +1/−1 encoding yields a positive sum. Use a Fenwick tree over shifted prefix sums to count how many earlier prefixes are strictly smaller than the current one. Part II only changes constraints — the answer can exceed 32-bit range, so accumulate in long and return long from CountMajoritySubarrays.',
+    algorithm: [
+      'Same pipeline as 3737: offset prefix s = n + 1, seed empty prefix in the BIT.',
+      'For each value: update s (+1 for target, −1 otherwise).',
+      'ans += Query(s − 1); Update(s, 1).',
+      'Return ans as long.',
+    ],
+    example: {
+      input: 'nums = [1,2,2,3], target = 2',
+      steps: [
+        'Four subarrays have 2 as strict majority — same as problem I.',
+        'With larger n the count may overflow int; long prevents wraparound.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not cast the Fenwick accumulation to int before returning.',
+      'BIT frequency array can stay int; only the running answer needs long.',
+      'Query(s − 1), not Query(s), for strict majority (positive sum, not zero).',
+    ],
+  },
+
   3558: {
     intuition:
       'Only the path from node 1 to the deepest reachable node matters, because the answer depends on the maximum number of edges that may be assigned weights. If that path has d edges, each edge can be weight 1 or 2, giving 2^d total assignments. Exactly half of those assignments have odd total sum: flipping any one edge toggles the parity, pairing every even-sum assignment with one odd-sum assignment. So the count is 2^(d-1).',
