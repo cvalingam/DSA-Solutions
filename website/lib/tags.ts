@@ -1130,6 +1130,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3016: ['string', 'greedy', 'sorting', 'hash-table', 'counting'],
   3021: ['math', 'game-theory'],
   3024: ['math', 'sorting'],
+  3020: ['array', 'hash-table', 'math'],
   3025: ['array', 'math', 'sorting', 'geometry', 'enumeration'],
   3027: ['array', 'math', 'sorting', 'geometry', 'enumeration'],
   3042: ['array', 'string', 'trie', 'hash-function', 'rolling-hash'],

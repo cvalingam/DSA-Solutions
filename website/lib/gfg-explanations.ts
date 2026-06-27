@@ -2605,6 +2605,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Tile horizontally (1 way for last 2 cols) or vertically (1 way for last col). Fibonacci recurrence.'],
   },
 
+  'ways-to-tile-the-floor': {
+    intuition:
+      'Tile an n × m floor with unlimited 1 × m tiles placed horizontally (one full row) or vertically (m rows × one column). When fewer than m rows remain, only horizontal rows work (one layout). At exactly m rows, choose all-horizontal or all-vertical (two layouts). Beyond that, either add one horizontal row to a smaller board or stack a vertical block of height m.',
+    algorithm: [
+      'dp[i] = ways to tile first i rows.',
+      'If i < m: dp[i] = 1 (horizontal rows only).',
+      'If i = m: dp[i] = 2 (all horizontal or all vertical).',
+      'If i > m: dp[i] = (dp[i − 1] + dp[i − m]) mod 10⁹ + 7.',
+      'Return dp[n].',
+    ],
+    example: {
+      input: 'n = 4, m = 4',
+      steps: [
+        'dp[1..3] = 1. dp[4] = dp[3] + dp[0] = 2 (four horizontals or four verticals).',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Not the same as 2 × N domino tiling — tile length equals full row width m.',
+      'Vertical placement needs n ≥ m; for n = 2, m = 3 only horizontals fit.',
+      'Apply modulo on every addition for large n.',
+    ],
+  },
+
   'longest-k-unique-characters-substring': {
     intuition: 'Longest substring with exactly k unique characters. Sliding window with character frequency map.',
     algorithm: [

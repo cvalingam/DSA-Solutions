@@ -7010,6 +7010,31 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Count consecutive characters needing insertions between them based on their difference.'],
   },
 
+  3020: {
+    intuition:
+      'Build a subset that looks like x, x², x⁴, … using copies from nums. Each intermediate value in the chain needs at least two copies (pair them); the terminal power needs only one. The value 1 is special because 1² = 1 — use every copy when the count is odd, otherwise drop one. Try every distinct starting value and take the maximum chain length.',
+    algorithm: [
+      'Frequency-map all values in nums; track maxNum.',
+      'If 1 exists: ans = count[1] minus 1 when count[1] is even, else count[1].',
+      'For each num ≠ 1: walk x = num, num², num⁴, … while x ≤ maxNum and count[x] ≥ 2, adding 2 to length each step.',
+      'After the loop: add 1 if count[x] exists for the next power, else subtract 1.',
+      'Return the maximum length over all starts.',
+    ],
+    example: {
+      input: 'nums with chain 2 → 4 → 16',
+      steps: [
+        'Two 2s and two 4s give +2 each; one 16 adds +1 at the end.',
+        'Length 5 beats the all-1s chain if that is shorter.',
+      ],
+      output: 'maximum subset size',
+    },
+    pitfalls: [
+      'Use long for x while squaring — int overflow before x > maxNum check.',
+      'Handle 1 separately; the while-loop pairing rule does not apply to the 1-cycle.',
+      'The final +1/−1 adjusts when the last pair has no singleton successor.',
+    ],
+  },
+
   3021: {
     intuition: 'Alice and Bob word game: each gets words with unique first letters. Count Alice wins (more distinct first letters).',
     algorithm: [
