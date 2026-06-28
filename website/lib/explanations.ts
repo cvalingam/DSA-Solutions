@@ -8953,6 +8953,29 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1846: {
+    intuition:
+      'You may decrease any element and reorder freely. In sorted order the constraints are arr[0] = 1 and each step increases by at most 1 — so the array is as steep as possible while staying valid. After sorting, pin the minimum to 1, then each next value is capped at previous + 1 but never increased. The last element is the maximum achievable.',
+    algorithm: [
+      'Sort arr ascending.',
+      'Set arr[0] = 1.',
+      'For i from 1 to n − 1: arr[i] = min(arr[i], arr[i − 1] + 1).',
+      'Return arr[n − 1].',
+    ],
+    example: {
+      input: 'arr = [3, 9, 7, 3, 2, 5, 3, 9, 0, 1]',
+      steps: [
+        'Sorted: 0,1,2,3,3,3,5,7,9,9 → force start 1, then 1,2,3,3,3,4,5,6,7.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Sort first — rearranging means you pick the order after decreases.',
+      'Use min, not max — you only decrease values.',
+      'arr[0] must be exactly 1, not min(arr).',
+    ],
+  },
+
   1732: {
     intuition:
       'The biker begins at altitude 0 before any road segment. Each gain[i] adds to the current altitude — that is a prefix sum over the gain array. The highest altitude is the maximum prefix sum encountered, including the starting altitude 0 before the first segment.',

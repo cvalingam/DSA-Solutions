@@ -1911,6 +1911,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Paths go downward only (parent to child). Remove from map on backtrack to avoid counting across branches.'],
   },
 
+  'k-times-appearing-adjacent-two-1s': {
+    intuition:
+      'Count binary strings of length n where the substring "11" occurs exactly k times. Track length, the last bit, and how many "11" pairs have been formed. Appending 0 never creates a pair; appending 1 after 0 does not; appending 1 after 1 increments the pair count by one.',
+    algorithm: [
+      'dp[i][last][j] = strings of length i, ending in last (0 or 1), with j adjacent-11 counts.',
+      'Base length 1: dp[1][0][0] = dp[1][1][0] = 1.',
+      'Extend each state to length i + 1 with the three transitions above (cap j at k).',
+      'Answer = dp[n][0][k] + dp[n][1][k] modulo 10⁹ + 7.',
+    ],
+    example: {
+      input: 'n = 3, k = 1',
+      steps: [
+        'Strings like 011, 110, 111 have exactly one "11" overlap.',
+        '011 has one pair at positions 1–2; count valid strings via DP.',
+      ],
+      output: 'number of valid binary strings mod 10⁹ + 7',
+    },
+    pitfalls: [
+      'Only consecutive 1s count — "101" has zero pairs.',
+      'When j = k, do not transition by appending 1 after 1.',
+      'Sum both ending bits 0 and 1 at the final length.',
+    ],
+  },
+
   'largest-square-formed-in-a-matrix': {
     intuition: 'DP: dp[i][j] = side length of largest square with bottom-right corner at (i,j). Recurrence: min(left, top, top-left)+1 if cell is 1.',
     algorithm: [
