@@ -4663,6 +4663,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Only store first occurrence. At each re-occurrence update answer. O(n) single pass.'],
   },
 
+  'max-dot-product-with-0-insertions': {
+    intuition:
+      'Align array b fully with a subsequence of a in order — skipping an element of a is equivalent to inserting a 0 there (adds nothing to the dot product). Maximize sum of paired products a[i_k] * b[k]. Use DP on indices (i, j): how to best match b[j..] using a[i..].',
+    algorithm: [
+      'dp(i, j): max dot product for suffixes starting at i in a and j in b.',
+      'If j == m: return 0 (all of b matched). If too few elements left in a: invalid.',
+      'skip = dp(i + 1, j) — drop a[i] (zero insertion).',
+      'match = a[i] * b[j] + dp(i + 1, j + 1) when the suffix is feasible.',
+      'Return max(skip, match); memoize on (i, j).',
+    ],
+    example: {
+      input: 'a = [2, 1, 3], b = [1, 2]',
+      steps: [
+        'Pair a[0]=2 with b[0]=1, skip a[1], pair a[2]=3 with b[1]=2 → 2 + 6 = 8.',
+        'Or skip a[0], match 1*1 and 3*2 = 7.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Require n - i >= m - j — every remaining b element needs a distinct match in a.',
+      'Use Integer.MIN_VALUE for impossible states; only add dp(i+1,j+1) when not invalid.',
+      'Same spirit as LC 1458 but b must be fully consumed (zeros only on a side).',
+    ],
+  },
+
   'max-min-height': {
     intuition: 'Maximize the minimum height in a histogram/array after given operations. Binary search on answer.',
     algorithm: [
