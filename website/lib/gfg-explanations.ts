@@ -5091,6 +5091,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 1000. Interval DP with step k-1. Add prefix sum for fast range sum computation.'],
   },
 
+  'minimum-insert-and-delete-to-convert': {
+    intuition:
+      'Convert array a into b using only deletions from a and insertions into a (no replacements). Elements kept in order form a common subsequence; maximize its length L. Delete |a| − L unmatched elements from a and insert |b| − L missing elements — total |a| + |b| − 2L.',
+    algorithm: [
+      'Map each value in b to its index (assume distinct or use positions as in problem).',
+      'Scan a: append b-index for values that appear in b to a list.',
+      'Compute LIS length on that list — equals LCS length in O(n log n).',
+      'Return (a.length − L) + (b.length − L).',
+    ],
+    example: {
+      input: 'a = [4, 1, 3, 2], b = [1, 3, 4, 2]',
+      steps: [
+        'Common subsequence {1, 3, 2} has length 3.',
+        'Delete 4 from a (1 op), insert 4 into position (1 op) → total 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Only insert/delete — reduce to LCS, not full edit distance.',
+      'LIS on mapped indices works when matching value equality in order.',
+      'Elements of a not in b must be deleted — they never enter the list.',
+    ],
+  },
+
   'minimum-k-consecutive-bit-flips': {
     intuition: 'Minimum number of k-bit flips to make all bits 1. Greedy sliding window.',
     algorithm: [
