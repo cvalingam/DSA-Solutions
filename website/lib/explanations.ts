@@ -6677,6 +6677,31 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['New array has 2n-1 elements. GCD computed for original adjacent pairs only.'],
   },
 
+  2812: {
+    intuition:
+      'Path safeness is the minimum Manhattan distance to any thief along the route. Maximize that bottleneck — a maximin shortest-path problem on an implicit grid graph, analogous to LC 778 (Swim in Rising Water) but with precomputed cell weights.',
+    algorithm: [
+      'Multi-source BFS from every thief (grid cell = 1): dist[r][c] = Manhattan distance to the nearest thief.',
+      'Max-heap Dijkstra from (0,0): state priority = path safeness = min(dist along the path so far).',
+      'Relax a neighbor (nr, nc) with ns = min(current safeness, dist[nr][nc]); push if ns improves best[nr][nc].',
+      'First time the destination is popped, return its safeness (max-heap guarantees maximin optimum).',
+    ],
+    example: {
+      input: 'grid = [[1,0,0],[0,0,0],[0,0,0]]',
+      steps: [
+        'Thief at (0,0): dist[0][0]=0, neighbors get 1, then 2, …',
+        'Start (0,0) has safeness 0; any path must pass near the thief — answer 0.',
+        'grid = [[0,1,1],[0,0,0],[0,0,0]]: dist[0][0]=1 from thief (0,1); maximin path keeps safeness 1.',
+      ],
+      output: '0 / 1 / 2 depending on grid',
+    },
+    pitfalls: [
+      'Use 4-direction neighbors only — Dc must be {1,-1,0,0}, not {1,0,0,-1} (wrong order creates diagonal moves and corrupts BFS distances).',
+      'Binary search on answer + feasibility BFS also works (~O(n² log n) passes); one maximin Dijkstra is simpler and same asymptotic cost.',
+      '(0,0) and (n-1,n-1) are guaranteed safe (no thieves); dist there is the starting safeness, not infinity.',
+    ],
+  },
+
   2818: {
     intuition: 'Apply operations maximizing score. Score = product of chosen elements. Use prime factorization and greedy assignment.',
     algorithm: [

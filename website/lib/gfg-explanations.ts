@@ -4663,6 +4663,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Only store first occurrence. At each re-occurrence update answer. O(n) single pass.'],
   },
 
+  'max-subarray-sum-by-removing-at-most-one': {
+    intuition:
+      'Classic Kadane tracks the best subarray sum ending at each index. Allow deleting at most one element anywhere in that subarray: maintain a second running value for “best sum ending here after exactly one removal.”',
+    algorithm: [
+      'curr_sum = Kadane without removal (max ending at i). skipped_sum = max ending at i with one element removed in the subarray.',
+      'At index i: skipped_sum = max(curr_sum, skipped_sum + arr[i]) — skip arr[i] using prior Kadane tail, or extend a subarray that already used its one skip.',
+      'curr_sum = max(curr_sum + arr[i], arr[i]); max_sum = max(max_sum, curr_sum, skipped_sum).',
+      'Initialize all three to arr[0] for single-element arrays and all-negative cases.',
+    ],
+    example: {
+      input: 'arr = [1, -2, 0, 3]',
+      steps: [
+        'i=1: skipped_sum=max(1,-2)=1, curr_sum=max(-1,-2)=-1, max_sum=1.',
+        'i=2: skipped_sum=max(-1,1)=1, curr_sum=0, max_sum=1.',
+        'i=3: skipped_sum=max(0,4)=4, curr_sum=3, max_sum=4 (drop -2, take 0 and 3).',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not reset skipped_sum to 0 — “remove one element” means omit it from the subarray, not zero it out.',
+      'Removing zero elements is allowed; answer is ordinary Kadane when no skip helps.',
+      'O(n) time, O(1) space; same DP as LC 1186 (Maximum Subarray Sum with One Deletion).',
+    ],
+  },
+
   'max-dot-product-with-0-insertions': {
     intuition:
       'Align array b fully with a subsequence of a in order — skipping an element of a is equivalent to inserting a 0 there (adds nothing to the dot product). Maximize sum of paired products a[i_k] * b[k]. Use DP on indices (i, j): how to best match b[j..] using a[i..].',
