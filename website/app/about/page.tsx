@@ -1,6 +1,8 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SITE_URL } from '@/lib/constants'
 import { countQualityGfgExplanations, countRichLcExplanations } from '@/lib/content-quality'
+import { getSiteStats } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'About DSA Solutions',
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const lcExplained = countRichLcExplanations()
   const gfgExplained = countQualityGfgExplanations()
+  const { lcCount, gfgCount, total } = getSiteStats()
   return (
     <div className="max-w-2xl mx-auto py-10">
 
@@ -117,6 +120,44 @@ export default function AboutPage() {
           with a strong community of students and early-career developers. Solutions here are in Java —
           the most widely expected language for GFG submissions — and include the same explanation +
           complexity format as the LeetCode C# solutions.
+        </p>
+      </section>
+
+      <section className="mb-8 p-5 rounded-xl border border-slate-200 dark:border-gray-800 bg-slate-50/60 dark:bg-gray-900/40">
+        <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Publisher information</h2>
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 text-sm">
+          DSA Solutions is an independent technical publisher focused on interview preparation for software developers.
+          The site is maintained by a solo creator and updated daily with original explanations — not scraped or auto-generated content.
+        </p>
+        <dl className="grid gap-3 text-sm sm:grid-cols-2">
+          {[
+            ['Site', SITE_URL],
+            ['Audience', '.NET / C# developers, Java interview prep, global (India-heavy traffic)'],
+            ['Content', `${lcCount}+ LeetCode C# solutions, ${gfgCount}+ GFG Java solutions, 25 system design articles`],
+            ['Explained pages', `${lcExplained}+ LC and ${gfgExplained}+ GFG with full step-by-step write-ups`],
+            ['Topics', 'Arrays, binary search, DP, graphs, trees, heaps, system design, and 60+ DSA patterns'],
+            ['Analytics', 'Google Analytics 4 via Google Tag Manager'],
+            ['Ad policy', 'One sidebar slot on solution pages; no pop-ups, interstitials, or ad clutter'],
+            ['Contact', '/contact'],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-lg border border-white/60 dark:border-gray-800 bg-white/70 dark:bg-gray-900/50 px-3 py-2.5">
+              <dt className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1">{label}</dt>
+              <dd className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                {label === 'Site' ? (
+                  <a href={SITE_URL} className="text-indigo-600 dark:text-indigo-400 hover:underline break-all">{value}</a>
+                ) : label === 'Contact' ? (
+                  <Link href={value} className="text-indigo-600 dark:text-indigo-400 hover:underline">{SITE_URL}{value}</Link>
+                ) : (
+                  value
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+          Advertising partners: we reserve a single above-the-fold sidebar placement on explained solution pages.
+          Total indexed solutions: {total}+. For partnership inquiries, use the{' '}
+          <Link href="/contact" className="text-indigo-600 dark:text-indigo-400 hover:underline">contact form</Link>.
         </p>
       </section>
 

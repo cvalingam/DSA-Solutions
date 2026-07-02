@@ -7,6 +7,7 @@ import ThemeProvider from '@/components/ThemeProvider'
 import { SITE_URL } from '@/lib/constants'
 import { GTMScript, GTMNoScript } from '@/components/GoogleTagManager'
 import { buildOrganizationSchema, getSiteStats } from '@/lib/seo'
+import { adsenseClient, shouldLoadAdsenseScript } from '@/lib/ads'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -59,12 +60,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(t===null&&d)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
           }}
         />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5486715116636186"
-          crossOrigin="anonymous"
-        />
+        {shouldLoadAdsenseScript() && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+              crossOrigin="anonymous"
+            />
+          </>
+        )}
         {/* Google Tag Manager */}
         <GTMScript />
       </head>

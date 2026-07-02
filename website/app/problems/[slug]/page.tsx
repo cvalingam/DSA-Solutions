@@ -8,6 +8,7 @@ import CodeBlockWithHeader, { type SupportedLang } from '@/components/CodeBlockW
 import LanguageTabs from '@/components/LanguageTabs'
 import DifficultyBadge from '@/components/DifficultyBadge'
 import AdUnit from '@/components/AdUnit'
+import ArticleWithSidebar from '@/components/ArticleWithSidebar'
 import HelpfulWidget from '@/components/HelpfulWidget'
 import BackToTop from '@/components/BackToTop'
 import explanations from '@/lib/explanations'
@@ -22,6 +23,7 @@ import {
   isLcPageIndexable,
   shouldShowAdsOnLcPage,
 } from '@/lib/content-quality'
+import { shouldShowArticleAdSlot } from '@/lib/ads'
 
 const EXT_TO_SHIKI: Record<string, SupportedLang> = {
   cs:   'csharp',
@@ -104,16 +106,19 @@ export default async function ProblemPage({ params }: Props) {
   const primaryLabel = EXT_TO_LABEL[problem.primaryExt] ?? problem.primaryExt.toUpperCase()
   const rich = explanations[problem.number]
   const showAds = shouldShowAdsOnLcPage(problem)
+  const showAdSlot = shouldShowArticleAdSlot(showAds)
   const overview = buildLcProblemOverview(problem, rich)
   const articleJsonLd = buildLcArticleGraph(problem, rich, primaryLabel)
 
   return (
-    <article className="max-w-3xl mx-auto py-8">
+    <article className="py-8">
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
+      <ArticleWithSidebar showSidebar={showAdSlot}>
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
@@ -195,8 +200,13 @@ export default async function ProblemPage({ params }: Props) {
         )}
       </section>
 
-      {/* Explanation — ads only after substantive content on rich pages */}
-      {showAds && <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />}
+      {/* Mobile ad slot — desktop uses sticky sidebar */}
+      {showAdSlot && (
+        <div className="mb-8 lg:hidden">
+          <AdUnit slot="4545599910" style="leaderboard" placeholder />
+        </div>
+      )}
+
       {(() => {
         const rich = explanations[problem.number]
         if (rich) {
@@ -334,9 +344,6 @@ export default async function ProblemPage({ params }: Props) {
         )}
       </section>
 
-      {showAds && <AdUnit slot="1364902808" style="rectangle" className="mb-6" />}
-
-      {/* Helpful widget */}
       <HelpfulWidget />
 
       {/* Related problems — internal linking for SEO */}
@@ -400,6 +407,7 @@ export default async function ProblemPage({ params }: Props) {
       </nav>
 
       <BackToTop />
+      </ArticleWithSidebar>
     </article>
   )
 }

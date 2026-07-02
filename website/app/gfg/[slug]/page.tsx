@@ -5,6 +5,7 @@ import { getAllGfgProblems, getGfgProblemBySlug, getAdjacentGfgProblems } from '
 import { toLeetCodeSlug } from '@/lib/constants'
 import CodeBlockWithHeader from '@/components/CodeBlockWithHeader'
 import AdUnit from '@/components/AdUnit'
+import ArticleWithSidebar from '@/components/ArticleWithSidebar'
 import HelpfulWidget from '@/components/HelpfulWidget'
 import BackToTop from '@/components/BackToTop'
 import { buildGfgArticleGraph, buildGfgDescription } from '@/lib/seo'
@@ -15,6 +16,7 @@ import {
   resolveGfgExplanation,
   shouldShowAdsOnGfgPage,
 } from '@/lib/content-quality'
+import { shouldShowArticleAdSlot } from '@/lib/ads'
 
 interface Props {
   params: { slug: string }
@@ -68,16 +70,19 @@ export default async function GfgProblemPage({ params }: Props) {
   const gfgSlug = toLeetCodeSlug(problem.title)
   const rich = resolveGfgExplanation(problem.slug)
   const showAds = shouldShowAdsOnGfgPage(problem.slug)
+  const showAdSlot = shouldShowArticleAdSlot(showAds)
   const overview = buildGfgProblemOverview(problem, rich)
   const articleJsonLd = buildGfgArticleGraph(problem, rich)
 
   return (
-    <article className="max-w-3xl mx-auto py-8">
+    <article className="py-8">
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
+      <ArticleWithSidebar showSidebar={showAdSlot}>
 
       <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
         <Link href="/gfg" className="hover:text-emerald-600 transition-colors">GFG</Link>
@@ -133,7 +138,11 @@ export default async function GfgProblemPage({ params }: Props) {
         )}
       </section>
 
-      {showAds && <AdUnit slot="4545599910" style="leaderboard" className="mb-8" />}
+      {showAdSlot && (
+        <div className="mb-8 lg:hidden">
+          <AdUnit slot="4545599910" style="leaderboard" placeholder />
+        </div>
+      )}
 
       {(() => {
         if (rich) {
@@ -204,8 +213,6 @@ export default async function GfgProblemPage({ params }: Props) {
         <CodeBlockWithHeader code={problem.code} lang="java" filename={`${problem.title}.java`} />
       </section>
 
-      {showAds && <AdUnit slot="1364902808" style="rectangle" className="mb-6" />}
-
       <HelpfulWidget />
 
       <nav className="flex justify-between items-center border-t border-gray-100 dark:border-gray-800 pt-6 gap-3 flex-wrap" aria-label="Problem navigation">
@@ -223,6 +230,7 @@ export default async function GfgProblemPage({ params }: Props) {
       </nav>
 
       <BackToTop />
+      </ArticleWithSidebar>
     </article>
   )
 }

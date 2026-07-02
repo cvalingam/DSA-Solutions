@@ -3,6 +3,7 @@ import type { ArticleBlock, SystemDesignArticle } from '@/lib/system-design/type
 import { CATEGORY_LABELS, getAllSystemDesignArticles } from '@/lib/system-design'
 import InlineText from '@/components/InlineText'
 import AdUnit from '@/components/AdUnit'
+import { shouldShowHubAds } from '@/lib/ads'
 
 function renderInline(text: string) {
   return <InlineText text={text} />
@@ -151,7 +152,9 @@ export default function SystemDesignArticleView({ article }: Props) {
         {firstHalf.map((block, i) => renderBlock(block, i))}
       </div>
 
-      <AdUnit slot="4545599910" style="leaderboard" className="my-8" />
+      {shouldShowHubAds() && (
+        <AdUnit slot="4545599910" style="leaderboard" className="my-8" />
+      )}
 
       <div className="prose-custom">
         {secondHalf.map((block, i) => renderBlock(block, i + mid))}

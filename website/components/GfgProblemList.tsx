@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import type { GfgProblemMeta } from '@/lib/gfg-problems'
 import AdUnit from './AdUnit'
+import { shouldShowHubAds } from '@/lib/ads'
 
 export default function GfgProblemList({
   problems,
@@ -61,7 +62,9 @@ export default function GfgProblemList({
         </div>
       </section>
 
+      {shouldShowHubAds() && (
         <AdUnit slot="4545599910" style="leaderboard" className="mb-6" />
+      )}
 
       {/* Search */}
       <div className="mb-4">
