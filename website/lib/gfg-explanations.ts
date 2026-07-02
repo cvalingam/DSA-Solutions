@@ -6906,6 +6906,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'check-subset-sum-divisible-by-k': {
+    intuition:
+      'We only care about subset sums modulo k, not their full values. If two prefix sums leave the same remainder, their difference is divisible by k, which immediately gives a non-empty subset. That also implies an early shortcut: if the array has at least k elements, the answer is automatically true by the pigeonhole principle.',
+    algorithm: [
+      'If k == 1, return true because every non-empty subset sum is divisible by 1.',
+      'If n >= k, return true by the prefix-sum remainder pigeonhole argument.',
+      'Otherwise maintain dp[r] = some non-empty subset has sum with remainder r modulo k.',
+      'For each value x, let mod = x % k. Start a new subset with remainder mod.',
+      'Also extend every previously reachable remainder r to (r + mod) % k.',
+      'If remainder 0 ever becomes reachable, return true; otherwise false after all elements.',
+    ],
+    example: {
+      input: 'arr = [3, 1, 7, 5], k = 6',
+      steps: [
+        'Remainders are 3, 1, 1, 5 modulo 6.',
+        'After processing 7, we can make remainder 4 using subset {3,1}.',
+        'When 5 arrives, extending remainder 1 gives remainder 0: subset {7,5} has sum 12.',
+        'A remainder of 0 means a non-empty subset sum is divisible by 6.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Do not track full subset sums up to totalSum unless necessary; modulo states are enough and much smaller.',
+      'The empty subset must not count, so dp starts all false and each element first creates its own singleton remainder.',
+      'When updating remainders in-place, iterate carefully; using a temporary layer is the safest mental model.',
+    ],
+  },
+
   'check-if-all-bits-set': {
     intuition:
       'A number has all its bits set in binary if it is of the form 2^k - 1 (e.g., 7 = 0b111, 15 = 0b1111, 31 = 0b11111). The key insight is that n = 2^k - 1 if and only if n + 1 = 2^k. Since a power of 2 has exactly one bit set, we can check (n+1) & n: if n is all-bits-set, then n+1 and n have no overlapping bits, so their AND is 0.',

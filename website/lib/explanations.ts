@@ -7882,6 +7882,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  // --- 3286. Find a Safe Walk Through a Grid ---------------------------------
+  3286: {
+    intuition:
+      'Treat each move as spending health equal to the destination cell value (0 or 1). The question is not shortest distance but reachability with positive health left, so the natural state is (row, col, remainingHealth). A plain cell-only visited array is not enough because reaching the same cell with more health is strictly better than reaching it with less.',
+    algorithm: [
+      'Subtract grid[0][0] from the initial health because entering the start cell also costs health.',
+      'Run BFS over states (r, c, h), where h is remaining health after standing on that cell.',
+      'From each state, try the 4 neighbors. The next health is h - grid[nr][nc].',
+      'Skip moves that leave nextHealth <= 0, because the path must keep health strictly positive.',
+      'Use seen[r][c][h] so the same cell can still be explored again with a different remaining-health value.',
+      'If BFS reaches (m-1, n-1) with h > 0, return true; otherwise false.',
+    ],
+    example: {
+      input: 'grid = [[0,1,0],[0,1,0],[0,0,0]], health = 2',
+      steps: [
+        'Start at (0,0) with health 2 because grid[0][0] = 0.',
+        'Going right twice would spend 1 health on the blocked middle column and may trap us.',
+        'BFS also explores going down first: (1,0) -> (2,0) -> (2,1) -> (2,2), paying only zeros.',
+        'Destination is reached with health still positive, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'The start cell cost counts too: initialHealth = health - grid[0][0].',
+      'Visited-by-cell alone is incorrect; a later path that reaches the same cell with more remaining health may still succeed.',
+      'The condition is strictly positive health, so nextHealth == 0 is not allowed.',
+    ],
+  },
+
   // --- 3742. Maximum Path Score in a Grid ------------------------------------
   3742: {
     intuition:
