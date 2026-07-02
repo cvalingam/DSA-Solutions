@@ -6934,6 +6934,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'ways-to-increase-lcs-by-one': {
+    intuition:
+      'Recomputing LCS for every insertion is too slow. Instead, precompute prefix LCS (lcsl) and suffix LCS (lcsr). When you insert character c at position i in s1 and match it with s2[p], the new LCS is lcsl[i][p−1] + 1 + lcsr[i+1][p+1]. That equals base + 1 exactly when lcsl[i][p−1] + lcsr[i+1][p+1] == base — the prefix and suffix already account for the full original LCS, and c adds one more match.',
+    algorithm: [
+      'Build lcsl[i][j] = LCS of s1[0..i−1] and s2[0..j−1] (1-indexed DP).',
+      'Build lcsr[i][j] = LCS of s1[i−1..] and s2[j−1..] by filling the table backwards.',
+      'Store 1-based positions of each letter in s2 for fast lookup.',
+      'For each insertion index i (0..n1) and each letter c, scan positions p in s2 where s2[p−1] == c.',
+      'If lcsl[i][p−1] + lcsr[i+1][p+1] == baseLCS, count this insertion once (break after first valid p).',
+    ],
+    example: {
+      input: 's1 = "abab", s2 = "abc"',
+      steps: [
+        'baseLCS = 2 (e.g. "ab").',
+        'Insert "c" at index 2 and match with p = 3 in s2.',
+        'lcsl[2][2] + lcsr[3][4] = 2 + 0 = 2 = baseLCS, so LCS becomes 3.',
+        'Same check succeeds for insertions at indices 3 and 4 with "c".',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Use 1-based indices for lcsl/lcsr tables; insertion position i runs 0..n1.',
+      'Break after the first valid p for each (i, c) — multiple p values must not double-count one insertion.',
+      'Brute force (recompute LCS per insertion) times out on GFG; prefix/suffix DP is required.',
+    ],
+  },
+
   'check-if-all-bits-set': {
     intuition:
       'A number has all its bits set in binary if it is of the form 2^k - 1 (e.g., 7 = 0b111, 15 = 0b1111, 31 = 0b11111). The key insight is that n = 2^k - 1 if and only if n + 1 = 2^k. Since a power of 2 has exactly one bit set, we can check (n+1) & n: if n is all-bits-set, then n+1 and n have no overlapping bits, so their AND is 0.',
