@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { getPopularExplainedLcProblems } from '@/lib/popular-problems'
 
 export const metadata: Metadata = {
   title: 'DSA Study Guide for C# Developers — LeetCode Interview Prep',
@@ -30,6 +31,8 @@ const jsonLd = {
 }
 
 export default function StudyGuidePage() {
+  const startHere = getPopularExplainedLcProblems().slice(0, 6)
+
   return (
     <div className="max-w-3xl mx-auto py-10">
       <script
@@ -54,6 +57,30 @@ export default function StudyGuidePage() {
         preparing for your first technical interview or brushing up for a FAANG round, this guide
         walks you through what to study, in what order, and how to think about problems under pressure.
       </p>
+
+      {startHere.length > 0 && (
+        <section className="mb-12 p-5 rounded-xl border border-indigo-100 dark:border-indigo-900/40 bg-indigo-50/40 dark:bg-indigo-950/20">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Start Here
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+            These are the most searched classics on dsasolved.com right now, each with a full C# walkthrough.
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {startHere.map(p => (
+              <li key={p.slug}>
+                <Link
+                  href={`/problems/${p.slug}`}
+                  className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+                >
+                  {p.number}. {p.title}
+                </Link>
+                <span className="ml-2 text-xs text-gray-400">({p.difficulty})</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Section 1 */}
       <section className="mb-12">

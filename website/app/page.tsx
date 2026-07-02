@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getAllProblemsMeta } from '@/lib/problems'
 import ProblemList from '@/components/ProblemList'
+import { getPopularLcProblems } from '@/lib/popular-problems'
 import { Suspense } from 'react'
 import { SITE_URL } from '@/lib/constants'
 import explanations from '@/lib/explanations'
@@ -37,14 +38,26 @@ export default function HomePage() {
     Object.keys(explanations).map(Number).filter(hasSubstantialLcExplanation),
   )
 
+  const popular = getPopularLcProblems()
+  const collectionItems = [
+    ...popular.map(p => ({
+      name: `${p.number}. ${p.title}`,
+      url: `${SITE_URL}/problems/${p.slug}`,
+    })),
+    ...problems
+      .filter(p => !popular.some(pp => pp.number === p.number))
+      .slice(0, 20)
+      .map(p => ({
+        name: `${p.number}. ${p.title}`,
+        url: `${SITE_URL}/problems/${p.slug}`,
+      })),
+  ]
+
   const collectionJsonLd = buildCollectionPageSchema(
     'LeetCode Solutions',
     `Browse ${problems.length}+ LeetCode problems with C# solutions, explanations, and complexity analysis.`,
     SITE_URL,
-    problems.slice(0, 20).map(p => ({
-      name: `${p.number}. ${p.title}`,
-      url: `${SITE_URL}/problems/${p.slug}`,
-    })),
+    collectionItems,
   )
 
   const websiteJsonLd = {
@@ -72,7 +85,11 @@ export default function HomePage() {
       />
 
       <Suspense fallback={<LoadingFallback />}>
-        <ProblemList problems={problems} explanationNums={explanationNums} />
+        <ProblemList
+          problems={problems}
+          explanationNums={explanationNums}
+          popularProblems={popular}
+        />
       </Suspense>
     </>
   )

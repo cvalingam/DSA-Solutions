@@ -45,6 +45,7 @@ const explanations: Record<number, RichExplanation> = {
       'Use INT_MIN / INT_MAX as sentinels when cut1 = 0 or cut1 = m to avoid array out-of-bounds.',
       'Calculate mid as lo + (hi - lo) / 2 to avoid integer overflow when lo + hi is large.',
       'Ensure binary search is on the shorter array so cut2 never goes negative.',
+      'For even total length, average the two middle values; for odd length, take max(left partition values) only.',
     ],
   },
 
@@ -589,23 +590,29 @@ const explanations: Record<number, RichExplanation> = {
   // --- 14. Longest Common Prefix -----------------------------------------------
   14: {
     intuition:
-      'The longest common prefix of all strings cannot be longer than the shortest string, and it must be a prefix of every string. Vertical scanning: check each character position across all strings simultaneously, stopping at the first mismatch.',
+      'The longest common prefix is the deepest path in a trie where every inserted string still agrees. Build a trie from all strings, then walk from the root while each node has exactly one child and is not marked as the end of a shorter word. Stop at the first branch or word end — the characters collected along that single-child chain are the answer.',
     algorithm: [
-      'If the array is empty, return "".',
-      'Iterate column index i from 0 to strs[0].Length-1.',
-      'For each string s in strs: if i >= s.Length or s[i] != strs[0][i], return strs[0][0..i] (exclusive).',
-      'Return strs[0] (all strings are equal).',
+      'Insert every string into a trie character by character.',
+      'Track child count per node so you can detect branching quickly.',
+      'From the root, repeatedly follow the only child while childCount == 1 and the node is not an end-of-word marker.',
+      'Append each character along that chain to the answer builder.',
+      'Stop when a node has 0 or 2+ children, or when a complete string ends before others diverge.',
+      'Return the built prefix (empty string if the first character already differs).',
     ],
     example: {
       input: '["flower","flow","flight"]',
       steps: [
-        'i=0: f==f==f . i=1: l==l==l . i=2: o==o, but "flight"[2]=i != o. Stop.',
-        'Return strs[0][0..2] = "fl".',
+        'Insert all three strings into the trie: shared path f → l → o, then branch at the fourth character.',
+        'Walk from root: f (1 child), l (1 child), o (1 child).',
+        'At o, the next level has multiple children (w from "flow"/"flower", i from "flight") — stop.',
+        'Collected prefix = "fl".',
       ],
       output: '"fl"',
     },
     pitfalls: [
-      'Check i >= s.Length BEFORE accessing s[i] to avoid IndexOutOfRange on shorter strings.',
+      'Mark end-of-word on nodes; if the shortest string is a prefix of others (e.g. "a", "ab"), stop when you hit that end marker.',
+      'Vertical scanning also works, but the trie version matches the C# solution and scales cleanly to prefix-search follow-ups.',
+      'Empty input array should return "" immediately before building the trie.',
     ],
   },
 

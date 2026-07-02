@@ -5,7 +5,9 @@
 import fs from 'fs'
 import path from 'path'
 
-const ROOT = process.cwd()
+const ROOT = fs.existsSync(path.join(process.cwd(), 'lib', 'explanations.ts'))
+  ? process.cwd()
+  : path.join(process.cwd(), 'website')
 const SOLUTIONS = path.join(ROOT, '..', 'solutions')
 const GFG_SOLUTIONS = path.join(ROOT, '..', 'gfg-solutions')
 const LC_EXP = fs.readFileSync(path.join(ROOT, 'lib/explanations.ts'), 'utf8')

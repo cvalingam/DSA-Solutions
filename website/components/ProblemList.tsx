@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import type { ProblemMeta, Difficulty } from '@/lib/problems'
 import DifficultyBadge from './DifficultyBadge'
 import AdUnit from './AdUnit'
+import PopularProblems from './PopularProblems'
 
 const ROW_H = 48   // px — must match the rendered row height
 const OVERSCAN = 5 // extra rows rendered above/below the visible window
@@ -97,9 +98,11 @@ const filterActive: Record<Filter, string> = {
 export default function ProblemList({
   problems,
   explanationNums = new Set<number>(),
+  popularProblems = [],
 }: {
   problems: ProblemMeta[]
   explanationNums?: Set<number>
+  popularProblems?: ProblemMeta[]
 }) {
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') ?? ''
@@ -165,6 +168,8 @@ export default function ProblemList({
           </div>
         </div>
       </section>
+
+      <PopularProblems problems={popularProblems} />
 
       {/* AdSense */}
         <AdUnit slot="4545599910" style="leaderboard" className="mb-6" />

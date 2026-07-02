@@ -259,6 +259,10 @@ export function getRelatedLcProblems(problem: ProblemMeta, limit = 6): ProblemMe
   const tagSet = new Set(problem.tags)
   return getAllProblemsMeta()
     .filter(p => p.slug !== problem.slug && p.tags.some(t => tagSet.has(t)))
+    .sort((a, b) => {
+      const overlap = (p: ProblemMeta) => p.tags.filter(t => tagSet.has(t)).length
+      return overlap(b) - overlap(a) || a.number - b.number
+    })
     .slice(0, limit)
 }
 
