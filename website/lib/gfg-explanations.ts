@@ -4747,6 +4747,28 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['O(n) by deriving each rotation sum from previous. Initial O(n) setup then O(n) iterations.'],
   },
 
+  'max-gap-between-two-same': {
+    intuition:
+      'We need the largest number of characters strictly between two equal letters. Scan left to right and remember the first index of each letter; when a letter repeats, the gap is current index minus first index minus one.',
+    algorithm: [
+      'Initialize first[26] = −1 and maxGap = −1.',
+      'For each index i and character c: if first[c] is unset, store i; else update maxGap with i − first[c] − 1.',
+      'Return maxGap (stays −1 if no character appears twice).',
+    ],
+    example: {
+      input: 's = "acdbtxtz"',
+      steps: [
+        'First "t" at index 4; second "t" at index 7.',
+        'Gap between them = 7 − 4 − 1 = 2 characters ("xt").',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Gap counts characters between the two occurrences, not including the matching letters.',
+      'Only the first occurrence matters for each character; later repeats compare against that first index.',
+    ],
+  },
+
   'max-sum-path-in-two-arrays': {
     intuition: 'Two sorted arrays with common elements. Find path (switch between arrays at common elements) with maximum sum.',
     algorithm: [
@@ -5917,6 +5939,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Fixed window of size k. Track distinct character count. When window has exactly k-1 distinct: count++.',
     ],
     pitfalls: ['Fixed-size sliding window. Update frequency map as window slides. O(n).'],
+  },
+
+  'substrings-with-more-1s-than-0s': {
+    intuition:
+      'A substring has more 1s than 0s when its (+1/−1) sum is positive. Prefix sums turn this into: count earlier prefixes strictly smaller than the current prefix. A Fenwick tree over shifted prefix sums gives O(log n) per update/query.',
+    algorithm: [
+      'Map 1 → +1 and 0 → −1; maintain running prefix sum.',
+      'Offset sums by n+1 so indices stay non-negative in the BIT.',
+      'Before processing position i, add query(prefixSum − 1) to the answer.',
+      'Insert current prefix sum into the BIT and continue.',
+    ],
+    example: {
+      input: 's = "10101"',
+      steps: [
+        'Prefix sums: 0, 1, 0, 1, 0, 1.',
+        'At the last 1, three earlier prefixes (0, 0, 0) are smaller → three valid substrings ending here.',
+      ],
+      output: 'count of valid substrings',
+    },
+    pitfalls: [
+      'Initialize the BIT with prefix sum 0 before the loop.',
+      'Query prefixSum − 1 for strictly more 1s than 0s, not prefixSum.',
+      'BIT size must cover range [−n, n] after offsetting.',
+    ],
   },
 
   'substrings-with-k-distinct': {

@@ -4238,6 +4238,31 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Array is sorted so binary search works. The dominant element must appear at one of those three index positions.'],
   },
 
+  1288: {
+    intuition:
+      'Interval [a,b] is covered by another if that other starts no later and ends no earlier. After sorting by start ascending and end descending, any interval fully covered by a previous one cannot extend the maximum end — so we only count intervals that push the farthest end forward.',
+    algorithm: [
+      'Sort intervals: primary key start ascending, secondary key end descending.',
+      'Track prevEnd = 0 and answer = 0.',
+      'For each [start, end]: if end > prevEnd, this interval is not covered — increment answer and set prevEnd = end.',
+      'Return answer.',
+    ],
+    example: {
+      input: 'intervals = [[1,4],[3,6],[2,8]]',
+      steps: [
+        'After sort: [[1,4],[3,6],[2,8]].',
+        '[1,4]: end 4 > 0 → count 1, prevEnd = 4.',
+        '[3,6]: end 6 > 4 → count 2, prevEnd = 6.',
+        '[2,8]: end 8 > 6 → count 3, prevEnd = 8.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Sort by end descending when starts tie — otherwise a shorter interval at the same start can hide a longer covering one.',
+      'Use end > prevEnd, not start > prevEnd; coverage is about the right endpoint.',
+    ],
+  },
+
   1290: {
     intuition: 'Traverse linked list and compute binary number. Or: process bit by bit keeping running value.',
     algorithm: [
@@ -4263,6 +4288,33 @@ const explanations: Record<number, RichExplanation> = {
       'Count candies as boxes are opened.',
     ],
     pitfalls: ['Track available boxes (contained in opened boxes or initially given) and available keys separately.'],
+  },
+
+  1301: {
+    intuition:
+      'Paths move only right, down, or diagonally from start to end. Work backward from the bottom-right: each cell inherits the best score reachable from its three forward neighbors, and we count how many ways achieve that best. Blocked cells (X) and the start cell (S) contribute zero digit value.',
+    algorithm: [
+      'Initialize dp and count at (n−1,n−1): score 0, one path.',
+      'Iterate cells (i,j) from bottom-right to top-left.',
+      'Skip X and S for score accumulation; for each of three directions, relax dp[i,j] with neighbor score.',
+      'On a strictly better neighbor score, replace dp and reset count; on a tie, add counts modulo 1e9+7.',
+      'If dp[i,j] is reachable and cell is not E, add board[i][j] digit to dp[i,j].',
+      'Return [dp[0,0], count[0,0]].',
+    ],
+    example: {
+      input: 'board = ["E23","2X2","12S"]',
+      steps: [
+        'From (2,2) backward: only path to E is diagonal chain.',
+        'At each step, pick the neighbor direction with maximum accumulated score.',
+        'Ties in score add their path counts together.',
+      ],
+      output: '[7, 1] (max score 7 along one optimal path)',
+    },
+    pitfalls: [
+      'Process from (n−1,n−1) toward (0,0); forward DP from S is harder because max-score paths merge backward.',
+      'Modulo applies to count, and digit addition on dp also uses mod in this formulation.',
+      'Do not add digit value on E or X cells.',
+    ],
   },
 
   1304: {
@@ -6252,6 +6304,29 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['All pairs must have same sum. If any pair differs: return -1.'],
   },
 
+  2492: {
+    intuition:
+      'The graph is connected and undirected. Any path from city 1 to city n can only use edges in the component reachable from 1. The minimum score of a path is limited by its weakest edge, so the answer is the minimum edge weight among all edges reachable from city 1.',
+    algorithm: [
+      'Build adjacency list from roads.',
+      'DFS (or BFS) from city 1, marking visited cities.',
+      'Whenever traversing an edge of weight w, update ans = min(ans, w).',
+      'Return ans after visiting the whole reachable component.',
+    ],
+    example: {
+      input: 'n = 4, roads = [[1,2,4],[1,3,3],[2,1,2],[3,1,1]]',
+      steps: [
+        'DFS from 1 visits edges with weights 4, 3, 2, and 1.',
+        'The smallest edge weight on any reachable edge is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'You do not need to find a specific 1→n path — every path uses only edges in the same connected component.',
+      'Initialize ans to a large value and update on every edge relaxation during DFS.',
+    ],
+  },
+
   2501: {
     intuition: 'Find longest nice subarray where for any two elements, their AND > 0. Wait - actually longest subarray where consecutive elements AND > 0.',
     algorithm: [
@@ -8004,6 +8079,31 @@ const explanations: Record<number, RichExplanation> = {
       'Don\'t skip the modulo when there is no modulo needed here � but do handle the last index (i+1 < n) before reading result[i+1].',
       'The prefix max must be computed as a full array first; you cannot compute it on the fly in the right-to-left pass.',
       'suffixMin must be updated after reading result[i], not before, to avoid including nums[i] in its own suffix.',
+    ],
+  },
+
+  3620: {
+    intuition:
+      'Each valid path has a score equal to its minimum edge cost. We want the largest such minimum — a classic maximize-the-bottleneck problem. Binary search that threshold: for a candidate mid, keep only edges with cost ≥ mid on online endpoints and ask whether Dijkstra can reach n−1 with total cost ≤ k.',
+    algorithm: [
+      'Drop edges incident to offline nodes; record min and max edge weights as search bounds.',
+      'Binary search mid on edge-weight threshold (search high with mid = (l+r+1)/2).',
+      'check(mid): run Dijkstra using only edges with w ≥ mid; return true if dist[n−1] ≤ k.',
+      'If check(l) is true return l, else return −1.',
+    ],
+    example: {
+      input: 'edges with costs, online mask, budget k',
+      steps: [
+        'For mid = 6, keep only edges costing at least 6.',
+        'Dijkstra finds a path 0→2→4 with total cost 12 ≤ k.',
+        'Larger mid values disconnect the graph, so 6 is optimal.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Filter offline nodes when building the graph — intermediate offline nodes invalidate paths.',
+      'Use long for distances and k; totals can exceed 32-bit range.',
+      'Binary search is on minimum edge weight, not on total path cost.',
     ],
   },
 
