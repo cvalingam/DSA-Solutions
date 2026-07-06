@@ -3,14 +3,15 @@
 <span>💡 <i>Clean, readable solutions to <a href="https://leetcode.com/problemset/all/">LeetCode</a> in C# and <a href="https://www.geeksforgeeks.org/">GeeksforGeeks</a> POTD in Java.</i></span>
 <br/><br/>
 
-<a href="https://dsasolved.com"><strong>🌐 Browse 800+ LeetCode C# Solutions</strong></a> &nbsp;·&nbsp;
+<a href="https://dsasolved.com"><strong>🌐 Browse 900+ LeetCode C# Solutions</strong></a> &nbsp;·&nbsp;
 <a href="https://dsasolved.com/topics">Browse by Topic</a> &nbsp;·&nbsp;
 <a href="https://dsasolved.com/gfg">GFG Java Solutions</a>
 
 <br/><br/>
 
-![LeetCode C#](https://img.shields.io/badge/LeetCode-802%2B%20solutions-323232?style=flat-square&logo=leetcode)
-![GFG](https://img.shields.io/badge/GeeksforGeeks-530%2B%20Java%20solutions-2F8D46?style=flat-square&logo=geeksforgeeks)
+![LeetCode C#](https://img.shields.io/badge/LeetCode-912%2B%20solutions-323232?style=flat-square&logo=leetcode)
+![GFG](https://img.shields.io/badge/GeeksforGeeks-622%2B%20Java%20solutions-2F8D46?style=flat-square&logo=geeksforgeeks)
+![Website](https://img.shields.io/badge/website-dsasolved.com-2563EB?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 
 </div>
@@ -21,9 +22,9 @@
 
 | Folder | Contents |
 |--------|----------|
-| `solutions/` | 802+ LeetCode problems in C# — one `.cs` file per problem |
-| `gfg-solutions/` | 530+ GeeksforGeeks POTD problems in Java |
-| `website/` | Next.js 14 website powering [dsasolved.com](https://dsasolved.com) |
+| `solutions/` | 912+ LeetCode problems in C# — one `.cs` file per problem |
+| `gfg-solutions/` | 622+ GeeksforGeeks problems in Java |
+| `website/` | Next.js 14 site powering [dsasolved.com](https://dsasolved.com) — LC/GFG solutions, topics, system design |
 
 ## Website features
 
@@ -31,7 +32,9 @@
 - 🏷️ **Topic pages** — browse by Array, DP, Trees, Graphs, and [40+ more topics](https://dsasolved.com/topics)
 - 🎯 **Difficulty filter** — Easy / Medium / Hard
 - 📋 **One-click copy** — syntax-highlighted code with copy button
-- ⚡ **Fully static** — 1,380+ pages pre-rendered at build time
+- ⚡ **Fully static** — 1,600+ pages pre-rendered at build time
+- 📖 **Rich explanations** — step-by-step intuition, algorithm, and pitfalls on explained problems
+- 🏗️ **System design** — 25+ interview guides at [dsasolved.com/system-design](https://dsasolved.com/system-design)
 
 ## Tech stack
 
