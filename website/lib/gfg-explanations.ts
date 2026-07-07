@@ -3553,6 +3553,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Same as LC 525. Transform then use prefix sum hashmap. Initialize map with {0: -1}.'],
   },
 
+  'largest-unblocked-submatrix': {
+    intuition:
+      'Blocked cells split the grid into horizontal and vertical strips. The largest all-1 submatrix must lie entirely between two consecutive blocked rows and two consecutive blocked columns. So collect blocked row/column indices, add grid boundaries, sort, and maximize (row gap) × (column gap).',
+    algorithm: [
+      'Gather all blocked row indices and column indices from the input.',
+      'Append sentinel boundaries: rows 0 and n+1, columns 0 and m+1.',
+      'Sort both lists.',
+      'maxRowGap = maximum of (blockedRows[i] - blockedRows[i-1] - 1) over consecutive pairs.',
+      'maxColGap = same for columns.',
+      'Return maxRowGap * maxColGap.',
+    ],
+    example: {
+      input: 'n = 3, m = 3, blocked = [[1,1]]',
+      steps: [
+        'Rows with boundaries: [0,1,4] → gaps 0 and 2 → maxRowGap = 2.',
+        'Columns with boundaries: [0,1,4] → maxColGap = 2.',
+        'Largest unblocked rectangle area = 2 × 2 = 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Include 0 and n+1 (not n) as row boundaries — gaps count interior rows only.',
+      'Duplicate blocked indices are fine after sorting; gaps are between consecutive distinct boundaries.',
+      'If every row or column is blocked, a gap can be 0 and the answer is 0.',
+    ],
+  },
+
   'last-digit-of-ab': {
     intuition:
       'The last digit of a^b depends only on the last digit of a and the exponent modulo 4 (for bases 2, 3, 7, 8). a and b can be huge strings — never parse them fully. Special cases: b = "0" gives last digit 1; a = "0" gives 0. Reduce b using its last two digits mod 4; if the remainder is 0, use 4 instead so the power cycle is correct.',

@@ -8729,6 +8729,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3754: {
+    intuition:
+      'Strip zeros from n while preserving order of the remaining digits to form x. The sum is the digit sum of x (zeros in the original number contribute nothing). A single right-to-left pass can build x with a place-value multiplier and accumulate sum at the same time.',
+    algorithm: [
+      'Initialize x = 0, sum = 0, place = 1.',
+      'While n > 0: read digit = n % 10.',
+      'If digit != 0: add digit to sum, add digit * place to x, multiply place by 10.',
+      'Divide n by 10 and continue.',
+      'Return x * sum (use long to avoid overflow on large products).',
+    ],
+    example: {
+      input: 'n = 10203004',
+      steps: [
+        'Non-zero digits in order: 1, 2, 3, 4 → x = 1234.',
+        'sum = 1 + 2 + 3 + 4 = 10.',
+        'Answer = 1234 * 10 = 12340.',
+      ],
+      output: '12340',
+    },
+    pitfalls: [
+      'Build x from right to left with place *= 10 so digit order matches the original number.',
+      'sum is over digits in x only; skipping zeros in n is equivalent to ignoring zero addends.',
+      'Edge case n = 0 or all-zero digits: x = 0 and sum = 0, return 0.',
+    ],
+  },
+
   3689: {
     intuition:
       'The value of any subarray is determined only by its maximum and minimum element. No subarray can have a larger difference than the global maximum minus the global minimum of the entire array, because every subarray element is still one of the original array elements. Since the problem asks for the maximum total value after choosing k subarrays and overlapping is allowed, we can choose a best-value subarray every time, so the answer is k multiplied by that single best possible difference.',
