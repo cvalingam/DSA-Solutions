@@ -3913,6 +3913,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Median minimizes L1 distance. Sort towers, take median, compute cost. O(n log n).'],
   },
 
+  'towers-reaching-both-stations': {
+    intuition:
+      'Station 1 sits on the top and left borders; station 2 on the bottom and right. A tower can receive a signal from a border if there is a path of adjacent cells with non-decreasing heights from that border. Run two DFS flood-fills and count cells marked by both.',
+    algorithm: [
+      'DFS from every top-row and left-column cell into station1[][] (vis1).',
+      'DFS from every bottom-row and right-column cell into station2[][] (vis2).',
+      'In DFS at (i,j), visit unvisited neighbors where mat[ni][nj] >= mat[i][j].',
+      'Count cells where station1[i][j] && station2[i][j].',
+    ],
+    example: {
+      input: 'heights matrix with border stations',
+      steps: [
+        'From top/left borders, flood all cells reachable via non-decreasing steps.',
+        'From bottom/right borders, flood similarly for station 2.',
+        'Cells in the intersection are towers reached by both stations.',
+      ],
+      output: 'count of overlapping cells',
+    },
+    pitfalls: [
+      'Movement rule is mat[neighbor] >= mat[current] — you can only step uphill or level.',
+      'Seed DFS from entire borders, not just corners.',
+      'Mark visited in the boolean grid to avoid infinite loops on cycles of equal height.',
+    ],
+  },
+
   'exactly-one-swap': {
     intuition: 'Check if string can become another with exactly one swap of characters.',
     algorithm: [

@@ -8755,6 +8755,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3756: {
+    intuition:
+      'Each query is LC 3754 on a substring. Precompute prefix digit sums, non-zero counts, and the modulo concatenation value p[i] for the first i characters. For [l,r], the substring’s x satisfies p[r+1] = p[l]·10^n0 + x, so extract x in O(1) per query.',
+    algorithm: [
+      'Precompute POW10[i] = 10^i mod (1e9+7).',
+      'Build sumD, cntN0, and p prefix arrays over s (1-indexed).',
+      'For each query [l,r]: n0 = cntN0[r+1] − cntN0[l], sd = sumD[r+1] − sumD[l].',
+      'x = (p[r+1] − p[l]·POW10[n0]) mod MOD.',
+      'answer = (x · sd) mod MOD.',
+    ],
+    example: {
+      input: 's = "10203004", queries = [[0,7],[1,3],[4,6]]',
+      steps: [
+        'Query [0,7]: x = 1234, sd = 10 → 12340.',
+        'Query [1,3] on "020": x = 2, sd = 2 → 4.',
+        'Query [4,6] on "300": x = 3, sd = 3 → 9.',
+      ],
+      output: '[12340, 4, 9]',
+    },
+    pitfalls: [
+      'Use 1-indexed prefixes; query bounds l,r are 0-indexed inclusive.',
+      'Add MOD before modulo when subtracting p[l]·10^n0 from p[r+1].',
+      'sumD counts all digits; zeros add 0, so it equals the sum of non-zero digits in the range.',
+    ],
+  },
+
   3689: {
     intuition:
       'The value of any subarray is determined only by its maximum and minimum element. No subarray can have a larger difference than the global maximum minus the global minimum of the entire array, because every subarray element is still one of the original array elements. Since the problem asks for the maximum total value after choosing k subarrays and overlapping is allowed, we can choose a best-value subarray every time, so the answer is k multiplied by that single best possible difference.',
