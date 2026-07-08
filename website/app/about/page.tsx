@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { countQualityGfgExplanations, countRichLcExplanations } from '@/lib/content-quality'
 import { getSiteStats } from '@/lib/seo'
+import { getAllSystemDesignArticles } from '@/lib/system-design'
 
 export const metadata: Metadata = {
   title: 'About DSA Solutions',
@@ -21,6 +22,7 @@ export default function AboutPage() {
   const lcExplained = countRichLcExplanations()
   const gfgExplained = countQualityGfgExplanations()
   const { lcCount, gfgCount, total } = getSiteStats()
+  const sdCount = getAllSystemDesignArticles().length
   return (
     <div className="max-w-2xl mx-auto py-10">
 
@@ -133,7 +135,7 @@ export default function AboutPage() {
           {[
             ['Site', SITE_URL],
             ['Audience', '.NET / C# developers, Java interview prep, global (India-heavy traffic)'],
-            ['Content', `${lcCount}+ LeetCode C# solutions, ${gfgCount}+ GFG Java solutions, 25 system design articles`],
+            ['Content', `${lcCount}+ LeetCode C# solutions, ${gfgCount}+ GFG Java solutions, ${sdCount} system design articles`],
             ['Explained pages', `${lcExplained}+ LC and ${gfgExplained}+ GFG with full step-by-step write-ups`],
             ['Topics', 'Arrays, binary search, DP, graphs, trees, heaps, system design, and 60+ DSA patterns'],
             ['Analytics', 'Google Analytics 4 via Google Tag Manager'],

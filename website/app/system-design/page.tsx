@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 25 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 30 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     'Kafka system design',
     'payment system design',
     'Uber system design',
+    'Pastebin system design',
+    'leaderboard system design',
+    'API gateway system design',
+    'Google Docs system design',
+    'Instagram system design',
     'web crawler system design',
     'Netflix system design',
     'search engine system design',
@@ -38,9 +43,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 25 Articles',
+    title: 'System Design Interview Guide — 30 Articles',
     description:
-      '25 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '30 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -145,6 +150,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Ticket Booking System — seat holds, flash sales, and strong consistency</li>
           <li>Design a Distributed Cache (Redis) — consistent hashing, eviction, and stampede</li>
           <li>Design an E-Commerce Platform — catalog, cart, inventory, and checkout</li>
+          <li>Design Pastebin — text storage, expiration, and read-heavy caching</li>
+          <li>Design a Real-Time Leaderboard — Redis sorted sets and top-K queries</li>
+          <li>Design an API Gateway — auth, routing, and rate limits at the edge</li>
+          <li>Design Google Docs — OT/CRDT, WebSockets, and collaborative editing</li>
+          <li>Design Instagram — photo upload, CDN, and feed at scale</li>
         </ol>
       </section>
 

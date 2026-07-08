@@ -19,3 +19,4 @@ website/.vercel/
 Thumbs.db
 *.suo
 *.user
+.vercel
