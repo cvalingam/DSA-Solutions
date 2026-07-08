@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { getAllSystemDesignArticles } from '@/lib/system-design'
+
+function systemDesignPrepAnswer(sdCount: number): string {
+  return `Start after you are comfortable with core DSA patterns. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, news feed, chat). DSA Solutions publishes ${sdCount} in-depth system design articles at ${SITE_URL}/system-design, including payments, Uber, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, Pastebin, leaderboard, API gateway, Google Docs, Instagram, CAP theorem, sharding, notifications, Kafka, and how LeetCode patterns map to real infrastructure.`
+}
 
 export const metadata: Metadata = {
   title: 'FAQ — LeetCode Interview Prep for C# / .NET Developers',
@@ -16,7 +21,8 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
+function buildFaqJsonLd(sdCount: number) {
+  return {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
@@ -65,13 +71,15 @@ const jsonLd = {
       name: 'How do I prepare for system design interviews?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Start after you are comfortable with core DSA patterns. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, news feed, chat). DSA Solutions publishes 25 in-depth system design articles at dsasolved.com/system-design, including payments, Uber, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, notifications, Kafka, and how LeetCode patterns map to real infrastructure.',
+        text: systemDesignPrepAnswer(sdCount),
       },
     },
   ],
 }
+}
 
-const faqs: { q: string; a: React.ReactNode }[] = [
+function buildFaqs(sdCount: number): { q: string; a: React.ReactNode }[] {
+  return [
   {
     q: 'Is C# accepted on LeetCode?',
     a: (
@@ -133,7 +141,7 @@ const faqs: { q: string; a: React.ReactNode }[] = [
           Start after you are comfortable with core DSA patterns — usually week 8–10 of a structured prep plan. Read one framework article, then practise one case study per week out loud (URL shortener, rate limiter, chat system). The goal is structured communication, not memorising AWS service names.
         </p>
         <p className="mt-2">
-          Our <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design section</Link> has 25 in-depth articles — frameworks, case studies (URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, Netflix, search engine, ticketing, e-commerce, notifications, file storage, typeahead), and fundamentals (caching, Redis, CAP theorem, sharding, Kafka, Snowflake IDs, SQL vs NoSQL, load balancing, API design).
+          Our <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">System Design section</Link> has {sdCount} in-depth articles — frameworks, case studies (URL shortener, rate limiter, news feed, chat, payments, Uber, web crawler, Netflix, search engine, ticketing, e-commerce, notifications, file storage, typeahead, Pastebin, leaderboard, Google Docs, Instagram), and fundamentals (caching, Redis, CAP theorem, sharding, Kafka, Snowflake IDs, SQL vs NoSQL, load balancing, API gateway).
         </p>
       </>
     ),
@@ -212,8 +220,13 @@ const faqs: { q: string; a: React.ReactNode }[] = [
     ),
   },
 ]
+}
 
 export default function FaqPage() {
+  const sdCount = getAllSystemDesignArticles().length
+  const faqs = buildFaqs(sdCount)
+  const jsonLd = buildFaqJsonLd(sdCount)
+
   return (
     <div className="max-w-3xl mx-auto py-10">
       <script
