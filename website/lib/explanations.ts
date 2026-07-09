@@ -9250,6 +9250,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3532: {
+    intuition:
+      'Nodes i and j are connected when |nums[i] − nums[j]| ≤ maxDiff. Because nums is sorted, any path stays inside a contiguous block of indices: if two indices are in the same component, every index between them is too. So only check consecutive pairs — union i with i−1 when their values are close enough, then answer queries by comparing DSU roots.',
+    algorithm: [
+      'Initialize Union-Find on n nodes.',
+      'For i = 1 … n−1: if nums[i] − nums[i−1] ≤ maxDiff, union(i, i−1).',
+      'For each query [u, v]: answer[i] = (Find(u) == Find(v)).',
+      'Equivalently, label each contiguous “good-gap” segment with one component id.',
+    ],
+    example: {
+      input: 'n = 4, nums = [2,5,6,8], maxDiff = 2, queries = [[0,1],[0,2],[1,3],[2,3]]',
+      steps: [
+        'Adjacent gaps: |5−2|=3 > 2 → break after index 0. |6−5|=1 and |8−6|=2 → indices 1–3 form one component.',
+        'Component ids: [0, 1, 1, 1].',
+        'Query [0,1]: different components → false.',
+        'Query [0,2]: 0 vs component 1 → false.',
+        'Query [1,3]: same component → true (path 1→2→3).',
+        'Query [2,3]: same component → true (direct edge).',
+      ],
+      output: '[false, false, true, true]',
+    },
+    pitfalls: [
+      'Only adjacent unions are enough because nums is sorted — do not union all pairs O(n²).',
+      'Use nums[i] − nums[i−1] (non-negative) instead of Math.Abs on sorted input.',
+      'Self-queries [u,u] are always true once a node is in its own set.',
+    ],
+  },
+
 }
 
 export default explanations

@@ -3723,6 +3723,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: ['Update running sums based on current index parity. Check equality after each update.'],
   },
 
+  'count-pairs-divisible-by-k': {
+    intuition:
+      'Pair (i, j) counts only if (arr[i] + arr[j]) is divisible by k. Work modulo k: sums are divisible exactly when remainders r and (k − r) % k match. Scan once while tracking how many earlier elements had each remainder.',
+    algorithm: [
+      'Create freq[0 … k−1], initialized to 0.',
+      'For each num: rem = num % k, need = (k − rem) % k.',
+      'Add freq[need] to the answer (pairs with current element).',
+      'Increment freq[rem].',
+      'Return the total count.',
+    ],
+    example: {
+      input: 'arr = [1, 5, 7, 11], k = 6',
+      steps: [
+        'num=1: rem=1, need=5, freq[5]=0 → count=0; freq[1]=1.',
+        'num=5: rem=5, need=1, freq[1]=1 → count=1 (pair 1+5); freq[5]=1.',
+        'num=7: rem=1, need=5, freq[5]=1 → count=2 (pair 5+7); freq[1]=2.',
+        'num=11: rem=5, need=1, freq[1]=2 → count=4 (pairs with both 1s); freq[5]=2.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'need = (k − rem) % k handles rem = 0 (pairs both ≡ 0 mod k).',
+      'Count freq[need] before incrementing freq[rem] so an element does not pair with itself.',
+      'Use long for the answer if n is large — count can exceed 32-bit range.',
+    ],
+  },
+
   'count-pairs-sum-in-matrices': {
     intuition: 'Count pairs (one from each matrix) whose sum equals a target. Sort one matrix, binary search or two-pointer.',
     algorithm: [
