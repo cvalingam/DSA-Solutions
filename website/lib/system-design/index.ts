@@ -29,6 +29,11 @@ import designLeaderboard from './design-leaderboard'
 import designApiGateway from './design-api-gateway'
 import designCollaborativeDocumentEditor from './design-collaborative-document-editor'
 import designInstagramPhotoSharing from './design-instagram-photo-sharing'
+import designAirbnbHotelBooking from './design-airbnb-hotel-booking'
+import designDistributedJobScheduler from './design-distributed-job-scheduler'
+import designKeyValueStore from './design-key-value-store'
+import designYelpNearbyPlaces from './design-yelp-nearby-places'
+import designZoomVideoConferencing from './design-zoom-video-conferencing'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -62,6 +67,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designApiGateway,
   designCollaborativeDocumentEditor,
   designInstagramPhotoSharing,
+  designAirbnbHotelBooking,
+  designDistributedJobScheduler,
+  designKeyValueStore,
+  designYelpNearbyPlaces,
+  designZoomVideoConferencing,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

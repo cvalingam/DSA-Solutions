@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 30 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 35 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, caching, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     'Kafka system design',
     'payment system design',
     'Uber system design',
+    'Airbnb system design',
+    'Zoom system design',
+    'Yelp system design',
+    'key value store system design',
+    'distributed job scheduler',
     'Pastebin system design',
     'leaderboard system design',
     'API gateway system design',
@@ -43,9 +48,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 30 Articles',
+    title: 'System Design Interview Guide — 35 Articles',
     description:
-      '30 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '35 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -155,6 +160,11 @@ export default function SystemDesignHubPage() {
           <li>Design an API Gateway — auth, routing, and rate limits at the edge</li>
           <li>Design Google Docs — OT/CRDT, WebSockets, and collaborative editing</li>
           <li>Design Instagram — photo upload, CDN, and feed at scale</li>
+          <li>Design Airbnb — listings, availability calendar, and booking holds</li>
+          <li>Design a Distributed Job Scheduler — cron at scale, locks, and retries</li>
+          <li>Design a Key-Value Store — consistent hashing, quorum, and replication</li>
+          <li>Design Yelp — geohash nearby search and local ranking</li>
+          <li>Design Zoom — WebRTC, SFU media servers, and signaling</li>
         </ol>
       </section>
 

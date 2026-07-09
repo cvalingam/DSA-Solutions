@@ -104,7 +104,7 @@ export default function AboutPage() {
             <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">
               System design interview articles
             </Link>{' '}
-            — {sdCount} in-depth guides: frameworks, case studies, and fundamentals including payments, Uber, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, Pastebin, leaderboard, API gateway, Google Docs, Instagram, CAP theorem, sharding, notifications, and Kafka
+            — {sdCount} in-depth guides: frameworks, case studies, and fundamentals including payments, Uber, Airbnb, Zoom, Yelp, key-value store, job scheduler, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, Pastebin, leaderboard, API gateway, Google Docs, Instagram, CAP theorem, sharding, notifications, and Kafka
           </li>
           <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
             <svg className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
