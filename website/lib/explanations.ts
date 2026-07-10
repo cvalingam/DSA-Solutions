@@ -9278,6 +9278,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3534: {
+    intuition:
+      'Unlike LC 3532, nums is not sorted by index and each query asks for the shortest path length (edge count), not just connectivity. Sort nodes by value: an edge can only connect values within maxDiff, so from any sorted position the farthest one-hop landing is a contiguous right endpoint. Precompute that endpoint, then binary-lift to jump 2^k hops and answer each query in O(log n).',
+    algorithm: [
+      'Sort (nums[i], i) pairs; build sortedNums and indexMap[original] → sorted rank.',
+      'Two pointers: for each sorted index i, advance right while sortedNums[right] − sortedNums[i] ≤ maxDiff; set jump[i][0] = right.',
+      'Binary lifting: jump[i][k] = jump[jump[i][k−1]][k−1].',
+      'For query [u,v]: start = min(rank[u], rank[v]), end = max(...).',
+      'If jump[start][maxLevel] < end, return −1 (cannot reach).',
+      'Otherwise greedily take the largest 2^j jump that stays strictly before end, recurse, add 1 << j (or return 1 if one hop reaches end).',
+    ],
+    example: {
+      input: 'n = 5, nums = [1,8,3,5,2], maxDiff = 3, queries include [0,3]',
+      steps: [
+        'Sorted values: 1,2,3,5,8 with ranks for original indices.',
+        'From value 1, one hop can reach up through 2,3 (diff ≤ 3) but not necessarily all the way to 8.',
+        'Binary lifting finds the minimum number of such maxDiff-hops between the two ranks.',
+        'If a gap larger than maxDiff separates components, answer is −1.',
+      ],
+      output: 'minimum edge counts (or -1) per query',
+    },
+    pitfalls: [
+      'Must sort by value first — unlike 3532, index order is not sorted.',
+      'Distance is number of edges (jumps), not |u−v| in index space.',
+      'If jump[start][0] already ≥ end, answer is 1; if start == end, answer is 0.',
+      'Return −1 when even the farthest binary-lifted position never reaches end.',
+    ],
+  },
+
 }
 
 export default explanations

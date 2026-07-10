@@ -7782,6 +7782,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'ways-to-express-as-sum-of-consecutives': {
+    intuition:
+      'Count how many ways n equals a sum of two or more consecutive positive integers (e.g. 9 = 2+3+4 = 4+5). Maintain a sliding window over 1,2,3,…: expand the right end, shrink the left while the sum is too large, and count every time the window sum hits n.',
+    algorithm: [
+      'Initialize sum = 0, left marker x = 1, count = 0.',
+      'For right r = 1 … n: if sum == n, increment count (window [x .. r−1] is a valid consecutive run).',
+      'Add r to sum.',
+      'While sum > n: subtract x and increment x (shrink from the left).',
+      'Return count.',
+    ],
+    example: {
+      input: 'n = 9',
+      steps: [
+        'Grow the window until sum exceeds 9, then shrink.',
+        'Window 2+3+4 = 9 → count once.',
+        'Window 4+5 = 9 → count again.',
+        'Trivial “9 alone” is never counted because the check runs before adding r and the loop stops at r = n.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Require at least two terms — the sliding-window check before adding r naturally skips the single-term representation.',
+      'Shrink with while (sum > n), not a single if — one shrink may not be enough.',
+      'O(√n) math alternative: count odd divisors of n minus 1; the window solution is O(n) and matches this code.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
