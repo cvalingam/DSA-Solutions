@@ -7809,6 +7809,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-possible-route-in-a-matrix-with-hurdles': {
+    intuition:
+      'Find the longest simple path from (xs,ys) to (xd,yd) on a binary grid (1 = free, 0 = hurdle). Shortest-path BFS is wrong here — we want the maximum number of edges among all simple paths. Exhaustive DFS with backtracking explores every route, marking cells visited so a path never revisits a cell, then unmarking so other routes can use it.',
+    algorithm: [
+      'If start or destination is a hurdle (0), return −1. If start equals destination on a free cell, return 0.',
+      'DFS from (x,y) with currentNodes = path length in cells so far.',
+      'When (x,y) is the destination, update maxEdges = max(maxEdges, currentNodes − 1).',
+      'Otherwise mark visited[x][y], recurse to four neighbors that are in-bounds, free, and unvisited, then unmark (backtrack).',
+      'Return maxEdges, or −1 if the destination was never reached.',
+    ],
+    example: {
+      input: 'mat with free cells and hurdles, source (0,0), dest (1,2)',
+      steps: [
+        'From the source, try up/down/left/right on cells with value 1.',
+        'Mark each cell visited along the current path so you cannot loop.',
+        'Whenever the destination is hit, record edges = nodes − 1 and keep the maximum.',
+        'Backtrack (unmark) so a longer detour that still reaches the destination can be tried.',
+      ],
+      output: 'length of the longest simple path in edges, or -1',
+    },
+    pitfalls: [
+      'Return edge count (nodes − 1), not the number of cells visited.',
+      'Must backtrack — without unmarking visited, you only explore one path tree.',
+      'Unlike maze shortest path, do not stop at the first time you reach the destination.',
+      'Exponential time is expected; grids for this problem are small.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
