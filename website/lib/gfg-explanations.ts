@@ -7837,6 +7837,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-amount-by-selling-k-tickets': {
+    intuition:
+      'Each row’s ticket price equals how many seats are still vacant in that row. To maximize revenue over k sales, always sell from the currently fullest row, then that row’s vacancy (and next price) drops by one. A max-heap keeps the richest row on top in O(log n) per sale.',
+    algorithm: [
+      'Push every arr[i] (vacant seats per row) into a max-heap.',
+      'Repeat k times while the heap is non-empty: poll the largest value x, add x to the answer (mod 10^9+7).',
+      'If x − 1 > 0, push x − 1 back (one seat sold from that row).',
+      'Return the accumulated profit as an int.',
+    ],
+    example: {
+      input: 'arr = [2, 3], k = 3',
+      steps: [
+        'Heap starts as {3, 2}.',
+        'Sale 1: take 3 → ans = 3; push 2 → heap {2, 2}.',
+        'Sale 2: take 2 → ans = 5; push 1 → heap {2, 1}.',
+        'Sale 3: take 2 → ans = 7; push 1 → heap {1, 1}.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Use a max-heap (reverseOrder), not a min-heap.',
+      'Do not push 0 back — empty rows contribute nothing further.',
+      'Accumulate in long and mod 1e9+7; k sales can overflow int mid-way.',
+      'Stopping when the heap is empty handles selling more tickets than total seats.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
