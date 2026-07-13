@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 35 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 40 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis cache, e-commerce, CAP theorem, sharding, Kafka, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     'Airbnb system design',
     'Zoom system design',
     'Yelp system design',
+    'Spotify system design',
+    'Google Maps system design',
+    'metrics monitoring system design',
+    'distributed lock system design',
+    'online judge system design',
     'key value store system design',
     'distributed job scheduler',
     'Pastebin system design',
@@ -48,9 +53,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 35 Articles',
+    title: 'System Design Interview Guide — 40 Articles',
     description:
-      '35 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '40 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -165,6 +170,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Key-Value Store — consistent hashing, quorum, and replication</li>
           <li>Design Yelp — geohash nearby search and local ranking</li>
           <li>Design Zoom — WebRTC, SFU media servers, and signaling</li>
+          <li>Design Spotify — audio CDN, playlists, and play-event pipelines</li>
+          <li>Design Google Maps — tiles, routing, and live traffic</li>
+          <li>Design a Metrics Monitoring System — TSDB, labels, and alerting</li>
+          <li>Design a Distributed Lock — leases, Redis vs ZooKeeper, fencing</li>
+          <li>Design an Online Code Judge — sandboxes, queues, and contests</li>
         </ol>
       </section>
 
