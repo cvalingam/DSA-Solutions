@@ -9307,6 +9307,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1291: {
+    intuition:
+      'A sequential-digit number has digits that increase by exactly 1 left to right (12, 123, 6789, …). There are only 36 such numbers in total, so generate them instead of scanning [low, high]. DFS from each start digit 1–9, always appending the next consecutive digit, and keep values that land in range.',
+    algorithm: [
+      'For start digit i = 1 … 9, call DFS with current digit pointer i and num = 0.',
+      'In DFS: if num is inside [low, high], add it to the answer.',
+      'Stop if num > high or the next digit would exceed 9.',
+      'Otherwise recurse with the next digit i+1 and num = num*10 + i (append digit i).',
+      'Sort the collected list (branches are not globally ordered) and return it.',
+    ],
+    example: {
+      input: 'low = 100, high = 300',
+      steps: [
+        'From start 1: build 1 → 12 → 123 (123 is in range) → 1234 (too big, stop).',
+        'From start 2: build 2 → 23 → 234 (in range) → …',
+        'From start 3: 3 → 34 → 345 (345 > 300, stop after checking).',
+        'Collect and sort → [123, 234].',
+      ],
+      output: '[123, 234]',
+    },
+    pitfalls: [
+      'Do not iterate every integer from low to high — generate the tiny candidate set.',
+      'Must sort at the end if generation order is not ascending across all starts.',
+      'Single-digit numbers are sequential; they appear only when low ≤ that digit.',
+      'A number like 7890 is invalid — digits must stay within 1–9 with no wrap.',
+    ],
+  },
+
 }
 
 export default explanations

@@ -7864,6 +7864,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'rearrange-the-array': {
+    intuition:
+      'Array b is a 1-based permutation: each operation replaces every position i with b[i]. Applying the map repeatedly walks disjoint cycles. The configuration returns to the start exactly when every cycle has completed an integer number of laps — that first common time is the LCM of all cycle lengths (taken modulo 10^9+7 for large answers).',
+    algorithm: [
+      'Walk each unvisited index as a cycle: follow cur → b[cur]−1 until you loop, recording the cycle length.',
+      'For each cycle length, factorize it and keep the maximum exponent of every prime across all cycles (this builds LCM).',
+      'Multiply primes raised to those max exponents into the answer, taking mod 10^9+7 after each multiply.',
+      'Return the modular LCM.',
+    ],
+    example: {
+      input: 'b = [2, 3, 1, 5, 4]',
+      steps: [
+        'Cycle 1→2→3→1 has length 3; cycle 4→5→4 has length 2.',
+        'LCM(3, 2) = 6.',
+        'After 6 operations every element is back to its original place.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Indices in b are 1-based — convert with b[cur] − 1.',
+      'Do not compute LCM as (a*b)/gcd under a modulus; use prime-exponent max instead.',
+      'Include length-1 cycles (fixed points); LCM with 1 does not change the answer.',
+      'Use long for the running product before casting back to int.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
