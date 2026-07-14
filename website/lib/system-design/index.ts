@@ -39,6 +39,11 @@ import designGoogleMaps from './design-google-maps'
 import designMetricsMonitoringSystem from './design-metrics-monitoring-system'
 import designDistributedLock from './design-distributed-lock'
 import designOnlineCodeJudge from './design-online-code-judge'
+import designEmailServiceGmail from './design-email-service-gmail'
+import designRecommendationSystem from './design-recommendation-system'
+import designStockTradingSystem from './design-stock-trading-system'
+import designFoodDeliveryDoordash from './design-food-delivery-doordash'
+import designQaPlatformStackOverflow from './design-qa-platform-stack-overflow'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -82,6 +87,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designMetricsMonitoringSystem,
   designDistributedLock,
   designOnlineCodeJudge,
+  designEmailServiceGmail,
+  designRecommendationSystem,
+  designStockTradingSystem,
+  designFoodDeliveryDoordash,
+  designQaPlatformStackOverflow,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),

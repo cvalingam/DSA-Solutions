@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 40 Practical Articles for Developers',
+  title: 'System Design Interview Guide — 45 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     'Yelp system design',
     'Spotify system design',
     'Google Maps system design',
+    'Gmail system design',
+    'recommendation system design',
+    'stock trading system design',
+    'DoorDash system design',
+    'Stack Overflow system design',
     'metrics monitoring system design',
     'distributed lock system design',
     'online judge system design',
@@ -53,9 +58,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 40 Articles',
+    title: 'System Design Interview Guide — 45 Articles',
     description:
-      '40 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '45 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -175,6 +180,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Metrics Monitoring System — TSDB, labels, and alerting</li>
           <li>Design a Distributed Lock — leases, Redis vs ZooKeeper, fencing</li>
           <li>Design an Online Code Judge — sandboxes, queues, and contests</li>
+          <li>Design an Email Service (Gmail) — SMTP ingest, mailbox sharding, and search</li>
+          <li>Design a Recommendation System — candidate generation, ranking, and feedback loops</li>
+          <li>Design a Stock Trading Platform — orders, risk, ledger, and market data</li>
+          <li>Design Food Delivery (DoorDash) — dispatch, ETA, and three-sided marketplace</li>
+          <li>Design a Q&A Platform (Stack Overflow) — votes, reputation, and hot-post caching</li>
         </ol>
       </section>
 
