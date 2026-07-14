@@ -9335,6 +9335,36 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3336: {
+    intuition:
+      'Count ordered pairs of disjoint non-empty subsequences with the same GCD. Constraints are tiny (n, values ≤ 200), so track every possible GCD pair while scanning the array. dp[x][y] = number of ways to assign processed elements so the first subsequence has GCD x and the second has GCD y (0 means that subsequence is still empty).',
+    algorithm: [
+      'Let M = max(nums). Initialize dp[0][0] = 1 (both subsequences empty).',
+      'For each num, build a fresh table newDp. For every existing state (x, y) with count c:',
+      '  • Skip num → add c to newDp[x][y].',
+      '  • Append to first → add c to newDp[gcd(x, num)][y] (gcd(0, num) = num).',
+      '  • Append to second → add c to newDp[x][gcd(y, num)].',
+      'All additions are modulo 10^9+7; replace dp with newDp.',
+      'Answer = sum of dp[g][g] for g = 1 … M (both non-empty and equal GCD).',
+    ],
+    example: {
+      input: 'nums = [10, 20, 30]',
+      steps: [
+        'Start dp[0][0] = 1.',
+        'After 10: can leave both empty, put 10 in first (GCD 10), or put 10 in second.',
+        'After 20 and 30: the only equal non-empty pairs are ([10], [20,30]) and ([20,30], [10]) — both have GCD 10.',
+        'Summing dp[g][g] for g ≥ 1 yields 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Subsequences must be index-disjoint — each element goes to at most one of the two sequences (or neither).',
+      'Do not count dp[0][0]; both subsequences must be non-empty (sum from g = 1).',
+      'Use a separate newDp table each step — updating in place double-counts transitions.',
+      'gcd(0, x) = x is required so the first element placed into an empty subsequence sets its GCD.',
+    ],
+  },
+
 }
 
 export default explanations

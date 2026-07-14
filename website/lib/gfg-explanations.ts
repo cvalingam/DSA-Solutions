@@ -7890,6 +7890,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'smallest-non-zero-number': {
+    intuition:
+      'Find the smallest starting value x such that processing arr left-to-right with x := 2*x − arr[i] never goes negative. Invert the recurrence from the end: if the next value must be at least t, the previous value must be at least ceil((t + arr[i]) / 2). Starting from a required final value of 0 and walking right-to-left yields the minimum valid start in one pass.',
+    algorithm: [
+      'Initialize x = 0 (minimum acceptable value after the last update).',
+      'For i = n−1 … 0: set x = (x + arr[i] + 1) / 2 — integer form of ceil((x + arr[i]) / 2).',
+      'Return x as an int (use long while updating to avoid overflow on large sums).',
+    ],
+    example: {
+      input: 'arr = [1, 2, 3]',
+      steps: [
+        'Start from the right with x = 0.',
+        'i=2, arr[2]=3: x = (0+3+1)/2 = 2.',
+        'i=1, arr[1]=2: x = (2+2+1)/2 = 2.',
+        'i=0, arr[0]=1: x = (2+1+1)/2 = 2.',
+        'Forward check from 2: 2→3→4→5, all non-negative.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Must scan from right to left — left-to-right with the same formula solves a different problem.',
+      'Use (x + arr[i] + 1) / 2 for ceiling division of non-negative ints, not (x + arr[i]) / 2.',
+      'Keep x in a 64-bit type while iterating; cast to int only when returning.',
+      'Starting from 0 (not 1) allows a final value of 0; that matches the non-negative constraint.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
