@@ -7917,6 +7917,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-bitonic-subarray': {
+    intuition:
+      'A bitonic subarray rises (non-decreasing) then falls (non-increasing), possibly with only one of the two phases. Scan once: grow an ascent, then a descent, record the window length, and advance the start to the last peak so overlapping bitonic shapes share that peak instead of restarting from scratch.',
+    algorithm: [
+      'If n ≤ 1, return n.',
+      'Maintain start of the current window, j as the right edge, and nextStart for the following window.',
+      'While j < n−1: advance j while arr[j] ≤ arr[j+1] (ascent).',
+      'Then advance j while arr[j] ≥ arr[j+1] (descent); on each strict drop arr[j] > arr[j+1], set nextStart = j+1.',
+      'Update maxLen with j − start + 1; set start = nextStart and continue.',
+      'Return maxLen.',
+    ],
+    example: {
+      input: 'arr = [12, 4, 78, 90, 45, 23]',
+      steps: [
+        'From 12 down to 4 (descent-only), then climb 4→78→90 and fall 90→45→23.',
+        'Window [4, 78, 90, 45, 23] has length 5.',
+        'nextStart lands after the peak so a later window can reuse index of 90 if needed.',
+        'Answer is 5 (the longest bitonic contiguous segment).',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'This is a contiguous subarray, not a subsequence — do not skip elements.',
+      'Equals are allowed on both the rising and falling sides (≤ and ≥), so plateaus still count.',
+      'Remember nextStart on strict decreases so adjacent bitonic parts that share a peak are not missed.',
+      'Purely increasing or purely decreasing arrays are valid bitonic of length n.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

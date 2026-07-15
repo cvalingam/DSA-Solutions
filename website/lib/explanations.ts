@@ -9365,6 +9365,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3658: {
+    intuition:
+      'You need gcd(sum of first n odds, sum of first n evens). Closed forms are sumOdd = n² and sumEven = n(n+1). Factor out n: gcd(n², n(n+1)) = n · gcd(n, n+1). Consecutive integers are always coprime, so gcd(n, n+1) = 1 and the answer is simply n.',
+    algorithm: [
+      'Recall: 1+3+…+(2n−1) = n².',
+      'Recall: 2+4+…+2n = n(n+1).',
+      'Return n — no need to compute the sums or run Euclidean GCD.',
+    ],
+    example: {
+      input: 'n = 4',
+      steps: [
+        'sumOdd = 1+3+5+7 = 16 = 4².',
+        'sumEven = 2+4+6+8 = 20 = 4·5.',
+        'gcd(16, 20) = 4, which equals n.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not loop to build the odd/even lists — the O(1) identity is the intended solution.',
+      'gcd(n, n+1) is always 1; do not special-case n = 1 (still returns 1 correctly).',
+      'Constraints are small enough for a loop, but returning n is both correct and optimal.',
+    ],
+  },
+
 }
 
 export default explanations
