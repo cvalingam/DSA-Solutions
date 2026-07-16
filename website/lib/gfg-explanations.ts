@@ -7946,6 +7946,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'numbers-with-given-digit-sum': {
+    intuition:
+      'Count n-digit numbers whose digits sum to sum (no leading zero). That is classic digit DP: ways(n, rem) = number of ways to place n more digits so their values add to rem. Digits are filled from least-significant toward the most-significant; when only one digit remains it is the leading digit, so 0 is forbidden.',
+    algorithm: [
+      'Memoize helper(n, rem) over remaining digits and remaining sum.',
+      'Base: n == 0 → return 1 if rem == 0 else 0; rem < 0 → 0.',
+      'Otherwise try digit j = 0 … 9: if n == 1 and j == 0 skip (leading zero); else add helper(n−1, rem−j).',
+      'Cache the result in dp[n][rem].',
+      'Return helper(n, sum), or −1 when the count is 0.',
+    ],
+    example: {
+      input: 'n = 2, sum = 3',
+      steps: [
+        'Need two-digit numbers with digit sum 3 and no leading zero.',
+        'Pairs (MSD, LSD): (1,2) → 12, (2,1) → 21, (3,0) → 30.',
+        '(0,3) would be “03”, rejected when the last remaining digit (MSD) tries 0.',
+        'Total ways = 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Skip 0 only when n == 1 (MSD), not for every digit — inner digits may be zero.',
+      'Return −1 when there are zero ways, not 0 (problem convention).',
+      'Memoize with −1 sentinel; otherwise overlapping subproblems recompute exponentially.',
+      'If sum > 9*n or sum < 1 (for n≥1 with no leading zero), answer is often −1 — DP handles this naturally.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

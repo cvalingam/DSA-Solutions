@@ -9389,6 +9389,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3867: {
+    intuition:
+      'The problem defines the pairs for you: first build prefixGcd[i] = gcd(nums[i], max of the prefix ending at i), then sort that array and pair the smallest leftover with the largest leftover until nothing remains (odd middle ignored). So simulate the construction, sort, and sum gcd of end-pairs — no combinatorial search needed.',
+    algorithm: [
+      'Scan left to right keeping running max mx; set prefixGcd[i] = gcd(nums[i], mx).',
+      'Sort prefixGcd ascending.',
+      'For i = 0 … n/2 − 1: add gcd(prefixGcd[i], prefixGcd[n−1−i]) to the answer.',
+      'If n is odd, the middle element is never paired — the loop naturally skips it.',
+      'Return the sum as a long.',
+    ],
+    example: {
+      input: 'nums = [3, 6, 2, 8]',
+      steps: [
+        'prefix maxes: 3,6,6,8 → prefixGcd = [gcd(3,3), gcd(6,6), gcd(2,6), gcd(8,8)] = [3,6,2,8].',
+        'Sort → [2, 3, 6, 8].',
+        'Pairs: gcd(2,8)=2 and gcd(3,6)=3.',
+        'Sum = 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Update mx before computing gcd(nums[i], mx) — mx must include nums[i].',
+      'Pair after sorting ends, not adjacent sorted neighbors.',
+      'Use long for the answer; many pairs of large GCDs can overflow int.',
+      'When n is odd the middle sorted value contributes nothing — do not add it alone.',
+    ],
+  },
+
 }
 
 export default explanations
