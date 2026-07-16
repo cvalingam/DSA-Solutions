@@ -287,7 +287,7 @@ export function buildSystemDesignHubSchema(
     '@type': 'CollectionPage',
     name: 'System Design Interview Guide',
     description:
-      `${articleCount} practical system design articles for coding interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, payments, Uber, Gmail, recommendations, stock trading, DoorDash, Stack Overflow, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, SQL vs NoSQL, load balancing, and API design.`,
+      `${articleCount} practical system design articles for coding interview prep: frameworks, URL shortener, rate limiter, caching, news feed, chat, payments, Uber, Gmail, CDN, Twitch, distributed logging, ad click aggregator, Google Calendar, recommendations, stock trading, DoorDash, Stack Overflow, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, notifications, file storage, CAP theorem, sharding, Kafka, SQL vs NoSQL, load balancing, and API design.`,
     url: `${SITE_URL}/system-design`,
     author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
     numberOfItems: articleCount,
