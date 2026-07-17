@@ -7974,6 +7974,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-absolute-diff-of-two-subarrays': {
+    intuition:
+      'Two chosen subarrays must not overlap, so place a split between them. For a fixed split, the largest absolute difference must use opposite extremes: either the maximum subarray sum on the left minus the minimum on the right, or the minimum on the left minus the maximum on the right. Kadane’s algorithm can maintain all four extremes across every split in linear time.',
+    algorithm: [
+      'Run Kadane’s algorithm from right to left to build maxRight[i], the maximum subarray sum wholly inside suffix i…n−1.',
+      'In the same reverse pass, use the minimum-sum form of Kadane to build minRight[i].',
+      'Scan split positions i from left to right, maintaining maxLeftSoFar and minLeftSoFar for prefix 0…i.',
+      'At each split, evaluate |maxLeftSoFar − minRight[i+1]| and |minLeftSoFar − maxRight[i+1]|.',
+      'Return the largest difference seen across all n−1 valid splits.',
+    ],
+    example: {
+      input: 'arr = [1, 2, -3, 4, 5]',
+      steps: [
+        'Consider the split between -3 and 4. In the left prefix, the minimum-sum subarray is [-3] with sum -3.',
+        'In the right suffix, the maximum-sum subarray is [4,5] with sum 9.',
+        'Their absolute difference is |-3−9| = 12.',
+        'Checking every split with the precomputed suffix extrema finds no larger value, so the answer is 12.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'The two subarrays must be non-empty and non-overlapping; only split at i where i+1 exists.',
+      'Track both maximum and minimum subarray sums — comparing only two maxima misses large positive-versus-negative gaps.',
+      'Use Kadane states for contiguous subarrays, not prefix sums for arbitrary subsequences.',
+      'Initialize states from actual array elements rather than 0 so all-negative and all-positive arrays work correctly.',
+      'The implementation returns 0 for n < 2 because two non-empty disjoint subarrays cannot be formed.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

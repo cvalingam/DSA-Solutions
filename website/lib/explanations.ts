@@ -9417,6 +9417,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3312: {
+    intuition:
+      'The GCD of any pair is at most max(nums), so count pairs by their exact GCD instead of generating and sorting all O(n²) pair values. If c[d] numbers are divisible by d, then C(c[d], 2) pairs have a GCD that is a multiple of d. Processing d from large to small lets us subtract counts already assigned to 2d, 3d, and so on, leaving only pairs whose GCD is exactly d.',
+    algorithm: [
+      'Let M = max(nums). For every number, enumerate its divisors in O(√num) and increment countDivisor[d] for each divisor d.',
+      'For gcd from M down to 1, start countGcdPair[gcd] at C(countDivisor[gcd], 2).',
+      'Subtract countGcdPair[2·gcd], countGcdPair[3·gcd], … so only pairs with exact GCD gcd remain.',
+      'Build prefixCount[g] = number of pairs whose GCD is at most g. This represents the cumulative positions in the sorted list of all pair GCDs.',
+      'For each zero-based query q, binary-search the first g with prefixCount[g] ≥ q+1 and return g.',
+    ],
+    example: {
+      input: 'nums = [2, 3, 4], queries = [0, 2]',
+      steps: [
+        'The three pairs have GCDs: gcd(2,3)=1, gcd(2,4)=2, and gcd(3,4)=1.',
+        'Their sorted GCD list is [1, 1, 2].',
+        'Exact counts are countGcdPair[1]=2 and countGcdPair[2]=1, so prefixCount[1]=2 and prefixCount[2]=3.',
+        'Query 0 is the first value, found at GCD 1; query 2 is the third value, found at GCD 2.',
+      ],
+      output: '[1, 2]',
+    },
+    pitfalls: [
+      'C(countDivisor[d], 2) includes every pair whose GCD is a multiple of d, not only pairs whose GCD equals d; subtract exact counts of larger multiples.',
+      'Process possible GCDs from large to small so all larger-multiple counts are already known.',
+      'Queries are zero-based, while prefix counts are cardinalities; search for query+1.',
+      'Pair counts can be O(n²), so use long even though each returned GCD fits in int.',
+      'Enumerate both divisors i and num/i, but count a square root only once.',
+    ],
+  },
+
 }
 
 export default explanations
