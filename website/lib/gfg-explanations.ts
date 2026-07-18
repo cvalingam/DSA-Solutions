@@ -8003,6 +8003,36 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'cut-matrix': {
+    intuition:
+      'Cut a binary matrix into k pieces with k−1 hard cuts (always giving away the top strip or left strip) so every piece contains at least one 1. After each cut the remaining bottom-right rectangle is itself a cutting problem with one fewer piece. Suffix sums of filled cells make “does this rectangle still have a 1?” O(1), and binary search finds the earliest cut that actually peels off a 1 so we never enumerate empty cuts.',
+    algorithm: [
+      'Build suff[i][j] = number of 1s in the submatrix from (i,j) to the bottom-right corner.',
+      'dp[1][r][c] = 1 if suff[r][c] > 0 else 0 — one piece needs only a non-empty filled suffix.',
+      'For rem = 2 … k, first build row- and column-wise suffix sums of dp[rem−1] so any bottom-right rectangle of answers can be queried in O(1).',
+      'For each top-left (r,c) with suff[r][c] > 0, binary-search the first next_r where suff[next_r][c] < suff[r][c] (horizontal cut peels ≥1 filled cell) and add dpSumRow[next_r][c].',
+      'Likewise binary-search next_c for a vertical cut and add dpSumCol[r][next_c]. Store the sum modulo 10⁹+7 in dp[rem][r][c].',
+      'Answer is dp[k][0][0].',
+    ],
+    example: {
+      input: 'matrix = [[1,0,0],[1,1,1],[0,0,0]], k = 3',
+      steps: [
+        'Suffix at (0,0) has four 1s; base cases mark every cell whose suffix still contains a 1.',
+        'First cut must peel at least one 1 from the top or left of the full matrix.',
+        'Valid sequences of two cuts that leave three non-empty pieces total 3 ways (same as the classic pizza-cutting example).',
+        'dp[3][0][0] = 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'A cut is invalid if the given-away strip has zero filled cells — that is why next_r / next_c require a strict drop in suffix sum.',
+      'Always cut from the current top-left; you never cut previously given-away regions.',
+      'Modulo after every addition; ways grow quickly with k.',
+      'Skip states with suff[r][c] == 0 early — an empty remaining pizza cannot form rem ≥ 1 valid pieces.',
+      'Binary search must return the first index where the suffix becomes strictly smaller, not merely ≤.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

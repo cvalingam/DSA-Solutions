@@ -9446,6 +9446,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1979: {
+    intuition:
+      'The problem asks for the GCD of the smallest and largest values only — not the GCD of every element. After one scan to find min and max, the answer is just Euclidean gcd(min, max). Middle values never affect the result.',
+    algorithm: [
+      'Scan the array once to find min and max.',
+      'While both are positive, replace the larger with larger % smaller (Euclidean algorithm).',
+      'When one becomes 0, return the other — that is gcd(min, max).',
+    ],
+    example: {
+      input: 'nums = [2, 5, 6, 9, 10]',
+      steps: [
+        'min = 2, max = 10.',
+        'gcd(10, 2): 10 % 2 = 0 → answer 2.',
+        'Only the extremes matter; 5, 6, and 9 are ignored after the scan.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Read the statement carefully: it is gcd(min, max), not the GCD of the entire array (those can differ).',
+      'Handle the case where min == max (all equal): gcd is that value; the loop exits after one remainder becomes 0.',
+      'Use a remainder-based Euclidean loop; subtracting repeatedly is correct but slower for large gaps.',
+      'Return Math.Max(min, max) after the loop because exactly one of them is zero.',
+    ],
+  },
+
 }
 
 export default explanations
