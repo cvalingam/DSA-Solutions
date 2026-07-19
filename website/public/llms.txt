@@ -18,12 +18,14 @@ GitHub: https://github.com/cvalingam
 - System design: https://dsasolved.com/system-design
 - Cheat sheet: https://dsasolved.com/cheat-sheet
 - FAQ: https://dsasolved.com/faq
+- Works / portfolio: https://dsasolved.com/works
 
 ## URL patterns
 
 - LeetCode problem: https://dsasolved.com/problems/{number}
 - GFG problem: https://dsasolved.com/gfg/{slug}
 - System design article: https://dsasolved.com/system-design/{slug}
+- Works portfolio: https://dsasolved.com/works
 
 ## Sitemap
 

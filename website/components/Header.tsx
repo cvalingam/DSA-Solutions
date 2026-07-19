@@ -146,7 +146,7 @@ export default function Header() {
                 </div>
               )}
             </div>
-            <NavLink href="/works" active={pathname.startsWith('/works')} label="Works" className="hidden lg:inline-flex" />
+            <NavLink href="/works" active={pathname.startsWith('/works')} label="Works" className="hidden md:inline-flex" />
             <NavLink href="/about" active={pathname === '/about'} label="About" className="hidden lg:inline-flex" />
             <a
               href="https://github.com/cvalingam/DSA-Solutions"

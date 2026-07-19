@@ -1,26 +1,53 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { buildWorksPageSchema } from '@/lib/seo'
 import { WORKS } from '@/lib/works'
 
+const worksDescription =
+  'Selected live projects by Sivalingam Ramasamy — NEET MDS Image Sizer, Skin Klove, Clinic OS, Steel Express, Invoice Generator, GST Bot, and DSA Solutions.'
+
 export const metadata: Metadata = {
-  title: 'Works',
-  description:
-    'Selected live projects by Sivalingam Ramasamy — interview prep tools, clinic apps, CMS sites, and utilities.',
+  title: 'Works — Live Projects by Sivalingam Ramasamy',
+  description: worksDescription,
   alternates: { canonical: '/works' },
-  keywords: ['portfolio', 'works', 'Next.js', 'projects', 'Sivalingam Ramasamy'],
+  keywords: [
+    'portfolio',
+    'works',
+    'Sivalingam Ramasamy',
+    'NEET MDS Image Sizer',
+    'Skin Klove',
+    'Clinic OS',
+    'Steel Express',
+    'steelxpresssolution',
+    'Invoice Generator',
+    'GST Bot',
+    'DSA Solutions',
+    'Next.js projects',
+  ],
   openGraph: {
     title: 'Works | DSA Solutions',
-    description:
-      'Selected live projects — NEET MDS Image Sizer, Skin Klove, Steel Express, and more.',
+    description: worksDescription,
     url: '/works',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Works | DSA Solutions',
+    description: worksDescription,
   },
 }
 
 export default function WorksPage() {
+  const jsonLd = buildWorksPageSchema(WORKS)
+
   return (
     <div className="max-w-2xl mx-auto py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 px-6 py-10 mb-10 text-white shadow-lg">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.08)_0%,_transparent_55%)] pointer-events-none" />
         <div className="relative">

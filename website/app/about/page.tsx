@@ -171,6 +171,13 @@ export default function AboutPage() {
           his algorithmic thinking and started this site to share clean solutions with the broader
           .NET community.
         </p>
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+          Beyond this interview-prep site, other live products and tools are listed on the{' '}
+          <Link href="/works" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+            Works
+          </Link>{' '}
+          page — including NEET MDS Image Sizer, Skin Klove, Clinic OS, and Steel Express.
+        </p>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           The project is open-source under the MIT License and available on{' '}
           <a
@@ -189,6 +196,8 @@ export default function AboutPage() {
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
           LeetCode Solutions
         </Link>
+        <span className="text-gray-300 dark:text-gray-700">|</span>
+        <Link href="/works" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">Works →</Link>
         <span className="text-gray-300 dark:text-gray-700">|</span>
         <Link href="/system-design" className="text-sm text-violet-600 dark:text-violet-400 hover:underline">System Design →</Link>
         <span className="text-gray-300 dark:text-gray-700">|</span>

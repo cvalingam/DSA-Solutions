@@ -303,3 +303,42 @@ export function buildSystemDesignHubSchema(
     },
   }
 }
+
+export function buildWorksPageSchema(
+  projects: {
+    title: string
+    description: string
+    url: string
+    github?: string
+    tags: string[]
+  }[],
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Works — Live Projects by Sivalingam Ramasamy',
+    description:
+      'Selected live projects by Sivalingam Ramasamy — NEET MDS Image Sizer, DSA Solutions, Skin Klove, Clinic OS, Invoice Generator, GST Bot, and Steel Express.',
+    url: `${SITE_URL}/works`,
+    author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    numberOfItems: projects.length,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: projects.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'SoftwareApplication',
+          name: p.title,
+          description: p.description,
+          url: p.url,
+          applicationCategory: 'WebApplication',
+          operatingSystem: 'Any',
+          author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+          keywords: p.tags.join(', '),
+          ...(p.github ? { codeRepository: p.github } : {}),
+        },
+      })),
+    },
+  }
+}

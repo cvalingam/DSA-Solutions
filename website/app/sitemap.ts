@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/system-design`,  lastModified: buildDate, changeFrequency: 'weekly',  priority: 0.9 },
     { url: `${SITE_URL}/cheat-sheet`,    lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/faq`,            lastModified: buildDate, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/works`,          lastModified: buildDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/works`,          lastModified: buildDate, changeFrequency: 'weekly',  priority: 0.75 },
     { url: `${SITE_URL}/about`,          lastModified: buildDate, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${SITE_URL}/privacy-policy`, lastModified: buildDate, changeFrequency: 'yearly',  priority: 0.2 },
     { url: `${SITE_URL}/contact`,        lastModified: buildDate, changeFrequency: 'yearly',  priority: 0.2 },
