@@ -15,7 +15,6 @@ export const WORKS: WorkProject[] = [
     description:
       'Browser-only tool that crops and encodes passport, postcard, signature, and thumb images to Tamil Nadu / NEET MDS portal sizes and file-size limits.',
     url: 'https://neet-mds-image-sizer.vercel.app',
-    github: 'https://github.com/cvalingam/neet-mds-image-sizer',
     tags: ['Next.js', 'Canvas', 'Client-side'],
   },
   {
