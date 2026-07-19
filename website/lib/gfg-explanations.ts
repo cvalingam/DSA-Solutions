@@ -8033,6 +8033,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'mountain-subarray-queries': {
+    intuition:
+      'A range [l, r] is a mountain if values first go non-decreasing, then non-increasing (either phase alone is allowed). From any index the ascending run and descending run each have a farthest reachable end, and those ends can be precomputed once. A query then only checks whether the ascent from l and the descent from that peak together cover r.',
+    algorithm: [
+      'Build up[i]: scan right-to-left; if arr[i] ≤ arr[i+1] set up[i] = up[i+1], else up[i] = i. This is the end of the non-decreasing run starting at i.',
+      'Build down[i] the same way for non-increasing runs (arr[i] ≥ arr[i+1]).',
+      'For each query [l, r], let peak = up[l].',
+      'Answer true if peak ≥ r (the whole range is non-decreasing) or down[peak] ≥ r (after the peak the descent reaches r); otherwise false.',
+    ],
+    example: {
+      input: 'arr = [1, 3, 5, 4, 2], queries = [[0, 4], [1, 3], [3, 4]]',
+      steps: [
+        'up = [2, 2, 2, 3, 4] and down = [0, 1, 4, 4, 4].',
+        'Query [0,4]: peak = up[0] = 2, down[2] = 4 ≥ 4 → true (1,3,5 then 4,2).',
+        'Query [1,3]: peak = up[1] = 2, down[2] = 4 ≥ 3 → true.',
+        'Query [3,4]: peak = up[3] = 3, but 3 < 4; down[3] = 4 ≥ 4 → true (pure descent).',
+      ],
+      output: '[true, true, true]',
+    },
+    pitfalls: [
+      'Plateaus count: use ≤ on the ascent and ≥ on the descent, not strict inequalities.',
+      'A pure ascent or pure descent is a valid mountain for this problem — do not require both slopes.',
+      'peak = up[l] is the first place the ascent from l stops; do not search for a local maximum inside [l, r] separately.',
+      'Indices in queries are 0-based; compare peak and down[peak] against r inclusively.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
