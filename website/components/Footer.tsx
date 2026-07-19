@@ -53,6 +53,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               <li><Link href="/gfg"  className="text-sm text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">All GFG Problems</Link></li>
               <li><Link href="/faq"  className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">FAQ</Link></li>
+              <li><Link href="/works"    className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Works</Link></li>
               <li><Link href="/about"    className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About</Link></li>
               <li><Link href="/contact"  className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</Link></li>
             </ul>

@@ -146,6 +146,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+            <NavLink href="/works" active={pathname.startsWith('/works')} label="Works" className="hidden lg:inline-flex" />
             <NavLink href="/about" active={pathname === '/about'} label="About" className="hidden lg:inline-flex" />
             <a
               href="https://github.com/cvalingam/DSA-Solutions"
@@ -236,6 +237,7 @@ export default function Header() {
               <MobileNavLink href="/system-design" active={isSd} label="System Design" icon="🏗️" />
               <MobileNavLink href="/cheat-sheet" active={pathname === '/cheat-sheet'} label="C# Cheat Sheet" icon="📋" />
               <MobileNavLink href="/faq" active={pathname === '/faq'} label="FAQ" icon="❓" />
+              <MobileNavLink href="/works"       active={pathname.startsWith('/works')}  label="Works"       icon="🧩" />
               <MobileNavLink href="/about"       active={pathname === '/about'}          label="About"       icon="ℹ️" />
               <MobileNavLink href="/contact"     active={pathname === '/contact'}        label="Contact"     icon="✉️" />
             </div>
