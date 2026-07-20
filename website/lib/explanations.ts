@@ -9471,6 +9471,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1260: {
+    intuition:
+      'A grid shift is just a circular rotate on the flattened row-major sequence. Mapping (i, j) ↔ i*n+j lets you add k (mod m·n) and convert back to coordinates, so every cell moves in one arithmetic step without simulating k individual wraps.',
+    algorithm: [
+      'Let m = rows, n = cols, and reduce k %= m*n.',
+      'Allocate a new m×n matrix.',
+      'For each cell (i, j) with value grid[i][j], compute index = (i*n + j + k) % (m*n).',
+      'Write the value into (index / n, index % n).',
+      'Copy the matrix into List<IList<int>> and return it.',
+    ],
+    example: {
+      input: 'grid = [[1,2,3],[4,5,6],[7,8,9]], k = 1',
+      steps: [
+        'Flattened order is 1,2,3,4,5,6,7,8,9. After one shift: 9,1,2,3,4,5,6,7,8.',
+        'Cell 1 at (0,0) goes to index 1 → (0,1). Cell 9 at (2,2) goes to index 0 → (0,0).',
+        'Result grid is [[9,1,2],[3,4,5],[6,7,8]].',
+      ],
+      output: '[[9,1,2],[3,4,5],[6,7,8]]',
+    },
+    pitfalls: [
+      'Always take k modulo m*n; large k without reduction wastes work and can overflow if you are not careful with intermediates.',
+      'Column count n is the stride: index / n is the row, index % n is the column.',
+      'Write into a new matrix — shifting in place is messy because destinations overwrite unread sources.',
+      'k = 0 must return an equivalent grid (modulo makes this natural).',
+    ],
+  },
+
 }
 
 export default explanations

@@ -8060,6 +8060,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'shortest-unique-prefix-for-every-word': {
+    intuition:
+      'The shortest unique prefix of a word is the shortest string that starts that word and does not start any other word. Counting how often each prefix appears across the whole dictionary answers that immediately: walk each word left to right and stop at the first prefix whose global count is 1.',
+    algorithm: [
+      'First pass: for every word, for every prefix, pack characters into a rolling integer key with encode(prev, ch) = (prev << 5) + ch and increment prefixCount[key].',
+      'Second pass: for each word, rebuild the same keys while appending characters to a StringBuilder.',
+      'Stop when prefixCount[key] == 1 (unique) or when the last character is reached, then add that prefix to the result.',
+      'Return the list of prefixes in the same order as the input words.',
+    ],
+    example: {
+      input: 'arr = ["zebra", "dog", "duck", "dove"]',
+      steps: [
+        'Shared prefixes: "d" appears in dog/duck/dove (count 3); "do" appears in dog/dove (count 2); "du" only in duck (count 1).',
+        'zebra → "z" is unique → "z".',
+        'dog → "d" and "do" are shared; "dog" is unique → "dog".',
+        'duck → "du" is unique → "du". dove → "dov" is the first unique prefix → "dov".',
+      ],
+      output: '["z", "dog", "du", "dov"]',
+    },
+    pitfalls: [
+      'Always emit at least the full word when no shorter prefix is unique (duplicate words fall into this case).',
+      'Count every proper prefix of every word in the first pass — skipping the last character leaves full-word uniqueness untracked.',
+      'Result order must match input order, not sorted-dictionary order.',
+      'This is the same idea as a frequency trie; the rolling key is only a compact map key for those trie paths.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
