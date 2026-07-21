@@ -8087,6 +8087,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-reachable-index-difference': {
+    intuition:
+      'You may start only at an index containing a. Each jump moves right to the immediate next letter in the alphabet (a→b→c…). The goal is the largest endingIndex − startingIndex over any valid jump chain. While scanning left to right, keep the earliest start index that can reach each letter — when you see c, the best start for that chain is the same as for b one step earlier.',
+    algorithm: [
+      'Maintain minStart[26], filled with ∞, where minStart[c] is the smallest index that can start a valid chain ending at letter c.',
+      'For each index i with character ch at position idx = ch − a:',
+      '  • If idx == 0: set minStart[0] = min(minStart[0], i) (only a can start).',
+      '  • Else if minStart[idx − 1] is known: set minStart[idx] = min(minStart[idx], minStart[idx − 1]) and update ans = max(ans, i − minStart[idx]).',
+      'Return ans (stays −1 if no chain longer than a single a exists).',
+    ],
+    example: {
+      input: 's = "abzc"',
+      steps: [
+        'i=0, a: minStart[a]=0, ans=0.',
+        'i=1, b: minStart[b]=0, ans=max(0,1−0)=1.',
+        'i=2, z: needs y — minStart[y] is unknown, skip.',
+        'i=3, c: minStart[c]=0, ans=max(1,3−0)=3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Starting index must be a — do not treat every character as a valid start.',
+      'Jumps require the exact next letter; skipping letters (a then c) is invalid.',
+      'Propagate minStart[idx] from minStart[idx−1], not from the previous index in the string.',
+      'Return −1 when no valid chain exists (e.g. string has no a).',
+    ],
+  },
+
 }
 
 export default gfgExplanations

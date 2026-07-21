@@ -9498,6 +9498,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3499: {
+    intuition:
+      'Treat the string as augmented with outer 1s. One trade first turns a surrounded block of 1s into 0s, then turns a surrounded block of 0s into 1s. That is equivalent to picking two consecutive zero-runs (with 1s between them) and activating both — net gain equals the sum of their lengths. So count all existing 1s, then add the best adjacent zero-pair length.',
+    algorithm: [
+      'Scan s in runs of equal characters (two pointers per run).',
+      'For each run of 1s, add its length to totalOnes.',
+      'For each run of 0s with length cur, update mx = max(mx, pre + cur) and set pre = cur.',
+      'Initialize pre to −∞ so the first zero run does not pair with nothing.',
+      'Return totalOnes + mx (mx stays 0 when there is no pair of zero runs).',
+    ],
+    example: {
+      input: 's = "0100"',
+      steps: [
+        'Runs: 0 (len 1), 1 (len 1), 00 (len 2). totalOnes = 1.',
+        'First zero run: mx = max(0, −∞ + 1) = 1, pre = 1.',
+        'Second zero run: mx = max(1, 1 + 2) = 3.',
+        'Answer = 1 + 3 = 4 active sections.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'The trade needs two adjacent zero segments — a single long zero run cannot be split for this gain.',
+      'Initialize previous zero length to −∞ (or similar) so the first zero run does not falsely pair.',
+      'Do not subtract the middle 1-run manually — the formula totalOnes + mx already accounts for the optimal trade.',
+      'mx = 0 is correct when no two zero runs exist; do not force a trade.',
+    ],
+  },
+
 }
 
 export default explanations
