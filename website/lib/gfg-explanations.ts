@@ -8115,6 +8115,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-deletions-to-make-sorted': {
+    intuition:
+      'To make the array sorted with the fewest deletions, keep the longest subsequence that is already non-decreasing and delete the rest. Minimum deletions = n − LIS length. Patience sorting builds that LIS length in O(n log n) by maintaining the smallest possible tail for every subsequence length.',
+    algorithm: [
+      'Maintain a list lis of tails: lis[len−1] is the smallest ending value of any non-decreasing subsequence of length len.',
+      'For each num, binary-search the first position where lis[pos] ≥ num (strictly, first ≥ for non-decreasing).',
+      'If pos is inside the list, replace lis[pos] = num; otherwise append num (new longest length).',
+      'Return arr.length − lis.size().',
+    ],
+    example: {
+      input: 'arr = [5, 3, 4, 2, 6]',
+      steps: [
+        '5 → lis = [5].',
+        '3 → replace → [3].',
+        '4 → append → [3, 4].',
+        '2 → replace first → [2, 4]; 6 → append → [2, 4, 6].',
+        'LIS length = 3 (e.g. 3,4,6); deletions = 5 − 3 = 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Use lower_bound (≥), not upper_bound (>), when equals are allowed in a non-decreasing sort.',
+      'The tails array is not itself an LIS — only its length equals the LIS length.',
+      'Empty array → 0 deletions.',
+      'Already sorted → LIS = n → answer 0; strictly decreasing → LIS = 1 → answer n − 1.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -9526,6 +9526,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3501: {
+    intuition:
+      'Each query restricts the trade to substring s[l..r] (virtually flanked by 1s). Outside characters never change, so the answer is always globalOnes + bestGainInside[l..r]. The best gain is still “sum of two adjacent zero-runs,” but runs may be clipped when l or r cuts into a zero block, and only pairs fully inside the query window are eligible — so offline RMQ over adjacent zero-pair lengths answers every query in O(1) after an O(n log n) sparse-table build.',
+    algorithm: [
+      'Count total ones in s. Collect every contiguous zero-run as (start, length) and map each index to its run id (−1 before the first zero).',
+      'Build merge[i] = length[i] + length[i+1] for adjacent zero-runs; put merge into a sparse table for range maximum.',
+      'For query [l, r]: left = remaining zeros from l to the end of its run; right = zeros from the start of r’s run through r.',
+      'Take max of: ones (no trade); ones + left + right when l and r sit in consecutive zero-runs; ones + RMQ over fully interior adjacent pairs; ones + left + next full run; ones + right + previous full run — whichever cases are valid for the window.',
+      'Return the list of answers; queries are independent.',
+    ],
+    example: {
+      input: 's = "0100", queries = [[0,3],[0,2],[1,3],[2,3]]',
+      steps: [
+        'ones = 1; zero-runs: [0,1] length 1 and [2,3] length 2; merge = [3].',
+        'Query [0,3]: best trade merges both runs → 1 + 3 = 4.',
+        'Query [0,2]: clipped right run contributes 1 → 1 + 1 + 1 = 3.',
+        'Queries [1,3] and [2,3]: no valid surrounded 1-block to trade → stay at 1.',
+      ],
+      output: '[4, 3, 1, 1]',
+    },
+    pitfalls: [
+      'Trade is only inside [l, r]; do not use zero-runs that lie entirely outside the window.',
+      'When l or r lands inside a zero-run, use the clipped length, not the full run length.',
+      'If there are fewer than two zero-runs in range, gain is 0 — return ones.',
+      'Sparse table answers max over merge indices, not over character indices; map group ids carefully at the endpoints.',
+      'n, q up to 1e5 — per-query linear scans TLE; need O(1) or O(log n) per query after preprocessing.',
+    ],
+  },
+
 }
 
 export default explanations
