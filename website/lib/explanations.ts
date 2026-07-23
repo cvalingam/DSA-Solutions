@@ -9555,6 +9555,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3513: {
+    intuition:
+      'nums is always a permutation of 1..n, so only n matters. With i ≤ j ≤ k you may reuse the same index, which makes small cases trivial (n=1 → {1}, n=2 → {1,2}). Once n ≥ 3, XOR of three values from 1..n can produce every integer in a full bit window [0, 2^b − 1], where 2^b is the smallest power of two strictly above the highest bit of n — i.e. answer = 1 << (⌊log2 n⌋ + 1).',
+    algorithm: [
+      'Let n = nums.Length.',
+      'If n ≤ 2, return n.',
+      'Otherwise compute b = floor(log2(n)) + 1 and return 1 << b.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3, 4]  (n = 4)',
+      steps: [
+        'n ≥ 3, so use the closed form.',
+        '⌊log2(4)⌋ + 1 = 2 + 1 = 3.',
+        'Answer = 1 << 3 = 8, covering distinct XOR values 0..7.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Handle n = 1 and n = 2 separately — the power-of-two formula overcounts for those.',
+      'Do not iterate all triplets; n up to 1e5 makes O(n³) impossible.',
+      'The array values themselves are irrelevant beyond being a permutation of 1..n — only length matters.',
+      '⌊log2(n)⌋ + 1 is the bit-width of n; 1 << that equals the next power of two when n is not already a power of two, and twice n when it is.',
+    ],
+  },
+
 }
 
 export default explanations

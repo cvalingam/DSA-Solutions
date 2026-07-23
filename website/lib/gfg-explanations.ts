@@ -8143,6 +8143,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'check-preorder-of-bst': {
+    intuition:
+      'In BST preorder you go root → left → right. Once you leave a subtree for a right child, every later value must stay above that subtree’s root (the new lower bound). A decreasing stack of ancestors plus that lower bound detects any value that would illegally re-enter a finished left region.',
+    algorithm: [
+      'Initialize an empty stack and last = −∞ (lower bound for the next node).',
+      'For each ele in the candidate preorder:',
+      '  • While the stack top is < ele, pop it and set last to the popped value (leaving a left subtree).',
+      '  • If ele < last, return false — value sits below the allowed lower bound.',
+      '  • Push ele onto the stack.',
+      'If the scan finishes without violations, return true.',
+    ],
+    example: {
+      input: 'arr = [40, 30, 35, 80, 100]',
+      steps: [
+        'Push 40, then 30 (left of 40).',
+        '35 > 30: pop 30, last = 30; push 35 (right of 30, still left of 40).',
+        '80 > 35: pop 35 then 40, last = 40; push 80 (right of 40).',
+        '100 > 80: pop 80, last = 80; push 100. No value fell below last → true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Update the lower bound only when popping smaller ancestors — that is when you move to a right subtree.',
+      'A value smaller than last after those pops always means an invalid preorder.',
+      'This assumes distinct keys (standard for this GFG statement).',
+      'Empty or single-element arrays are valid BSTs.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
