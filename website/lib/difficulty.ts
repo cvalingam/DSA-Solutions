@@ -196,7 +196,6 @@ const difficultyMap: Record<number, 'Easy' | 'Medium' | 'Hard'> = {
   3499:'Medium',
   3501:'Hard',
   3513:'Medium',
-  1464:'Easy',
 }
 
 export function getDifficulty(number: number): 'Easy' | 'Medium' | 'Hard' | 'Unknown' {
