@@ -3,14 +3,14 @@ import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'C# DSA Cheat Sheet — LeetCode Data Structures & Algorithms',
+  title: 'C# DSA Cheat Sheet - LeetCode Data Structures & Algorithms',
   description:
     'Quick reference cheat sheet for C# data structures and algorithms used in LeetCode interviews. Covers Dictionary, PriorityQueue, Stack, Queue, SortedSet, and common algorithmic patterns with C# code snippets.',
   alternates: { canonical: '/cheat-sheet' },
   openGraph: {
     title: 'C# DSA Cheat Sheet for LeetCode',
     description:
-      'Quick reference for C# data structures and algorithms — Dictionary, PriorityQueue, SortedSet, BFS, DFS, binary search, sliding window, and more, with code snippets.',
+      'Quick reference for C# data structures and algorithms - Dictionary, PriorityQueue, SortedSet, BFS, DFS, binary search, sliding window, and more, with code snippets.',
     url: '/cheat-sheet',
     type: 'article',
   },
@@ -21,7 +21,7 @@ const jsonLd = {
   '@type': 'TechArticle',
   headline: 'C# DSA Cheat Sheet for LeetCode Interviews',
   description:
-    'Quick reference for C# data structures and algorithms — Dictionary, PriorityQueue, SortedSet, BFS, DFS, binary search, sliding window, and more.',
+    'Quick reference for C# data structures and algorithms - Dictionary, PriorityQueue, SortedSet, BFS, DFS, binary search, sliding window, and more.',
   author: { '@type': 'Person', name: 'Sivalingam Ramasamy', url: 'https://github.com/cvalingam' },
   url: `${SITE_URL}/cheat-sheet`,
   datePublished: '2026-04-20',
@@ -79,7 +79,7 @@ export default function CheatSheetPage() {
       </h1>
       <p className="text-gray-500 dark:text-gray-400 mb-4 text-base leading-relaxed">
         Quick reference for C# data structures and algorithmic patterns used in LeetCode and coding interviews.
-        All snippets are idiomatic .NET — tested on LeetCode's C# judge.
+        All snippets are idiomatic .NET - tested on LeetCode's C# judge.
       </p>
 
       {/* TOC */}
@@ -150,7 +150,7 @@ bool empty = q.Count == 0;
 // Min-heap (.NET 6+)
 var pq = new PriorityQueue<int, int>();
 pq.Enqueue(value, priority);     // lower priority = dequeued first
-int top = pq.Peek().Element;     // not available — use Dequeue
+int top = pq.Peek().Element;     // not available - use Dequeue
 (int elem, int pri) = pq.Dequeue();
 int size = pq.Count;
 
@@ -207,7 +207,7 @@ var sortedByLen = words.OrderBy(w => w.Length).ThenBy(w => w).ToArray();
 // Sort List<T>
 list.Sort((a, b) => a.CompareTo(b));
         `} />
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 mb-4">Array.Sort uses introsort (O(n log n)). Not stable — use LINQ OrderBy when stability matters.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 mb-4">Array.Sort uses introsort (O(n log n)). Not stable - use LINQ OrderBy when stability matters.</p>
 
         <CodeBlock code={`
 // Binary search on sorted array
@@ -274,7 +274,7 @@ for (int i = k; i < nums.Length; i++) {
 }
           `} />
         </SubSection>
-        <SubSection title="Variable size — at most K distinct characters">
+        <SubSection title="Variable size - at most K distinct characters">
           <CodeBlock code={`
 var freq = new Dictionary<char, int>();
 int left = 0, maxLen = 0;
@@ -314,7 +314,7 @@ bool canShip(int capacity) {
     return days <= D;
 }
         `} />
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">Key insight: the answer space is monotonic — once a capacity works, all larger capacities also work. Binary search finds the boundary.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">Key insight: the answer space is monotonic - once a capacity works, all larger capacities also work. Binary search finds the boundary.</p>
       </Section>
 
       {/* 6. BFS */}
@@ -398,7 +398,7 @@ Backtrack(0, new List<int>());
 
       {/* 8. DP */}
       <Section title="8. Dynamic Programming" anchor="dynamic-programming">
-        <SubSection title="1D DP — Climbing Stairs / House Robber pattern">
+        <SubSection title="1D DP - Climbing Stairs / House Robber pattern">
           <CodeBlock code={`
 // dp[i] = best answer considering first i elements
 int[] dp = new int[n + 1];
@@ -417,7 +417,7 @@ for (int i = 2; i <= n; i++) {
 return prev1;
           `} />
         </SubSection>
-        <SubSection title="2D DP — Longest Common Subsequence pattern">
+        <SubSection title="2D DP - Longest Common Subsequence pattern">
           <CodeBlock code={`
 int m = text1.Length, n = text2.Length;
 int[,] dp = new int[m + 1, n + 1];
@@ -490,7 +490,7 @@ string sub = s.Substring(start, length); // or s[start..(start+length)]
 int abs = Math.Abs(x);
 int gcd = (int)BigInteger.GreatestCommonDivisor(a, b); // using System.Numerics
 int log2 = (int)Math.Log2(n);  // floor
-int sqrt = (int)Math.Sqrt(n);  // floor — always verify: (long)sqrt*sqrt <= n
+int sqrt = (int)Math.Sqrt(n);  // floor - always verify: (long)sqrt*sqrt <= n
 
 // Array utilities
 Array.Fill(arr, 0);

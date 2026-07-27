@@ -1,4 +1,4 @@
-// Approach: Interval DP — dp[i][j] = min turns to print s[i..j]; if s[k]==s[i]
+// Approach: Interval DP - dp[i][j] = min turns to print s[i..j]; if s[k]==s[i]
 // for some k in (i,j], we can extend the first print to cover position k for free.
 // Time: O(n³) Space: O(n²)
 

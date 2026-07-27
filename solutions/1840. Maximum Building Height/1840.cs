@@ -1,5 +1,5 @@
 // Approach: Add sentinel restrictions at (1, 0) and (n, n-1), then sort by position.
-// Forward pass: each cap is tightened by the left neighbor — height[i] <= height[i-1] + distance.
+// Forward pass: each cap is tightened by the left neighbor - height[i] <= height[i-1] + distance.
 // Backward pass: tighten from the right the same way.
 // Between consecutive caps, max height is max(hL, hR) + (dist - |hL - hR|) / 2 (best peak under slope-1 constraint).
 // Time: O(k log k) Space: O(k)

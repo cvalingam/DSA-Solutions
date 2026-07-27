@@ -1,4 +1,4 @@
-// Approach: Two pointers — a slow write pointer k and a fast read pointer i.
+// Approach: Two pointers - a slow write pointer k and a fast read pointer i.
 // k starts at 1 (position of the next unique write slot).
 // For each nums[i] from index 1 onward: if nums[i] != nums[i-1], write nums[i] to nums[k] and advance k.
 // When the loop ends, the first k elements hold all unique values in sorted order.

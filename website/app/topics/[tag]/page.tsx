@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: desc,
     alternates: { canonical: `/topics/${params.tag}` },
     openGraph: {
-      title: `${label} LeetCode Problems — C# Solutions`,
+      title: `${label} LeetCode Problems - C# Solutions`,
       description: desc,
       url: `/topics/${params.tag}`,
       type: 'website',

@@ -17,7 +17,7 @@
   }
 }
 
-/* Shiki code block — no rounding (CodeBlockWithHeader handles it) */
+/* Shiki code block - no rounding (CodeBlockWithHeader handles it) */
 .shiki {
   @apply overflow-auto max-h-[600px] p-5 text-sm leading-relaxed;
   border-radius: 0;

@@ -1,4 +1,4 @@
-// Approach: Backtracking DFS. Try placing digits 1–9 at each empty cell,
+// Approach: Backtracking DFS. Try placing digits 1-9 at each empty cell,
 // validate row/col/box constraints before proceeding, backtrack on failure.
 // Time: O(9^81) Space: O(1)
 

@@ -5,13 +5,13 @@ export type Tag = string
 
 /** Short editorial description shown at the top of each /topics/[tag] page */
 export const TOPIC_DESCRIPTIONS: Record<string, string> = {
-  'array': 'Array problems involve manipulating elements stored in a contiguous block of memory. Key techniques include two-pointer traversal, prefix sums, sliding windows, and in-place partitioning. In C#, arrays are zero-indexed and fixed in size — use List<T> when you need dynamic resizing.',
-  'string': 'String problems range from simple character counting to complex pattern matching. Common approaches include two pointers, sliding window, prefix hashing, and the KMP algorithm. In C#, strings are immutable — use StringBuilder for efficient concatenation inside loops.',
+  'array': 'Array problems involve manipulating elements stored in a contiguous block of memory. Key techniques include two-pointer traversal, prefix sums, sliding windows, and in-place partitioning. In C#, arrays are zero-indexed and fixed in size - use List<T> when you need dynamic resizing.',
+  'string': 'String problems range from simple character counting to complex pattern matching. Common approaches include two pointers, sliding window, prefix hashing, and the KMP algorithm. In C#, strings are immutable - use StringBuilder for efficient concatenation inside loops.',
   'dynamic-programming': 'Dynamic programming solves problems by breaking them into overlapping sub-problems and storing results to avoid redundant work. The key steps are: define state, write a recurrence relation, set base cases, and choose top-down (memoization) or bottom-up (tabulation). DP often yields O(n²) → O(n) time improvements over brute force.',
   'tree': 'Tree problems typically require recursive DFS or iterative BFS. Common patterns: preorder for serialization, inorder for BST sorted output, postorder for bottom-up aggregation. Always consider edge cases: null nodes, single-node trees, and skewed (list-like) trees.',
-  'binary-search': 'Binary search reduces search space by half each step, giving O(log n) time. Beyond sorted arrays, apply it on the answer space ("binary search on result") when you can define a monotonic predicate — e.g., "can we achieve X with k resources?"',
+  'binary-search': 'Binary search reduces search space by half each step, giving O(log n) time. Beyond sorted arrays, apply it on the answer space ("binary search on result") when you can define a monotonic predicate - e.g., "can we achieve X with k resources?"',
   'hash-table': 'Hash tables provide O(1) average-case lookup, insert, and delete. They are the go-to tool for counting frequencies, detecting complements (Two Sum pattern), and caching seen values. In C#, use Dictionary<K,V> for maps and HashSet<T> for membership checks.',
-  'math': 'Math problems test number theory, combinatorics, and modular arithmetic. Common tools: GCD/LCM (Euclidean algorithm), prime sieve, modular inverse (Fermat\'s little theorem), digit manipulation, and bit tricks. Overflow is a key concern in C# — use long when products may exceed 2³¹.',
+  'math': 'Math problems test number theory, combinatorics, and modular arithmetic. Common tools: GCD/LCM (Euclidean algorithm), prime sieve, modular inverse (Fermat\'s little theorem), digit manipulation, and bit tricks. Overflow is a key concern in C# - use long when products may exceed 2³¹.',
   'two-pointers': 'The two-pointer technique places pointers at different positions (often the two ends) and moves them toward each other. It turns O(n²) nested loops into O(n) sweeps for problems like pair sums, removing duplicates, and container capacity. Works best on sorted or partitioned arrays.',
   'depth-first-search': 'DFS explores as far as possible before backtracking. Use it for path finding, cycle detection, connected components, and tree traversal. Implement recursively (implicit call stack) or iteratively with an explicit Stack<T>. Mark visited nodes to avoid infinite loops in graphs.',
   'breadth-first-search': 'BFS explores nodes level by level, guaranteeing the shortest path in unweighted graphs. Use a Queue<T> and a visited set. Classic applications: shortest path, level-order tree traversal, multi-source distance (e.g., "01 matrix"), and word ladder transformations.',
@@ -25,7 +25,7 @@ export const TOPIC_DESCRIPTIONS: Record<string, string> = {
   'prefix-sum': 'A prefix sum array pre-computes cumulative values so any range query is answered in O(1). The classic sum of range [l, r] = prefix[r+1] - prefix[l]. 2D prefix sums extend this to matrix sub-rectangle queries. Combine with a hash map for "subarray sum equals k" problems.',
   'bit-manipulation': 'Bit manipulation uses bitwise operators (&, |, ^, ~, <<, >>) for compact and fast solutions. Key tricks: x & (x-1) clears lowest set bit, x ^ x = 0 (XOR cancellation), and bitmask DP represents subsets as integers. In C#, use int (32-bit) or long (64-bit) for bitmasking.',
   'heap': 'A heap (priority queue) gives O(log n) insert and O(1) peek with O(log n) removal. In C#, use PriorityQueue<TElement, TPriority> (.NET 6+). Classic patterns: top-K elements (min-heap of size K), merge K sorted lists, Dijkstra\'s shortest path, and median in a stream (two heaps).',
-  'monotonic-stack': 'A monotonic stack maintains elements in strictly increasing or decreasing order. When a new element violates this order, elements are popped and processed. Use for "next greater / smaller element", histogram area, and stock span problems. Each element is pushed and popped at most once — O(n) overall.',
+  'monotonic-stack': 'A monotonic stack maintains elements in strictly increasing or decreasing order. When a new element violates this order, elements are popped and processed. Use for "next greater / smaller element", histogram area, and stock span problems. Each element is pushed and popped at most once - O(n) overall.',
   'graph': 'Graph algorithms model relationships between entities. Core algorithms: DFS/BFS for traversal, Dijkstra for weighted shortest path, Bellman-Ford for negative weights, Floyd-Warshall for all-pairs, and Kruskal/Prim for minimum spanning trees. Represent graphs as adjacency lists (Dictionary<int, List<int>>) for efficiency.',
   'union-find': 'Union-Find (Disjoint Set Union) tracks connected components efficiently. Operations: Find (with path compression) and Union (by rank). Achieves near-O(1) per operation (O(α(n)) amortized). Classic uses: Kruskal\'s MST, detecting undirected graph cycles, and grouping equivalent elements.',
   'trie': 'A trie (prefix tree) stores strings character by character, enabling O(L) insert, search, and prefix queries where L is string length. Use it for autocomplete, word search in a grid, longest common prefix, and IP routing. Each node has up to 26 children (for lowercase letters).',
@@ -40,7 +40,7 @@ export const TOPIC_DESCRIPTIONS: Record<string, string> = {
   'memoization': 'Memoization caches the return value of a function for each unique input, converting exponential recursion to polynomial time. Use a Dictionary<(int, int), int> or a 2D array. Identify the "state" (all parameters that uniquely determine the result) to design the cache key.',
   'topological-sort': 'Topological sort produces a linear ordering of a DAG where each node comes before its descendants. Two algorithms: DFS (post-order reversal) and BFS Kahn\'s (process nodes with in-degree 0). Applications: course scheduling, build dependency resolution, and task ordering.',
   'segment-tree': 'Segment trees support range queries (sum, min, max, GCD) and point updates in O(log n). Build in O(n) by filling leaves, then propagating upward. Lazy propagation enables range updates in O(log n) as well. Use for competitive programming range-query problems.',
-  'binary-indexed-tree': 'A Fenwick tree (BIT) answers prefix-sum queries and point updates in O(log n) with O(n) space — simpler to implement than a segment tree. Index arithmetic uses i += i & (-i) to traverse. Use for inversion counting, order statistics, and frequency prefix sums.',
+  'binary-indexed-tree': 'A Fenwick tree (BIT) answers prefix-sum queries and point updates in O(log n) with O(n) space - simpler to implement than a segment tree. Index arithmetic uses i += i & (-i) to traverse. Use for inversion counting, order statistics, and frequency prefix sums.',
   'geometry': 'Geometry problems involve coordinates, lines, circles, and polygons. Key tools: cross product (orientation, area), dot product (angle), Graham scan (convex hull), and line intersection. Use long arithmetic to avoid floating-point errors when possible.',
   'game-theory': 'Combinatorial game theory analyzes who wins under optimal play. Sprague-Grundy theorem assigns "nim-values" to game states. For simple games, look for patterns in small cases. Minimax (with alpha-beta pruning) solves general two-player zero-sum games.',
   'number-theory': 'Number theory problems involve primes, divisors, GCD, modular arithmetic, and number bases. Key algorithms: Sieve of Eratosthenes (O(n log log n) primes), Euclidean GCD (O(log n)), and modular exponentiation (O(log n)). Most competitive problems use modulo 10⁹+7.',
@@ -49,9 +49,9 @@ export const TOPIC_DESCRIPTIONS: Record<string, string> = {
   'rolling-hash': 'Rolling hash computes a new hash from the previous one in O(1) by removing the outgoing character and adding the incoming one. Used in Rabin-Karp string matching and detecting duplicate substrings. Choose a large prime modulus and base to minimize collisions.',
   'shortest-path': 'Shortest path algorithms find minimum-cost routes in graphs. Dijkstra (non-negative weights, O((V+E) log V)), Bellman-Ford (negative edges, O(VE)), Floyd-Warshall (all-pairs, O(V³)), and BFS (unweighted, O(V+E)). In C#, use PriorityQueue for Dijkstra.',
   'monotonic-queue': 'A monotonic queue (deque) answers sliding window min/max in O(1) amortized. Maintain indices in decreasing (for max) or increasing (for min) order. Remove from the front when indices fall outside the window, and from the back when the new element is more extreme.',
-  'bitmask': 'Bitmask DP represents a subset of n items as a single integer (bit i = 1 means item i is included). Enables O(2ⁿ · n) DP over all subsets — practical up to n ≈ 20. Classic: Travelling Salesman, covering problems, and assignment problems.',
+  'bitmask': 'Bitmask DP represents a subset of n items as a single integer (bit i = 1 means item i is included). Enables O(2ⁿ · n) DP over all subsets - practical up to n ≈ 20. Classic: Travelling Salesman, covering problems, and assignment problems.',
   'difference-array': 'A difference array enables range increment updates in O(1): diff[l] += v, diff[r+1] -= v. Reconstruct the original array with a prefix sum. Use for event sweep problems, overlapping intervals, and paint-range queries. 2D extension handles matrix range updates.',
-  'merge-sort': 'Merge sort divides an array into two halves, sorts each, and merges. It runs in O(n log n) worst case with O(n) extra space. The merge step can count inversions or merge sorted linked lists. Stable sort — relative order of equal elements is preserved.',
+  'merge-sort': 'Merge sort divides an array into two halves, sorts each, and merges. It runs in O(n log n) worst case with O(n) extra space. The merge step can count inversions or merge sorted linked lists. Stable sort - relative order of equal elements is preserved.',
   'binary-lifting': 'Binary lifting precomputes 2ᵏ-th ancestors for each node in O(n log n). LCA (lowest common ancestor) queries then run in O(log n). Useful in competitive programming for tree path queries and jumping k-steps efficiently.',
   'eulerian-circuit': 'An Eulerian circuit visits every edge exactly once. It exists in a directed graph iff every node has equal in-degree and out-degree, and the graph is connected. Hierholzer\'s algorithm finds it in O(E). Applications: DNA assembly and route planning.',
   'hash-function': 'Custom hash functions reduce collisions in hash maps. Polynomial rolling hash H(s) = s[0]·pⁿ⁻¹ + ... + s[n-1] is common for strings. Use double hashing (two independent hashes) to reduce collision probability to near zero.',
@@ -607,7 +607,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1266: ['array', 'math'],
   1267: ['array', 'counting', 'matrix'],
 
-  // 68–998
+  // 68-998
   68:   ['string', 'simulation'],
   87:   ['string', 'dynamic-programming'],
   165:  ['two-pointers', 'string'],
@@ -729,7 +729,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1006: ['math', 'simulation'],
   1015: ['hash-table', 'math'],
 
-  // 1277–1267 extras and 1277+
+  // 1277-1267 extras and 1277+
   1277: ['array', 'dynamic-programming', 'matrix'],
   1287: ['array'],
   1288: ['array', 'sorting', 'greedy'],

@@ -1,4 +1,4 @@
-// Approach: Prefix arrays — sumD (digit sum), cntN0 (non-zero count), p (concatenated value mod).
+// Approach: Prefix arrays - sumD (digit sum), cntN0 (non-zero count), p (concatenated value mod).
 // For query [l,r]: x = p[r+1] − p[l]·10^n0, answer = x·sd mod 1e9+7.
 // Time: O(n + q) Space: O(n)
 public class Solution

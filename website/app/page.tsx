@@ -11,11 +11,11 @@ import { buildCollectionPageSchema, getSiteStats } from '@/lib/seo'
 const { lcCount, gfgCount } = getSiteStats()
 
 export const metadata: Metadata = {
-  title: `LeetCode C# Solutions — ${lcCount}+ Problems Solved`,
+  title: `LeetCode C# Solutions - ${lcCount}+ Problems Solved`,
   description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems and ${gfgCount}+ GeeksforGeeks Java solutions. Step-by-step explanations, system design articles, complexity analysis, and interview prep.`,
   alternates: { canonical: '/' },
   openGraph: {
-    title: `LeetCode C# Solutions — ${lcCount}+ Problems | DSA Solutions`,
+    title: `LeetCode C# Solutions - ${lcCount}+ Problems | DSA Solutions`,
     description: `Clean, readable C# solutions to ${lcCount}+ LeetCode problems with explanations and complexity analysis.`,
     url: '/',
     type: 'website',

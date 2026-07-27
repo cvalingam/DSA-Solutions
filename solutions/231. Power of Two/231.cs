@@ -1,4 +1,4 @@
-// Approach: Bit manipulation — a power of two has exactly one set bit in binary.
+// Approach: Bit manipulation - a power of two has exactly one set bit in binary.
 // Therefore: n > 0 AND (n & (n - 1)) == 0 is a sufficient and necessary condition.
 // n & (n - 1) clears the lowest set bit; if the result is 0, only one bit was set.
 // This O(1) trick avoids any loop or repeated division.

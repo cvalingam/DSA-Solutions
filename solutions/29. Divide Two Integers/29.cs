@@ -2,7 +2,7 @@
 // For each step, find the largest multiple of divisor (= divisor << k) that fits in the remaining dividend.
 // Subtract it, add 2^k to the quotient, and repeat with the remainder.
 // Use long to handle INT_MIN / -1 overflow and sign separately.
-// The outer loop runs O(log n) times; inner doubling also runs O(log n) — total O(log^2 n).
+// The outer loop runs O(log n) times; inner doubling also runs O(log n) - total O(log^2 n).
 // Handle edge cases: INT_MIN / -1 = INT_MAX (clamp), INT_MIN / 1 = INT_MIN.
 // Time: O(log^2 n) Space: O(1)
 

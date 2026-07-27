@@ -53,7 +53,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['Sort by END time, not start time — a greedy on start times is incorrect.'],
+    pitfalls: ['Sort by END time, not start time - a greedy on start times is incorrect.'],
   },
 
   // ─── Aggressive Cows ─────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Only compare the first differing character between adjacent words.',
-      'If word1 is a prefix of word2 but comes after it, that\'s invalid — return "" immediately.',
+      'If word1 is a prefix of word2 but comes after it, that\'s invalid - return "" immediately.',
     ],
   },
 
@@ -117,7 +117,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       steps: ['After processing: all counts are 0. Return true.'],
       output: 'YES',
     },
-    pitfalls: ['Use a char frequency array, not sort — sort is O(n log n) vs O(n).'],
+    pitfalls: ['Use a char frequency array, not sort - sort is O(n log n) vs O(n).'],
   },
 
   // ─── Bellman-Ford ────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     example: {
       input: 'V=5, edges: 0→1(2),0→2(4),1→2(1),1→3(7),2→4(3)',
       steps: [
-        'Iter 1: dist=[0,2,3,9,6]. Iter 2–4: no further relaxations.',
+        'Iter 1: dist=[0,2,3,9,6]. Iter 2-4: no further relaxations.',
       ],
       output: 'dist = [0,2,3,9,6]',
     },
@@ -156,7 +156,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '[0,1,2,3]',
     },
-    pitfalls: ['Mark visited when ENQUEUING, not when dequeuing — prevents the same node being enqueued multiple times.'],
+    pitfalls: ['Mark visited when ENQUEUING, not when dequeuing - prevents the same node being enqueued multiple times.'],
   },
 
   // ─── Binary Tree to DLL ──────────────────────────────────────────────────────
@@ -208,7 +208,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Level-order traversal with horizontal distance (HD): root=0, left child=HD−1, right child=HD+1. For each HD, the LAST node seen at that HD (deepest level) is the bottom view.',
     algorithm: [
       'BFS with (node, HD) pairs. HashMap: HD → last seen node value.',
-      'Process each (node, hd): map[hd] = node.val (overwrite — last wins).',
+      'Process each (node, hd): map[hd] = node.val (overwrite - last wins).',
       'Enqueue (left, hd−1) and (right, hd+1) if non-null.',
       'Return map values sorted by HD.',
     ],
@@ -217,7 +217,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       steps: ['HD: 5→-2, 8→-1, 10→0, 20→0, 3→0, 14→1, 22→1, 25→2. Bottom: 5,10,3,14,25.'],
       output: '[5,10,3,14,25]',
     },
-    pitfalls: ['BFS ensures we process level by level — map[hd] is always overwritten by deeper nodes.'],
+    pitfalls: ['BFS ensures we process level by level - map[hd] is always overwritten by deeper nodes.'],
   },
 
   // ─── Check for BST ────────────────────────────────────────────────────────────
@@ -237,7 +237,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'true',
     },
-    pitfalls: ['Use long.MinValue/MaxValue (or null) as initial bounds — int bounds fail on equal-value edge cases.'],
+    pitfalls: ['Use long.MinValue/MaxValue (or null) as initial bounds - int bounds fail on equal-value edge cases.'],
   },
 
   // ─── Coin Change (Count Ways) ─────────────────────────────────────────────────
@@ -257,7 +257,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['Outer loop over coins, inner loop over amounts — this counts combinations (not permutations). Swap loops for permutations.'],
+    pitfalls: ['Outer loop over coins, inner loop over amounts - this counts combinations (not permutations). Swap loops for permutations.'],
   },
 
   // ─── Coin Change (Minimum Coins) ─────────────────────────────────────────────
@@ -276,7 +276,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '2',
     },
-    pitfalls: ['Return −1 if dp[sum] remains INF — the sum is unreachable.'],
+    pitfalls: ['Return −1 if dp[sum] remains INF - the sum is unreachable.'],
   },
 
   // ─── Count Inversions ────────────────────────────────────────────────────────
@@ -296,7 +296,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '3',
     },
-    pitfalls: ['Count inversions during merge (not during split) — only then do you know the relative positions.'],
+    pitfalls: ['Count inversions during merge (not during split) - only then do you know the relative positions.'],
   },
 
   // ─── DFS of Graph ────────────────────────────────────────────────────────────
@@ -315,7 +315,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '[0,1,4,2,3]',
     },
-    pitfalls: ['Mark as visited BEFORE recursing — not after — to prevent revisiting in undirected graphs.'],
+    pitfalls: ['Mark as visited BEFORE recursing - not after - to prevent revisiting in undirected graphs.'],
   },
 
   // ─── Detect Loop in linked list ───────────────────────────────────────────────
@@ -361,7 +361,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
   // ─── Directed Graph Cycle ─────────────────────────────────────────────────────
   'directed-graph-cycle': {
     intuition:
-      'A directed cycle exists iff DFS finds a back edge — an edge pointing to an ancestor in the current DFS stack. Use two states: "in-stack" (currently being explored) and "visited" (fully explored). A back edge leads to an "in-stack" node.',
+      'A directed cycle exists iff DFS finds a back edge - an edge pointing to an ancestor in the current DFS stack. Use two states: "in-stack" (currently being explored) and "visited" (fully explored). A back edge leads to an "in-stack" node.',
     algorithm: [
       'visited[n]=false, inStack[n]=false.',
       'DFS(u): visited[u]=inStack[u]=true.',
@@ -436,13 +436,13 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'Shortest paths: 0→3=9',
     },
-    pitfalls: ['k must be the OUTER loop — intermediate nodes are added one at a time.'],
+    pitfalls: ['k must be the OUTER loop - intermediate nodes are added one at a time.'],
   },
 
   // ─── Gas Station ─────────────────────────────────────────────────────────────
   'gas-station': {
     intuition:
-      'If total gas >= total cost, a solution exists and is unique. Use a greedy scan: track running surplus; when it goes negative, the current starting station is impossible — reset to the next station.',
+      'If total gas >= total cost, a solution exists and is unique. Use a greedy scan: track running surplus; when it goes negative, the current starting station is impossible - reset to the next station.',
     algorithm: [
       'totalGas=0, currentGas=0, start=0.',
       'For i from 0 to n−1: totalGas += gas[i]−cost[i]. currentGas += gas[i]−cost[i].',
@@ -457,7 +457,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '3',
     },
-    pitfalls: ['The existence of a solution is guaranteed when total gas >= total cost — only one valid start exists.'],
+    pitfalls: ['The existence of a solution is guaranteed when total gas >= total cost - only one valid start exists.'],
   },
 
   // ─── Height of Binary Tree ───────────────────────────────────────────────────
@@ -517,7 +517,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'true, false',
     },
-    pitfalls: ['isEnd marks a complete word — do not confuse with "has children" (which indicates a prefix).'],
+    pitfalls: ['isEnd marks a complete word - do not confuse with "has children" (which indicates a prefix).'],
   },
 
   // ─── Job Sequencing Problem ──────────────────────────────────────────────────
@@ -537,7 +537,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'Max profit = 142, 3 jobs',
     },
-    pitfalls: ['Fill slots from right to left (latest available) — filling from the start wastes slots for earlier-deadline jobs.'],
+    pitfalls: ['Fill slots from right to left (latest available) - filling from the start wastes slots for earlier-deadline jobs.'],
   },
 
   // ─── Kadane\'s Algorithm ───────────────────────────────────────────────────────
@@ -591,7 +591,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['LCS counts non-contiguous characters in order — not the same as Longest Common Substring.'],
+    pitfalls: ['LCS counts non-contiguous characters in order - not the same as Longest Common Substring.'],
   },
 
   // ─── Longest Increasing Subsequence ───────────────────────────────────────────
@@ -612,7 +612,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['The tails array does not represent the actual LIS — only its length is meaningful. Reconstruct using parent pointers from the O(n²) approach if needed.'],
+    pitfalls: ['The tails array does not represent the actual LIS - only its length is meaningful. Reconstruct using parent pointers from the O(n²) approach if needed.'],
   },
 
   // ─── Longest Palindrome in a String ──────────────────────────────────────────
@@ -658,7 +658,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     intuition:
       'Same as LeetCode 146: HashMap + doubly linked list. O(1) get and put. HashMap maps key to node; DLL maintains recency order.',
     algorithm: [
-      'See LeetCode 146 explanation — identical structure.',
+      'See LeetCode 146 explanation - identical structure.',
     ],
     example: {
       input: 'capacity=2, put(1,1),put(2,2),get(1),put(3,3),get(2)',
@@ -684,7 +684,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['The problem guarantees a majority element exists — no verification step needed. If not guaranteed, verify by counting.'],
+    pitfalls: ['The problem guarantees a majority element exists - no verification step needed. If not guaranteed, verify by counting.'],
   },
 
   // ─── Matrix Chain Multiplication ─────────────────────────────────────────────
@@ -724,7 +724,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '30',
     },
-    pitfalls: ['If all elements are negative, circularMax = totalSum − minSum = 0, which is wrong — return maxSum directly.'],
+    pitfalls: ['If all elements are negative, circularMax = totalSum − minSum = 0, which is wrong - return maxSum directly.'],
   },
 
   // ─── Merge K sorted linked lists ─────────────────────────────────────────────
@@ -783,7 +783,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '2',
     },
-    pitfalls: ['Iterate only to n−2 (not n−1) — you don\'t need a jump from the last position.'],
+    pitfalls: ['Iterate only to n−2 (not n−1) - you don\'t need a jump from the last position.'],
   },
 
   // ─── Minimum Platforms ────────────────────────────────────────────────────────
@@ -804,7 +804,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '3',
     },
-    pitfalls: ['Sort BOTH arrays independently — the i-th arrival does not correspond to the i-th departure after sorting.'],
+    pitfalls: ['Sort BOTH arrays independently - the i-th arrival does not correspond to the i-th departure after sorting.'],
   },
 
   // ─── Missing And Repeating ────────────────────────────────────────────────────
@@ -833,20 +833,20 @@ const gfgExplanations: Record<string, RichExplanation> = {
     intuition:
       'Same as LeetCode 51. Backtracking row by row with three HashSets tracking occupied columns, positive diagonals (row-col), and negative diagonals (row+col).',
     algorithm: [
-      'See LeetCode 51 explanation — identical approach.',
+      'See LeetCode 51 explanation - identical approach.',
     ],
     example: {
       input: 'n = 4',
       steps: ['Two valid placements for 4-Queens.'],
       output: '2 solutions',
     },
-    pitfalls: ['Track row+col and row-col as diagonal identifiers — not the actual diagonal position.'],
+    pitfalls: ['Track row+col and row-col as diagonal identifiers - not the actual diagonal position.'],
   },
 
   // ─── Next Greater Element ─────────────────────────────────────────────────────
   'next-greater-element': {
     intuition:
-      'Monotonic stack: maintain a decreasing stack. For each element, pop all elements smaller than it — the current element is their "next greater". Elements left in the stack have no next greater → assign -1.',
+      'Monotonic stack: maintain a decreasing stack. For each element, pop all elements smaller than it - the current element is their "next greater". Elements left in the stack have no next greater → assign -1.',
     algorithm: [
       'Stack of indices. result[n]=-1.',
       'For i from 0 to n-1: while stack not empty and arr[stack.top] < arr[i]: result[stack.pop()] = arr[i].',
@@ -861,7 +861,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '[5,25,25,-1]',
     },
-    pitfalls: ['The stack stores INDICES, not values — you need the index to update result[].'],
+    pitfalls: ['The stack stores INDICES, not values - you need the index to update result[].'],
   },
 
   // ─── Next Permutation ─────────────────────────────────────────────────────────
@@ -880,7 +880,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '[1,3,2]',
     },
-    pitfalls: ['Reverse the suffix, do not sort it — the suffix is already in descending order so reversing achieves ascending order in O(n).'],
+    pitfalls: ['Reverse the suffix, do not sort it - the suffix is already in descending order so reversing achieves ascending order in O(n).'],
   },
 
   // ─── Palindrome Linked List ───────────────────────────────────────────────────
@@ -919,7 +919,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'true',
     },
-    pitfalls: ['Check stack is non-empty before comparing top — an extra closing bracket crashes a stack-empty check.'],
+    pitfalls: ['Check stack is non-empty before comparing top - an extra closing bracket crashes a stack-empty check.'],
   },
 
   // ─── Partition Equal Subset Sum ───────────────────────────────────────────────
@@ -963,7 +963,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
   // ─── Rat Maze With Multiple Jumps ─────────────────────────────────────────────
   'rat-maze-with-multiple-jumps': {
     intuition:
-      'From each cell the rat may jump 1..mat[r][c] steps right or down; landing on 0 is blocked (cells jumped over may be 0). Among valid paths, prefer shorter jump lengths first, then right before down. Naive backtracking TLEs on large grids — precompute canReach[r][c] (can this cell still reach the destination?) by DP on decreasing r+c, then greedily take the first move in tie-break order that keeps canReach true.',
+      'From each cell the rat may jump 1..mat[r][c] steps right or down; landing on 0 is blocked (cells jumped over may be 0). Among valid paths, prefer shorter jump lengths first, then right before down. Naive backtracking TLEs on large grids - precompute canReach[r][c] (can this cell still reach the destination?) by DP on decreasing r+c, then greedily take the first move in tie-break order that keeps canReach true.',
     algorithm: [
       'If mat[0][0] == 0, return [[-1]].',
       'Set canReach[n-1][n-1] = true; for sum from 2n−3 down to 0, mark canReach[r][c] if some jump right/down lands on a reachable cell.',
@@ -981,7 +981,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '[[1,0,0,0],[1,0,0,1],[0,0,0,1],[0,0,0,1]]',
     },
     pitfalls: [
-      'Only the landing cell must be non-zero — intermediate cells under a jump can be 0.',
+      'Only the landing cell must be non-zero - intermediate cells under a jump can be 0.',
       'Greedy works only with canReach pruning; plain backtracking is too slow for n = 50.',
       'Return [[-1]] as a single-row list when no path exists.',
     ],
@@ -1023,7 +1023,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: '4',
     },
-    pitfalls: ['Start BFS with ALL rotten oranges simultaneously — not from just one source.'],
+    pitfalls: ['Start BFS with ALL rotten oranges simultaneously - not from just one source.'],
   },
 
   // ─── Serialize and deserialize a binary tree ──────────────────────────────────
@@ -1042,7 +1042,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'Reconstructed tree = original tree',
     },
-    pitfalls: ['Use pre-order (not in-order) for serialization — in-order requires extra information to determine root.'],
+    pitfalls: ['Use pre-order (not in-order) for serialization - in-order requires extra information to determine root.'],
   },
 
   // ─── Sort 0s, 1s and 2s ──────────────────────────────────────────────────────
@@ -1050,14 +1050,14 @@ const gfgExplanations: Record<string, RichExplanation> = {
     intuition:
       'Dutch National Flag algorithm (same as LeetCode 75). Three-way partition in a single pass using three pointers: lo, mid, hi.',
     algorithm: [
-      'See LeetCode 75 explanation — identical.',
+      'See LeetCode 75 explanation - identical.',
     ],
     example: {
       input: '[0,1,2,0,1,2]',
       steps: ['Result: [0,0,1,1,2,2] in one pass.'],
       output: '[0,0,1,1,2,2]',
     },
-    pitfalls: ['Do not increment mid when swapping with hi — the swapped element is unexamined.'],
+    pitfalls: ['Do not increment mid when swapping with hi - the swapped element is unexamined.'],
   },
 
   // ─── Subset Sum Problem ────────────────────────────────────────────────────────
@@ -1124,7 +1124,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       steps: ['Two-pointer fills: total trapped = 6.'],
       output: '6',
     },
-    pitfalls: ['Process the shorter side — the shorter boundary determines how much water is trapped.'],
+    pitfalls: ['Process the shorter side - the shorter boundary determines how much water is trapped.'],
   },
 
   // ─── Two Sum - Pair with Given Sum ───────────────────────────────────────────
@@ -1141,7 +1141,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       steps: ['lo=0(2), hi=3(15): 17>9→hi--. hi=2(11): 13>9→hi--. hi=1(7): 9==9 ✓.'],
       output: 'true',
     },
-    pitfalls: ['Sorting changes indices — if you need to return original indices, use a HashMap approach instead.'],
+    pitfalls: ['Sorting changes indices - if you need to return original indices, use a HashMap approach instead.'],
   },
 
   // ─── Undirected Graph Cycle ───────────────────────────────────────────────────
@@ -1178,7 +1178,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       ],
       output: 'true',
     },
-    pitfalls: ['Use a HashSet for O(1) dictionary lookups — do not iterate the dictionary for each check.'],
+    pitfalls: ['Use a HashSet for O(1) dictionary lookups - do not iterate the dictionary for each check.'],
   },
 
   // ─── ZigZag Tree Traversal ────────────────────────────────────────────────────
@@ -1220,7 +1220,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Maintain running sum. At each node: sum += node.val; node.val = sum.',
     ],
     example: { input: 'BST=[4,1,6,0,2,5,7]', steps: ['Visit 7→sum=7. Visit 6→sum=13. Visit 5→sum=18. Visit 4→sum=22. Visit 2→sum=24. Visit 1→sum=25. Visit 0→sum=25.'], output: 'Tree with updated values' },
-    pitfalls: ['This is a simple Morris traversal or recursive reverse in-order — no extra space needed with Morris.'],
+    pitfalls: ['This is a simple Morris traversal or recursive reverse in-order - no extra space needed with Morris.'],
   },
 
   // ─── Burning Tree ────────────────────────────────────────────────────────────
@@ -1244,7 +1244,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Return minimum such difference.',
     ],
     example: { input: 'A=[7,3,2,4,9,12,56], m=3', steps: ['Sorted: [2,3,4,7,9,12,56].', 'Windows of size 3: [2,3,4]→2, [3,4,7]→4, [4,7,9]→5, [7,9,12]→5, [9,12,56]→47.', 'Min=2.'], output: '2' },
-    pitfalls: ['Sort first — only then is the minimum range guaranteed to be a contiguous subarray.'],
+    pitfalls: ['Sort first - only then is the minimum range guaranteed to be a contiguous subarray.'],
   },
 
   // ─── Clone a linked list with next and random pointer ────────────────────────
@@ -1565,7 +1565,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Track max(dp[i][j]) across all i,j.',
     ],
     example: { input: 's1="ABCBDAB", s2="BDCABA"', steps: ['dp fills up. Max common substring is "AB" or "BD" of length 2? Actually "BCB"/"BDCAB" → "BCA"? Let me recalculate: longest = "AB"=2... actually "ABCB" vs "BDCABA" → "AB"=2.'], output: '2' },
-    pitfalls: ['Unlike LCS, must be contiguous — reset dp[i][j]=0 on mismatch, no max with adjacent cells.'],
+    pitfalls: ['Unlike LCS, must be contiguous - reset dp[i][j]=0 on mismatch, no max with adjacent cells.'],
   },
 
   // ─── Longest Consecutive Subsequence ─────────────────────────────────────────
@@ -1577,7 +1577,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Update max streak.',
     ],
     example: { input: '[100,4,200,1,3,2]', steps: ['Start=1: 1,2,3,4 → streak=4. Start=100: streak=1. Start=200: streak=1.'], output: '4' },
-    pitfalls: ['Only start counting from sequence start (n-1 not in set) — avoids O(n²) repetition.'],
+    pitfalls: ['Only start counting from sequence start (n-1 not in set) - avoids O(n²) repetition.'],
   },
 
   // ─── Longest valid Parentheses ───────────────────────────────────────────────
@@ -1612,7 +1612,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'For each element: if it matches candidate1 or 2, increment their count. If a count is 0, replace. Else decrement both.',
       'Verify the two candidates by counting occurrences.',
     ],
-    pitfalls: ['After voting, must verify — candidates might not actually exceed n/3 (voting finds the POTENTIAL candidates, not guaranteed majority).'],
+    pitfalls: ['After voting, must verify - candidates might not actually exceed n/3 (voting finds the POTENTIAL candidates, not guaranteed majority).'],
   },
 
   // ─── Max rectangle ───────────────────────────────────────────────────────────
@@ -1652,7 +1652,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   // ─── Maximum sum of Non-adjacent nodes ───────────────────────────────────────
   'maximum-sum-of-non-adjacent-nodes': {
-    intuition: 'Tree DP: for each node, two states — include node (can\'t include children) or exclude (take max of including/excluding each child).',
+    intuition: 'Tree DP: for each node, two states - include node (can\'t include children) or exclude (take max of including/excluding each child).',
     algorithm: [
       'DFS returns (include, exclude) for each subtree.',
       'include = node.val + sum(exclude of each child).',
@@ -1924,12 +1924,12 @@ const gfgExplanations: Record<string, RichExplanation> = {
       input: 'n = 3, k = 1',
       steps: [
         'Strings like 011, 110, 111 have exactly one "11" overlap.',
-        '011 has one pair at positions 1–2; count valid strings via DP.',
+        '011 has one pair at positions 1-2; count valid strings via DP.',
       ],
       output: 'number of valid binary strings mod 10⁹ + 7',
     },
     pitfalls: [
-      'Only consecutive 1s count — "101" has zero pairs.',
+      'Only consecutive 1s count - "101" has zero pairs.',
       'When j = k, do not transition by appending 1 after 1.',
       'Sum both ending bits 0 and 1 at the final length.',
     ],
@@ -2647,7 +2647,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Not the same as 2 × N domino tiling — tile length equals full row width m.',
+      'Not the same as 2 × N domino tiling - tile length equals full row width m.',
       'Vertical placement needs n ≥ m; for n = 2, m = 3 only horizontals fit.',
       'Apply modulo on every addition for large n.',
     ],
@@ -3166,7 +3166,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'n-digit-numbers-with-increasing-digits': {
     intuition:
-      'List every n-digit number whose decimal digits strictly increase left to right. For n = 1, single digits 0 through 9 qualify. For n > 1, the first digit cannot be 0 (otherwise it would not be n digits long). Backtracking appends the next digit from a minimum bound upward — each choice must be larger than the previous digit.',
+      'List every n-digit number whose decimal digits strictly increase left to right. For n = 1, single digits 0 through 9 qualify. For n > 1, the first digit cannot be 0 (otherwise it would not be n digits long). Backtracking appends the next digit from a minimum bound upward - each choice must be larger than the previous digit.',
     algorithm: [
       'If n == 1: return 0, 1, …, 9.',
       'Else call generate(st = 1, length n): when current string length is n, push Integer.valueOf(current).',
@@ -3183,7 +3183,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '[12, 13, …, 89] (36 numbers = C(9,2))',
     },
     pitfalls: [
-      'Handle n = 1 separately — 0 is valid only for single-digit output.',
+      'Handle n = 1 separately - 0 is valid only for single-digit output.',
       'Next digit loop starts at st, not st − 1, to keep strict increase.',
       'Use StringBuilder or string concat; Integer.valueOf parses the finished n-digit string.',
     ],
@@ -3574,7 +3574,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Include 0 and n+1 (not n) as row boundaries — gaps count interior rows only.',
+      'Include 0 and n+1 (not n) as row boundaries - gaps count interior rows only.',
       'Duplicate blocked indices are fine after sorting; gaps are between consecutive distinct boundaries.',
       'If every row or column is blocked, a gap can be 0 and the answer is 0.',
     ],
@@ -3582,7 +3582,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'last-digit-of-ab': {
     intuition:
-      'The last digit of a^b depends only on the last digit of a and the exponent modulo 4 (for bases 2, 3, 7, 8). a and b can be huge strings — never parse them fully. Special cases: b = "0" gives last digit 1; a = "0" gives 0. Reduce b using its last two digits mod 4; if the remainder is 0, use 4 instead so the power cycle is correct.',
+      'The last digit of a^b depends only on the last digit of a and the exponent modulo 4 (for bases 2, 3, 7, 8). a and b can be huge strings - never parse them fully. Special cases: b = "0" gives last digit 1; a = "0" gives 0. Reduce b using its last two digits mod 4; if the remainder is 0, use 4 instead so the power cycle is correct.',
     algorithm: [
       'If b equals "0", return 1.',
       'If a equals "0", return 0.',
@@ -3602,7 +3602,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'b = "0" means a^0 → last digit 1, not 0.',
-      'When b % 4 == 0, use exponent 4 — a^0 would break the 2/3/7/8 cycle.',
+      'When b % 4 == 0, use exponent 4 - a^0 would break the 2/3/7/8 cycle.',
       'Only the last one or two digits of b are needed for mod 4; do not use BigInteger for full b.',
     ],
   },
@@ -3711,7 +3711,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: [
       'Iterate j backwards so dp[j−1] still reflects the previous s1 prefix.',
       'dp[j] keeps its value when characters do not match (implicit skip).',
-      'Apply modulo on every addition — counts grow quickly.',
+      'Apply modulo on every addition - counts grow quickly.',
     ],
   },
 
@@ -3746,7 +3746,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     pitfalls: [
       'need = (k − rem) % k handles rem = 0 (pairs both ≡ 0 mod k).',
       'Count freq[need] before incrementing freq[rem] so an element does not pair with itself.',
-      'Use long for the answer if n is large — count can exceed 32-bit range.',
+      'Use long for the answer if n is large - count can exceed 32-bit range.',
     ],
   },
 
@@ -3786,7 +3786,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'coverage-of-all-zeros-in-a-binary-matrix': {
     intuition:
-      'Coverage measures how many 1-cells are immediately next to each 0-cell. Scan the grid; for every zero, check the four orthogonal neighbors (left, right, up, down). Each neighbor that equals 1 adds one to the answer. The result is the total number of zero–one adjacencies counted from the zero side.',
+      'Coverage measures how many 1-cells are immediately next to each 0-cell. Scan the grid; for every zero, check the four orthogonal neighbors (left, right, up, down). Each neighbor that equals 1 adds one to the answer. The result is the total number of zero-one adjacencies counted from the zero side.',
     algorithm: [
       'Initialise count = 0.',
       'For each cell (i, j) where matrix[i][j] == 0:',
@@ -3807,7 +3807,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Check array bounds before each neighbor access.',
-      'Only four directions — diagonals do not count.',
+      'Only four directions - diagonals do not count.',
       'This is adjacency counting, not multi-source BFS distance.',
     ],
   },
@@ -3926,7 +3926,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '[0, 2, 4]',
     },
     pitfalls: [
-      'Extend sumUpToHalf only on even i — j stays floor(i/2) on odd indices.',
+      'Extend sumUpToHalf only on even i - j stays floor(i/2) on odd indices.',
       'rightWindowSum = sumUpToI − sumUpToHalf, not a separate loop.',
       'Use long if values are large enough to overflow int products.',
     ],
@@ -3959,7 +3959,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: 'count of overlapping cells',
     },
     pitfalls: [
-      'Movement rule is mat[neighbor] >= mat[current] — you can only step uphill or level.',
+      'Movement rule is mat[neighbor] >= mat[current] - you can only step uphill or level.',
       'Seed DFS from entire borders, not just corners.',
       'Mark visited in the boolean grid to avoid infinite loops on cycles of equal height.',
     ],
@@ -4382,9 +4382,9 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '"aacd"',
     },
     pitfalls: [
-      'Swap is global — every occurrence of both letters changes, not just one index.',
-      'If first or second stays \'0\', the string is already optimal — return s.',
-      'Single-character strings need no swap — return s immediately.',
+      'Swap is global - every occurrence of both letters changes, not just one index.',
+      'If first or second stays \'0\', the string is already optimal - return s.',
+      'Single-character strings need no swap - return s immediately.',
     ],
   },
 
@@ -4747,7 +4747,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Classic Kadane tracks the best subarray sum ending at each index. Allow deleting at most one element anywhere in that subarray: maintain a second running value for “best sum ending here after exactly one removal.”',
     algorithm: [
       'curr_sum = Kadane without removal (max ending at i). skipped_sum = max ending at i with one element removed in the subarray.',
-      'At index i: skipped_sum = max(curr_sum, skipped_sum + arr[i]) — skip arr[i] using prior Kadane tail, or extend a subarray that already used its one skip.',
+      'At index i: skipped_sum = max(curr_sum, skipped_sum + arr[i]) - skip arr[i] using prior Kadane tail, or extend a subarray that already used its one skip.',
       'curr_sum = max(curr_sum + arr[i], arr[i]); max_sum = max(max_sum, curr_sum, skipped_sum).',
       'Initialize all three to arr[0] for single-element arrays and all-negative cases.',
     ],
@@ -4761,7 +4761,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Do not reset skipped_sum to 0 — “remove one element” means omit it from the subarray, not zero it out.',
+      'Do not reset skipped_sum to 0 - “remove one element” means omit it from the subarray, not zero it out.',
       'Removing zero elements is allowed; answer is ordinary Kadane when no skip helps.',
       'O(n) time, O(1) space; same DP as LC 1186 (Maximum Subarray Sum with One Deletion).',
     ],
@@ -4769,11 +4769,11 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'max-dot-product-with-0-insertions': {
     intuition:
-      'Align array b fully with a subsequence of a in order — skipping an element of a is equivalent to inserting a 0 there (adds nothing to the dot product). Maximize sum of paired products a[i_k] * b[k]. Use DP on indices (i, j): how to best match b[j..] using a[i..].',
+      'Align array b fully with a subsequence of a in order - skipping an element of a is equivalent to inserting a 0 there (adds nothing to the dot product). Maximize sum of paired products a[i_k] * b[k]. Use DP on indices (i, j): how to best match b[j..] using a[i..].',
     algorithm: [
       'dp(i, j): max dot product for suffixes starting at i in a and j in b.',
       'If j == m: return 0 (all of b matched). If too few elements left in a: invalid.',
-      'skip = dp(i + 1, j) — drop a[i] (zero insertion).',
+      'skip = dp(i + 1, j) - drop a[i] (zero insertion).',
       'match = a[i] * b[j] + dp(i + 1, j + 1) when the suffix is feasible.',
       'Return max(skip, match); memoize on (i, j).',
     ],
@@ -4786,7 +4786,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '8',
     },
     pitfalls: [
-      'Require n - i >= m - j — every remaining b element needs a distinct match in a.',
+      'Require n - i >= m - j - every remaining b element needs a distinct match in a.',
       'Use Integer.MIN_VALUE for impossible states; only add dp(i+1,j+1) when not invalid.',
       'Same spirit as LC 1458 but b must be fully consumed (zeros only on a side).',
     ],
@@ -4930,7 +4930,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'maximum-area-between-bars': {
     intuition:
-      'Given bar heights, find the largest rectangular area strictly between two bars (not including the bars themselves). With pointers i and j, the width is j − i − 1 and height is limited by the shorter bar — same two-pointer idea as container with water, but width excludes both endpoints. Move the pointer at the shorter bar inward.',
+      'Given bar heights, find the largest rectangular area strictly between two bars (not including the bars themselves). With pointers i and j, the width is j − i − 1 and height is limited by the shorter bar - same two-pointer idea as container with water, but width excludes both endpoints. Move the pointer at the shorter bar inward.',
     algorithm: [
       'Set i = 0, j = n − 1, area = 0.',
       'While i < j: update area with min(height[i], height[j]) * (j − i − 1).',
@@ -4948,7 +4948,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '8',
     },
     pitfalls: [
-      'Width is (j − i − 1), not (j − i) — bars at i and j are excluded.',
+      'Width is (j − i − 1), not (j − i) - bars at i and j are excluded.',
       'Move the shorter side; keeping the short bar fixes the height cap.',
       'Empty or single-bar lists need no special two-pointer loop.',
     ],
@@ -4997,7 +4997,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '3',
     },
     pitfalls: [
-      'Compare n(n+1)(2n+1) to 6*p — multiply p by 6 to avoid fractions.',
+      'Compare n(n+1)(2n+1) to 6*p - multiply p by 6 to avoid fractions.',
       'Return n - 1 after the loop breaks, not n.',
       'Use int or long for the cubic check; p can be large.',
     ],
@@ -5219,11 +5219,11 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'minimum-insert-and-delete-to-convert': {
     intuition:
-      'Convert array a into b using only deletions from a and insertions into a (no replacements). Elements kept in order form a common subsequence; maximize its length L. Delete |a| − L unmatched elements from a and insert |b| − L missing elements — total |a| + |b| − 2L.',
+      'Convert array a into b using only deletions from a and insertions into a (no replacements). Elements kept in order form a common subsequence; maximize its length L. Delete |a| − L unmatched elements from a and insert |b| − L missing elements - total |a| + |b| − 2L.',
     algorithm: [
       'Map each value in b to its index (assume distinct or use positions as in problem).',
       'Scan a: append b-index for values that appear in b to a list.',
-      'Compute LIS length on that list — equals LCS length in O(n log n).',
+      'Compute LIS length on that list - equals LCS length in O(n log n).',
       'Return (a.length − L) + (b.length − L).',
     ],
     example: {
@@ -5235,9 +5235,9 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Only insert/delete — reduce to LCS, not full edit distance.',
+      'Only insert/delete - reduce to LCS, not full edit distance.',
       'LIS on mapped indices works when matching value equality in order.',
-      'Elements of a not in b must be deleted — they never enter the list.',
+      'Elements of a not in b must be deleted - they never enter the list.',
     ],
   },
 
@@ -7061,7 +7061,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'ways-to-increase-lcs-by-one': {
     intuition:
-      'Recomputing LCS for every insertion is too slow. Instead, precompute prefix LCS (lcsl) and suffix LCS (lcsr). When you insert character c at position i in s1 and match it with s2[p], the new LCS is lcsl[i][p−1] + 1 + lcsr[i+1][p+1]. That equals base + 1 exactly when lcsl[i][p−1] + lcsr[i+1][p+1] == base — the prefix and suffix already account for the full original LCS, and c adds one more match.',
+      'Recomputing LCS for every insertion is too slow. Instead, precompute prefix LCS (lcsl) and suffix LCS (lcsr). When you insert character c at position i in s1 and match it with s2[p], the new LCS is lcsl[i][p−1] + 1 + lcsr[i+1][p+1]. That equals base + 1 exactly when lcsl[i][p−1] + lcsr[i+1][p+1] == base - the prefix and suffix already account for the full original LCS, and c adds one more match.',
     algorithm: [
       'Build lcsl[i][j] = LCS of s1[0..i−1] and s2[0..j−1] (1-indexed DP).',
       'Build lcsr[i][j] = LCS of s1[i−1..] and s2[j−1..] by filling the table backwards.',
@@ -7081,7 +7081,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Use 1-based indices for lcsl/lcsr tables; insertion position i runs 0..n1.',
-      'Break after the first valid p for each (i, c) — multiple p values must not double-count one insertion.',
+      'Break after the first valid p for each (i, c) - multiple p values must not double-count one insertion.',
       'Brute force (recompute LCS per insertion) times out on GFG; prefix/suffix DP is required.',
     ],
   },
@@ -7756,7 +7756,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'cut-rope-to-maximise-product': {
     intuition:
-      'To maximise the product of positive integer piece lengths that sum to n, greedy works: 3 is the optimal chunk size. Use as many 3s as possible. The only awkward remainder is 1 — then borrow one 3 and make a 4 instead (2+2 beats 3+1). For n = 2 or n = 3, the answer is n - 1. Compute 3^count with fast exponentiation and multiply by 2 or 4 when a leftover remainder remains.',
+      'To maximise the product of positive integer piece lengths that sum to n, greedy works: 3 is the optimal chunk size. Use as many 3s as possible. The only awkward remainder is 1 - then borrow one 3 and make a 4 instead (2+2 beats 3+1). For n = 2 or n = 3, the answer is n - 1. Compute 3^count with fast exponentiation and multiply by 2 or 4 when a leftover remainder remains.',
     algorithm: [
       'If n is 2 or 3, return n - 1.',
       'Set cnt3 = n / 3 and rem = n % 3.',
@@ -7776,7 +7776,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '36',
     },
     pitfalls: [
-      'Remainder 1 needs cnt3-- and rem = 4 — do not leave a lone 1 segment.',
+      'Remainder 1 needs cnt3-- and rem = 4 - do not leave a lone 1 segment.',
       'Base cases n = 2 and n = 3 return n - 1, not 1.',
       'Use long or BigInteger if n is large enough to overflow int product.',
     ],
@@ -7803,15 +7803,15 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Require at least two terms — the sliding-window check before adding r naturally skips the single-term representation.',
-      'Shrink with while (sum > n), not a single if — one shrink may not be enough.',
+      'Require at least two terms - the sliding-window check before adding r naturally skips the single-term representation.',
+      'Shrink with while (sum > n), not a single if - one shrink may not be enough.',
       'O(√n) math alternative: count odd divisors of n minus 1; the window solution is O(n) and matches this code.',
     ],
   },
 
   'longest-possible-route-in-a-matrix-with-hurdles': {
     intuition:
-      'Find the longest simple path from (xs,ys) to (xd,yd) on a binary grid (1 = free, 0 = hurdle). Shortest-path BFS is wrong here — we want the maximum number of edges among all simple paths. Exhaustive DFS with backtracking explores every route, marking cells visited so a path never revisits a cell, then unmarking so other routes can use it.',
+      'Find the longest simple path from (xs,ys) to (xd,yd) on a binary grid (1 = free, 0 = hurdle). Shortest-path BFS is wrong here - we want the maximum number of edges among all simple paths. Exhaustive DFS with backtracking explores every route, marking cells visited so a path never revisits a cell, then unmarking so other routes can use it.',
     algorithm: [
       'If start or destination is a hurdle (0), return −1. If start equals destination on a free cell, return 0.',
       'DFS from (x,y) with currentNodes = path length in cells so far.',
@@ -7831,7 +7831,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Return edge count (nodes − 1), not the number of cells visited.',
-      'Must backtrack — without unmarking visited, you only explore one path tree.',
+      'Must backtrack - without unmarking visited, you only explore one path tree.',
       'Unlike maze shortest path, do not stop at the first time you reach the destination.',
       'Exponential time is expected; grids for this problem are small.',
     ],
@@ -7858,7 +7858,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Use a max-heap (reverseOrder), not a min-heap.',
-      'Do not push 0 back — empty rows contribute nothing further.',
+      'Do not push 0 back - empty rows contribute nothing further.',
       'Accumulate in long and mod 1e9+7; k sales can overflow int mid-way.',
       'Stopping when the heap is empty handles selling more tickets than total seats.',
     ],
@@ -7866,7 +7866,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'rearrange-the-array': {
     intuition:
-      'Array b is a 1-based permutation: each operation replaces every position i with b[i]. Applying the map repeatedly walks disjoint cycles. The configuration returns to the start exactly when every cycle has completed an integer number of laps — that first common time is the LCM of all cycle lengths (taken modulo 10^9+7 for large answers).',
+      'Array b is a 1-based permutation: each operation replaces every position i with b[i]. Applying the map repeatedly walks disjoint cycles. The configuration returns to the start exactly when every cycle has completed an integer number of laps - that first common time is the LCM of all cycle lengths (taken modulo 10^9+7 for large answers).',
     algorithm: [
       'Walk each unvisited index as a cycle: follow cur → b[cur]−1 until you loop, recording the cycle length.',
       'For each cycle length, factorize it and keep the maximum exponent of every prime across all cycles (this builds LCM).',
@@ -7883,7 +7883,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '6',
     },
     pitfalls: [
-      'Indices in b are 1-based — convert with b[cur] − 1.',
+      'Indices in b are 1-based - convert with b[cur] − 1.',
       'Do not compute LCM as (a*b)/gcd under a modulus; use prime-exponent max instead.',
       'Include length-1 cycles (fixed points); LCM with 1 does not change the answer.',
       'Use long for the running product before casting back to int.',
@@ -7895,7 +7895,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Find the smallest starting value x such that processing arr left-to-right with x := 2*x − arr[i] never goes negative. Invert the recurrence from the end: if the next value must be at least t, the previous value must be at least ceil((t + arr[i]) / 2). Starting from a required final value of 0 and walking right-to-left yields the minimum valid start in one pass.',
     algorithm: [
       'Initialize x = 0 (minimum acceptable value after the last update).',
-      'For i = n−1 … 0: set x = (x + arr[i] + 1) / 2 — integer form of ceil((x + arr[i]) / 2).',
+      'For i = n−1 … 0: set x = (x + arr[i] + 1) / 2 - integer form of ceil((x + arr[i]) / 2).',
       'Return x as an int (use long while updating to avoid overflow on large sums).',
     ],
     example: {
@@ -7910,7 +7910,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Must scan from right to left — left-to-right with the same formula solves a different problem.',
+      'Must scan from right to left - left-to-right with the same formula solves a different problem.',
       'Use (x + arr[i] + 1) / 2 for ceiling division of non-negative ints, not (x + arr[i]) / 2.',
       'Keep x in a 64-bit type while iterating; cast to int only when returning.',
       'Starting from 0 (not 1) allows a final value of 0; that matches the non-negative constraint.',
@@ -7939,7 +7939,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '5',
     },
     pitfalls: [
-      'This is a contiguous subarray, not a subsequence — do not skip elements.',
+      'This is a contiguous subarray, not a subsequence - do not skip elements.',
       'Equals are allowed on both the rising and falling sides (≤ and ≥), so plateaus still count.',
       'Remember nextStart on strict decreases so adjacent bitonic parts that share a peak are not missed.',
       'Purely increasing or purely decreasing arrays are valid bitonic of length n.',
@@ -7967,10 +7967,10 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '3',
     },
     pitfalls: [
-      'Skip 0 only when n == 1 (MSD), not for every digit — inner digits may be zero.',
+      'Skip 0 only when n == 1 (MSD), not for every digit - inner digits may be zero.',
       'Return −1 when there are zero ways, not 0 (problem convention).',
       'Memoize with −1 sentinel; otherwise overlapping subproblems recompute exponentially.',
-      'If sum > 9*n or sum < 1 (for n≥1 with no leading zero), answer is often −1 — DP handles this naturally.',
+      'If sum > 9*n or sum < 1 (for n≥1 with no leading zero), answer is often −1 - DP handles this naturally.',
     ],
   },
 
@@ -7996,7 +7996,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'The two subarrays must be non-empty and non-overlapping; only split at i where i+1 exists.',
-      'Track both maximum and minimum subarray sums — comparing only two maxima misses large positive-versus-negative gaps.',
+      'Track both maximum and minimum subarray sums - comparing only two maxima misses large positive-versus-negative gaps.',
       'Use Kadane states for contiguous subarrays, not prefix sums for arbitrary subsequences.',
       'Initialize states from actual array elements rather than 0 so all-negative and all-positive arrays work correctly.',
       'The implementation returns 0 for n < 2 because two non-empty disjoint subarrays cannot be formed.',
@@ -8008,7 +8008,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Cut a binary matrix into k pieces with k−1 hard cuts (always giving away the top strip or left strip) so every piece contains at least one 1. After each cut the remaining bottom-right rectangle is itself a cutting problem with one fewer piece. Suffix sums of filled cells make “does this rectangle still have a 1?” O(1), and binary search finds the earliest cut that actually peels off a 1 so we never enumerate empty cuts.',
     algorithm: [
       'Build suff[i][j] = number of 1s in the submatrix from (i,j) to the bottom-right corner.',
-      'dp[1][r][c] = 1 if suff[r][c] > 0 else 0 — one piece needs only a non-empty filled suffix.',
+      'dp[1][r][c] = 1 if suff[r][c] > 0 else 0 - one piece needs only a non-empty filled suffix.',
       'For rem = 2 … k, first build row- and column-wise suffix sums of dp[rem−1] so any bottom-right rectangle of answers can be queried in O(1).',
       'For each top-left (r,c) with suff[r][c] > 0, binary-search the first next_r where suff[next_r][c] < suff[r][c] (horizontal cut peels ≥1 filled cell) and add dpSumRow[next_r][c].',
       'Likewise binary-search next_c for a vertical cut and add dpSumCol[r][next_c]. Store the sum modulo 10⁹+7 in dp[rem][r][c].',
@@ -8025,10 +8025,10 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: '3',
     },
     pitfalls: [
-      'A cut is invalid if the given-away strip has zero filled cells — that is why next_r / next_c require a strict drop in suffix sum.',
+      'A cut is invalid if the given-away strip has zero filled cells - that is why next_r / next_c require a strict drop in suffix sum.',
       'Always cut from the current top-left; you never cut previously given-away regions.',
       'Modulo after every addition; ways grow quickly with k.',
-      'Skip states with suff[r][c] == 0 early — an empty remaining pizza cannot form rem ≥ 1 valid pieces.',
+      'Skip states with suff[r][c] == 0 early - an empty remaining pizza cannot form rem ≥ 1 valid pieces.',
       'Binary search must return the first index where the suffix becomes strictly smaller, not merely ≤.',
     ],
   },
@@ -8054,7 +8054,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Plateaus count: use ≤ on the ascent and ≥ on the descent, not strict inequalities.',
-      'A pure ascent or pure descent is a valid mountain for this problem — do not require both slopes.',
+      'A pure ascent or pure descent is a valid mountain for this problem - do not require both slopes.',
       'peak = up[l] is the first place the ascent from l stops; do not search for a local maximum inside [l, r] separately.',
       'Indices in queries are 0-based; compare peak and down[peak] against r inclusively.',
     ],
@@ -8081,7 +8081,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Always emit at least the full word when no shorter prefix is unique (duplicate words fall into this case).',
-      'Count every proper prefix of every word in the first pass — skipping the last character leaves full-word uniqueness untracked.',
+      'Count every proper prefix of every word in the first pass - skipping the last character leaves full-word uniqueness untracked.',
       'Result order must match input order, not sorted-dictionary order.',
       'This is the same idea as a frequency trie; the rolling key is only a compact map key for those trie paths.',
     ],
@@ -8089,7 +8089,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'maximum-reachable-index-difference': {
     intuition:
-      'You may start only at an index containing a. Each jump moves right to the immediate next letter in the alphabet (a→b→c…). The goal is the largest endingIndex − startingIndex over any valid jump chain. While scanning left to right, keep the earliest start index that can reach each letter — when you see c, the best start for that chain is the same as for b one step earlier.',
+      'You may start only at an index containing a. Each jump moves right to the immediate next letter in the alphabet (a→b→c…). The goal is the largest endingIndex − startingIndex over any valid jump chain. While scanning left to right, keep the earliest start index that can reach each letter - when you see c, the best start for that chain is the same as for b one step earlier.',
     algorithm: [
       'Maintain minStart[26], filled with ∞, where minStart[c] is the smallest index that can start a valid chain ending at letter c.',
       'For each index i with character ch at position idx = ch − a:',
@@ -8102,13 +8102,13 @@ const gfgExplanations: Record<string, RichExplanation> = {
       steps: [
         'i=0, a: minStart[a]=0, ans=0.',
         'i=1, b: minStart[b]=0, ans=max(0,1−0)=1.',
-        'i=2, z: needs y — minStart[y] is unknown, skip.',
+        'i=2, z: needs y - minStart[y] is unknown, skip.',
         'i=3, c: minStart[c]=0, ans=max(1,3−0)=3.',
       ],
       output: '3',
     },
     pitfalls: [
-      'Starting index must be a — do not treat every character as a valid start.',
+      'Starting index must be a - do not treat every character as a valid start.',
       'Jumps require the exact next letter; skipping letters (a then c) is invalid.',
       'Propagate minStart[idx] from minStart[idx−1], not from the previous index in the string.',
       'Return −1 when no valid chain exists (e.g. string has no a).',
@@ -8137,7 +8137,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
     },
     pitfalls: [
       'Use lower_bound (≥), not upper_bound (>), when equals are allowed in a non-decreasing sort.',
-      'The tails array is not itself an LIS — only its length equals the LIS length.',
+      'The tails array is not itself an LIS - only its length equals the LIS length.',
       'Empty array → 0 deletions.',
       'Already sorted → LIS = n → answer 0; strictly decreasing → LIS = 1 → answer n − 1.',
     ],
@@ -8150,7 +8150,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       'Initialize an empty stack and last = −∞ (lower bound for the next node).',
       'For each ele in the candidate preorder:',
       '  • While the stack top is < ele, pop it and set last to the popped value (leaving a left subtree).',
-      '  • If ele < last, return false — value sits below the allowed lower bound.',
+      '  • If ele < last, return false - value sits below the allowed lower bound.',
       '  • Push ele onto the stack.',
       'If the scan finishes without violations, return true.',
     ],
@@ -8165,7 +8165,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: 'true',
     },
     pitfalls: [
-      'Update the lower bound only when popping smaller ancestors — that is when you move to a right subtree.',
+      'Update the lower bound only when popping smaller ancestors - that is when you move to a right subtree.',
       'A value smaller than last after those pops always means an invalid preorder.',
       'This assumes distinct keys (standard for this GFG statement).',
       'Empty or single-element arrays are valid BSTs.',
@@ -8174,12 +8174,12 @@ const gfgExplanations: Record<string, RichExplanation> = {
 
   'construct-a-full-binary-tree': {
     intuition:
-      'A general binary tree is not unique from preorder alone, but a full binary tree (0 or 2 children) is uniquely fixed by its preorder together with the preorder of its mirror. Mirror preorder visits root, then original right, then original left — so the next value in original pre (start of the left subtree) appears later in preMirror and splits that range into left and right subtrees.',
+      'A general binary tree is not unique from preorder alone, but a full binary tree (0 or 2 children) is uniquely fixed by its preorder together with the preorder of its mirror. Mirror preorder visits root, then original right, then original left - so the next value in original pre (start of the left subtree) appears later in preMirror and splits that range into left and right subtrees.',
     algorithm: [
       'Map every preMirror value to its index for O(1) lookups.',
       'Recursively build with a shared preIndex into pre and a current [l, r] window in preMirror.',
       'Create the root from pre[preIndex++]. If the window is a single node (or pre is exhausted), return the leaf.',
-      'Let idx = map[pre[preIndex]] — position of the upcoming left-subtree root inside preMirror.',
+      'Let idx = map[pre[preIndex]] - position of the upcoming left-subtree root inside preMirror.',
       'Build left on [idx, r] and right on [l+1, idx−1] (sides swapped relative to mirror order).',
       'Return the constructed root.',
     ],
@@ -8193,7 +8193,7 @@ const gfgExplanations: Record<string, RichExplanation> = {
       output: 'tree with root 1, left 2 (children 4,5), right 3 (children 6,7)',
     },
     pitfalls: [
-      'Left/right ranges from preMirror are swapped versus original order — that is intentional for the mirror.',
+      'Left/right ranges from preMirror are swapped versus original order - that is intentional for the mirror.',
       'preIndex must be shared across recursive calls (instance field or by-reference), not reset per call.',
       'Works only because the tree is full; a general binary tree would be ambiguous.',
       'Values are unique; the HashMap index lookup assumes no duplicates.',

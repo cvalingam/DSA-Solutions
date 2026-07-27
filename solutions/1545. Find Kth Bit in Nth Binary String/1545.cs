@@ -1,4 +1,4 @@
-// Approach: Recursive divide — mid is '1', left half recurse normally, right half recurse mirrored with flipped result.
+// Approach: Recursive divide - mid is '1', left half recurse normally, right half recurse mirrored with flipped result.
 // Time: O(n) Space: O(n)
 
 public class Solution

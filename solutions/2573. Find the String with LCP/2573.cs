@@ -1,4 +1,4 @@
-// Approach: Greedily assign letters left to right — if word[i] is unset, assign the next available
+// Approach: Greedily assign letters left to right - if word[i] is unset, assign the next available
 // letter and propagate it to all j>i where lcp[i][j]>0. Then validate by recomputing the LCP table
 // from the constructed string: lcp[i][j] = word[i]==word[j] ? 1+lcp[i+1][j+1] : 0, checking it
 // matches the input. Return "" if any mismatch or letters run out past 'z'.

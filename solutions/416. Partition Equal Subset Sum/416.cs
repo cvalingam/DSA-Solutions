@@ -1,4 +1,4 @@
-// Approach: 0/1 Knapsack DP — check whether any subset sums to totalSum / 2.
+// Approach: 0/1 Knapsack DP - check whether any subset sums to totalSum / 2.
 // If totalSum is odd, partitioning is impossible.
 // Create a boolean dp array of size (target + 1): dp[t] = true if some subset sums to t.
 // Process each number: iterate t from target down to num and set dp[t] |= dp[t - num].

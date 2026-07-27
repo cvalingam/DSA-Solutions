@@ -1,4 +1,4 @@
-// Approach: Divide and conquer — split the buildings list in half, recursively compute
+// Approach: Divide and conquer - split the buildings list in half, recursively compute
 // each half's skyline, then merge two skylines into one.
 // Merging two skylines uses a two-pointer sweep over their key points.
 // At each x-coordinate, take the maximum height from both skylines.

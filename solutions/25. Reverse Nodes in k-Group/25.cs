@@ -4,7 +4,7 @@
 // Reconnect: attach the previous group's tail to the new group head, and the new group tail to the remaining list.
 // Advance the 'group tail' pointer and repeat for the next group.
 // Leaves any final partial group (length < k) in its original order.
-// Time: O(n) Space: O(1) — purely iterative with no recursion.
+// Time: O(n) Space: O(1) - purely iterative with no recursion.
 
 public class ListNode
 {

@@ -1,4 +1,4 @@
-// Approach: Post-order DFS — recurse into both subtrees before deciding at each node.
+// Approach: Post-order DFS - recurse into both subtrees before deciding at each node.
 // Base cases: return null for a null node; return the node itself if it equals p or q.
 // After recursing left and right: if both return non-null, the current root is the LCA.
 // If only one side is non-null, that value is the LCA candidate and propagates up.

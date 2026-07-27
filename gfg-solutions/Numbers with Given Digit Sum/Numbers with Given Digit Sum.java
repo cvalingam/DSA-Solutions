@@ -1,5 +1,5 @@
-// Approach: DP memoization — helper(n, sum) = ways to fill n remaining digits with digit-sum
-// sum. Try digits 0–9; when only 1 digit left (MSD), skip 0 to ban leading zeros. Return -1 if 0.
+// Approach: DP memoization - helper(n, sum) = ways to fill n remaining digits with digit-sum
+// sum. Try digits 0-9; when only 1 digit left (MSD), skip 0 to ban leading zeros. Return -1 if 0.
 // Time: O(n * sum) Space: O(n * sum)
 
 class Solution {

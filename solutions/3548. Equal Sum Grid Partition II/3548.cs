@@ -1,6 +1,6 @@
 // Approach: For each row/column cut, check if the sum difference between the two halves is zero
 // (valid without removal) or equals some cell value in the heavier half that can be removed while
-// keeping grid connectivity. Handle 1-row/col strips — only corner cells are removable. For proper
+// keeping grid connectivity. Handle 1-row/col strips - only corner cells are removable. For proper
 // rectangles, any cell is removable. Pre-build value→sorted-index maps for O(log n) binary search.
 // Time: O(m*n*log(m*n)) Space: O(m*n)
 public class Solution

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '404 — Page Not Found',
+  title: '404 - Page Not Found',
 }
 
 export default function NotFound() {
@@ -11,7 +11,7 @@ export default function NotFound() {
       <p className="text-6xl font-extrabold text-slate-200 mb-4">404</p>
       <h1 className="text-2xl font-bold text-slate-800 mb-2">Page not found</h1>
       <p className="text-slate-500 mb-8">
-        This problem or page doesn&apos;t exist — it may have been removed or the URL is wrong.
+        This problem or page doesn&apos;t exist - it may have been removed or the URL is wrong.
       </p>
       <Link
         href="/"

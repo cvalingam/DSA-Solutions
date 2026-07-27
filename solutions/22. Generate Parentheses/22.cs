@@ -1,8 +1,8 @@
-// Approach: Backtracking with two counters — open ('(' placed) and close (')' placed).
+// Approach: Backtracking with two counters - open ('(' placed) and close (')' placed).
 // At each step, append '(' if open < n (more opening brackets are allowed),
 // or append ')' if close < open (there is an unclosed bracket to close).
 // A complete string is added to the result when both counters equal n.
-// This generates only valid strings without any post-validation — invalid paths are never explored.
+// This generates only valid strings without any post-validation - invalid paths are never explored.
 // The total number of valid combinations is the n-th Catalan number C(n) = C(2n,n)/(n+1).
 // Time: O(4^n/√n) Space: O(n) per path in the recursion stack
 

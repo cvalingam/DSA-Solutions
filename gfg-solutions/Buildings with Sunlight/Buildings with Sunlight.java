@@ -4,8 +4,8 @@
 // the building is visible (it is at least as tall as every building before it), so count it and
 // update ptr to arr[i].
 //
-// Time: O(N) — single pass over the array.
-// Space: O(1) — only two integer variables.
+// Time: O(N) - single pass over the array.
+// Space: O(1) - only two integer variables.
 class Solution {
 
     public int visibleBuildings(int arr[]) {

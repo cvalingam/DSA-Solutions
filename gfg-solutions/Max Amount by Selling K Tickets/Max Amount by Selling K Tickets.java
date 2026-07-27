@@ -1,4 +1,4 @@
-// Approach: Max-heap of seat counts — each sale takes the row with the most vacant seats
+// Approach: Max-heap of seat counts - each sale takes the row with the most vacant seats
 // (price = vacancies), then push vacancies−1 back. Repeat k times; sum mod 1e9+7.
 // Time: O((n + k) log n) Space: O(n)
 

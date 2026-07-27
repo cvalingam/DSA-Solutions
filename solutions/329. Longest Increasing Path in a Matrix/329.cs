@@ -1,9 +1,9 @@
-// Approach: DFS with memoization — for each cell, recursively explore all four neighbors
+// Approach: DFS with memoization - for each cell, recursively explore all four neighbors
 // that have a strictly larger value, caching the longest path from each cell.
 // Start a DFS from every unvisited cell; the global maximum over all starts is the answer.
-// Because the path must strictly increase, no cycle is possible — no visited set is needed.
+// Because the path must strictly increase, no cycle is possible - no visited set is needed.
 // The memoization table ensures each cell is fully computed only once.
-// Time: O(m x n) — each cell visited once. Space: O(m x n) for the memo table.
+// Time: O(m x n) - each cell visited once. Space: O(m x n) for the memo table.
 
 public class Solution
 {

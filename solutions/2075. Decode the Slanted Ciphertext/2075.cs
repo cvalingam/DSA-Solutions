@@ -1,5 +1,5 @@
 // Approach: Reconstruct the matrix from encodedText (row-major order).
-// Read diagonals starting from each column of row 0 — each diagonal is one
+// Read diagonals starting from each column of row 0 - each diagonal is one
 // original word segment. Append all diagonal characters, then trim trailing spaces.
 // Time: O(rows * cols) Space: O(rows * cols)
 public class Solution

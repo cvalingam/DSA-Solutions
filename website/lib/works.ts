@@ -30,7 +30,7 @@ export const WORKS: WorkProject[] = [
     id: 'skin-klove',
     title: 'Skin Klove',
     description:
-      'Marketing site for Skin Klove — clinic branding and patient-facing web presence.',
+      'Marketing site for Skin Klove - clinic branding and patient-facing web presence.',
     url: 'https://www.skinklove.com',
     tags: ['Next.js', 'Marketing'],
   },
@@ -38,7 +38,7 @@ export const WORKS: WorkProject[] = [
     id: 'clinic-os',
     title: 'Clinic OS',
     description:
-      'Clinic operations frontend for Skin Klove — appointment and practice workflows.',
+      'Clinic operations frontend for Skin Klove - appointment and practice workflows.',
     url: 'https://app.skinklove.com',
     tags: ['Next.js', 'SaaS'],
   },
@@ -62,7 +62,7 @@ export const WORKS: WorkProject[] = [
     id: 'ish-payload',
     title: 'ISH Payload',
     description:
-      'Steel Express Solution — production Payload CMS site for industrial / logistics content.',
+      'Steel Express Solution - production Payload CMS site for industrial / logistics content.',
     url: 'https://www.steelxpresssolution.com',
     tags: ['Next.js', 'Payload CMS'],
   },

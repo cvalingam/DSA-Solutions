@@ -4,14 +4,14 @@
 // do not, then count1 * count0 pairs each contribute 2^i. Summing over all 32 bit positions gives
 // the total XOR sum across all unordered pairs in O(32 * N) = O(N) time.
 //
-// Time: O(N) — 32 passes of length N.
-// Space: O(1) — only a counter per bit position.
+// Time: O(N) - 32 passes of length N.
+// Space: O(1) - only a counter per bit position.
 class Solution {
 
     public long sumXOR(int[] arr) {
         int n = arr.length;
         long total = 0;
-        // Check each bit position (0–31)
+        // Check each bit position (0-31)
         for (int i = 0; i < 32; i++) {
             long count1 = 0;
             for (int num : arr) {

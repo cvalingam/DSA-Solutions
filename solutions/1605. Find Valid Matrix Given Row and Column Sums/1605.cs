@@ -1,4 +1,4 @@
-// Approach: Greedy — fill each cell with min(rowSum[i], colSum[j]) and subtract from both.
+// Approach: Greedy - fill each cell with min(rowSum[i], colSum[j]) and subtract from both.
 // Time: O(mn) Space: O(mn)
 
 public class Solution

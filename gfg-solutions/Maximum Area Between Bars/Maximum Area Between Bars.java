@@ -1,5 +1,5 @@
 // Approach: Two pointers at both ends. Area between bars i and j is min(height[i], height[j]) * (j - i - 1).
-// Move the pointer at the shorter bar inward — a taller inner bar cannot beat the current bound.
+// Move the pointer at the shorter bar inward - a taller inner bar cannot beat the current bound.
 // Time: O(n) Space: O(1)
 import java.util.*;
 

@@ -1,4 +1,4 @@
-// Approach: DFS + backtracking — explore all 4-direction paths on free cells (1), mark
+// Approach: DFS + backtracking - explore all 4-direction paths on free cells (1), mark
 // visited to avoid cycles, unmark on return. Track max edge count when destination is reached.
 // Time: O(4^(r*c)) worst case Space: O(r*c)
 

@@ -1,4 +1,4 @@
-// Approach: Stack-based merge — while top of stack and current share a common factor (LCM them).
+// Approach: Stack-based merge - while top of stack and current share a common factor (LCM them).
 // Time: O(n log max) Space: O(n)
 
 public class Solution

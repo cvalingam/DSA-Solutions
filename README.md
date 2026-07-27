@@ -22,19 +22,19 @@
 
 | Folder | Contents |
 |--------|----------|
-| `solutions/` | 912+ LeetCode problems in C# — one `.cs` file per problem |
+| `solutions/` | 912+ LeetCode problems in C# - one `.cs` file per problem |
 | `gfg-solutions/` | 622+ GeeksforGeeks problems in Java |
-| `website/` | Next.js 14 site powering [dsasolved.com](https://dsasolved.com) — LC/GFG solutions, topics, system design |
+| `website/` | Next.js 14 site powering [dsasolved.com](https://dsasolved.com) - LC/GFG solutions, topics, system design |
 
 ## Website features
 
-- 🔍 **Instant search** — filter by problem number or title
-- 🏷️ **Topic pages** — browse by Array, DP, Trees, Graphs, and [40+ more topics](https://dsasolved.com/topics)
-- 🎯 **Difficulty filter** — Easy / Medium / Hard
-- 📋 **One-click copy** — syntax-highlighted code with copy button
-- ⚡ **Fully static** — 1,600+ pages pre-rendered at build time
-- 📖 **Rich explanations** — step-by-step intuition, algorithm, and pitfalls on explained problems
-- 🏗️ **System design** — 25+ interview guides at [dsasolved.com/system-design](https://dsasolved.com/system-design)
+- 🔍 **Instant search** - filter by problem number or title
+- 🏷️ **Topic pages** - browse by Array, DP, Trees, Graphs, and [40+ more topics](https://dsasolved.com/topics)
+- 🎯 **Difficulty filter** - Easy / Medium / Hard
+- 📋 **One-click copy** - syntax-highlighted code with copy button
+- ⚡ **Fully static** - 1,600+ pages pre-rendered at build time
+- 📖 **Rich explanations** - step-by-step intuition, algorithm, and pitfalls on explained problems
+- 🏗️ **System design** - 25+ interview guides at [dsasolved.com/system-design](https://dsasolved.com/system-design)
 
 ## Tech stack
 

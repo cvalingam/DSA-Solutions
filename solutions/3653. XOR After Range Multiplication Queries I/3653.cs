@@ -1,4 +1,4 @@
-// Approach: Simulate each query directly — for each [l, r, k, v] multiply every element
+// Approach: Simulate each query directly - for each [l, r, k, v] multiply every element
 // at indices l, l+k, l+2k, ... ≤ r by v (mod 1e9+7). After all queries, XOR the entire
 // array to produce the answer.
 // Time: O(Q * n/k) Space: O(1)

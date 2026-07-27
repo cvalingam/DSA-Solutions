@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? { index: true, follow: true }
       : { index: false, follow: true },
     openGraph: {
-      title: `${title} — GFG Java Solution`,
+      title: `${title} - GFG Java Solution`,
       description: desc,
       type: 'article',
       url: `/gfg/${problem.slug}`,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} — GFG Java Solution`,
+      title: `${title} - GFG Java Solution`,
       description: desc,
       images: [ogImage],
     },

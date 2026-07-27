@@ -1,7 +1,7 @@
 // Approach: Sort all intervals by start value so that overlapping intervals become adjacent.
 // Maintain a running merged interval (the last element in the result list).
-// For each subsequent interval: if its start <= current end, they overlap — extend end if needed.
-// If its start > current end, they do not overlap — push the current interval and start a new one.
+// For each subsequent interval: if its start <= current end, they overlap - extend end if needed.
+// If its start > current end, they do not overlap - push the current interval and start a new one.
 // Sorting is the critical insight: without it we would need O(n^2) pairwise comparisons.
 // Handle the edge case where the last running interval is never pushed (add it after the loop).
 // Time: O(n log n) dominated by sort; merging is O(n). Space: O(n) for the result.

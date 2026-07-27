@@ -1,4 +1,4 @@
-// Approach: For each 3×3 sub-grid with center 5, verify all 9 digits are distinct 1–9 and all rows, columns, and diagonals sum to 15.
+// Approach: For each 3×3 sub-grid with center 5, verify all 9 digits are distinct 1-9 and all rows, columns, and diagonals sum to 15.
 // Time: O(n²) Space: O(1)
 
 public class Solution

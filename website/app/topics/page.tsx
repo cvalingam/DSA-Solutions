@@ -5,11 +5,11 @@ import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'LeetCode Topics',
-  description: 'Browse LeetCode C# solutions by topic — Array, Dynamic Programming, Trees, Graphs and more.',
+  description: 'Browse LeetCode C# solutions by topic - Array, Dynamic Programming, Trees, Graphs and more.',
   alternates: { canonical: '/topics' },
   openGraph: {
-    title: 'LeetCode Topics — DSA Solutions',
-    description: 'Browse LeetCode C# solutions by topic — Array, Dynamic Programming, Trees, Graphs and more.',
+    title: 'LeetCode Topics - DSA Solutions',
+    description: 'Browse LeetCode C# solutions by topic - Array, Dynamic Programming, Trees, Graphs and more.',
     url: '/topics',
     type: 'website',
   },
@@ -42,7 +42,7 @@ export default function TopicsPage() {
       <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-2xl">
         Browse LeetCode C# solutions organised by algorithmic pattern. Each topic page lists all
         problems for that pattern along with a short editorial explaining when and how to apply the
-        technique. Mastering these patterns — rather than memorising individual solutions — is the
+        technique. Mastering these patterns - rather than memorising individual solutions - is the
         most transferable skill for technical interviews.
       </p>
 

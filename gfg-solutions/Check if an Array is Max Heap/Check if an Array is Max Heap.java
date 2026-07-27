@@ -1,5 +1,5 @@
 // Approach: For every non-root node i, check arr[i] <= arr[(i-1)/2] (its parent).
-// Iterating over children avoids the one-child edge case — parent index is always valid.
+// Iterating over children avoids the one-child edge case - parent index is always valid.
 // Time: O(n) Space: O(1)
 class Solution {
 

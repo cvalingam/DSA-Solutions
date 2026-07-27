@@ -1,8 +1,8 @@
 /**
  * Ad configuration for dsasolved.com.
  *
- * NEXT_PUBLIC_ADS_ENABLED=false (default) — no AdSense script, no list-page ads.
- * NEXT_PUBLIC_SHOW_AD_SLOTS=true (default) — reserved sidebar/mobile slots on article pages
+ * NEXT_PUBLIC_ADS_ENABLED=false (default) - no AdSense script, no list-page ads.
+ * NEXT_PUBLIC_SHOW_AD_SLOTS=true (default) - reserved sidebar/mobile slots on article pages
  *   for Carbon / EthicalAds layout review (subtle placeholders only).
  */
 

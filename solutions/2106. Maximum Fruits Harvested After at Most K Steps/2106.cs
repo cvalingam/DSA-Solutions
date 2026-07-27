@@ -1,4 +1,4 @@
-// Approach: Sliding window — try all windows anchored left or right of startPos within reach k.
+// Approach: Sliding window - try all windows anchored left or right of startPos within reach k.
 // Time: O(n) Space: O(1)
 
 public class Solution

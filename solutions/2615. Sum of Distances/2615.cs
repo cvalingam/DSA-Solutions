@@ -6,8 +6,8 @@
 //   - The (n-1-i) elements to its right each move 'gap' closer => sumSoFar -= (n-1-i) * gap
 // This gives the exact distance sum for each element in O(group_size) rather than O(group_size^2).
 //
-// Time: O(N) — each index is processed exactly once across all groups.
-// Space: O(N) — for the Dictionary mapping values to their index lists.
+// Time: O(N) - each index is processed exactly once across all groups.
+// Space: O(N) - for the Dictionary mapping values to their index lists.
 
 public class Solution
 {

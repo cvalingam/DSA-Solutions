@@ -1,5 +1,5 @@
 // Approach: Min insert + delete = |a| + |b| − 2·LCS(a, b). Map b values to indices, scan a into
-// that index sequence, and compute LIS length in O(n log n) — equals LCS length.
+// that index sequence, and compute LIS length in O(n log n) - equals LCS length.
 // Time: O(n log n) Space: O(n)
 
 import java.util.*;

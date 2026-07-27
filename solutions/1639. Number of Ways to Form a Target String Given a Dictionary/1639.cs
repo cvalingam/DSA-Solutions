@@ -1,4 +1,4 @@
-// Approach: DP — precount char frequencies per column; dp[i][j] = ways to form target[0..i] using word columns 0..j.
+// Approach: DP - precount char frequencies per column; dp[i][j] = ways to form target[0..i] using word columns 0..j.
 // Time: O(|target| * wordLen) Space: O(|target| * wordLen)
 
 public class Solution

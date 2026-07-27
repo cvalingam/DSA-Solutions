@@ -1,9 +1,9 @@
 // Approach: Kahn's BFS-based topological sort to find a valid course ordering.
 // Build an adjacency list and compute the in-degree (number of prerequisites) for each course.
-// Enqueue all courses with in-degree 0 — these have no prerequisites and can be taken immediately.
+// Enqueue all courses with in-degree 0 - these have no prerequisites and can be taken immediately.
 // Dequeue a course, add it to the result, and reduce the in-degree of all its dependent courses.
 // Any dependent that reaches in-degree 0 is enqueued as it is now unblocked.
-// If the result contains all numCourses nodes, return it; otherwise a cycle exists — return empty.
+// If the result contains all numCourses nodes, return it; otherwise a cycle exists - return empty.
 // Time: O(V + E) where V = numCourses and E = prerequisites count. Space: O(V + E).
 
 public class Solution

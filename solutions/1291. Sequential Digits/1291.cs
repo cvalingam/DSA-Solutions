@@ -1,6 +1,6 @@
-// Approach: DFS from each start digit 1–9, always appending the next consecutive digit.
+// Approach: DFS from each start digit 1-9, always appending the next consecutive digit.
 // Collect numbers that fall in [low, high]; sort the small result list at the end.
-// Time: O(1) — at most 36 sequential numbers Space: O(1)
+// Time: O(1) - at most 36 sequential numbers Space: O(1)
 public class Solution
 {
     public IList<int> SequentialDigits(int low, int high)

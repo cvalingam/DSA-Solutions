@@ -1,6 +1,6 @@
 public class Solution
 {
-    // Approach: Same trade idea as LC 3499 — a valid trade activates two adjacent
+    // Approach: Same trade idea as LC 3499 - a valid trade activates two adjacent
     // zero-runs (net gain = sum of their lengths). Precompute every zero-run, build
     // adjacent-pair lengths, and answer range-max of those pairs with a sparse table.
     // Each query [l,r] clips runs at the endpoints and takes the best of: no trade,

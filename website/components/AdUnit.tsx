@@ -1,5 +1,5 @@
 /**
- * AdUnit — AdSense when enabled, or a reserved placeholder for network review.
+ * AdUnit - AdSense when enabled, or a reserved placeholder for network review.
  *
  * Usage:
  *   <AdUnit slot="1234567890" style="sidebar" placeholder />
@@ -40,7 +40,7 @@ export default function AdUnit({
       // @ts-expect-error adsbygoogle is injected by Google's script
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
     } catch {
-      // silently ignore — script not yet loaded
+      // silently ignore - script not yet loaded
     }
   }, [slot, liveAds])
 

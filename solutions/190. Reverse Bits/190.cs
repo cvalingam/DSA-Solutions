@@ -3,7 +3,7 @@
 // Right-shift n to expose the next bit.
 // After 32 iterations the 32 bits of n appear in reverse order in the result.
 // Using uint avoids sign-extension issues that would occur with int right shifts.
-// Time: O(1) — always exactly 32 iterations. Space: O(1).
+// Time: O(1) - always exactly 32 iterations. Space: O(1).
 
 public class Solution
 {

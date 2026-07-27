@@ -2,7 +2,7 @@
 // Water flows from higher or equal elevation to lower, so reverse this:
 // start BFS from Pacific-border cells and mark all cells reachable going uphill.
 // Repeat from Atlantic-border cells.
-// Any cell marked reachable from BOTH oceans is a valid result — water can flow to both.
+// Any cell marked reachable from BOTH oceans is a valid result - water can flow to both.
 // Two separate boolean matrices track reachability; the intersection is the answer.
 // Time: O(m x n) Space: O(m x n) for the two visited matrices.
 

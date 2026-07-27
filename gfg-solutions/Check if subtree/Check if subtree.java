@@ -15,7 +15,7 @@ class Node {
 
 // Approach: Serialize both trees via inorder traversal (inserting 0 as a null-node marker),
 // then use KMP substring search to check whether root2's inorder sequence appears inside root1's.
-// Null markers are essential — without them, different tree shapes can produce identical inorder lists.
+// Null markers are essential - without them, different tree shapes can produce identical inorder lists.
 // Time: O(m + n) Space: O(m + n)
 
 class Solution {

@@ -1,4 +1,4 @@
-// Approach: Two pointers — swap each non-target element to the write
+// Approach: Two pointers - swap each non-target element to the write
 // position and advance the write pointer.
 // Time: O(n) Space: O(1)
 

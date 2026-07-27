@@ -15,8 +15,8 @@ public class ListNode
 // The effective rotation count is k % len. The new tail is at position (len - k%len) from the
 // start, so walk exactly that many steps, break the circle there, and the next node is the new head.
 //
-// Time: O(N) — one pass to find length, one pass to find the new tail.
-// Space: O(1) — only a few pointer variables.
+// Time: O(N) - one pass to find length, one pass to find the new tail.
+// Space: O(1) - only a few pointer variables.
 public class Solution
 {
     public ListNode RotateRight(ListNode head, int k)

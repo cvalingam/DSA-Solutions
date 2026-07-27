@@ -1,4 +1,4 @@
-// Approach: Two priority queues — one for free rooms (min-heap by index) and one for
+// Approach: Two priority queues - one for free rooms (min-heap by index) and one for
 // occupied rooms (min-heap by end time, then room index). Sort meetings by start time.
 // For each meeting, free up rooms whose meetings ended, assign to smallest free room or
 // delay the meeting to the earliest available room.

@@ -1,4 +1,4 @@
-// Approach: Kadane with one optional skip — curr_sum is best ending at i with no removal;
+// Approach: Kadane with one optional skip - curr_sum is best ending at i with no removal;
 // skipped_sum is best ending at i after removing exactly one element.
 // Time: O(n) Space: O(1)
 class Solution {

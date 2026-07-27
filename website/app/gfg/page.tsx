@@ -11,13 +11,13 @@ export const dynamic = 'force-static'
 const { gfgCount } = getSiteStats()
 
 export const metadata: Metadata = {
-  title: `GeeksforGeeks Java Solutions — ${gfgCount}+ Problems`,
+  title: `GeeksforGeeks Java Solutions - ${gfgCount}+ Problems`,
   description:
     `Clean Java solutions to ${gfgCount}+ GeeksforGeeks problems with explanations, algorithm walkthroughs, and complexity analysis. Daily POTD and interview prep.`,
   keywords: ['GeeksforGeeks', 'GFG', 'Java', 'POTD', 'Problem of the Day', 'interview prep', 'DSA'],
   alternates: { canonical: '/gfg' },
   openGraph: {
-    title: `GeeksforGeeks Java Solutions — ${gfgCount}+ Problems`,
+    title: `GeeksforGeeks Java Solutions - ${gfgCount}+ Problems`,
     description: `Clean Java solutions to ${gfgCount}+ GeeksforGeeks problems with explanations and complexity analysis.`,
     url: '/gfg',
     type: 'website',

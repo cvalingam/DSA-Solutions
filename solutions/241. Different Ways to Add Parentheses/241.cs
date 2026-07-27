@@ -1,4 +1,4 @@
-// Approach: Divide and conquer — split the expression at each operator.
+// Approach: Divide and conquer - split the expression at each operator.
 // For each operator at position i, recursively compute all results from the left sub-expression
 // and all results from the right sub-expression, then combine them with that operator.
 // Memoize by expression string to avoid recomputing the same sub-expression multiple times.

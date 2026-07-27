@@ -1,4 +1,4 @@
-// Approach: 1D DP — dp[j] = ways to form s2[0..j-1] as a subsequence of the s1 prefix processed so far.
+// Approach: 1D DP - dp[j] = ways to form s2[0..j-1] as a subsequence of the s1 prefix processed so far.
 // When characters match, dp[j] += dp[j-1] (take the match or skip). Iterate j backwards per s1 char.
 // Time: O(n * m) Space: O(m)
 

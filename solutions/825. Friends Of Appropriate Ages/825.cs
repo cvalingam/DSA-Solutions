@@ -1,4 +1,4 @@
-// Approach: Build a frequency array for ages 1–120; use an O(120²) nested loop to count valid friend requests by the age condition.
+// Approach: Build a frequency array for ages 1-120; use an O(120²) nested loop to count valid friend requests by the age condition.
 // Time: O(n + 120²) Space: O(120)
 
 public class Solution

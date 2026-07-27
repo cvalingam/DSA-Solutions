@@ -1,8 +1,8 @@
-// Approach: Topological pruning of leaf nodes — analogous to peeling an onion from the outside.
+// Approach: Topological pruning of leaf nodes - analogous to peeling an onion from the outside.
 // The root(s) of minimum height trees are always the center node(s) of the longest path (1 or 2 nodes).
 // Repeatedly remove all current leaf nodes (degree == 1) and update degrees of their neighbors.
 // Any neighbor whose degree drops to 1 becomes the new leaf layer.
-// Stop when 1 or 2 nodes remain — these are the valid MHT roots.
+// Stop when 1 or 2 nodes remain - these are the valid MHT roots.
 // Time: O(n) Space: O(n) for the adjacency list and degree array.
 
 public class Solution

@@ -1,4 +1,4 @@
-// Approach: DP — dp = min deletions so far; increment on 'a' after 'b' (delete this 'a' or all preceding 'b's).
+// Approach: DP - dp = min deletions so far; increment on 'a' after 'b' (delete this 'a' or all preceding 'b's).
 // Time: O(n) Space: O(1)
 
 public class Solution

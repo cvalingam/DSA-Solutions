@@ -1,4 +1,4 @@
-// Approach: Recursive BST search — go left if val < root, right if val > root;
+// Approach: Recursive BST search - go left if val < root, right if val > root;
 // return the matching node or null.
 // Time: O(h) Space: O(h)
 

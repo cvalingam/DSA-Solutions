@@ -1,4 +1,4 @@
-// Approach: Greedy single pass — plant a flower whenever the current cell
+// Approach: Greedy single pass - plant a flower whenever the current cell
 // and both neighbors are empty; modify the array in-place.
 // Time: O(n) Space: O(1)
 

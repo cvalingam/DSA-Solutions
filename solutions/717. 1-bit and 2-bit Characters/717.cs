@@ -1,4 +1,4 @@
-// Approach: Walk through the array — skip 2 positions if bit is 1, skip 1 if
+// Approach: Walk through the array - skip 2 positions if bit is 1, skip 1 if
 // bit is 0; return true only if the walk ends exactly at the last index.
 // Time: O(n) Space: O(1)
 

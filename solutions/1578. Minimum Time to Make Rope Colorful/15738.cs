@@ -1,4 +1,4 @@
-// Approach: Greedy — for each run of same color balloons keep the max-cost one and sum the rest.
+// Approach: Greedy - for each run of same color balloons keep the max-cost one and sum the rest.
 // Time: O(n) Space: O(1)
 
 public class Solution

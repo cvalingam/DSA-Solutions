@@ -23,7 +23,7 @@ class Solution {
             }
         }
 
-        // All zeros — no positive product possible
+        // All zeros - no positive product possible
         if (negCount == 0 && posCount == 0) {
             return 0;
         }

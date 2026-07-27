@@ -1,4 +1,4 @@
-// Approach: DFS with backtracking — append the node at entry and remove it
+// Approach: DFS with backtracking - append the node at entry and remove it
 // on exit; record the path when a leaf is reached with remaining sum zero.
 // Time: O(n²) Space: O(n)
 

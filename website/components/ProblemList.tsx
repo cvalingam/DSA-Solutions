@@ -9,7 +9,7 @@ import AdUnit from './AdUnit'
 import PopularProblems from './PopularProblems'
 import { shouldShowHubAds } from '@/lib/ads'
 
-const ROW_H = 48   // px — must match the rendered row height
+const ROW_H = 48   // px - must match the rendered row height
 const OVERSCAN = 5 // extra rows rendered above/below the visible window
 
 function VirtualTable({ items, explanationNums }: { items: ProblemMeta[]; explanationNums: Set<number> }) {
@@ -172,7 +172,7 @@ export default function ProblemList({
 
       <PopularProblems problems={popularProblems} />
 
-      {/* AdSense — only when explicitly enabled */}
+      {/* AdSense - only when explicitly enabled */}
       {shouldShowHubAds() && (
         <AdUnit slot="4545599910" style="leaderboard" className="mb-6" />
       )}

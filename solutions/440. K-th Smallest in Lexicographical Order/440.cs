@@ -1,4 +1,4 @@
-// Approach: Trie navigation — count how many numbers fall under the current
+// Approach: Trie navigation - count how many numbers fall under the current
 // prefix; jump to the next prefix or descend one level based on k remaining.
 // Time: O(log² n) Space: O(1)
 

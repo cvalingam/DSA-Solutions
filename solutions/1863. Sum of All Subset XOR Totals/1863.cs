@@ -1,4 +1,4 @@
-// Approach: Math shortcut — OR all elements; result = OR * 2^(n-1) (each bit contributes equally).
+// Approach: Math shortcut - OR all elements; result = OR * 2^(n-1) (each bit contributes equally).
 // Time: O(n) Space: O(1)
 
 public class Solution

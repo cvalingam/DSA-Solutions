@@ -1,4 +1,4 @@
-// Approach: Bitmask DP — enumerate pair selections; dp[mask] = max score using pairs indicated by set bits.
+// Approach: Bitmask DP - enumerate pair selections; dp[mask] = max score using pairs indicated by set bits.
 // Time: O(n² * 2^(2n)) Space: O(2^(2n))
 
 public class Solution

@@ -590,7 +590,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 14. Longest Common Prefix -----------------------------------------------
   14: {
     intuition:
-      'The longest common prefix is the deepest path in a trie where every inserted string still agrees. Build a trie from all strings, then walk from the root while each node has exactly one child and is not marked as the end of a shorter word. Stop at the first branch or word end — the characters collected along that single-child chain are the answer.',
+      'The longest common prefix is the deepest path in a trie where every inserted string still agrees. Build a trie from all strings, then walk from the root while each node has exactly one child and is not marked as the end of a shorter word. Stop at the first branch or word end - the characters collected along that single-child chain are the answer.',
     algorithm: [
       'Insert every string into a trie character by character.',
       'Track child count per node so you can detect branching quickly.',
@@ -604,7 +604,7 @@ const explanations: Record<number, RichExplanation> = {
       steps: [
         'Insert all three strings into the trie: shared path f → l → o, then branch at the fourth character.',
         'Walk from root: f (1 child), l (1 child), o (1 child).',
-        'At o, the next level has multiple children (w from "flow"/"flower", i from "flight") — stop.',
+        'At o, the next level has multiple children (w from "flow"/"flower", i from "flight") - stop.',
         'Collected prefix = "fl".',
       ],
       output: '"fl"',
@@ -2058,7 +2058,7 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: [
       'prefix has length n+1; prefix[0]=0 sentinel simplifies range formula.',
       'Use long if values can overflow int in prefix.',
-      'Immutable — no updates to nums after build.',
+      'Immutable - no updates to nums after build.',
     ],
   },
 
@@ -2642,7 +2642,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 515. Find Largest Value in Each Tree Row --------------------------------
   515: {
     intuition:
-      'Each tree row is a BFS level. Level-order traversal visits nodes left-to-right, top-to-bottom — so grouping by depth naturally yields one row per level. Track the maximum value seen while processing each level before moving to the next.',
+      'Each tree row is a BFS level. Level-order traversal visits nodes left-to-right, top-to-bottom - so grouping by depth naturally yields one row per level. Track the maximum value seen while processing each level before moving to the next.',
     algorithm: [
       'If root is null, return empty list.',
       'BFS queue starting with root.',
@@ -2660,7 +2660,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[1, 3, 9]',
     },
     pitfalls: [
-      'Initialize row max to Integer.MIN_VALUE — node values can be negative.',
+      'Initialize row max to Integer.MIN_VALUE - node values can be negative.',
       'Snapshot queue size before the inner loop; dequeuing changes the count mid-level.',
       'Do not mix nodes from different depths in one iteration.',
     ],
@@ -2820,7 +2820,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 627. Swap Salary --------------------------------------------------------
   627: {
     intuition:
-      'Swap every employee sex from m to f and f to m in one SQL UPDATE. Use CASE or IF — no temporary column needed.',
+      'Swap every employee sex from m to f and f to m in one SQL UPDATE. Use CASE or IF - no temporary column needed.',
     algorithm: [
       'UPDATE Salary SET sex = CASE WHEN sex = \'m\' THEN \'f\' ELSE \'m\' END;',
       'Alternatively: SET sex = IF(sex = \'m\', \'f\', \'m\').',
@@ -2833,7 +2833,7 @@ const explanations: Record<number, RichExplanation> = {
     },
     pitfalls: [
       'Assume only m and f appear in the column.',
-      'One UPDATE — no temp table required.',
+      'One UPDATE - no temp table required.',
       'CASE must cover both branches.',
     ],
   },
@@ -3056,7 +3056,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 709. To Lower Case ------------------------------------------------------
   709: {
     intuition:
-      'Convert every uppercase letter in the string to lowercase and leave all other characters unchanged. ASCII uppercase A–Z are codes 65–90; lowercase a–z are 97–122 — the offset is 32. In interviews you can mention `ToLowerCase()` in C# or implement the manual loop to show you understand character codes.',
+      'Convert every uppercase letter in the string to lowercase and leave all other characters unchanged. ASCII uppercase A-Z are codes 65-90; lowercase a-z are 97-122 - the offset is 32. In interviews you can mention `ToLowerCase()` in C# or implement the manual loop to show you understand character codes.',
     algorithm: [
       'Allocate a result builder (or char array) the same length as the input.',
       'For each character c: if c is between \'A\' and \'Z\', append (char)(c + 32).',
@@ -3072,7 +3072,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '"hello"',
     },
     pitfalls: [
-      'Do not subtract 32 — that would upper-case lowercase letters incorrectly.',
+      'Do not subtract 32 - that would upper-case lowercase letters incorrectly.',
       'Non-letters must pass through unchanged (spaces, punctuation, digits).',
       'Unicode letters outside ASCII need culture-aware APIs; this problem assumes ASCII.',
     ],
@@ -3222,8 +3222,8 @@ const explanations: Record<number, RichExplanation> = {
       output: '["a1b2","a1B2","A1b2","A1B2"]',
     },
     pitfalls: [
-      'Do not branch on digits — only letters double the search tree.',
-      'Total combinations up to 2^(number of letters) — fine for small inputs.',
+      'Do not branch on digits - only letters double the search tree.',
+      'Total combinations up to 2^(number of letters) - fine for small inputs.',
       'Copy the char array when branching if using shared mutable state.',
     ],
   },
@@ -3231,7 +3231,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 788. Rotated Digits -----------------------------------------------------
   788: {
     intuition:
-      'A rotated digit is valid only for 0, 1, 2, 5, 6, 8, 9 (3, 4, 7 break when flipped upside-down). A "good" number must use only valid digits and contain at least one of 2, 5, 6, or 9 so that rotating 180° produces a different number — all 0/1/8 digits would look the same.',
+      'A rotated digit is valid only for 0, 1, 2, 5, 6, 8, 9 (3, 4, 7 break when flipped upside-down). A "good" number must use only valid digits and contain at least one of 2, 5, 6, or 9 so that rotating 180° produces a different number - all 0/1/8 digits would look the same.',
     algorithm: [
       'Loop n from 1 to N inclusive.',
       'For each n, scan digits: reject if any digit is 3, 4, or 7.',
@@ -3249,7 +3249,7 @@ const explanations: Record<number, RichExplanation> = {
     },
     pitfalls: [
       'Digits 3, 4, 7 invalidate the entire number.',
-      'A number made only of 0, 1, 8 rotates to itself — exclude unless a 2/5/6/9 appears.',
+      'A number made only of 0, 1, 8 rotates to itself - exclude unless a 2/5/6/9 appears.',
       'Leading zeros do not appear in the integer range 1..N.',
     ],
   },
@@ -3257,7 +3257,7 @@ const explanations: Record<number, RichExplanation> = {
   // --- 796. Rotate String ------------------------------------------------------
   796: {
     intuition:
-      'String rotation means shifting characters cyclically — e.g. "abcde" rotated by 2 is "cdeab". Key insight: every rotation of B appears as a contiguous substring inside B+B, so A is a rotation of B iff lengths match and A occurs in B+B.',
+      'String rotation means shifting characters cyclically - e.g. "abcde" rotated by 2 is "cdeab". Key insight: every rotation of B appears as a contiguous substring inside B+B, so A is a rotation of B iff lengths match and A occurs in B+B.',
     algorithm: [
       'If A.Length != B.Length, return false immediately.',
       'Concatenate B + B into one string.',
@@ -3266,13 +3266,13 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 's = "rotation", goal = "tionrota"',
       steps: [
-        'Lengths both 8 — OK.',
+        'Lengths both 8 - OK.',
         'goal + goal contains "rotation" as substring starting at index 3.',
       ],
       output: 'true',
     },
     pitfalls: [
-      'Always check equal lengths first — avoids false positives on different sizes.',
+      'Always check equal lengths first - avoids false positives on different sizes.',
       'Empty strings: two empty strings are rotations of each other.',
       'IndexOf is O(n²) worst case; KMP is O(n) if interviewer asks for optimization.',
     ],
@@ -3494,12 +3494,12 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 's = "s apple is apple", t = "s orange is orange"',
       steps: [
-        'Counts: s=1, apple=2, is=2, orange=2 — only "s" has count 1.',
+        'Counts: s=1, apple=2, is=2, orange=2 - only "s" has count 1.',
       ],
       output: '["s"]',
     },
     pitfalls: [
-      'Count globally across both sentences — not per-sentence uniqueness.',
+      'Count globally across both sentences - not per-sentence uniqueness.',
       'Punctuation is absent in problem constraints; split on whitespace only.',
       'Words with count 0 never appear; only count == 1 qualifies.',
     ],
@@ -3566,7 +3566,7 @@ const explanations: Record<number, RichExplanation> = {
 
   905: {
     intuition:
-      'Partition the array in-place so all even numbers appear before odd numbers. Two pointers from both ends swap misplaced elements — even values belong on the left, odd on the right. Relative order within evens or odds does not need to be preserved.',
+      'Partition the array in-place so all even numbers appear before odd numbers. Two pointers from both ends swap misplaced elements - even values belong on the left, odd on the right. Relative order within evens or odds does not need to be preserved.',
     algorithm: [
       'Set lo = 0, hi = n - 1.',
       'While lo < hi: if A[lo] is even, lo++. Else if A[hi] is odd, hi--. Else swap A[lo] and A[hi], then lo++ and hi--.',
@@ -3582,14 +3582,14 @@ const explanations: Record<number, RichExplanation> = {
     },
     pitfalls: [
       'Use modulo 2 to test parity: n % 2 == 0.',
-      'O(n) time, O(1) extra space — do not allocate a second array unless allowed.',
+      'O(n) time, O(1) extra space - do not allocate a second array unless allowed.',
       'Stable order is not required by the problem.',
     ],
   },
 
   908: {
     intuition:
-      'Each element may be increased or decreased by at most k. The smallest achievable spread is max(A) - min(A) - 2*k — we can raise the minimum by k and lower the maximum by k. If that value is negative, the answer is 0.',
+      'Each element may be increased or decreased by at most k. The smallest achievable spread is max(A) - min(A) - 2*k - we can raise the minimum by k and lower the maximum by k. If that value is negative, the answer is 0.',
     algorithm: [
       'Find min and max of the array.',
       'Compute candidate = max - min - 2 * k.',
@@ -3604,7 +3604,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '0',
     },
     pitfalls: [
-      'Result is never negative — use max(0, ...).',
+      'Result is never negative - use max(0, ...).',
       'Single-element array always yields 0.',
       'k = 0 means no change; return max - min.',
     ],
@@ -3622,7 +3622,7 @@ const explanations: Record<number, RichExplanation> = {
 
   912: {
     intuition:
-      'LeetCode expects O(n log n) sorting. Merge sort guarantees O(n log n) worst case and is stable. QuickSort can degrade to O(n²) on sorted or adversarial input unless you randomize pivots — merge sort is the safer interview default here.',
+      'LeetCode expects O(n log n) sorting. Merge sort guarantees O(n log n) worst case and is stable. QuickSort can degrade to O(n²) on sorted or adversarial input unless you randomize pivots - merge sort is the safer interview default here.',
     algorithm: [
       'Define MergeSort(arr, lo, hi): if lo >= hi return.',
       'mid = (lo + hi) / 2. Recurse on [lo, mid] and [mid+1, hi].',
@@ -3639,7 +3639,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[1, 2, 3, 5]',
     },
     pitfalls: [
-      'Naive Lomuto QuickSort may TLE — prefer merge sort or randomized quicksort.',
+      'Naive Lomuto QuickSort may TLE - prefer merge sort or randomized quicksort.',
       'Merge step needs O(n) auxiliary space per level.',
       'In-place merge sort variants exist but standard top-down merge is clearest.',
     ],
@@ -3672,9 +3672,9 @@ const explanations: Record<number, RichExplanation> = {
       output: '"dc-ba"',
     },
     pitfalls: [
-      'Re-check lo < hi after skipping — pointers can cross.',
+      'Re-check lo < hi after skipping - pointers can cross.',
       'Only swap when both positions hold letters.',
-      'Strings are immutable in Java — use char[] in place.',
+      'Strings are immutable in Java - use char[] in place.',
     ],
   },
 
@@ -3722,14 +3722,14 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'strs = ["cba","daf","ghi"]',
       steps: [
-        'Column 0: c>d — delete. Column 1: a<a? a<f OK. Column 2: b<i OK.',
+        'Column 0: c>d - delete. Column 1: a<a? a<f OK. Column 2: b<i OK.',
         'Only column 0 is unsorted.',
       ],
       output: '1',
     },
     pitfalls: [
       'Delete whole columns, not individual cells.',
-      'Rows may differ in length — problem usually pads or uses same width.',
+      'Rows may differ in length - problem usually pads or uses same width.',
       'O(n * m) scan is sufficient.',
     ],
   },
@@ -3786,7 +3786,7 @@ const explanations: Record<number, RichExplanation> = {
       'Sort array in descending order.',
       'For i from 0 to n-3: let a = A[i], b = A[i+1], c = A[i+2].',
       'If a < b + c, return a + b + c (largest sides first maximizes sum).',
-      'If inequality fails, skip — a is too large relative to b and c; try next i.',
+      'If inequality fails, skip - a is too large relative to b and c; try next i.',
       'Return 0 if no triple satisfies the inequality.',
     ],
     example: {
@@ -3797,7 +3797,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '5',
     },
     pitfalls: [
-      'Only check consecutive triples after sorting — non-consecutive triples cannot beat the greedy choice.',
+      'Only check consecutive triples after sorting - non-consecutive triples cannot beat the greedy choice.',
       'Use long for sum if values are large (not needed for typical constraints).',
       'Strict inequality: equality (a == b+c) is NOT a valid triangle.',
     ],
@@ -4064,7 +4064,7 @@ const explanations: Record<number, RichExplanation> = {
     intuition:
       'A domino [a,b] is equivalent to [b,a]. Normalize each domino to (min, max) so [2,1] and [1,2] share a key. Count pairs of indices with the same normalized domino using combinations: for frequency f, add f×(f−1)/2.',
     algorithm: [
-      'For each domino [a,b]: key = (min(a,b), max(a,b)) or min*10+max when values are 1–9.',
+      'For each domino [a,b]: key = (min(a,b), max(a,b)) or min*10+max when values are 1-9.',
       'Increment frequency map for each key.',
       'For each frequency f: add f * (f - 1) / 2 to the answer.',
       'Return total equivalent pairs.',
@@ -4072,13 +4072,13 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'dominoes = [[1,2],[2,1],[3,4],[5,6]]',
       steps: [
-        '[1,2] and [2,1] normalize to (1,2) — one pair.',
-        '(3,4) and (5,6) each alone — no pairs.',
+        '[1,2] and [2,1] normalize to (1,2) - one pair.',
+        '(3,4) and (5,6) each alone - no pairs.',
       ],
       output: '1',
     },
     pitfalls: [
-      'Normalize before counting — order of endpoints does not matter.',
+      'Normalize before counting - order of endpoints does not matter.',
       'Use long for answer if domino count is large.',
       'Key encoding min*10+max works when values ≤ 9.',
     ],
@@ -4105,7 +4105,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1189: {
     intuition:
-      'Each "balloon" uses one b, one a, one n, and two each of l and o. Count every letter in text, then see how many complete words you can form. The bottleneck is whichever required letter runs out first — l and o each contribute count/2 because two are needed per word.',
+      'Each "balloon" uses one b, one a, one n, and two each of l and o. Count every letter in text, then see how many complete words you can form. The bottleneck is whichever required letter runs out first - l and o each contribute count/2 because two are needed per word.',
     algorithm: [
       'Count frequency of each lowercase letter in text.',
       'Initialize ans to a large value.',
@@ -4124,8 +4124,8 @@ const explanations: Record<number, RichExplanation> = {
       output: '1',
     },
     pitfalls: [
-      'l and o need integer division by 2 — two per balloon.',
-      'Do not forget n — it is easy to only check b, a, l, o.',
+      'l and o need integer division by 2 - two per balloon.',
+      'Do not forget n - it is easy to only check b, a, l, o.',
       'Initialize ans with int.MaxValue before taking mins.',
     ],
   },
@@ -4159,7 +4159,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[[1,2],[2,3],[3,4]]',
     },
     pitfalls: [
-      'Sort first — unsorted scan misses global minimum diff.',
+      'Sort first - unsorted scan misses global minimum diff.',
       'Only compare adjacent elements after sort.',
       'Include all pairs tied for minimum difference.',
     ],
@@ -4240,11 +4240,11 @@ const explanations: Record<number, RichExplanation> = {
 
   1288: {
     intuition:
-      'Interval [a,b] is covered by another if that other starts no later and ends no earlier. After sorting by start ascending and end descending, any interval fully covered by a previous one cannot extend the maximum end — so we only count intervals that push the farthest end forward.',
+      'Interval [a,b] is covered by another if that other starts no later and ends no earlier. After sorting by start ascending and end descending, any interval fully covered by a previous one cannot extend the maximum end - so we only count intervals that push the farthest end forward.',
     algorithm: [
       'Sort intervals: primary key start ascending, secondary key end descending.',
       'Track prevEnd = 0 and answer = 0.',
-      'For each [start, end]: if end > prevEnd, this interval is not covered — increment answer and set prevEnd = end.',
+      'For each [start, end]: if end > prevEnd, this interval is not covered - increment answer and set prevEnd = end.',
       'Return answer.',
     ],
     example: {
@@ -4258,7 +4258,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '3',
     },
     pitfalls: [
-      'Sort by end descending when starts tie — otherwise a shorter interval at the same start can hide a longer covering one.',
+      'Sort by end descending when starts tie - otherwise a shorter interval at the same start can hide a longer covering one.',
       'Use end > prevEnd, not start > prevEnd; coverage is about the right endpoint.',
     ],
   },
@@ -4328,7 +4328,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1305: {
     intuition:
-      'In-order traversal of a BST yields sorted values. Traverse both trees to get two sorted arrays, then merge with the standard two-pointer technique — same as merging two sorted lists in merge sort.',
+      'In-order traversal of a BST yields sorted values. Traverse both trees to get two sorted arrays, then merge with the standard two-pointer technique - same as merging two sorted lists in merge sort.',
     algorithm: [
       'In-order DFS on root1 into list A; same for root2 into list B.',
       'Initialize pointers i = 0, j = 0 and empty result.',
@@ -4345,9 +4345,9 @@ const explanations: Record<number, RichExplanation> = {
       output: '[1, 1, 2, 3, 4]',
     },
     pitfalls: [
-      'Do not use a heap unless asked — two sorted arrays merge in O(m+n).',
+      'Do not use a heap unless asked - two sorted arrays merge in O(m+n).',
       'Iterative in-order avoids stack overflow on skewed trees.',
-      'Duplicates are kept — merge does not deduplicate.',
+      'Duplicates are kept - merge does not deduplicate.',
     ],
   },
 
@@ -4679,8 +4679,8 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'start = [1,2,3], end = [3,2,7], queryTime = 4',
       steps: [
-        'Student 0: 1≤4≤3? end 3 < 4 — no.',
-        'Student 2: 3≤4≤7 — yes.',
+        'Student 0: 1≤4≤3? end 3 < 4 - no.',
+        'Student 2: 3≤4≤7 - yes.',
       ],
       output: '1',
     },
@@ -4816,7 +4816,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1514: {
     intuition:
-      'Find the path from src to dst with maximum probability product. This is shortest-path with weights inverted — use Dijkstra on negative log probabilities, or a max-heap that always expands the most promising partial path first.',
+      'Find the path from src to dst with maximum probability product. This is shortest-path with weights inverted - use Dijkstra on negative log probabilities, or a max-heap that always expands the most promising partial path first.',
     algorithm: [
       'Build adjacency list: each edge (u,v,p) adds (v,p) to u and (u,p) to v.',
       'Initialize prob[src] = 1.0, others 0. Max-priority queue by probability.',
@@ -4832,7 +4832,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '0.25',
     },
     pitfalls: [
-      'Multiply probabilities — do not add edge weights like distance Dijkstra.',
+      'Multiply probabilities - do not add edge weights like distance Dijkstra.',
       'Use max-heap, not min-heap.',
       'Floating point is fine; compare with epsilon if needed on some platforms.',
     ],
@@ -4891,7 +4891,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Check all three pairwise gaps — not just adjacent pairs in the triplet.',
+      'Check all three pairwise gaps - not just adjacent pairs in the triplet.',
       'Indices must be strictly increasing i < j < k.',
       'Brute force O(n^3) is intended for n <= 100.',
     ],
@@ -5011,7 +5011,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1636: {
     intuition:
-      'Sort the array by how often each value appears — higher frequency first. When two values tie in frequency, the larger value comes first. Count frequencies with a hash map, then sort with a custom comparator.',
+      'Sort the array by how often each value appears - higher frequency first. When two values tie in frequency, the larger value comes first. Count frequencies with a hash map, then sort with a custom comparator.',
     algorithm: [
       'Build frequency map: value → count.',
       'Sort nums with comparator: compare (-freq[a], -a) vs (-freq[b], -b).',
@@ -5089,8 +5089,8 @@ const explanations: Record<number, RichExplanation> = {
       output: '"Goal"',
     },
     pitfalls: [
-      'Match "(al)" before bare "()" — order of pattern checks matters.',
-      'Input is guaranteed valid — no error handling needed.',
+      'Match "(al)" before bare "()" - order of pattern checks matters.',
+      'Input is guaranteed valid - no error handling needed.',
       'StringBuilder avoids repeated string concatenation in loops.',
     ],
   },
@@ -5373,7 +5373,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1920: {
     intuition:
-      'The input is a permutation of indices 0..n-1. The answer at position i is the value found by following the permutation once: nums[nums[i]]. This is a direct array lookup — no sorting or modification of the source array required.',
+      'The input is a permutation of indices 0..n-1. The answer at position i is the value found by following the permutation once: nums[nums[i]]. This is a direct array lookup - no sorting or modification of the source array required.',
     algorithm: [
       'Create a new array ans of length n.',
       'For each index i from 0 to n-1, set ans[i] = nums[nums[i]].',
@@ -5390,7 +5390,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[0,1,2,4,5,3]',
     },
     pitfalls: [
-      'Use a new output array — overwriting nums while reading breaks double lookups.',
+      'Use a new output array - overwriting nums while reading breaks double lookups.',
       'Indices are 0-based; nums[i] is always a valid index because input is a permutation.',
       'O(n) time and O(n) space is optimal for this definition.',
     ],
@@ -5417,14 +5417,14 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'n=3, edges=[[0,1],[1,2],[2,0]], source=0, destination=2',
       steps: [
-        'From 0 reach 1 and 2 via edges — destination found.',
+        'From 0 reach 1 and 2 via edges - destination found.',
       ],
       output: 'true',
     },
     pitfalls: [
-      'Edges are undirected — add both directions to adjacency list.',
+      'Edges are undirected - add both directions to adjacency list.',
       'Source equals destination should return true immediately.',
-      'No edge weights — plain reachability, not shortest path.',
+      'No edge weights - plain reachability, not shortest path.',
     ],
   },
 
@@ -5617,7 +5617,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[1, 2, 3, 4, 5, 6]',
     },
     pitfalls: [
-      'Condition is existence of key within distance k — not nums[i] itself.',
+      'Condition is existence of key within distance k - not nums[i] itself.',
       'Use inclusive bounds on j: |i-j| <= k.',
       'O(n*k) or O(n^2) is fine for typical constraints.',
     ],
@@ -5625,7 +5625,7 @@ const explanations: Record<number, RichExplanation> = {
 
   2206: {
     intuition:
-      'Divide array into pairs of equal values. For each distinct value appearing c times, you can form c/2 pairs (integer division). Sum pair counts across all values — order of pairing does not matter.',
+      'Divide array into pairs of equal values. For each distinct value appearing c times, you can form c/2 pairs (integer division). Sum pair counts across all values - order of pairing does not matter.',
     algorithm: [
       'Build frequency map value -> count.',
       'Initialize pairs = 0.',
@@ -5641,7 +5641,7 @@ const explanations: Record<number, RichExplanation> = {
     },
     pitfalls: [
       'Use integer division c/2, not combinations formula on whole array.',
-      'Odd leftover elements cannot form a pair — discard them.',
+      'Odd leftover elements cannot form a pair - discard them.',
       'Frequency map handles unsorted input.',
     ],
   },
@@ -5664,7 +5664,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '3',
     },
     pitfalls: [
-      'Strict inequalities — equal neighbors are neither hill nor valley.',
+      'Strict inequalities - equal neighbors are neither hill nor valley.',
       'Indices 0 and n-1 are never counted.',
       'Plateaus (flat runs) contribute nothing at interior points.',
     ],
@@ -5689,7 +5689,7 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'start = 3 (011), goal = 4 (100)',
       steps: [
-        '3 ^ 4 = 7 (111) — three bits differ.',
+        '3 ^ 4 = 7 (111) - three bits differ.',
       ],
       output: '3',
     },
@@ -5721,7 +5721,7 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: [
       'Losers are not inserted unless they win elsewhere.',
       'Ties return multiple teams.',
-      'Team ids may be integers — map accordingly.',
+      'Team ids may be integers - map accordingly.',
     ],
   },
 
@@ -5745,14 +5745,14 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'root = [10,4,-6]',
       steps: [
-        'Both children exist: 10 == 4 + (-6)? 10 == -2 — false.',
+        'Both children exist: 10 == 4 + (-6)? 10 == -2 - false.',
       ],
       output: 'false',
     },
     pitfalls: [
       'Leaf node (no children) → false, not vacuously true.',
       'Only exactly two children qualify.',
-      'Values can be negative — sum still valid.',
+      'Values can be negative - sum still valid.',
     ],
   },
 
@@ -5883,7 +5883,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '3×4 matrix in spiral order',
     },
     pitfalls: [
-      'Standard spiral boundary template — same as Spiral Matrix II.',
+      'Standard spiral boundary template - same as Spiral Matrix II.',
       'Check list length vs m*n if problem requires exact fit.',
       'Update boundaries when turning direction.',
     ],
@@ -6097,7 +6097,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Non-leap-year calendar in problem — fixed month lengths.',
+      'Non-leap-year calendar in problem - fixed month lengths.',
       'Intervals are inclusive on both ends.',
       'Overlap formula avoids loop if you prefer O(1).',
     ],
@@ -6130,7 +6130,7 @@ const explanations: Record<number, RichExplanation> = {
 
   2418: {
     intuition:
-      'Each name is paired with a height. Sort by height in descending order and return the names in that order — the tallest person first. This is standard sort-by-key with a custom comparator on the height field while preserving name association.',
+      'Each name is paired with a height. Sort by height in descending order and return the names in that order - the tallest person first. This is standard sort-by-key with a custom comparator on the height field while preserving name association.',
     algorithm: [
       'Build pairs (name[i], height[i]) for each index.',
       'Sort pairs by height descending (taller first).',
@@ -6146,7 +6146,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '["Mary","Emma","John"]',
     },
     pitfalls: [
-      'Sort pairs together — never sort heights and names independently.',
+      'Sort pairs together - never sort heights and names independently.',
       'Stable sort is not required but names must stay matched to heights.',
       'Equal heights: any order among ties is usually acceptable.',
     ],
@@ -6322,7 +6322,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '1',
     },
     pitfalls: [
-      'You do not need to find a specific 1→n path — every path uses only edges in the same connected component.',
+      'You do not need to find a specific 1→n path - every path uses only edges in the same connected component.',
       'Initialize ans to a large value and update on every edge relaxation during DFS.',
     ],
   },
@@ -6419,7 +6419,7 @@ const explanations: Record<number, RichExplanation> = {
     },
     pitfalls: [
       'Use floor of square root, not round.',
-      'Sum can exceed int — accumulate in long.',
+      'Sum can exceed int - accumulate in long.',
       'k operations, not until heap empty.',
     ],
   },
@@ -6546,7 +6546,7 @@ const explanations: Record<number, RichExplanation> = {
 
   2625: {
     intuition:
-      'Flatten a nested array to depth n (or fully if depth is large). Each element is either an integer or another array — recurse into sub-arrays with depth-1 until depth is 0 or value is not an array.',
+      'Flatten a nested array to depth n (or fully if depth is large). Each element is either an integer or another array - recurse into sub-arrays with depth-1 until depth is 0 or value is not an array.',
     algorithm: [
       'Define Flatten(arr, depth): if depth==0 or arr is int, return [arr].',
       'Otherwise iterate items: if item is array, extend result with Flatten(item, depth-1); else push item.',
@@ -6632,7 +6632,7 @@ const explanations: Record<number, RichExplanation> = {
     algorithm: [
       'Initialize parent[i]=i for i in 0..n-1.',
       'For each edge [u,v]: union(u,v).',
-      'Count distinct find(i) for all i — or decrement component count on successful unions.',
+      'Count distinct find(i) for all i - or decrement component count on successful unions.',
       'Return component count.',
     ],
     example: {
@@ -6645,7 +6645,7 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: [
       'Nodes with no edges are still components if 0..n-1 all exist.',
       'Path compression in find speeds large graphs.',
-      'Undirected — union(a,b) once per edge.',
+      'Undirected - union(a,b) once per edge.',
     ],
   },
 
@@ -6711,7 +6711,7 @@ const explanations: Record<number, RichExplanation> = {
       output: 'length of longest valid alternating subarray',
     },
     pitfalls: [
-      'Only +1 and -1 diffs count — zero or larger gaps reset the pattern.',
+      'Only +1 and -1 diffs count - zero or larger gaps reset the pattern.',
       'Return -1 when no subarray of length >= 2 alternates.',
       'Subarray must be contiguous, not subsequence.',
     ],
@@ -6761,7 +6761,7 @@ const explanations: Record<number, RichExplanation> = {
 
   2812: {
     intuition:
-      'Path safeness is the minimum Manhattan distance to any thief along the route. Maximize that bottleneck — a maximin shortest-path problem on an implicit grid graph, analogous to LC 778 (Swim in Rising Water) but with precomputed cell weights.',
+      'Path safeness is the minimum Manhattan distance to any thief along the route. Maximize that bottleneck - a maximin shortest-path problem on an implicit grid graph, analogous to LC 778 (Swim in Rising Water) but with precomputed cell weights.',
     algorithm: [
       'Multi-source BFS from every thief (grid cell = 1): dist[r][c] = Manhattan distance to the nearest thief.',
       'Max-heap Dijkstra from (0,0): state priority = path safeness = min(dist along the path so far).',
@@ -6772,13 +6772,13 @@ const explanations: Record<number, RichExplanation> = {
       input: 'grid = [[1,0,0],[0,0,0],[0,0,0]]',
       steps: [
         'Thief at (0,0): dist[0][0]=0, neighbors get 1, then 2, …',
-        'Start (0,0) has safeness 0; any path must pass near the thief — answer 0.',
+        'Start (0,0) has safeness 0; any path must pass near the thief - answer 0.',
         'grid = [[0,1,1],[0,0,0],[0,0,0]]: dist[0][0]=1 from thief (0,1); maximin path keeps safeness 1.',
       ],
       output: '0 / 1 / 2 depending on grid',
     },
     pitfalls: [
-      'Use 4-direction neighbors only — Dc must be {1,-1,0,0}, not {1,0,0,-1} (wrong order creates diagonal moves and corrupts BFS distances).',
+      'Use 4-direction neighbors only - Dc must be {1,-1,0,0}, not {1,0,0,-1} (wrong order creates diagonal moves and corrupts BFS distances).',
       'Binary search on answer + feasibility BFS also works (~O(n² log n) passes); one maximin Dijkstra is simpler and same asymptotic cost.',
       '(0,0) and (n-1,n-1) are guaranteed safe (no thieves); dist there is the starting safeness, not infinity.',
     ],
@@ -6894,8 +6894,8 @@ const explanations: Record<number, RichExplanation> = {
       output: 'longest valid word subsequence (lex order not required in answer list)',
     },
     pitfalls: [
-      'Hamming distance exactly 1 — not subsequence edit distance on strings.',
-      'Groups must differ between consecutive picks — same group cannot chain.',
+      'Hamming distance exactly 1 - not subsequence edit distance on strings.',
+      'Groups must differ between consecutive picks - same group cannot chain.',
       'O(n^2 * L) is acceptable; return the actual word list, not just length.',
     ],
   },
@@ -7119,7 +7119,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3020: {
     intuition:
-      'Build a subset that looks like x, x², x⁴, … using copies from nums. Each intermediate value in the chain needs at least two copies (pair them); the terminal power needs only one. The value 1 is special because 1² = 1 — use every copy when the count is odd, otherwise drop one. Try every distinct starting value and take the maximum chain length.',
+      'Build a subset that looks like x, x², x⁴, … using copies from nums. Each intermediate value in the chain needs at least two copies (pair them); the terminal power needs only one. The value 1 is special because 1² = 1 - use every copy when the count is odd, otherwise drop one. Try every distinct starting value and take the maximum chain length.',
     algorithm: [
       'Frequency-map all values in nums; track maxNum.',
       'If 1 exists: ans = count[1] minus 1 when count[1] is even, else count[1].',
@@ -7136,7 +7136,7 @@ const explanations: Record<number, RichExplanation> = {
       output: 'maximum subset size',
     },
     pitfalls: [
-      'Use long for x while squaring — int overflow before x > maxNum check.',
+      'Use long for x while squaring - int overflow before x > maxNum check.',
       'Handle 1 separately; the while-loop pairing rule does not apply to the 1-cycle.',
       'The final +1/−1 adjusts when the last pair has no singleton successor.',
     ],
@@ -7161,13 +7161,13 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'nums = [2,3,4]',
       steps: [
-        'Sorted: 2,3,4. 2+3=5 > 4 — valid triangle.',
+        'Sorted: 2,3,4. 2+3=5 > 4 - valid triangle.',
       ],
       output: 'valid triangle classification',
     },
     pitfalls: [
       'After sorting, only one inequality check needed.',
-      'Equality (2+3=5) is degenerate — not a valid triangle for positive area.',
+      'Equality (2+3=5) is degenerate - not a valid triangle for positive area.',
       'Exactly three sides in problem.',
     ],
   },
@@ -7365,7 +7365,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Meetings are inclusive [start, end] — gap between prevEnd and next start is start - prevEnd - 1.',
+      'Meetings are inclusive [start, end] - gap between prevEnd and next start is start - prevEnd - 1.',
       'Overlapping meetings: prevEnd = max(prevEnd, end) without double-counting busy days.',
       'Do not subtract from days naively without handling overlaps.',
     ],
@@ -7389,7 +7389,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '"leetoeet" (per problem examples)',
     },
     pitfalls: [
-      'Only remove when stack is non-empty — extra stars are ignored.',
+      'Only remove when stack is non-empty - extra stars are ignored.',
       'Stars never get pushed onto the stack.',
       'Equivalent to LC 2390 Removing Stars From a String.',
     ],
@@ -7397,7 +7397,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3174: {
     intuition:
-      'Each digit character removes the closest non-digit to its left (if any). Scan left to right with a stack: push non-digits, pop one character when you see a digit. Remaining stack is the answer — digits themselves are never kept.',
+      'Each digit character removes the closest non-digit to its left (if any). Scan left to right with a stack: push non-digits, pop one character when you see a digit. Remaining stack is the answer - digits themselves are never kept.',
     algorithm: [
       'Stack<char> st.',
       'For each character c:',
@@ -7408,7 +7408,7 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 's = "abc"',
       steps: [
-        'No digits — nothing removed. Output "abc".',
+        'No digits - nothing removed. Output "abc".',
       ],
       output: '"abc"',
     },
@@ -7449,12 +7449,12 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'nums with k=2 (parity)',
       steps: [
-        'Valid pairs must sum to even — chain even-even or odd-odd extensions.',
+        'Valid pairs must sum to even - chain even-even or odd-odd extensions.',
       ],
       output: 'maximum valid subsequence length',
     },
     pitfalls: [
-      'Subsequence — elements need not be adjacent in the array.',
+      'Subsequence - elements need not be adjacent in the array.',
       'Modular arithmetic: use (j - r + k) % k for complement residue.',
       'Single-element subsequence length is 1 baseline.',
     ],
@@ -7555,13 +7555,13 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'moveTime grid with blocked early cells',
       steps: [
-        'Cannot enter a cell before its moveTime — wait is baked into max(...).',
+        'Cannot enter a cell before its moveTime - wait is baked into max(...).',
         'Parity of current cell toggles step cost between 1 and 2.',
       ],
       output: 'Minimum seconds to reach last room',
     },
     pitfalls: [
-      'Use max(moveTime[neighbor], dist[u]) — not just dist[u] + edge.',
+      'Use max(moveTime[neighbor], dist[u]) - not just dist[u] + edge.',
       'Edge weight depends on source cell parity (i+j), not destination.',
       'Dijkstra, not BFS, because weights vary.',
     ],
@@ -7635,7 +7635,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3396: {
     intuition:
-      'Each operation removes the first 3 elements of the current array. Scan from the right; when you see a duplicate, the prefix up to and including that index must be cleared in chunks of 3 — answer is ceil((i+1)/3) operations. If no duplicate, 0.',
+      'Each operation removes the first 3 elements of the current array. Scan from the right; when you see a duplicate, the prefix up to and including that index must be cleared in chunks of 3 - answer is ceil((i+1)/3) operations. If no duplicate, 0.',
     algorithm: [
       'Use a set while iterating i from n-1 down to 0.',
       'On first duplicate (set.Add fails): return (i + 1 + 2) / 3 using integer ceiling.',
@@ -7713,7 +7713,7 @@ const explanations: Record<number, RichExplanation> = {
       output: 'true if all match',
     },
     pitfalls: [
-      'Mod 10 after each adjacent sum — not raw sum.',
+      'Mod 10 after each adjacent sum - not raw sum.',
       'Outer loop reduces length by one per pass (triangle/Pascal style).',
       'Compare all strings to the same target final two digits.',
     ],
@@ -8084,7 +8084,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3620: {
     intuition:
-      'Each valid path has a score equal to its minimum edge cost. We want the largest such minimum — a classic maximize-the-bottleneck problem. Binary search that threshold: for a candidate mid, keep only edges with cost ≥ mid on online endpoints and ask whether Dijkstra can reach n−1 with total cost ≤ k.',
+      'Each valid path has a score equal to its minimum edge cost. We want the largest such minimum - a classic maximize-the-bottleneck problem. Binary search that threshold: for a candidate mid, keep only edges with cost ≥ mid on online endpoints and ask whether Dijkstra can reach n−1 with total cost ≤ k.',
     algorithm: [
       'Drop edges incident to offline nodes; record min and max edge weights as search bounds.',
       'Binary search mid on edge-weight threshold (search high with mid = (l+r+1)/2).',
@@ -8101,7 +8101,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '6',
     },
     pitfalls: [
-      'Filter offline nodes when building the graph — intermediate offline nodes invalidate paths.',
+      'Filter offline nodes when building the graph - intermediate offline nodes invalidate paths.',
       'Use long for distances and k; totals can exceed 32-bit range.',
       'Binary search is on minimum edge weight, not on total path cost.',
     ],
@@ -8862,7 +8862,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'From “last step up” only allow w < v — not w > v (creates strictly increasing triple).',
+      'From “last step up” only allow w < v - not w > v (creates strictly increasing triple).',
       'Use long for DP counts before the final modulo.',
       'Initialize with pairs at length 2, then loop n − 2 times (not n − 1).',
     ],
@@ -8870,7 +8870,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3700: {
     intuition:
-      'Same zigzag rules as LC 3699, but n can be up to 10⁹ — iterating the DP n times is impossible. Each extension step is linear: nextUp = prefix sum of down, nextDown = suffix sum of up. That step is encoded by V×V matrices U (lower-triangular prefix) and D (upper-triangular suffix). Two steps compose as UD; binary-exponentiate UD for (n−1)/2 steps, multiply by U when n−1 is odd, then sum all matrix entries and double for up/down symmetry.',
+      'Same zigzag rules as LC 3699, but n can be up to 10⁹ - iterating the DP n times is impossible. Each extension step is linear: nextUp = prefix sum of down, nextDown = suffix sum of up. That step is encoded by V×V matrices U (lower-triangular prefix) and D (upper-triangular suffix). Two steps compose as UD; binary-exponentiate UD for (n−1)/2 steps, multiply by U when n−1 is odd, then sum all matrix entries and double for up/down symmetry.',
     algorithm: [
       'Let m = r − l + 1 (at most 75). Build U[i][j] = 1 if j < i and D[i][j] = 1 if j > i.',
       'Compute UD = U × D (one pair of up/down extensions).',
@@ -8887,7 +8887,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Do not loop n − 2 DP steps when n ≤ 10⁹ — matrix exponentiation is required.',
+      'Do not loop n − 2 DP steps when n ≤ 10⁹ - matrix exponentiation is required.',
       'Multiply the final matrix sum by 2 to account for both up-ending and down-ending states.',
       'After n--, use n/2 and n&1 for the exponent split; off-by-one here breaks large n.',
     ],
@@ -8895,7 +8895,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3737: {
     intuition:
-      'Target is a strict majority in subarray [l, r] when its count exceeds half the length. Encode +1 for target and −1 for every other value: the subarray sum is positive exactly in that case (2·count − length > 0). Scan left to right with a running prefix sum s; each new position starts subarrays ending here whose earlier prefix is strictly less than s — count those with a Fenwick tree on shifted indices.',
+      'Target is a strict majority in subarray [l, r] when its count exceeds half the length. Encode +1 for target and −1 for every other value: the subarray sum is positive exactly in that case (2·count − length > 0). Scan left to right with a running prefix sum s; each new position starts subarrays ending here whose earlier prefix is strictly less than s - count those with a Fenwick tree on shifted indices.',
     algorithm: [
       'Initialize Fenwick tree and prefix sum s = n + 1 (offset so indices stay positive).',
       'Record one occurrence of the empty prefix: tree.Update(s, 1).',
@@ -8907,13 +8907,13 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'nums = [1,2,2,3], target = 2',
       steps: [
-        'Subarrays where 2 is strict majority: [2,2], [2,2,3], [1,2,2], [1,2,2,3] — four total.',
+        'Subarrays where 2 is strict majority: [2,2], [2,2,3], [1,2,2], [1,2,2,3] - four total.',
         'Transformed +1/−1 prefix sums stay positive only on those windows.',
       ],
       output: '4',
     },
     pitfalls: [
-      'Strict majority needs sum > 0, not ≥ 0 — query prefixes < s, not ≤ s.',
+      'Strict majority needs sum > 0, not ≥ 0 - query prefixes < s, not ≤ s.',
       'Offset prefix sums by n + 1 so Fenwick indices never go negative.',
       'Use long for the answer if n is large; counts can exceed int.',
     ],
@@ -8921,7 +8921,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3739: {
     intuition:
-      'Identical counting rule to LC 3737: target is a strict majority in a subarray when +1/−1 encoding yields a positive sum. Use a Fenwick tree over shifted prefix sums to count how many earlier prefixes are strictly smaller than the current one. Part II only changes constraints — the answer can exceed 32-bit range, so accumulate in long and return long from CountMajoritySubarrays.',
+      'Identical counting rule to LC 3737: target is a strict majority in a subarray when +1/−1 encoding yields a positive sum. Use a Fenwick tree over shifted prefix sums to count how many earlier prefixes are strictly smaller than the current one. Part II only changes constraints - the answer can exceed 32-bit range, so accumulate in long and return long from CountMajoritySubarrays.',
     algorithm: [
       'Same pipeline as 3737: offset prefix s = n + 1, seed empty prefix in the BIT.',
       'For each value: update s (+1 for target, −1 otherwise).',
@@ -8931,7 +8931,7 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'nums = [1,2,2,3], target = 2',
       steps: [
-        'Four subarrays have 2 as strict majority — same as problem I.',
+        'Four subarrays have 2 as strict majority - same as problem I.',
         'With larger n the count may overflow int; long prevents wraparound.',
       ],
       output: '4',
@@ -9114,7 +9114,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1833: {
     intuition:
-      'Buy as many ice cream bars as possible with a fixed coin budget. Each bar has a cost — always take the cheapest available bars first. Sort costs ascending, subtract each cost from coins while you can afford it, and stop at the first bar that exceeds the remaining coins. The index where you stop is the count of bars bought.',
+      'Buy as many ice cream bars as possible with a fixed coin budget. Each bar has a cost - always take the cheapest available bars first. Sort costs ascending, subtract each cost from coins while you can afford it, and stop at the first bar that exceeds the remaining coins. The index where you stop is the count of bars bought.',
     algorithm: [
       'Sort costs in ascending order.',
       'Loop i from 0 to n − 1: if coins >= costs[i], subtract costs[i]; else return i.',
@@ -9133,7 +9133,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Sort first — greedy on unsorted costs is wrong.',
+      'Sort first - greedy on unsorted costs is wrong.',
       'Return the index i when you cannot afford costs[i], not i − 1.',
       'If all bars fit, return costs.Length, not costs.Length − 1.',
     ],
@@ -9141,7 +9141,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1840: {
     intuition:
-      'Buildings sit on positions 1..n. Height can change by at most 1 per step, and position 1 starts at height 0 — so position i can never exceed i − 1 without restrictions. Each restriction [id, height] caps that position. After adding sentinels at (1, 0) and (n, n − 1), propagate caps left-to-right and right-to-left so neighboring limits are consistent with the slope-1 rule. The maximum height between two consecutive caps is the peak of the best “mountain” that fits between them.',
+      'Buildings sit on positions 1..n. Height can change by at most 1 per step, and position 1 starts at height 0 - so position i can never exceed i − 1 without restrictions. Each restriction [id, height] caps that position. After adding sentinels at (1, 0) and (n, n − 1), propagate caps left-to-right and right-to-left so neighboring limits are consistent with the slope-1 rule. The maximum height between two consecutive caps is the peak of the best “mountain” that fits between them.',
     algorithm: [
       'Append sentinels [1, 0] and [n, n − 1] to restrictions; sort by position then height.',
       'Forward: for i = 1..end, set cap[i] = min(cap[i], cap[i−1] + position[i] − position[i−1]).',
@@ -9160,15 +9160,15 @@ const explanations: Record<number, RichExplanation> = {
       output: '2',
     },
     pitfalls: [
-      'Include sentinel at position 1 with height 0 — the problem starts there.',
+      'Include sentinel at position 1 with height 0 - the problem starts there.',
       'Position n is capped at n − 1 by the slope rule even without user restrictions.',
-      'Integer division in the peak formula — (r − l − |hL − hR|) must be even when caps are feasible.',
+      'Integer division in the peak formula - (r − l − |hL − hR|) must be even when caps are feasible.',
     ],
   },
 
   1846: {
     intuition:
-      'You may decrease any element and reorder freely. In sorted order the constraints are arr[0] = 1 and each step increases by at most 1 — so the array is as steep as possible while staying valid. After sorting, pin the minimum to 1, then each next value is capped at previous + 1 but never increased. The last element is the maximum achievable.',
+      'You may decrease any element and reorder freely. In sorted order the constraints are arr[0] = 1 and each step increases by at most 1 - so the array is as steep as possible while staying valid. After sorting, pin the minimum to 1, then each next value is capped at previous + 1 but never increased. The last element is the maximum achievable.',
     algorithm: [
       'Sort arr ascending.',
       'Set arr[0] = 1.',
@@ -9183,15 +9183,15 @@ const explanations: Record<number, RichExplanation> = {
       output: '7',
     },
     pitfalls: [
-      'Sort first — rearranging means you pick the order after decreases.',
-      'Use min, not max — you only decrease values.',
+      'Sort first - rearranging means you pick the order after decreases.',
+      'Use min, not max - you only decrease values.',
       'arr[0] must be exactly 1, not min(arr).',
     ],
   },
 
   1732: {
     intuition:
-      'The biker begins at altitude 0 before any road segment. Each gain[i] adds to the current altitude — that is a prefix sum over the gain array. The highest altitude is the maximum prefix sum encountered, including the starting altitude 0 before the first segment.',
+      'The biker begins at altitude 0 before any road segment. Each gain[i] adds to the current altitude - that is a prefix sum over the gain array. The highest altitude is the maximum prefix sum encountered, including the starting altitude 0 before the first segment.',
     algorithm: [
       'Set ans = 0 and currAltitude = 0 (starting point).',
       'For each g in gain: add g to currAltitude.',
@@ -9211,7 +9211,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '1',
     },
     pitfalls: [
-      'Initialize ans to 0 — the answer can be 0 if the biker never climbs above the start.',
+      'Initialize ans to 0 - the answer can be 0 if the biker never climbs above the start.',
       'Update the maximum after each gain, not only at the end.',
       'Do not assume the peak is at the last index.',
     ],
@@ -9219,7 +9219,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3614: {
     intuition:
-      'The processed string can grow exponentially, so building it is impossible. Instead, run two passes on the operation string. First pass computes only the final length m by simulating * (delete last), # (double length), and letter inserts; % does not change length. If k >= m, return ".". Second pass walks backward: undo each operator to map index k to the correct position — % mirrors k (k = m - 1 - k), # maps the second half to the first, * restores a deleted slot, and letters are returned when k equals the current length after shrinking.',
+      'The processed string can grow exponentially, so building it is impossible. Instead, run two passes on the operation string. First pass computes only the final length m by simulating * (delete last), # (double length), and letter inserts; % does not change length. If k >= m, return ".". Second pass walks backward: undo each operator to map index k to the correct position - % mirrors k (k = m - 1 - k), # maps the second half to the first, * restores a deleted slot, and letters are returned when k equals the current length after shrinking.',
     algorithm: [
       'Forward scan: maintain length m. On letter (not %), m += 1. On *, m = max(0, m - 1). On #, m <<= 1. Ignore % for length.',
       'If k >= m, return \'.\'.',
@@ -9243,7 +9243,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '"a"',
     },
     pitfalls: [
-      'Do not materialise the string — length can overflow memory.',
+      'Do not materialise the string - length can overflow memory.',
       'In the forward pass, % must not change m.',
       'When undoing #, subtract m from k only when k >= m (k indexes the duplicated half).',
       'Use long for m and k if the problem allows very large results.',
@@ -9252,7 +9252,7 @@ const explanations: Record<number, RichExplanation> = {
 
   3532: {
     intuition:
-      'Nodes i and j are connected when |nums[i] − nums[j]| ≤ maxDiff. Because nums is sorted, any path stays inside a contiguous block of indices: if two indices are in the same component, every index between them is too. So only check consecutive pairs — union i with i−1 when their values are close enough, then answer queries by comparing DSU roots.',
+      'Nodes i and j are connected when |nums[i] − nums[j]| ≤ maxDiff. Because nums is sorted, any path stays inside a contiguous block of indices: if two indices are in the same component, every index between them is too. So only check consecutive pairs - union i with i−1 when their values are close enough, then answer queries by comparing DSU roots.',
     algorithm: [
       'Initialize Union-Find on n nodes.',
       'For i = 1 … n−1: if nums[i] − nums[i−1] ≤ maxDiff, union(i, i−1).',
@@ -9262,7 +9262,7 @@ const explanations: Record<number, RichExplanation> = {
     example: {
       input: 'n = 4, nums = [2,5,6,8], maxDiff = 2, queries = [[0,1],[0,2],[1,3],[2,3]]',
       steps: [
-        'Adjacent gaps: |5−2|=3 > 2 → break after index 0. |6−5|=1 and |8−6|=2 → indices 1–3 form one component.',
+        'Adjacent gaps: |5−2|=3 > 2 → break after index 0. |6−5|=1 and |8−6|=2 → indices 1-3 form one component.',
         'Component ids: [0, 1, 1, 1].',
         'Query [0,1]: different components → false.',
         'Query [0,2]: 0 vs component 1 → false.',
@@ -9272,7 +9272,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '[false, false, true, true]',
     },
     pitfalls: [
-      'Only adjacent unions are enough because nums is sorted — do not union all pairs O(n²).',
+      'Only adjacent unions are enough because nums is sorted - do not union all pairs O(n²).',
       'Use nums[i] − nums[i−1] (non-negative) instead of Math.Abs on sorted input.',
       'Self-queries [u,u] are always true once a node is in its own set.',
     ],
@@ -9300,7 +9300,7 @@ const explanations: Record<number, RichExplanation> = {
       output: 'minimum edge counts (or -1) per query',
     },
     pitfalls: [
-      'Must sort by value first — unlike 3532, index order is not sorted.',
+      'Must sort by value first - unlike 3532, index order is not sorted.',
       'Distance is number of edges (jumps), not |u−v| in index space.',
       'If jump[start][0] already ≥ end, answer is 1; if start == end, answer is 0.',
       'Return −1 when even the farthest binary-lifted position never reaches end.',
@@ -9309,7 +9309,7 @@ const explanations: Record<number, RichExplanation> = {
 
   1291: {
     intuition:
-      'A sequential-digit number has digits that increase by exactly 1 left to right (12, 123, 6789, …). There are only 36 such numbers in total, so generate them instead of scanning [low, high]. DFS from each start digit 1–9, always appending the next consecutive digit, and keep values that land in range.',
+      'A sequential-digit number has digits that increase by exactly 1 left to right (12, 123, 6789, …). There are only 36 such numbers in total, so generate them instead of scanning [low, high]. DFS from each start digit 1-9, always appending the next consecutive digit, and keep values that land in range.',
     algorithm: [
       'For start digit i = 1 … 9, call DFS with current digit pointer i and num = 0.',
       'In DFS: if num is inside [low, high], add it to the answer.',
@@ -9328,10 +9328,10 @@ const explanations: Record<number, RichExplanation> = {
       output: '[123, 234]',
     },
     pitfalls: [
-      'Do not iterate every integer from low to high — generate the tiny candidate set.',
+      'Do not iterate every integer from low to high - generate the tiny candidate set.',
       'Must sort at the end if generation order is not ascending across all starts.',
       'Single-digit numbers are sequential; they appear only when low ≤ that digit.',
-      'A number like 7890 is invalid — digits must stay within 1–9 with no wrap.',
+      'A number like 7890 is invalid - digits must stay within 1-9 with no wrap.',
     ],
   },
 
@@ -9352,15 +9352,15 @@ const explanations: Record<number, RichExplanation> = {
       steps: [
         'Start dp[0][0] = 1.',
         'After 10: can leave both empty, put 10 in first (GCD 10), or put 10 in second.',
-        'After 20 and 30: the only equal non-empty pairs are ([10], [20,30]) and ([20,30], [10]) — both have GCD 10.',
+        'After 20 and 30: the only equal non-empty pairs are ([10], [20,30]) and ([20,30], [10]) - both have GCD 10.',
         'Summing dp[g][g] for g ≥ 1 yields 2.',
       ],
       output: '2',
     },
     pitfalls: [
-      'Subsequences must be index-disjoint — each element goes to at most one of the two sequences (or neither).',
+      'Subsequences must be index-disjoint - each element goes to at most one of the two sequences (or neither).',
       'Do not count dp[0][0]; both subsequences must be non-empty (sum from g = 1).',
-      'Use a separate newDp table each step — updating in place double-counts transitions.',
+      'Use a separate newDp table each step - updating in place double-counts transitions.',
       'gcd(0, x) = x is required so the first element placed into an empty subsequence sets its GCD.',
     ],
   },
@@ -9371,7 +9371,7 @@ const explanations: Record<number, RichExplanation> = {
     algorithm: [
       'Recall: 1+3+…+(2n−1) = n².',
       'Recall: 2+4+…+2n = n(n+1).',
-      'Return n — no need to compute the sums or run Euclidean GCD.',
+      'Return n - no need to compute the sums or run Euclidean GCD.',
     ],
     example: {
       input: 'n = 4',
@@ -9383,7 +9383,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'Do not loop to build the odd/even lists — the O(1) identity is the intended solution.',
+      'Do not loop to build the odd/even lists - the O(1) identity is the intended solution.',
       'gcd(n, n+1) is always 1; do not special-case n = 1 (still returns 1 correctly).',
       'Constraints are small enough for a loop, but returning n is both correct and optimal.',
     ],
@@ -9391,12 +9391,12 @@ const explanations: Record<number, RichExplanation> = {
 
   3867: {
     intuition:
-      'The problem defines the pairs for you: first build prefixGcd[i] = gcd(nums[i], max of the prefix ending at i), then sort that array and pair the smallest leftover with the largest leftover until nothing remains (odd middle ignored). So simulate the construction, sort, and sum gcd of end-pairs — no combinatorial search needed.',
+      'The problem defines the pairs for you: first build prefixGcd[i] = gcd(nums[i], max of the prefix ending at i), then sort that array and pair the smallest leftover with the largest leftover until nothing remains (odd middle ignored). So simulate the construction, sort, and sum gcd of end-pairs - no combinatorial search needed.',
     algorithm: [
       'Scan left to right keeping running max mx; set prefixGcd[i] = gcd(nums[i], mx).',
       'Sort prefixGcd ascending.',
       'For i = 0 … n/2 − 1: add gcd(prefixGcd[i], prefixGcd[n−1−i]) to the answer.',
-      'If n is odd, the middle element is never paired — the loop naturally skips it.',
+      'If n is odd, the middle element is never paired - the loop naturally skips it.',
       'Return the sum as a long.',
     ],
     example: {
@@ -9410,10 +9410,10 @@ const explanations: Record<number, RichExplanation> = {
       output: '5',
     },
     pitfalls: [
-      'Update mx before computing gcd(nums[i], mx) — mx must include nums[i].',
+      'Update mx before computing gcd(nums[i], mx) - mx must include nums[i].',
       'Pair after sorting ends, not adjacent sorted neighbors.',
       'Use long for the answer; many pairs of large GCDs can overflow int.',
-      'When n is odd the middle sorted value contributes nothing — do not add it alone.',
+      'When n is odd the middle sorted value contributes nothing - do not add it alone.',
     ],
   },
 
@@ -9448,11 +9448,11 @@ const explanations: Record<number, RichExplanation> = {
 
   1979: {
     intuition:
-      'The problem asks for the GCD of the smallest and largest values only — not the GCD of every element. After one scan to find min and max, the answer is just Euclidean gcd(min, max). Middle values never affect the result.',
+      'The problem asks for the GCD of the smallest and largest values only - not the GCD of every element. After one scan to find min and max, the answer is just Euclidean gcd(min, max). Middle values never affect the result.',
     algorithm: [
       'Scan the array once to find min and max.',
       'While both are positive, replace the larger with larger % smaller (Euclidean algorithm).',
-      'When one becomes 0, return the other — that is gcd(min, max).',
+      'When one becomes 0, return the other - that is gcd(min, max).',
     ],
     example: {
       input: 'nums = [2, 5, 6, 9, 10]',
@@ -9493,14 +9493,14 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: [
       'Always take k modulo m*n; large k without reduction wastes work and can overflow if you are not careful with intermediates.',
       'Column count n is the stride: index / n is the row, index % n is the column.',
-      'Write into a new matrix — shifting in place is messy because destinations overwrite unread sources.',
+      'Write into a new matrix - shifting in place is messy because destinations overwrite unread sources.',
       'k = 0 must return an equivalent grid (modulo makes this natural).',
     ],
   },
 
   3499: {
     intuition:
-      'Treat the string as augmented with outer 1s. One trade first turns a surrounded block of 1s into 0s, then turns a surrounded block of 0s into 1s. That is equivalent to picking two consecutive zero-runs (with 1s between them) and activating both — net gain equals the sum of their lengths. So count all existing 1s, then add the best adjacent zero-pair length.',
+      'Treat the string as augmented with outer 1s. One trade first turns a surrounded block of 1s into 0s, then turns a surrounded block of 0s into 1s. That is equivalent to picking two consecutive zero-runs (with 1s between them) and activating both - net gain equals the sum of their lengths. So count all existing 1s, then add the best adjacent zero-pair length.',
     algorithm: [
       'Scan s in runs of equal characters (two pointers per run).',
       'For each run of 1s, add its length to totalOnes.',
@@ -9519,21 +9519,21 @@ const explanations: Record<number, RichExplanation> = {
       output: '4',
     },
     pitfalls: [
-      'The trade needs two adjacent zero segments — a single long zero run cannot be split for this gain.',
+      'The trade needs two adjacent zero segments - a single long zero run cannot be split for this gain.',
       'Initialize previous zero length to −∞ (or similar) so the first zero run does not falsely pair.',
-      'Do not subtract the middle 1-run manually — the formula totalOnes + mx already accounts for the optimal trade.',
+      'Do not subtract the middle 1-run manually - the formula totalOnes + mx already accounts for the optimal trade.',
       'mx = 0 is correct when no two zero runs exist; do not force a trade.',
     ],
   },
 
   3501: {
     intuition:
-      'Each query restricts the trade to substring s[l..r] (virtually flanked by 1s). Outside characters never change, so the answer is always globalOnes + bestGainInside[l..r]. The best gain is still “sum of two adjacent zero-runs,” but runs may be clipped when l or r cuts into a zero block, and only pairs fully inside the query window are eligible — so offline RMQ over adjacent zero-pair lengths answers every query in O(1) after an O(n log n) sparse-table build.',
+      'Each query restricts the trade to substring s[l..r] (virtually flanked by 1s). Outside characters never change, so the answer is always globalOnes + bestGainInside[l..r]. The best gain is still “sum of two adjacent zero-runs,” but runs may be clipped when l or r cuts into a zero block, and only pairs fully inside the query window are eligible - so offline RMQ over adjacent zero-pair lengths answers every query in O(1) after an O(n log n) sparse-table build.',
     algorithm: [
       'Count total ones in s. Collect every contiguous zero-run as (start, length) and map each index to its run id (−1 before the first zero).',
       'Build merge[i] = length[i] + length[i+1] for adjacent zero-runs; put merge into a sparse table for range maximum.',
       'For query [l, r]: left = remaining zeros from l to the end of its run; right = zeros from the start of r’s run through r.',
-      'Take max of: ones (no trade); ones + left + right when l and r sit in consecutive zero-runs; ones + RMQ over fully interior adjacent pairs; ones + left + next full run; ones + right + previous full run — whichever cases are valid for the window.',
+      'Take max of: ones (no trade); ones + left + right when l and r sit in consecutive zero-runs; ones + RMQ over fully interior adjacent pairs; ones + left + next full run; ones + right + previous full run - whichever cases are valid for the window.',
       'Return the list of answers; queries are independent.',
     ],
     example: {
@@ -9549,15 +9549,15 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: [
       'Trade is only inside [l, r]; do not use zero-runs that lie entirely outside the window.',
       'When l or r lands inside a zero-run, use the clipped length, not the full run length.',
-      'If there are fewer than two zero-runs in range, gain is 0 — return ones.',
+      'If there are fewer than two zero-runs in range, gain is 0 - return ones.',
       'Sparse table answers max over merge indices, not over character indices; map group ids carefully at the endpoints.',
-      'n, q up to 1e5 — per-query linear scans TLE; need O(1) or O(log n) per query after preprocessing.',
+      'n, q up to 1e5 - per-query linear scans TLE; need O(1) or O(log n) per query after preprocessing.',
     ],
   },
 
   3513: {
     intuition:
-      'nums is always a permutation of 1..n, so only n matters. With i ≤ j ≤ k you may reuse the same index, which makes small cases trivial (n=1 → {1}, n=2 → {1,2}). Once n ≥ 3, XOR of three values from 1..n can produce every integer in a full bit window [0, 2^b − 1], where 2^b is the smallest power of two strictly above the highest bit of n — i.e. answer = 1 << (⌊log2 n⌋ + 1).',
+      'nums is always a permutation of 1..n, so only n matters. With i ≤ j ≤ k you may reuse the same index, which makes small cases trivial (n=1 → {1}, n=2 → {1,2}). Once n ≥ 3, XOR of three values from 1..n can produce every integer in a full bit window [0, 2^b − 1], where 2^b is the smallest power of two strictly above the highest bit of n - i.e. answer = 1 << (⌊log2 n⌋ + 1).',
     algorithm: [
       'Let n = nums.Length.',
       'If n ≤ 2, return n.',
@@ -9573,16 +9573,16 @@ const explanations: Record<number, RichExplanation> = {
       output: '8',
     },
     pitfalls: [
-      'Handle n = 1 and n = 2 separately — the power-of-two formula overcounts for those.',
+      'Handle n = 1 and n = 2 separately - the power-of-two formula overcounts for those.',
       'Do not iterate all triplets; n up to 1e5 makes O(n³) impossible.',
-      'The array values themselves are irrelevant beyond being a permutation of 1..n — only length matters.',
+      'The array values themselves are irrelevant beyond being a permutation of 1..n - only length matters.',
       '⌊log2(n)⌋ + 1 is the bit-width of n; 1 << that equals the next power of two when n is not already a power of two, and twice n when it is.',
     ],
   },
 
   1464: {
     intuition:
-      'You need max (nums[i]−1)*(nums[j]−1) over distinct indices. Because x ↦ x−1 is strictly increasing for the positive values in the constraints, the product of the two largest decremented values is best — so find the two largest elements and multiply (max1−1)*(max2−1).',
+      'You need max (nums[i]−1)*(nums[j]−1) over distinct indices. Because x ↦ x−1 is strictly increasing for the positive values in the constraints, the product of the two largest decremented values is best - so find the two largest elements and multiply (max1−1)*(max2−1).',
     algorithm: [
       'Initialize max1 = max2 = 0.',
       'For each num: if num > max1, shift max1 into max2 and set max1 = num; else if num > max2, set max2 = num.',
@@ -9597,7 +9597,7 @@ const explanations: Record<number, RichExplanation> = {
       output: '12',
     },
     pitfalls: [
-      'Must use two different indices — do not square the single largest element.',
+      'Must use two different indices - do not square the single largest element.',
       'Update max2 when promoting a new max1; otherwise the previous max is lost.',
       'Constraints guarantee n ≥ 2 and positive nums, so the zero initialization is safe.',
       'Sorting also works but is O(n log n); one pass is enough.',

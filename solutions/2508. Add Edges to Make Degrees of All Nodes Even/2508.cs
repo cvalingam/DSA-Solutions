@@ -1,4 +1,4 @@
-// Approach: Build adjacency sets. Count odd-degree nodes — must be 0, 2, or 4.
+// Approach: Build adjacency sets. Count odd-degree nodes - must be 0, 2, or 4.
 // With 0 odd nodes: already valid. With 2 odd nodes (a,b): find a node not adjacent to
 // both. With 4 odd nodes (a,b,c,d): try pairing (a-b,c-d), (a-c,b-d), (a-d,b-c).
 // Time: O(n + e) Space: O(n + e)

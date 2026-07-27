@@ -1,7 +1,7 @@
 // Approach: BST inorder traversal visits nodes in strictly ascending order.
 // Perform an iterative inorder traversal using an explicit stack.
 // Decrement k each time a node is popped from the stack.
-// When k reaches 0, the current node's value is the k-th smallest — return immediately.
+// When k reaches 0, the current node's value is the k-th smallest - return immediately.
 // Stopping early avoids visiting the entire tree when k is small.
 // Iterative approach avoids stack-overflow risk on degenerate (skewed) BSTs.
 // Time: O(H + k) where H is the tree height. Space: O(H) for the stack.

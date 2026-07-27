@@ -1,4 +1,4 @@
-// Approach: Union-Find — the first edge whose two vertices share the same
+// Approach: Union-Find - the first edge whose two vertices share the same
 // root is the redundant connection forming a cycle.
 // Time: O(nα(n)) Space: O(n)
 

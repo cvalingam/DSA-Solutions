@@ -1,4 +1,4 @@
-// Approach: Divide and conquer — split at any char whose case-complement is absent, recurse and take max.
+// Approach: Divide and conquer - split at any char whose case-complement is absent, recurse and take max.
 // Time: O(n²) Space: O(n)
 
 public class Solution

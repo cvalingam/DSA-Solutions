@@ -1,5 +1,5 @@
 // Approach: Two pointers on the two non-increasing arrays.
-// Advance i (left pointer in nums1) when nums1[i] > nums2[j] — the current pair is invalid.
+// Advance i (left pointer in nums1) when nums1[i] > nums2[j] - the current pair is invalid.
 // Otherwise j - i is a valid distance; record it and advance j to try a larger distance.
 // Because both arrays are non-increasing, advancing i can only make pairs tighter,
 // and advancing j can only make the distance wider, so the greedy order is correct.

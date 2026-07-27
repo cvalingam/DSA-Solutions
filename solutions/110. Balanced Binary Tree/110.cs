@@ -11,7 +11,7 @@
  *     }
  * }
  */
-// Approach: DFS returning subtree height. Return –1 to signal imbalance
+// Approach: DFS returning subtree height. Return -1 to signal imbalance
 // and propagate it upward immediately.
 // Time: O(n) Space: O(h)
 

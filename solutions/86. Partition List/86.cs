@@ -3,7 +3,7 @@
 // After traversal, terminate the second sublist's tail (to avoid a cycle), then connect the first sublist's tail to the second sublist's head.
 // Return dummy1.next as the new head.
 // Dummy nodes eliminate special-casing for empty sublists.
-// Time: O(n) Space: O(1) — nodes are relinked, not copied.
+// Time: O(n) Space: O(1) - nodes are relinked, not copied.
 
 public class ListNode
 {

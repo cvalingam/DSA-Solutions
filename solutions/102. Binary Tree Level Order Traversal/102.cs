@@ -1,5 +1,5 @@
 // Approach: BFS with a queue to process nodes level by level.
-// At the start of each iteration, snapshot the queue size — this is the exact count of nodes at the current level.
+// At the start of each iteration, snapshot the queue size - this is the exact count of nodes at the current level.
 // Dequeue that many nodes, collect their values into a row list, and enqueue their non-null children.
 // Append the completed row to the result after all nodes at that level are processed.
 // Time: O(n) Space: O(n)

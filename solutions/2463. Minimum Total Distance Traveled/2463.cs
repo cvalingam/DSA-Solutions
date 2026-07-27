@@ -1,4 +1,4 @@
-// Approach: Sort robots and factories; DP(robot, factory, capacity) — assign or skip current factory slot.
+// Approach: Sort robots and factories; DP(robot, factory, capacity) - assign or skip current factory slot.
 // Time: O(r * f * maxCap) Space: O(r * f * maxCap)
 
 public class Solution

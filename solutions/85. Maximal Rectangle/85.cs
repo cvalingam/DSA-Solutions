@@ -3,7 +3,7 @@
 // Each row produces a histogram representing the rectangles ending at that row.
 // Apply the monotonic stack algorithm on each histogram to find the maximum rectangle.
 // Stack stores column indices; when a shorter bar is found, pop and compute the area.
-// Time: O(m x n) — one O(n) histogram pass per row. Space: O(n) for heights and stack.
+// Time: O(m x n) - one O(n) histogram pass per row. Space: O(n) for heights and stack.
 
 public class Solution
 {

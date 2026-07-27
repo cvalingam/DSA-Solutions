@@ -1,5 +1,5 @@
 // Approach: Generate all strings reachable from s1 and s2 by applying each of the two allowed swaps
-// (indices 0↔2, indices 1↔3) independently — at most 4 variants per string. Check if any variant
+// (indices 0↔2, indices 1↔3) independently - at most 4 variants per string. Check if any variant
 // of s1 equals any variant of s2.
 // Time: O(1) Space: O(1)
 public class Solution

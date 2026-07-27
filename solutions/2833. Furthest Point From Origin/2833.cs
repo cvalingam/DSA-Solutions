@@ -3,8 +3,8 @@
 // can freely move in whichever direction is dominant, adding 1 to the furthest distance.
 // So the answer is simply Math.Abs(countL - countR) + countUnderline.
 //
-// Time: O(N) — single pass over the moves string.
-// Space: O(1) — three integer counters only.
+// Time: O(N) - single pass over the moves string.
+// Space: O(1) - three integer counters only.
 public class Solution
 {
     public int FurthestDistanceFromOrigin(string moves)

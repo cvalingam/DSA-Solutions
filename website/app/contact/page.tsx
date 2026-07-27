@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Contact DSA Solutions',
-  description: 'Contact DSA Solutions — report issues or suggest improvements to LeetCode C# and GFG Java solutions.',
+  description: 'Contact DSA Solutions - report issues or suggest improvements to LeetCode C# and GFG Java solutions.',
   alternates: { canonical: '/contact' },
   openGraph: {
     title: 'Contact DSA Solutions',
@@ -95,7 +95,7 @@ export default function ContactPage() {
       </form>
 
       <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-        We typically respond within 24–48 hours.
+        We typically respond within 24-48 hours.
       </p>
 
       <div className="mt-10">

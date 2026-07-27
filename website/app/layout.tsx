@@ -20,7 +20,7 @@ const { lcCount, gfgCount, total } = getSiteStats()
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `DSA Solutions — ${lcCount}+ LeetCode C# & ${gfgCount}+ GFG Java`,
+    default: `DSA Solutions - ${lcCount}+ LeetCode C# & ${gfgCount}+ GFG Java`,
     template: '%s | DSA Solutions',
   },
   description:

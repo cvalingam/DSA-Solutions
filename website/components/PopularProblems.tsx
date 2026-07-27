@@ -20,7 +20,7 @@ export default function PopularProblems({ problems }: { problems: ProblemMeta[] 
         </Link>
       </div>
       <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-        Start with these high-search interview classics — many include full step-by-step explanations.
+        Start with these high-search interview classics - many include full step-by-step explanations.
       </p>
       <ul className="grid gap-2 sm:grid-cols-2">
         {problems.map(p => (

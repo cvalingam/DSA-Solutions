@@ -1,4 +1,4 @@
-// Approach: Two-pass greedy — treat '*' as '(' left-to-right and as ')'
+// Approach: Two-pass greedy - treat '*' as '(' left-to-right and as ')'
 // right-to-left; fail if either running count goes negative.
 // Time: O(n) Space: O(1)
 

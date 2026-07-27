@@ -7,12 +7,12 @@ import { getAllSystemDesignArticles } from '@/lib/system-design'
 
 export const metadata: Metadata = {
   title: 'About DSA Solutions',
-  description: 'About DSA Solutions — clean C# LeetCode and Java GFG solutions with explanations and system design interview guides for .NET developers preparing for coding interviews.',
+  description: 'About DSA Solutions - clean C# LeetCode and Java GFG solutions with explanations and system design interview guides for .NET developers preparing for coding interviews.',
   alternates: { canonical: '/about' },
   keywords: ['LeetCode', 'GeeksforGeeks', 'C#', 'Java', 'DSA', 'system design', 'interview prep'],
   openGraph: {
     title: 'About DSA Solutions',
-    description: 'About DSA Solutions — LeetCode C#, GFG Java solutions, and system design interview guides for .NET developers.',
+    description: 'About DSA Solutions - LeetCode C#, GFG Java solutions, and system design interview guides for .NET developers.',
     url: '/about',
     type: 'website',
   },
@@ -44,16 +44,16 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Why this site exists</h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
           When I started preparing for interviews, I noticed that virtually every LeetCode solution repository
-          on GitHub focuses on C++, Python, or Java. C# — the primary language for millions of .NET
-          developers — was an afterthought. Solutions written in C# were either scarce, inconsistently
+          on GitHub focuses on C++, Python, or Java. C# - the primary language for millions of .NET
+          developers - was an afterthought. Solutions written in C# were either scarce, inconsistently
           formatted, or missing altogether for newer problems.
         </p>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           DSA Solutions was built to fill that gap. Every solution is written in idiomatic C# using
-          modern .NET APIs — <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm">PriorityQueue</code>,{' '}
+          modern .NET APIs - <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm">PriorityQueue</code>,{' '}
           <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm">SortedSet</code>,{' '}
           <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm">Dictionary</code>, pattern
-          matching — the same way a .NET developer would write production code.
+          matching - the same way a .NET developer would write production code.
         </p>
       </section>
 
@@ -67,7 +67,7 @@ export default function AboutPage() {
           {[
             ['Explanation first', `${lcExplained}+ LeetCode and ${gfgExplained}+ GFG problems include full step-by-step explanations (intuition, algorithm, examples, pitfalls). Other solution pages include approach notes and complexity where available.`],
             ['Complexity stated explicitly', 'Time and Space complexity are shown as badges on every solution page.'],
-            ['Idiomatic C# code', 'Solutions use the most readable C# idiom available — not a Java translation. The goal is code that a .NET engineer would write and be comfortable reviewing.'],
+            ['Idiomatic C# code', 'Solutions use the most readable C# idiom available - not a Java translation. The goal is code that a .NET engineer would write and be comfortable reviewing.'],
             ['Daily updates', 'New solutions for LeetCode and GeeksforGeeks POTD are added every day.'],
           ].map(([title, desc]) => (
             <li key={title} className="flex gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
@@ -104,7 +104,7 @@ export default function AboutPage() {
             <Link href="/system-design" className="text-violet-600 dark:text-violet-400 hover:underline">
               System design interview articles
             </Link>{' '}
-            — {sdCount} in-depth guides: frameworks, case studies, and fundamentals including payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, distributed logging, ad click aggregator, Google Calendar, recommendations, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, Pastebin, leaderboard, API gateway, Google Docs, Instagram, CAP theorem, sharding, notifications, and Kafka
+ - {sdCount} in-depth guides: frameworks, case studies, and fundamentals including payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, distributed logging, ad click aggregator, Google Calendar, recommendations, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, Pastebin, leaderboard, API gateway, Google Docs, Instagram, CAP theorem, sharding, notifications, and Kafka
           </li>
           <li className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
             <svg className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -119,8 +119,8 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Why Java for GFG?</h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           GeeksforGeeks Problem of the Day is one of the most popular daily coding challenges in India,
-          with a strong community of students and early-career developers. Solutions here are in Java —
-          the most widely expected language for GFG submissions — and include the same explanation +
+          with a strong community of students and early-career developers. Solutions here are in Java - 
+          the most widely expected language for GFG submissions - and include the same explanation +
           complexity format as the LeetCode C# solutions.
         </p>
       </section>
@@ -129,7 +129,7 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Publisher information</h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 text-sm">
           DSA Solutions is an independent technical publisher focused on interview preparation for software developers.
-          The site is maintained by a solo creator and updated daily with original explanations — not scraped or auto-generated content.
+          The site is maintained by a solo creator and updated daily with original explanations - not scraped or auto-generated content.
         </p>
         <dl className="grid gap-3 text-sm sm:grid-cols-2">
           {[
@@ -176,7 +176,7 @@ export default function AboutPage() {
           <Link href="/works" className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Works
           </Link>{' '}
-          page — including NEET MDS Image Sizer, Skin Klove, Clinic OS, and Steel Express.
+          page - including NEET MDS Image Sizer, Skin Klove, Clinic OS, and Steel Express.
         </p>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           The project is open-source under the MIT License and available on{' '}

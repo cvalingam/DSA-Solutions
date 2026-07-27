@@ -1,5 +1,5 @@
 // Approach: Precompute canReach[r][c] via DP (decreasing r+c). Greedily pick the first
-// valid move (shortest jump, right before down) that still reaches the destination — same
+// valid move (shortest jump, right before down) that still reaches the destination - same
 // path as ordered backtracking but O(n^2 * maxJump) instead of exponential.
 // Time: O(n^2 * maxJump) Space: O(n^2)
 

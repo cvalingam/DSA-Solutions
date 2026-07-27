@@ -1,4 +1,4 @@
-// Approach: Record the last occurrence of each digit 0–9; for each position
+// Approach: Record the last occurrence of each digit 0-9; for each position
 // find the rightmost larger digit and do a single swap.
 // Time: O(n) Space: O(1)
 

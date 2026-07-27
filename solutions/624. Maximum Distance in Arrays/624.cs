@@ -1,4 +1,4 @@
-// Approach: Single pass — compare each array’s max/min against the running
+// Approach: Single pass - compare each array’s max/min against the running
 // global min/max from all previous arrays before updating the trackers.
 // Time: O(n) Space: O(1)
 

@@ -1,4 +1,4 @@
-// Shared site URL — set NEXT_PUBLIC_SITE_URL in your Vercel / .env.local
+// Shared site URL - set NEXT_PUBLIC_SITE_URL in your Vercel / .env.local
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dsasolved.com'
 

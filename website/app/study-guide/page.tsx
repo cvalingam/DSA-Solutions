@@ -4,14 +4,14 @@ import { SITE_URL } from '@/lib/constants'
 import { getPopularExplainedLcProblems } from '@/lib/popular-problems'
 
 export const metadata: Metadata = {
-  title: 'DSA Study Guide for C# Developers — LeetCode Interview Prep',
+  title: 'DSA Study Guide for C# Developers - LeetCode Interview Prep',
   description:
     'A complete DSA interview preparation guide for C# and .NET developers. Covers recommended study order, the 30-day plan, C#-specific tips, common patterns, and what interviewers actually look for.',
   alternates: { canonical: '/study-guide' },
   openGraph: {
     title: 'DSA Study Guide for C# Developers',
     description:
-      'Complete LeetCode interview preparation guide tailored for C# and .NET developers — study order, patterns, C# tips, and a 30-day plan.',
+      'Complete LeetCode interview preparation guide tailored for C# and .NET developers - study order, patterns, C# tips, and a 30-day plan.',
     url: '/study-guide',
     type: 'article',
   },
@@ -91,7 +91,7 @@ export default function StudyGuidePage() {
           Most online solution repositories focus on C++, Python, or Java. High-quality, idiomatic C#
           solutions are rare. Yet Microsoft, Accenture, ThoughtWorks, Infosys, and hundreds of product
           companies in India and globally conduct technical interviews in C#. If you are a .NET developer,
-          practising in C# is not just convenient — it is strategically correct.
+          practising in C# is not just convenient - it is strategically correct.
         </p>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
           Modern C# (8.0+) is a genuinely expressive language for DSA. You get{' '}
@@ -122,36 +122,36 @@ export default function StudyGuidePage() {
         <div className="space-y-4">
           {[
             {
-              phase: 'Phase 1 — Foundations',
-              weeks: 'Weeks 1–2',
+              phase: 'Phase 1 - Foundations',
+              weeks: 'Weeks 1-2',
               topics: ['Array', 'String', 'Hash Table', 'Two Pointers', 'Sliding Window'],
               detail:
                 'These patterns appear in over 40% of interview questions. Nail them first. Focus on understanding WHY a pattern works, not just memorising code.',
             },
             {
-              phase: 'Phase 2 — Core Algorithms',
-              weeks: 'Weeks 3–4',
+              phase: 'Phase 2 - Core Algorithms',
+              weeks: 'Weeks 3-4',
               topics: ['Binary Search', 'Sorting', 'Recursion', 'Stack', 'Queue'],
               detail:
                 'Binary search on the answer space (not just sorted arrays) is a favourite FAANG technique. Practice identifying when a monotonic predicate exists.',
             },
             {
-              phase: 'Phase 3 — Trees & Graphs',
-              weeks: 'Weeks 5–6',
+              phase: 'Phase 3 - Trees & Graphs',
+              weeks: 'Weeks 5-6',
               topics: ['Binary Tree', 'BST', 'DFS', 'BFS', 'Graph', 'Union Find'],
               detail:
-                'Recursive tree solutions are elegant but learn iterative equivalents too — deep trees cause stack overflows. BFS guarantees shortest path in unweighted graphs; always reach for it first.',
+                'Recursive tree solutions are elegant but learn iterative equivalents too - deep trees cause stack overflows. BFS guarantees shortest path in unweighted graphs; always reach for it first.',
             },
             {
-              phase: 'Phase 4 — Dynamic Programming',
-              weeks: 'Weeks 7–8',
+              phase: 'Phase 4 - Dynamic Programming',
+              weeks: 'Weeks 7-8',
               topics: ['1D DP', '2D DP', 'Memoization', 'Interval DP', 'Bitmask DP'],
               detail:
                 'DP is the topic most candidates spend too little time on. Start with recognising the state definition before worrying about transitions. Top-down memoization is easier to reason about; convert to bottom-up only for space optimisation.',
             },
             {
-              phase: 'Phase 5 — Advanced Topics',
-              weeks: 'Weeks 9–10',
+              phase: 'Phase 5 - Advanced Topics',
+              weeks: 'Weeks 9-10',
               topics: ['Heap / Priority Queue', 'Trie', 'Segment Tree', 'Topological Sort', 'Monotonic Stack'],
               detail:
                 'These appear in Hard problems and later interview rounds. Even a basic understanding of Dijkstra, LRU Cache design, and Trie structure covers most interview scenarios.',
@@ -179,8 +179,8 @@ export default function StudyGuidePage() {
           30-Day Intensive Plan
         </h2>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-          If you have exactly one month to prepare, here is a day-by-day structure. Aim for 2–3 problems
-          per session. Quality beats quantity — understand each solution fully before moving on.
+          If you have exactly one month to prepare, here is a day-by-day structure. Aim for 2-3 problems
+          per session. Quality beats quantity - understand each solution fully before moving on.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
@@ -192,15 +192,15 @@ export default function StudyGuidePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-gray-600 dark:text-gray-400">
-              <tr><td className="py-2 pr-4">1–4</td><td className="py-2 pr-4">Arrays &amp; Hash Tables</td><td className="py-2">Two Sum, Best Time to Buy, Contains Duplicate, Top K Frequent</td></tr>
-              <tr><td className="py-2 pr-4">5–7</td><td className="py-2 pr-4">Two Pointers &amp; Sliding Window</td><td className="py-2">Container With Most Water, Longest Substring, Minimum Window Substring</td></tr>
-              <tr><td className="py-2 pr-4">8–10</td><td className="py-2 pr-4">Binary Search</td><td className="py-2">Search in Rotated Array, Find Minimum, Koko Eating Bananas</td></tr>
-              <tr><td className="py-2 pr-4">11–13</td><td className="py-2 pr-4">Stack &amp; Queue</td><td className="py-2">Valid Parentheses, Daily Temperatures, Largest Rectangle in Histogram</td></tr>
-              <tr><td className="py-2 pr-4">14–17</td><td className="py-2 pr-4">Trees (DFS &amp; BFS)</td><td className="py-2">Max Depth, Level Order Traversal, LCA, Validate BST</td></tr>
-              <tr><td className="py-2 pr-4">18–20</td><td className="py-2 pr-4">Graphs</td><td className="py-2">Number of Islands, Clone Graph, Course Schedule, Pacific Atlantic Water Flow</td></tr>
-              <tr><td className="py-2 pr-4">21–25</td><td className="py-2 pr-4">Dynamic Programming</td><td className="py-2">Climbing Stairs, House Robber, Coin Change, Longest Increasing Subsequence</td></tr>
-              <tr><td className="py-2 pr-4">26–28</td><td className="py-2 pr-4">Heap &amp; Greedy</td><td className="py-2">Kth Largest Element, Merge K Sorted Lists, Task Scheduler</td></tr>
-              <tr><td className="py-2 pr-4">29–30</td><td className="py-2 pr-4">Mock Interviews</td><td className="py-2">Timed sessions on unseen problems — simulate real interview conditions</td></tr>
+              <tr><td className="py-2 pr-4">1-4</td><td className="py-2 pr-4">Arrays &amp; Hash Tables</td><td className="py-2">Two Sum, Best Time to Buy, Contains Duplicate, Top K Frequent</td></tr>
+              <tr><td className="py-2 pr-4">5-7</td><td className="py-2 pr-4">Two Pointers &amp; Sliding Window</td><td className="py-2">Container With Most Water, Longest Substring, Minimum Window Substring</td></tr>
+              <tr><td className="py-2 pr-4">8-10</td><td className="py-2 pr-4">Binary Search</td><td className="py-2">Search in Rotated Array, Find Minimum, Koko Eating Bananas</td></tr>
+              <tr><td className="py-2 pr-4">11-13</td><td className="py-2 pr-4">Stack &amp; Queue</td><td className="py-2">Valid Parentheses, Daily Temperatures, Largest Rectangle in Histogram</td></tr>
+              <tr><td className="py-2 pr-4">14-17</td><td className="py-2 pr-4">Trees (DFS &amp; BFS)</td><td className="py-2">Max Depth, Level Order Traversal, LCA, Validate BST</td></tr>
+              <tr><td className="py-2 pr-4">18-20</td><td className="py-2 pr-4">Graphs</td><td className="py-2">Number of Islands, Clone Graph, Course Schedule, Pacific Atlantic Water Flow</td></tr>
+              <tr><td className="py-2 pr-4">21-25</td><td className="py-2 pr-4">Dynamic Programming</td><td className="py-2">Climbing Stairs, House Robber, Coin Change, Longest Increasing Subsequence</td></tr>
+              <tr><td className="py-2 pr-4">26-28</td><td className="py-2 pr-4">Heap &amp; Greedy</td><td className="py-2">Kth Largest Element, Merge K Sorted Lists, Task Scheduler</td></tr>
+              <tr><td className="py-2 pr-4">29-30</td><td className="py-2 pr-4">Mock Interviews</td><td className="py-2">Timed sessions on unseen problems - simulate real interview conditions</td></tr>
             </tbody>
           </table>
         </div>
@@ -218,19 +218,19 @@ export default function StudyGuidePage() {
         <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
             <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Use <code className="font-mono text-indigo-600 dark:text-indigo-400">PriorityQueue&lt;TElement, TPriority&gt;</code> (.NET 6+)</p>
-            <p>LeetCode runs .NET 6 or later. Use the built-in min-heap directly — no need to negate priorities for a max-heap. For max-heap, just negate the priority: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">pq.Enqueue(val, -val)</code>.</p>
+            <p>LeetCode runs .NET 6 or later. Use the built-in min-heap directly - no need to negate priorities for a max-heap. For max-heap, just negate the priority: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">pq.Enqueue(val, -val)</code>.</p>
           </div>
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
             <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Overflow: use <code className="font-mono text-indigo-600 dark:text-indigo-400">long</code> proactively</p>
             <p><code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">int</code> overflows silently in C#. Any time you multiply two values that could each be up to 10⁵, cast to <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">long</code>. Most DP problems with large inputs require this.</p>
           </div>
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
-            <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Strings are immutable — use <code className="font-mono text-indigo-600 dark:text-indigo-400">StringBuilder</code> inside loops</p>
+            <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Strings are immutable - use <code className="font-mono text-indigo-600 dark:text-indigo-400">StringBuilder</code> inside loops</p>
             <p>Concatenating strings with <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">+</code> in a loop is O(n²) because each concatenation allocates a new string. Use <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">StringBuilder</code> and call <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">.ToString()</code> once at the end.</p>
           </div>
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
             <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1"><code className="font-mono text-indigo-600 dark:text-indigo-400">Array.Sort()</code> accepts a custom <code className="font-mono text-indigo-600 dark:text-indigo-400">Comparison&lt;T&gt;</code></p>
-            <p>You do not need to implement <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">IComparer&lt;T&gt;</code>. A lambda is enough: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">Array.Sort(arr, (a, b) =&gt; a[0] - b[0])</code>. Sort stability is not guaranteed — use <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">OrderBy()</code> (LINQ) when stability matters.</p>
+            <p>You do not need to implement <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">IComparer&lt;T&gt;</code>. A lambda is enough: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">Array.Sort(arr, (a, b) =&gt; a[0] - b[0])</code>. Sort stability is not guaranteed - use <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">OrderBy()</code> (LINQ) when stability matters.</p>
           </div>
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
             <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Tuple keys in dictionaries</p>
@@ -238,7 +238,7 @@ export default function StudyGuidePage() {
           </div>
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
             <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Avoid LINQ in tight inner loops</p>
-            <p>LINQ is readable but adds allocation overhead. Use it for one-time setup (building a dictionary, sorting) not inside O(n²) loops. Profiling shows LINQ can be 3–5× slower than a hand-written loop for large inputs on LeetCode.</p>
+            <p>LINQ is readable but adds allocation overhead. Use it for one-time setup (building a dictionary, sorting) not inside O(n²) loops. Profiling shows LINQ can be 3-5× slower than a hand-written loop for large inputs on LeetCode.</p>
           </div>
         </div>
       </section>
@@ -250,7 +250,7 @@ export default function StudyGuidePage() {
         </h2>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-5">
           The most common interview mistake is jumping straight to code. Follow this structured approach
-          instead — it works whether you know the problem or not.
+          instead - it works whether you know the problem or not.
         </p>
         <ol className="space-y-4">
           {[
@@ -290,11 +290,11 @@ export default function StudyGuidePage() {
           {[
             { name: 'Two Pointers', when: 'Sorted array or string; finding a pair/triplet sum; removing duplicates; palindrome check.', link: '/topics/two-pointers' },
             { name: 'Sliding Window', when: 'Contiguous subarray/substring with a constraint on its content (sum, distinct count, frequency).', link: '/topics/sliding-window' },
-            { name: 'Binary Search on Answer', when: '"Find the minimum/maximum X such that condition Y holds" — define a monotonic predicate and binary search on the answer space.', link: '/topics/binary-search' },
+            { name: 'Binary Search on Answer', when: '"Find the minimum/maximum X such that condition Y holds" - define a monotonic predicate and binary search on the answer space.', link: '/topics/binary-search' },
             { name: 'DFS / Backtracking', when: 'Explore all valid configurations (permutations, subsets, Sudoku). Prune branches early to cut the search space.', link: '/topics/depth-first-search' },
             { name: 'BFS (Shortest Path)', when: 'Shortest path in an unweighted graph or grid. Word ladder, 01 matrix, minimum steps problems.', link: '/topics/breadth-first-search' },
             { name: 'Dynamic Programming', when: 'Count ways, find min/max cost, overlapping sub-problems. Recognise by "can we split this into smaller same-shape problems?"', link: '/topics/dynamic-programming' },
-            { name: 'Monotonic Stack', when: 'Next greater/smaller element, span problems, histogram area, temperature problems. Each element is processed at most once — O(n).', link: '/topics/monotonic-stack' },
+            { name: 'Monotonic Stack', when: 'Next greater/smaller element, span problems, histogram area, temperature problems. Each element is processed at most once - O(n).', link: '/topics/monotonic-stack' },
           ].map(({ name, when, link }) => (
             <div key={name} className="p-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
               <Link href={link} className="font-semibold text-indigo-700 dark:text-indigo-400 hover:underline text-sm">{name}</Link>
@@ -318,7 +318,7 @@ export default function StudyGuidePage() {
             ['Problem Solving', 'Can you break down an unfamiliar problem? Do you identify the right data structure and algorithm? Can you reason about trade-offs between approaches?'],
             ['Communication', 'Do you explain your thinking out loud? Do you ask clarifying questions? Can you articulate why your solution is correct and why it has a given complexity?'],
             ['Code Quality', 'Is your code readable without comments? Are variables named meaningfully? Would a colleague find it easy to review and maintain?'],
-            ['Testing & Edge Cases', 'Do you proactively test your code? Do you identify edge cases — empty inputs, single elements, overflow, cycles in graphs — without being prompted?'],
+            ['Testing & Edge Cases', 'Do you proactively test your code? Do you identify edge cases - empty inputs, single elements, overflow, cycles in graphs - without being prompted?'],
           ].map(([title, text]) => (
             <div key={title as string} className="flex gap-3 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
               <span className="shrink-0 text-indigo-500 dark:text-indigo-400 mt-0.5">
@@ -335,14 +335,14 @@ export default function StudyGuidePage() {
         </div>
       </section>
 
-      {/* Section 8b — System Design */}
+      {/* Section 8b - System Design */}
       <section className="mb-12">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 pb-2 border-b border-gray-100 dark:border-gray-800">
-          Phase 2: System Design (Weeks 10–12)
+          Phase 2: System Design (Weeks 10-12)
         </h2>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
           Once you can recognise DSA patterns under time pressure, add system design. Most mid-level and
-          senior loops include at least one design round. You do not need to know every AWS service —
+          senior loops include at least one design round. You do not need to know every AWS service - 
           you need a repeatable framework and the ability to discuss trade-offs.
         </p>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -366,14 +366,14 @@ export default function StudyGuidePage() {
           How to Use This Site Effectively
         </h2>
         <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          This site is designed as a reference — not a crutch. Here is how to get the most out of it:
+          This site is designed as a reference - not a crutch. Here is how to get the most out of it:
         </p>
         <ol className="space-y-2 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside leading-relaxed">
-          <li><strong>Attempt the problem first.</strong> Spend at least 20–30 minutes on every problem before looking at the solution. The struggle is where learning happens.</li>
+          <li><strong>Attempt the problem first.</strong> Spend at least 20-30 minutes on every problem before looking at the solution. The struggle is where learning happens.</li>
           <li><strong>Read the Explanation section before the code.</strong> Each solution page shows an approach explanation above the code. Read it and see if you can now implement the solution without looking at the code.</li>
           <li><strong>Check the complexity.</strong> Every solution includes Time and Space complexity. Make sure you understand why those complexities are correct.</li>
           <li><strong>Browse by topic.</strong> Use the <Link href="/topics" className="text-indigo-600 dark:text-indigo-400 hover:underline">Topics</Link> page to study all problems in a given pattern. This is more effective than random problem order.</li>
-          <li><strong>Revisit solved problems.</strong> Come back to a problem 3–7 days later and solve it from memory. Spaced repetition is the fastest way to retain patterns long-term.</li>
+          <li><strong>Revisit solved problems.</strong> Come back to a problem 3-7 days later and solve it from memory. Spaced repetition is the fastest way to retain patterns long-term.</li>
         </ol>
       </section>
 

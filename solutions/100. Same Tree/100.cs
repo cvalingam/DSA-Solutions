@@ -1,7 +1,7 @@
 // Approach: Recursively compare both trees node by node.
 // Base cases: both nodes null means identical; one null or mismatched values means not identical.
 // A subtree is the same only if both its left and right subtrees are identical.
-// Every node is visited exactly once — O(n) time. Recursion depth equals tree height O(h).
+// Every node is visited exactly once - O(n) time. Recursion depth equals tree height O(h).
 // Time: O(n) Space: O(h)
 
 public class TreeNode

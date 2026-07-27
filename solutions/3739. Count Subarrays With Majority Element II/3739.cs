@@ -1,4 +1,4 @@
-// Approach: Same as LC 3737 — map target to +1, others to −1; count subarrays with positive
+// Approach: Same as LC 3737 - map target to +1, others to −1; count subarrays with positive
 // transformed sum via prefix sums and a Fenwick tree. Return long for large answer counts.
 // Time: O(n log n) Space: O(n)
 public class Solution

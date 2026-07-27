@@ -45,7 +45,7 @@ export async function generateStaticParams() {
   return getAllProblems().map(p => ({ slug: p.slug }))
 }
 
-// No dynamic pages at runtime — 404 for unknown slugs
+// No dynamic pages at runtime - 404 for unknown slugs
 export const dynamicParams = false
 
 const EXT_TO_LABEL: Record<string, string> = {
@@ -81,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? { index: true, follow: true }
       : { index: false, follow: true },
     openGraph: {
-      title: `${title} — LeetCode ${primaryLabel} Solution`,
+      title: `${title} - LeetCode ${primaryLabel} Solution`,
       description: desc,
       type: 'article',
       url: `/problems/${problem.slug}`,
@@ -89,7 +89,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} — ${primaryLabel} Solution`,
+      title: `${title} - ${primaryLabel} Solution`,
       description: desc,
       images: [ogImage],
     },
@@ -185,7 +185,7 @@ export default async function ProblemPage({ params }: Props) {
         </div>
       )}
 
-      {/* Problem overview — original summary, not copied from LeetCode */}
+      {/* Problem overview - original summary, not copied from LeetCode */}
       <section className="mb-6 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
         <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
           Problem Overview
@@ -200,7 +200,7 @@ export default async function ProblemPage({ params }: Props) {
         )}
       </section>
 
-      {/* Mobile ad slot — desktop uses sticky sidebar */}
+      {/* Mobile ad slot - desktop uses sticky sidebar */}
       {showAdSlot && (
         <div className="mb-8 lg:hidden">
           <AdUnit slot="4545599910" style="leaderboard" placeholder />
@@ -346,7 +346,7 @@ export default async function ProblemPage({ params }: Props) {
 
       <HelpfulWidget />
 
-      {/* Related problems — internal linking for SEO */}
+      {/* Related problems - internal linking for SEO */}
       {related.length > 0 && (
         <section className="mb-8 p-4 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
           <h2 className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">

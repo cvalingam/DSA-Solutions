@@ -33,7 +33,7 @@ export function toSlug(number: number, _title?: string): string {
   return String(number)
 }
 
-// Module-level cache — built once per build process
+// Module-level cache - built once per build process
 let _problems: Problem[] | null = null
 
 export function getAllProblems(): Problem[] {

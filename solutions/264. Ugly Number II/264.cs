@@ -1,4 +1,4 @@
-// Approach: Three-pointer DP — track the next multiple of 2, 3, and 5 from
+// Approach: Three-pointer DP - track the next multiple of 2, 3, and 5 from
 // the generated list; advance the pointer(s) that produced the minimum.
 // Time: O(n) Space: O(n)
 

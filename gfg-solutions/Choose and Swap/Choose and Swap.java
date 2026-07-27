@@ -1,4 +1,4 @@
-// Approach: One global swap of two character values (all occurrences) — find the first position where a smaller letter should appear.
+// Approach: One global swap of two character values (all occurrences) - find the first position where a smaller letter should appear.
 // Scan letters a..z; when s[i] != current smallest available letter, swap that letter with s[i] everywhere and return.
 // If the string is already lexicographically minimal under one swap, return s unchanged.
 // Time: O(n) Space: O(n) for the result string

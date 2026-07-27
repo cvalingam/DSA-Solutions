@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Terms of Use for DSA Solutions (dsasolved.com). Read about permitted use, disclaimers, and your rights.',
   alternates: { canonical: '/terms' },
   openGraph: {
-    title: 'Terms of Use — DSA Solutions',
+    title: 'Terms of Use - DSA Solutions',
     description: 'Terms of Use for DSA Solutions (dsasolved.com).',
     url: '/terms',
     type: 'website',
@@ -35,7 +35,7 @@ export default function TermsPage() {
           <p>
             DSA Solutions provides educational programming solutions to LeetCode (C#) and GeeksForGeeks (Java)
             problems for learning and interview preparation purposes. The solutions are intended to help developers
-            understand data structures and algorithms (DSA) concepts — not to be copied verbatim into professional
+            understand data structures and algorithms (DSA) concepts - not to be copied verbatim into professional
             assessments or competitions where such use is prohibited.
           </p>
         </section>
@@ -58,7 +58,7 @@ export default function TermsPage() {
           </p>
           <p className="mt-3">
             Problem statements are the property of LeetCode and GeeksForGeeks respectively. This site does not
-            reproduce problem statements — only original solutions.
+            reproduce problem statements - only original solutions.
           </p>
         </section>
 
@@ -105,15 +105,15 @@ export default function TermsPage() {
           <p>The Site uses the following third-party services. Your use of the Site implies acceptance of their respective policies:</p>
           <ul className="list-disc pl-6 space-y-2 mt-3">
             <li>
-              <strong>Google AdSense</strong> — displays advertisements. See{' '}
+              <strong>Google AdSense</strong> - displays advertisements. See{' '}
               <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">Google&apos;s ad policy</a>.
             </li>
             <li>
-              <strong>Google Analytics (GA4)</strong> — anonymous usage analytics. See{' '}
+              <strong>Google Analytics (GA4)</strong> - anonymous usage analytics. See{' '}
               <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">Google Privacy Policy</a>.
             </li>
             <li>
-              <strong>Microsoft Clarity</strong> — anonymous session analytics. See{' '}
+              <strong>Microsoft Clarity</strong> - anonymous session analytics. See{' '}
               <a href="https://clarity.microsoft.com/privacy" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">Clarity Privacy Policy</a>.
             </li>
           </ul>

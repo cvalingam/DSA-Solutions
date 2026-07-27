@@ -1,6 +1,6 @@
 // Approach: The furthest pair must include either the first or last house.
-// Scan from the left to find the rightmost house with a different color from colors[0] — that distance is a candidate.
-// Scan from the right to find the leftmost house with a different color from colors[n-1] — that distance is another candidate.
+// Scan from the left to find the rightmost house with a different color from colors[0] - that distance is a candidate.
+// Scan from the right to find the leftmost house with a different color from colors[n-1] - that distance is another candidate.
 // Return the maximum of both candidates.
 // Time: O(n) Space: O(1)
 public class Solution

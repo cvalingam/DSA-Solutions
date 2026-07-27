@@ -1,6 +1,6 @@
 // Approach: Define dp[i][j] as the side length of the largest all-'1' square with its bottom-right corner at (i,j).
 // Recurrence: if matrix[i][j] == '1', dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]).
-// The minimum of the three neighbors limits the square size — the weakest neighbor is the bottleneck.
+// The minimum of the three neighbors limits the square size - the weakest neighbor is the bottleneck.
 // If matrix[i][j] == '0', dp[i][j] = 0 since no square can have its corner here.
 // Track the maximum dp value seen; the area is (maxSide)^2.
 // The dp table can be compressed to a 1D rolling array to reduce space to O(n).

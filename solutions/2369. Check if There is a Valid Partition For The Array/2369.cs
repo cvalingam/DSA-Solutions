@@ -1,4 +1,4 @@
-// Approach: DP — dp[i] = true if valid partition exists for first i elements (check 2/3-element windows).
+// Approach: DP - dp[i] = true if valid partition exists for first i elements (check 2/3-element windows).
 // Time: O(n) Space: O(n)
 
 public class Solution

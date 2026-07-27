@@ -1,4 +1,4 @@
-// Approach: Greedy — sum every positive consecutive price difference.
+// Approach: Greedy - sum every positive consecutive price difference.
 // If prices[i] > prices[i-1], capturing that gain is equivalent to buying on day i-1
 // and selling on day i. We are allowed multiple transactions, so all upward moves can be taken.
 // This greedy choice is provably optimal: any multi-day hold equals the sum of its daily gains.

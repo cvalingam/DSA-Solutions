@@ -5,10 +5,10 @@ import { buildWorksPageSchema } from '@/lib/seo'
 import { WORKS } from '@/lib/works'
 
 const worksDescription =
-  'Selected live projects by Sivalingam Ramasamy — NEET MDS Image Sizer, Skin Klove, Clinic OS, Steel Express, Invoice Generator, GST Bot, and DSA Solutions.'
+  'Selected live projects by Sivalingam Ramasamy - NEET MDS Image Sizer, Skin Klove, Clinic OS, Steel Express, Invoice Generator, GST Bot, and DSA Solutions.'
 
 export const metadata: Metadata = {
-  title: 'Works — Live Projects by Sivalingam Ramasamy',
+  title: 'Works - Live Projects by Sivalingam Ramasamy',
   description: worksDescription,
   alternates: { canonical: '/works' },
   keywords: [
@@ -55,7 +55,7 @@ export default function WorksPage() {
             Works
           </h1>
           <p className="text-indigo-200 text-sm sm:text-base leading-relaxed max-w-lg">
-            Live projects and products — from interview prep and clinic software to
+            Live projects and products - from interview prep and clinic software to
             CMS sites and small utilities. All links open the production URL.
           </p>
         </div>

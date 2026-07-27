@@ -1,4 +1,4 @@
-// Approach: Combinatorics — rightSteps = (k + (endPos - startPos)) / 2; answer = C(k, rightSteps) mod p.
+// Approach: Combinatorics - rightSteps = (k + (endPos - startPos)) / 2; answer = C(k, rightSteps) mod p.
 // Time: O(k) Space: O(k)
 
 public class Solution
