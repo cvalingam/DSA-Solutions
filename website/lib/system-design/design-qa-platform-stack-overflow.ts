@@ -40,10 +40,10 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'Read-heavy: popular questions cached at the edge/CDN.',
-        'Vote idempotency per user per post — strong enough to prevent doubles.',
+        'Vote idempotency per user per post - strong enough to prevent doubles.',
         'Search lag of a few seconds OK; vote counts can be slightly eventual on the page.',
         'Abuse: rate-limit posting and voting ([rate limiter](/system-design/design-rate-limiter)).',
-        'SEO-friendly public URLs — many visits are anonymous Google traffic.',
+        'SEO-friendly public URLs - many visits are anonymous Google traffic.',
       ],
     },
     {
@@ -54,20 +54,20 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: '100M page views/day, write rate much smaller — say 50 QPS asks/answers peak, 500 QPS votes. Average question page 50 KB HTML-equivalent API payload. Cache hit ratio on top 1% URLs should be >90%. Reputation updates are fan-out-on-write to a user counters table, async if needed.',
+      text: '100M page views/day, write rate much smaller - say 50 QPS asks/answers peak, 500 QPS votes. Average question page 50 KB HTML-equivalent API payload. Cache hit ratio on top 1% URLs should be >90%. Reputation updates are fan-out-on-write to a user counters table, async if needed.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'API tier — REST for posts, votes, users ([API design](/system-design/api-design-rest-interviews)).',
-        'Post service — questions, answers, comments, accepts.',
-        'Vote service — idempotent votes; emits score deltas.',
-        'Reputation worker — consumes vote events; updates user reputation.',
-        'Search indexer — async to Elasticsearch.',
-        'Cache / CDN — anonymous question pages and tag homepages.',
-        'Notification — new answer on your question ([notifications](/system-design/design-notification-system)).',
-        'Moderation queue — flags, spam scores, review tools.',
+        'API tier - REST for posts, votes, users ([API design](/system-design/api-design-rest-interviews)).',
+        'Post service - questions, answers, comments, accepts.',
+        'Vote service - idempotent votes; emits score deltas.',
+        'Reputation worker - consumes vote events; updates user reputation.',
+        'Search indexer - async to Elasticsearch.',
+        'Cache / CDN - anonymous question pages and tag homepages.',
+        'Notification - new answer on your question ([notifications](/system-design/design-notification-system)).',
+        'Moderation queue - flags, spam scores, review tools.',
       ],
     },
     { type: 'h2', text: 'Data model' },
@@ -85,13 +85,13 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Pick [SQL](/system-design/sql-vs-nosql-for-interviews) for posts and votes — relational integrity and unique constraints buy you correctness. Shard by question_id for answers if a single thread becomes huge; most never will.',
+      text: 'Pick [SQL](/system-design/sql-vs-nosql-for-interviews) for posts and votes - relational integrity and unique constraints buy you correctness. Shard by question_id for answers if a single thread becomes huge; most never will.',
     },
     { type: 'h2', text: 'Voting and reputation' },
     {
       type: 'ol',
       items: [
-        'POST /vote with user_id, post_id, direction — upsert on unique key.',
+        'POST /vote with user_id, post_id, direction - upsert on unique key.',
         'Compute delta vs previous vote (none → up is +1; up → down is −2, etc.).',
         'Update denormalized score on post (transaction or ordered event).',
         'Emit event; reputation worker applies rules (answer upvote +10, etc.).',
@@ -100,7 +100,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Do not increment score without the votes table — audits and undos become impossible. Eventual reputation is fine; show “score updating…” only if you must. For leaderboard-style global ranks, reuse ideas from the [leaderboard](/system-design/design-leaderboard) article sparingly — Stack Overflow is not a realtime game ranking.',
+      text: 'Do not increment score without the votes table - audits and undos become impossible. Eventual reputation is fine; show “score updating…” only if you must. For leaderboard-style global ranks, reuse ideas from the [leaderboard](/system-design/design-leaderboard) article sparingly - Stack Overflow is not a realtime game ranking.',
     },
     { type: 'h2', text: 'Read path and caching' },
     {
@@ -110,12 +110,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Search and duplicates' },
     {
       type: 'p',
-      text: 'Index title/body/tags; rank by text relevance × post score × recency. As-you-type ask box should suggest existing questions ([typeahead](/system-design/design-typeahead-autocomplete)) to reduce duplicates. “Related questions” can be a precomputed similarity list refreshed offline — same spirit as light [recommendations](/system-design/design-recommendation-system).',
+      text: 'Index title/body/tags; rank by text relevance × post score × recency. As-you-type ask box should suggest existing questions ([typeahead](/system-design/design-typeahead-autocomplete)) to reduce duplicates. “Related questions” can be a precomputed similarity list refreshed offline - same spirit as light [recommendations](/system-design/design-recommendation-system).',
     },
     { type: 'h2', text: 'Quora-style feed variant' },
     {
       type: 'p',
-      text: 'If the prompt leans Quora: add follow graph and a home feed of answers from followed topics/people. Use fan-out on write for average users and fan-out on read for celebrities — straight from the news feed playbook. Stack Overflow can stay request-response + search.',
+      text: 'If the prompt leans Quora: add follow graph and a home feed of answers from followed topics/people. Use fan-out on write for average users and fan-out on read for celebrities - straight from the news feed playbook. Stack Overflow can stay request-response + search.',
     },
     { type: 'h2', text: 'Moderation and abuse' },
     {
@@ -124,7 +124,7 @@ const article: SystemDesignArticle = {
         'Rate-limit asks/votes/votes per user and IP.',
         'Automate spam signals; send to review queue ([job scheduler](/system-design/design-distributed-job-scheduler) for SLA).',
         'Soft-delete with tombstones for audit; hard-delete attachments from object storage later.',
-        'CAPTCHA / proof-of-work on suspicious clients — mention briefly.',
+        'CAPTCHA / proof-of-work on suspicious clients - mention briefly.',
       ],
     },
     { type: 'h2', text: 'Worked example' },

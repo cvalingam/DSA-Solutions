@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Designing Google Docs is the hardest "real-time" prompt interviewers ask. Two users type in the same paragraph at the same time — both see consistent text without locks. That requires operational transform (OT) or conflict-free replicated data types (CRDTs), plus [WebSockets](/system-design/design-chat-messaging) for push latency. If you have done collaborative coding interviews, this is the same family of problem as [chat](/system-design/design-chat-messaging), but with character-level merges instead of messages.',
+      text: 'Designing Google Docs is the hardest "real-time" prompt interviewers ask. Two users type in the same paragraph at the same time - both see consistent text without locks. That requires operational transform (OT) or conflict-free replicated data types (CRDTs), plus [WebSockets](/system-design/design-chat-messaging) for push latency. If you have done collaborative coding interviews, this is the same family of problem as [chat](/system-design/design-chat-messaging), but with character-level merges instead of messages.',
     },
     {
       type: 'p',
@@ -40,14 +40,14 @@ const article: SystemDesignArticle = {
       items: [
         'Latency < 200 ms for remote keystrokes to appear.',
         'Support documents up to ~1 MB of text (not video).',
-        'Durability — never lose acknowledged edits.',
+        'Durability - never lose acknowledged edits.',
         'Availability during single data center failure.',
       ],
     },
     { type: 'h2', text: 'Naive approach (and why it fails)' },
     {
       type: 'p',
-      text: 'Lock the paragraph while User A types — terrible UX. Last-write-wins on the whole document — User B\'s sentence vanishes. Send absolute positions ("insert \'hello\' at index 42") — if User A inserts 5 chars earlier, User B\'s index 42 is wrong. You need a merge algorithm that transforms operations against concurrent ops.',
+      text: 'Lock the paragraph while User A types - terrible UX. Last-write-wins on the whole document - User B\'s sentence vanishes. Send absolute positions ("insert \'hello\' at index 42") - if User A inserts 5 chars earlier, User B\'s index 42 is wrong. You need a merge algorithm that transforms operations against concurrent ops.',
     },
     { type: 'h2', text: 'Operational transform (OT)' },
     {
@@ -57,12 +57,12 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Interview shortcut',
-      text: 'You do not need to derive OT math on a whiteboard. Say: "Clients send ops; server orders them with a revision counter; OT transforms concurrent ops so all clients converge." Mention that production OT is subtle — teams use libraries (ShareDB, custom) rather than hand-rolling.',
+      text: 'You do not need to derive OT math on a whiteboard. Say: "Clients send ops; server orders them with a revision counter; OT transforms concurrent ops so all clients converge." Mention that production OT is subtle - teams use libraries (ShareDB, custom) rather than hand-rolling.',
     },
     { type: 'h2', text: 'CRDT alternative' },
     {
       type: 'p',
-      text: 'CRDTs attach unique IDs to each character so position is defined by logical order, not integer index. Peers merge without a central server ordering step — better for offline-first and P2P. Trade-off: more metadata per character, harder to implement rich formatting. Figma and many newer editors lean CRDT. In interviews, knowing both names and trade-offs beats picking the wrong one confidently.',
+      text: 'CRDTs attach unique IDs to each character so position is defined by logical order, not integer index. Peers merge without a central server ordering step - better for offline-first and P2P. Trade-off: more metadata per character, harder to implement rich formatting. Figma and many newer editors lean CRDT. In interviews, knowing both names and trade-offs beats picking the wrong one confidently.',
     },
     {
       type: 'table',
@@ -94,7 +94,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Op log: append-only `(revision, user_id, op_payload, timestamp)` — source of truth.',
+        'Op log: append-only `(revision, user_id, op_payload, timestamp)` - source of truth.',
         'Periodic snapshot: full document JSON or compressed text in S3 for fast cold open.',
         'Open doc: load latest snapshot + replay ops after snapshot revision.',
         'Version history: list snapshot checkpoints; restore = fork new doc from old snapshot.',
@@ -102,12 +102,12 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Immutable op log resembles [event sourcing](/system-design/message-queues-async-processing) — replay rebuilds state. Size cap per doc triggers compaction.',
+      text: 'Immutable op log resembles [event sourcing](/system-design/message-queues-async-processing) - replay rebuilds state. Size cap per doc triggers compaction.',
     },
     { type: 'h2', text: 'Presence and cursors' },
     {
       type: 'p',
-      text: 'Ephemeral data — not in durable log. `PUBLISH doc:123:presence { user_id, cursor_pos, color }` every 2 seconds; TTL clears stale users. Low priority vs edit ops; dropped packets acceptable.',
+      text: 'Ephemeral data - not in durable log. `PUBLISH doc:123:presence { user_id, cursor_pos, color }` every 2 seconds; TTL clears stale users. Low priority vs edit ops; dropped packets acceptable.',
     },
     { type: 'h2', text: 'Permissions' },
     {
@@ -143,12 +143,12 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Mention that Notion and Figma made different bets (block-based CRDT vs scene graph). You are not expected to know their internals — only that real products invest years in merge correctness.',
+      text: 'Mention that Notion and Figma made different bets (block-based CRDT vs scene graph). You are not expected to know their internals - only that real products invest years in merge correctness.',
     },
     { type: 'h2', text: 'Formatting and rich text (stretch goal)' },
     {
       type: 'p',
-      text: 'Plain text OT is painful enough; bold/italic adds retained attributes per character range. Production editors store parallel attribute maps `(start, end, bold)` and apply OT to both text and marks. In interviews, say formatting is a layer above character ops — defer unless interviewer insists. Google Docs complexity is why startups ship Markdown first.',
+      text: 'Plain text OT is painful enough; bold/italic adds retained attributes per character range. Production editors store parallel attribute maps `(start, end, bold)` and apply OT to both text and marks. In interviews, say formatting is a layer above character ops - defer unless interviewer insists. Google Docs complexity is why startups ship Markdown first.',
     },
     { type: 'h2', text: 'Worked example: two users typing' },
     {
@@ -166,19 +166,19 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Hot document problem: viral doc with 10K viewers — separate read-only fan-out channel with throttled updates.',
-        'Memory per open doc: op log in RAM until snapshot — cap log length, force snapshot at 10K ops.',
+        'Hot document problem: viral doc with 10K viewers - separate read-only fan-out channel with throttled updates.',
+        'Memory per open doc: op log in RAM until snapshot - cap log length, force snapshot at 10K ops.',
         'WebSocket connections per collaboration server: ~50K practical; scale out with doc_id sharding to collaboration clusters.',
       ],
     },
     {
       type: 'p',
-      text: 'Commenting in docs parallels [chat threads](/system-design/design-chat-messaging) anchored to text ranges — store comment metadata separately, do not mix into OT stream unless comment affects layout. Suggested edits mode: ops tagged `suggestion` applied only on accept — product feature, same transport.',
+      text: 'Commenting in docs parallels [chat threads](/system-design/design-chat-messaging) anchored to text ranges - store comment metadata separately, do not mix into OT stream unless comment affects layout. Suggested edits mode: ops tagged `suggestion` applied only on accept - product feature, same transport.',
     },
     { type: 'h2', text: 'Closing pitch' },
     {
       type: 'p',
-      text: 'Propose WebSocket collaboration service, OT or CRDT for merge, append-only op log + snapshots, pub/sub for fan-out, PostgreSQL for metadata. Acknowledge complexity — you would not build OT from scratch in production. That honesty plus correct component boundaries scores higher than fake formulas.',
+      text: 'Propose WebSocket collaboration service, OT or CRDT for merge, append-only op log + snapshots, pub/sub for fan-out, PostgreSQL for metadata. Acknowledge complexity - you would not build OT from scratch in production. That honesty plus correct component boundaries scores higher than fake formulas.',
     },
   ],
 }

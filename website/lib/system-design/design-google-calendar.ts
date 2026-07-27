@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Calendar looks like CRUD until recurrence, time zones, and “find a slot for five people” show up. It borrows availability thinking from [ticket booking](/system-design/design-ticket-booking-system) (busy intervals, not finite seats) and delivery patterns from [notifications](/system-design/design-notification-system) (reminders). Interviewers listen for event modeling and sync — not whether you memorized iCal RFCs.',
+      text: 'Calendar looks like CRUD until recurrence, time zones, and “find a slot for five people” show up. It borrows availability thinking from [ticket booking](/system-design/design-ticket-booking-system) (busy intervals, not finite seats) and delivery patterns from [notifications](/system-design/design-notification-system) (reminders). Interviewers listen for event modeling and sync - not whether you memorized iCal RFCs.',
     },
     {
       type: 'p',
@@ -41,7 +41,7 @@ const article: SystemDesignArticle = {
       items: [
         'Read-heavy: month views dominate writes.',
         'Strong-ish consistency for a user’s own primary calendar; eventual OK for free/busy of others.',
-        'Correct time-zone arithmetic — DST bugs are legendary.',
+        'Correct time-zone arithmetic - DST bugs are legendary.',
         'Reminder delivery within a small skew (tens of seconds).',
       ],
     },
@@ -53,20 +53,20 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: '1B users is fantasy scale for a whiteboard — pick 100M MAU, 5 events created/user/week, huge read amplification from month grids. Reminder fan-out near the top of the hour causes spikes — classic [job scheduler](/system-design/design-distributed-job-scheduler) load shape.',
+      text: '1B users is fantasy scale for a whiteboard - pick 100M MAU, 5 events created/user/week, huge read amplification from month grids. Reminder fan-out near the top of the hour causes spikes - classic [job scheduler](/system-design/design-distributed-job-scheduler) load shape.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'API / sync service — CRUD + incremental sync tokens ([API design](/system-design/api-design-rest-interviews)).',
-        'Calendar/event store — SQL sharded by calendar_id / user_id.',
-        'Recurrence expander — library used by read path and reminder planner.',
-        'Invite service — attendee rows + email notifications.',
-        'Reminder scheduler — materialize near-term firings into a queue.',
-        'Notification workers — push/email/SMS.',
-        'Free/busy index — denormalized busy intervals for scheduling queries.',
-        'Client sync — local DB + conflict policy.',
+        'API / sync service - CRUD + incremental sync tokens ([API design](/system-design/api-design-rest-interviews)).',
+        'Calendar/event store - SQL sharded by calendar_id / user_id.',
+        'Recurrence expander - library used by read path and reminder planner.',
+        'Invite service - attendee rows + email notifications.',
+        'Reminder scheduler - materialize near-term firings into a queue.',
+        'Notification workers - push/email/SMS.',
+        'Free/busy index - denormalized busy intervals for scheduling queries.',
+        'Client sync - local DB + conflict policy.',
       ],
     },
     { type: 'h2', text: 'Data model' },
@@ -89,7 +89,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Invites and free/busy' },
     {
       type: 'p',
-      text: 'Creating an event with attendees inserts attendee rows and sends [notifications](/system-design/design-notification-system). Free/busy for scheduling: maintain busy intervals per user (expanded a few months ahead by a worker). Query intersection for proposed slots — similar spirit to availability in [Airbnb](/system-design/design-airbnb-hotel-booking), but for people instead of listings.',
+      text: 'Creating an event with attendees inserts attendee rows and sends [notifications](/system-design/design-notification-system). Free/busy for scheduling: maintain busy intervals per user (expanded a few months ahead by a worker). Query intersection for proposed slots - similar spirit to availability in [Airbnb](/system-design/design-airbnb-hotel-booking), but for people instead of listings.',
     },
     { type: 'h2', text: 'Reminders' },
     {

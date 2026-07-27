@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: '"Design a leaderboard" shows up in gaming companies, fitness apps, and anywhere users compete on scores. The core operations sound simple — update a score, show top 10, show my rank — but doing that millions of times per second with correct ordering is a classic [Redis](/system-design/design-distributed-cache-redis) interview question. It also connects to sorted-set intuition from LeetCode (heaps, priority queues) without writing a single `PriorityQueue` in C#.',
+      text: '"Design a leaderboard" shows up in gaming companies, fitness apps, and anywhere users compete on scores. The core operations sound simple - update a score, show top 10, show my rank - but doing that millions of times per second with correct ordering is a classic [Redis](/system-design/design-distributed-cache-redis) interview question. It also connects to sorted-set intuition from LeetCode (heaps, priority queues) without writing a single `PriorityQueue` in C#.',
     },
     {
       type: 'p',
@@ -42,7 +42,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Why not SQL ORDER BY?' },
     {
       type: 'p',
-      text: '`SELECT * FROM scores ORDER BY score DESC LIMIT 10` works for prototypes. At 10M players and 50K score updates per second, maintaining a global index on score becomes a write bottleneck and `LIMIT 10` still scans a large B-tree. Reads of top-K are fast; writes that reshuffle the index are not. In interviews, say SQL for durability and Redis for hot ranking — polyglot persistence from our [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) guide.',
+      text: '`SELECT * FROM scores ORDER BY score DESC LIMIT 10` works for prototypes. At 10M players and 50K score updates per second, maintaining a global index on score becomes a write bottleneck and `LIMIT 10` still scans a large B-tree. Reads of top-K are fast; writes that reshuffle the index are not. In interviews, say SQL for durability and Redis for hot ranking - polyglot persistence from our [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) guide.',
     },
     { type: 'h2', text: 'Redis sorted sets (ZSET)' },
     {
@@ -68,12 +68,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Sharding large leaderboards' },
     {
       type: 'p',
-      text: 'A single Redis node holds ~100M members comfortably for ZSET ops, but memory caps out. Shard by `hash(user_id) % num_shards` only if you partition users — global top-10 then needs merge across shards (expensive). Better: shard by `game_id` or `region` so each board is self-contained. For a true planet-scale single board, use Redis Cluster with one key per board and vertical scale first; mention [consistent hashing](/system-design/design-distributed-cache-redis) when adding nodes.',
+      text: 'A single Redis node holds ~100M members comfortably for ZSET ops, but memory caps out. Shard by `hash(user_id) % num_shards` only if you partition users - global top-10 then needs merge across shards (expensive). Better: shard by `game_id` or `region` so each board is self-contained. For a true planet-scale single board, use Redis Cluster with one key per board and vertical scale first; mention [consistent hashing](/system-design/design-distributed-cache-redis) when adding nodes.',
     },
     { type: 'h2', text: 'Friends leaderboard' },
     {
       type: 'p',
-      text: 'Do not maintain a separate ZSET per user\'s friend graph (combinatorial explosion). On read: fetch friend IDs from social graph service, `ZMScore` or pipelined `ZSCORE` for each friend, sort in app memory if friend count < 500. For larger graphs, maintain a friends-only ZSET updated on each friend\'s score change via [async fan-out](/system-design/design-news-feed) — trade write amplification for faster reads.',
+      text: 'Do not maintain a separate ZSET per user\'s friend graph (combinatorial explosion). On read: fetch friend IDs from social graph service, `ZMScore` or pipelined `ZSCORE` for each friend, sort in app memory if friend count < 500. For larger graphs, maintain a friends-only ZSET updated on each friend\'s score change via [async fan-out](/system-design/design-news-feed) - trade write amplification for faster reads.',
     },
     { type: 'h2', text: 'Time-windowed boards (daily / weekly)' },
     {
@@ -81,7 +81,7 @@ const article: SystemDesignArticle = {
       items: [
         'Key naming: `lb:daily:2026-07-08`, `lb:weekly:2026-W27`.',
         'Set TTL 8 days on daily keys so Redis reclaims memory automatically.',
-        'Rolling window alternative: store score events in a stream and aggregate — heavier, use only if rules are complex.',
+        'Rolling window alternative: store score events in a stream and aggregate - heavier, use only if rules are complex.',
       ],
     },
     { type: 'h2', text: 'API examples' },
@@ -96,7 +96,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Protect write endpoints with [rate limiting](/system-design/design-rate-limiter) — score cheating bots are common.',
+      text: 'Protect write endpoints with [rate limiting](/system-design/design-rate-limiter) - score cheating bots are common.',
     },
     { type: 'h2', text: 'Failure modes' },
     {
@@ -121,13 +121,13 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Percentile ranks without scanning everyone' },
     {
       type: 'p',
-      text: 'Exact rank from ZREVRANK is O(log N). "Top 5%" for 10M players without O(N) scan: maintain coarse histogram buckets (score 0–999, 1000–1999, …) updated on each ZADD, or approximate with Redis `ZCOUNT` between score ranges. For interviews, ZREVRANK plus exact rank is enough; mention approximation only if interviewer asks about percentiles at scale.',
+      text: 'Exact rank from ZREVRANK is O(log N). "Top 5%" for 10M players without O(N) scan: maintain coarse histogram buckets (score 0-999, 1000-1999, …) updated on each ZADD, or approximate with Redis `ZCOUNT` between score ranges. For interviews, ZREVRANK plus exact rank is enough; mention approximation only if interviewer asks about percentiles at scale.',
     },
     { type: 'h2', text: 'Cheating and integrity' },
     {
       type: 'ul',
       items: [
-        'Server-side score validation — never trust client-reported points blindly.',
+        'Server-side score validation - never trust client-reported points blindly.',
         'Detect impossible score jumps (0 to 999999 in one second).',
         'Rate limit score submissions per user per minute.',
         'Ban list synced to API layer before ZADD.',
@@ -143,7 +143,7 @@ const article: SystemDesignArticle = {
       headers: ['Scale', 'Approach'],
       rows: [
         ['< 1M players per board', 'Single Redis ZSET'],
-        ['1M–50M', 'Redis Cluster, one key per board'],
+        ['1M-50M', 'Redis Cluster, one key per board'],
         ['50M+ global', 'Regional boards + optional merge job'],
         ['Friends only', 'Read-time ZMScore on friend list'],
       ],
@@ -156,11 +156,11 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Global and regional leaderboards' },
     {
       type: 'p',
-      text: 'Separate ZSET per region (`lb:weekly:EU`, `lb:weekly:APAC`) keeps boards fair and shards naturally. A "global" board merging regions either runs periodic merge job (union top 1000 from each) or maintains a third ZSET fed by all score events — doubles write path. For interviews, regional boards plus optional global snapshot is a clean answer.',
+      text: 'Separate ZSET per region (`lb:weekly:EU`, `lb:weekly:APAC`) keeps boards fair and shards naturally. A "global" board merging regions either runs periodic merge job (union top 1000 from each) or maintains a third ZSET fed by all score events - doubles write path. For interviews, regional boards plus optional global snapshot is a clean answer.',
     },
     {
       type: 'p',
-      text: 'Persistence: Redis is in-memory — snapshot ZSET to disk hourly or replay Kafka score events to rebuild after Redis failure. Leaderboard data is not as critical as payments; brief empty board during rebuild may be acceptable with "scores updating" banner.',
+      text: 'Persistence: Redis is in-memory - snapshot ZSET to disk hourly or replay Kafka score events to rebuild after Redis failure. Leaderboard data is not as critical as payments; brief empty board during rebuild may be acceptable with "scores updating" banner.',
     },
     { type: 'h2', text: 'Interview closing' },
     {

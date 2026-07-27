@@ -12,7 +12,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Almost every product sends notifications — order shipped, friend request, password reset. Interviewers use this prompt to test queues, fan-out, third-party providers, and failure handling without building a full [chat system](/system-design/design-chat-messaging). Start with the [interview framework](/system-design/how-to-approach-system-design-interviews): clarify channels, volume, and whether delivery must be exactly-once or at-least-once.',
+      text: 'Almost every product sends notifications - order shipped, friend request, password reset. Interviewers use this prompt to test queues, fan-out, third-party providers, and failure handling without building a full [chat system](/system-design/design-chat-messaging). Start with the [interview framework](/system-design/how-to-approach-system-design-interviews): clarify channels, volume, and whether delivery must be exactly-once or at-least-once.',
     },
     { type: 'h2', text: 'Requirements' },
     { type: 'h3', text: 'Functional' },
@@ -61,7 +61,7 @@ const article: SystemDesignArticle = {
       type: 'ol',
       items: [
         'Order service POST /v1/notifications { user_id, template_id, channel, payload, idempotency_key }.',
-        'API validates idempotency_key — return 200 with same notification_id if duplicate.',
+        'API validates idempotency_key - return 200 with same notification_id if duplicate.',
         'Load user preferences; skip channel if opted out (return accepted but not queued).',
         'Render template with payload variables.',
         'Publish event to Kafka topic notifications.{channel} with priority header.',
@@ -78,12 +78,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Templates and localization' },
     {
       type: 'p',
-      text: 'Templates live in DB: template_id, channel, locale, subject/body with {{placeholders}}. Render server-side before enqueue — never trust client HTML for email (XSS). For 10 locales, store 10 rows per template or use a CMS. Version templates so old queued jobs reference template_version at enqueue time.',
+      text: 'Templates live in DB: template_id, channel, locale, subject/body with {{placeholders}}. Render server-side before enqueue - never trust client HTML for email (XSS). For 10 locales, store 10 rows per template or use a CMS. Version templates so old queued jobs reference template_version at enqueue time.',
     },
     { type: 'h2', text: 'Scaling workers' },
     {
       type: 'p',
-      text: 'Each channel scales independently behind its own consumer group. Email provider limits 100/sec — scale workers but respect provider [rate limits](/system-design/design-rate-limiter) with a token bucket in the worker. Push scales higher; SMS is expensive — batch where possible. Use [load balancing](/system-design/load-balancing-and-scaling) for stateless API and worker fleets.',
+      text: 'Each channel scales independently behind its own consumer group. Email provider limits 100/sec - scale workers but respect provider [rate limits](/system-design/design-rate-limiter) with a token bucket in the worker. Push scales higher; SMS is expensive - batch where possible. Use [load balancing](/system-design/load-balancing-and-scaling) for stateless API and worker fleets.',
     },
     { type: 'h2', text: 'Data model sketch' },
     {
@@ -109,7 +109,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '1M notifications/day ≈ 12/sec average, ~100/sec peak. Push payload ~500 bytes → 50 KB/sec peak egress to FCM — trivial. Email HTML ~50 KB × 200K emails/day → storage for templates and logs, not bandwidth. Worker pool: if each worker sends 50/sec and peak is 5K/sec, need ~100 workers per channel with headroom. Metadata DB: 1M rows/day × 365 ≈ 400M rows/year — partition by created_at or archive to cold storage.',
+      text: '1M notifications/day ≈ 12/sec average, ~100/sec peak. Push payload ~500 bytes → 50 KB/sec peak egress to FCM - trivial. Email HTML ~50 KB × 200K emails/day → storage for templates and logs, not bandwidth. Worker pool: if each worker sends 50/sec and peak is 5K/sec, need ~100 workers per channel with headroom. Metadata DB: 1M rows/day × 365 ≈ 400M rows/year - partition by created_at or archive to cold storage.',
     },
     { type: 'h2', text: 'Priority queues' },
     {
@@ -139,7 +139,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Provider abstraction' },
     {
       type: 'p',
-      text: 'Wrap FCM, APNs, SendGrid behind a NotificationProvider interface. Swap vendors without changing workers. Store provider_message_id on success for support lookups. Circuit-breaker when provider error rate spikes — pause marketing, keep transactional on backup provider if configured.',
+      text: 'Wrap FCM, APNs, SendGrid behind a NotificationProvider interface. Swap vendors without changing workers. Store provider_message_id on success for support lookups. Circuit-breaker when provider error rate spikes - pause marketing, keep transactional on backup provider if configured.',
     },
     { type: 'h2', text: 'Sample API contract' },
     {
@@ -156,12 +156,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Scheduled and digest notifications' },
     {
       type: 'p',
-      text: 'Schedule: write row with send_at; cron scanner publishes to queue when due — same worker path. Daily digest: batch per user at 8am local time — shard users by timezone, enqueue one job per user with aggregated content. Avoid sending 1M jobs at midnight UTC; spread over the hour.',
+      text: 'Schedule: write row with send_at; cron scanner publishes to queue when due - same worker path. Daily digest: batch per user at 8am local time - shard users by timezone, enqueue one job per user with aggregated content. Avoid sending 1M jobs at midnight UTC; spread over the hour.',
     },
     { type: 'h2', text: 'Push channel in depth' },
     {
       type: 'p',
-      text: 'Mobile push requires device tokens per app install. Store user_devices: user_id, platform (iOS/Android), token, last_seen. On send, worker loads active tokens for user_id; calls FCM (Android) or APNs (iOS). Invalid token response → mark device dead. Users with three devices get three push attempts unless you collapse to one notification per logical event. Payload size limits (~4KB) — deep links only, not full email body.',
+      text: 'Mobile push requires device tokens per app install. Store user_devices: user_id, platform (iOS/Android), token, last_seen. On send, worker loads active tokens for user_id; calls FCM (Android) or APNs (iOS). Invalid token response → mark device dead. Users with three devices get three push attempts unless you collapse to one notification per logical event. Payload size limits (~4KB) - deep links only, not full email body.',
     },
     { type: 'h2', text: 'Email and SMS specifics' },
     {
@@ -187,7 +187,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Sample opening (first three minutes)' },
     {
       type: 'p',
-      text: 'Interviewer: "Design a notification system." You: "Before I draw boxes — which channels matter for v1: push, email, SMS, in-app? Is this transactional only or marketing too? For scale, should I assume millions per day? I will assume at-least-once delivery with idempotency keys, async workers per channel, and preference checks before enqueue." That opening shows product sense and sets scope.',
+      text: 'Interviewer: "Design a notification system." You: "Before I draw boxes - which channels matter for v1: push, email, SMS, in-app? Is this transactional only or marketing too? For scale, should I assume millions per day? I will assume at-least-once delivery with idempotency keys, async workers per channel, and preference checks before enqueue." That opening shows product sense and sets scope.',
     },
     { type: 'h2', text: 'What to say in the last five minutes' },
     {

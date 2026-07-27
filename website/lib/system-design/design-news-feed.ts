@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'The news feed is one of the most common system design prompts at product companies. It sounds simple — "show me recent posts from people I follow" — but the moment you mention celebrities with 50 million followers, the naive design breaks. This walkthrough follows the same framework as our [interview guide](/system-design/how-to-approach-system-design-interviews) and leans heavily on [caching](/system-design/caching-fundamentals-for-interviews).',
+      text: 'The news feed is one of the most common system design prompts at product companies. It sounds simple - "show me recent posts from people I follow" - but the moment you mention celebrities with 50 million followers, the naive design breaks. This walkthrough follows the same framework as our [interview guide](/system-design/how-to-approach-system-design-interviews) and leans heavily on [caching](/system-design/caching-fundamentals-for-interviews).',
     },
     { type: 'h2', text: 'Requirements' },
     { type: 'h3', text: 'Functional' },
@@ -42,7 +42,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: 'Assume 200M DAU, each views feed 5 times/day → 1B feed reads/day ≈ 12,000 reads/sec average, ~60,000/sec peak. Posts: 100M new posts/day ≈ 1,200 writes/sec. Storage: if average post is 500 bytes metadata + media in object storage, posts DB grows ~50GB/day before replication. Feed cache per user might hold 500 post IDs × 8 bytes = 4KB — for 200M active users that is 800GB if everyone is cached (you will not cache everyone).',
+      text: 'Assume 200M DAU, each views feed 5 times/day → 1B feed reads/day ≈ 12,000 reads/sec average, ~60,000/sec peak. Posts: 100M new posts/day ≈ 1,200 writes/sec. Storage: if average post is 500 bytes metadata + media in object storage, posts DB grows ~50GB/day before replication. Feed cache per user might hold 500 post IDs × 8 bytes = 4KB - for 200M active users that is 800GB if everyone is cached (you will not cache everyone).',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
@@ -128,29 +128,29 @@ const article: SystemDesignArticle = {
       headers: ['Failure', 'Behaviour'],
       rows: [
         ['Fan-out worker lag', 'User sees own post immediately; followers see delay of seconds'],
-        ['Redis miss', 'Fall back to fan-out on read from DB — slower but correct'],
+        ['Redis miss', 'Fall back to fan-out on read from DB - slower but correct'],
         ['Celebrity post', 'Never fan-out; always merged at read'],
       ],
     },
     { type: 'h2', text: 'Unfollow, block, and deleted posts' },
     {
       type: 'p',
-      text: 'When user B unfollows A, stop fanning A\'s future posts into B\'s timeline — but you do not need to purge historical IDs immediately; they age out as the Redis list is trimmed. Blocks are stronger: filter A\'s post IDs at read time even if they remain in cache. Deleted posts should publish a tombstone event so fan-out workers and read path can remove or hide the post_id. Mentioning this shows you think about graph changes, not just the happy path.',
+      text: 'When user B unfollows A, stop fanning A\'s future posts into B\'s timeline - but you do not need to purge historical IDs immediately; they age out as the Redis list is trimmed. Blocks are stronger: filter A\'s post IDs at read time even if they remain in cache. Deleted posts should publish a tombstone event so fan-out workers and read path can remove or hide the post_id. Mentioning this shows you think about graph changes, not just the happy path.',
     },
     { type: 'h2', text: 'Hot keys and sharding timelines' },
     {
       type: 'p',
-      text: 'A celebrity does not fan-out on write, but millions of users may still read the same hot post metadata. Cache post bodies by post_id in Redis with TTL — classic [cache-aside](/system-design/caching-fundamentals-for-interviews). Timeline lists themselves can shard across Redis Cluster by hash of user_id so no single node holds every feed. If one influencer triggers read spikes, CDN + post cache absorbs it; timeline list size stays bounded by LTRIM.',
+      text: 'A celebrity does not fan-out on write, but millions of users may still read the same hot post metadata. Cache post bodies by post_id in Redis with TTL - classic [cache-aside](/system-design/caching-fundamentals-for-interviews). Timeline lists themselves can shard across Redis Cluster by hash of user_id so no single node holds every feed. If one influencer triggers read spikes, CDN + post cache absorbs it; timeline list size stays bounded by LTRIM.',
     },
     { type: 'h2', text: 'Ranking layer (v2)' },
     {
       type: 'p',
-      text: 'Reverse-chronological is v1. Engagement ranking scores each candidate post: affinity (how often you interact with author), recency decay, and engagement velocity (likes in last hour). Fetch 200 recent post IDs from cache, score in the app tier or a ranking service, return top 20. Never rank the entire database — narrow candidates first, then rank. ML models are optional depth; describing the candidate → score → sort pipeline is enough for most interviews.',
+      text: 'Reverse-chronological is v1. Engagement ranking scores each candidate post: affinity (how often you interact with author), recency decay, and engagement velocity (likes in last hour). Fetch 200 recent post IDs from cache, score in the app tier or a ranking service, return top 20. Never rank the entire database - narrow candidates first, then rank. ML models are optional depth; describing the candidate → score → sort pipeline is enough for most interviews.',
     },
     { type: 'h2', text: 'Database choice per component' },
     {
       type: 'p',
-      text: 'Posts and follows fit PostgreSQL with indexes on user_id and created_at. Timelines belong in Redis, not SQL — see our [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) guide for why polyglot persistence fits here. Media blobs live in S3; only URLs in the posts table.',
+      text: 'Posts and follows fit PostgreSQL with indexes on user_id and created_at. Timelines belong in Redis, not SQL - see our [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) guide for why polyglot persistence fits here. Media blobs live in S3; only URLs in the posts table.',
     },
     { type: 'h2', text: 'Scaling the read path' },
     {
@@ -172,7 +172,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Use cursor pagination on feed and profile — see [API design](/system-design/api-design-rest-interviews). Return 429 on post spam via [rate limiter](/system-design/design-rate-limiter).',
+      text: 'Use cursor pagination on feed and profile - see [API design](/system-design/api-design-rest-interviews). Return 429 on post spam via [rate limiter](/system-design/design-rate-limiter).',
     },
     { type: 'h2', text: 'Media upload flow' },
     {
@@ -182,7 +182,7 @@ const article: SystemDesignArticle = {
         'Server returns pre-signed S3 PUT URL and media_id.',
         'Client uploads bytes directly to S3 (offloads bandwidth from app tier).',
         'Client POST /v1/posts with { content, media_id }.',
-        'CDN serves media_url on feed read — same pattern as [URL shortener](/system-design/design-url-shortener) redirect offload.',
+        'CDN serves media_url on feed read - same pattern as [URL shortener](/system-design/design-url-shortener) redirect offload.',
       ],
     },
     { type: 'h2', text: 'Follow graph at scale' },

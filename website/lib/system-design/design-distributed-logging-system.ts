@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Every microservice wants to printf into the void. A logging platform turns that void into searchable history. Interviewers like this prompt because it is a write-heavy ingest pipeline with cheap retention tiers — cousin to [metrics monitoring](/system-design/design-metrics-monitoring-system), but with fatter, less structured payloads.',
+      text: 'Every microservice wants to printf into the void. A logging platform turns that void into searchable history. Interviewers like this prompt because it is a write-heavy ingest pipeline with cheap retention tiers - cousin to [metrics monitoring](/system-design/design-metrics-monitoring-system), but with fatter, less structured payloads.',
     },
     {
       type: 'p',
@@ -40,7 +40,7 @@ const article: SystemDesignArticle = {
       items: [
         'Ingest durability: accepted logs should not vanish on collector restart.',
         'Search freshness: seconds to low minutes for indexed fields.',
-        'Backpressure: when indexers lag, buffer — do not crash app servers.',
+        'Backpressure: when indexers lag, buffer - do not crash app servers.',
         'Multi-tenant isolation so one noisy customer cannot starve others.',
       ],
     },
@@ -52,19 +52,19 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: 'Order-of-magnitude: 10K hosts averaging tens of KB/s is already multi‑GB/min; a chatty host at ~500 KB/s makes the math ugly fast (10K × 500 KB/s ≈ 5 GB/s before compression). With ~5–10× compression you still land on terabytes/day. Indexing every field forever is unaffordable — index a curated set (service, level, trace_id) and keep raw blobs for selective scan.',
+      text: 'Order-of-magnitude: 10K hosts averaging tens of KB/s is already multi‑GB/min; a chatty host at ~500 KB/s makes the math ugly fast (10K × 500 KB/s ≈ 5 GB/s before compression). With ~5-10× compression you still land on terabytes/day. Indexing every field forever is unaffordable - index a curated set (service, level, trace_id) and keep raw blobs for selective scan.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'Agent (Fluent Bit / OpenTelemetry) — tail files or receive via SDK; batch + compress.',
-        'Load-balanced collectors — validate, enrich, apply [rate limits](/system-design/design-rate-limiter) per tenant.',
-        'Kafka (or Pulsar) — durable buffer; partition by tenant/service.',
-        'Indexer workers — parse, write hot index (OpenSearch/Elasticsearch).',
-        'Object storage — compressed raw segments for cold retention.',
-        'Query API — fan out to hot index; fall back to cold scan jobs for old ranges.',
-        'UI / alerts — dashboards and threshold notifications.',
+        'Agent (Fluent Bit / OpenTelemetry) - tail files or receive via SDK; batch + compress.',
+        'Load-balanced collectors - validate, enrich, apply [rate limits](/system-design/design-rate-limiter) per tenant.',
+        'Kafka (or Pulsar) - durable buffer; partition by tenant/service.',
+        'Indexer workers - parse, write hot index (OpenSearch/Elasticsearch).',
+        'Object storage - compressed raw segments for cold retention.',
+        'Query API - fan out to hot index; fall back to cold scan jobs for old ranges.',
+        'UI / alerts - dashboards and threshold notifications.',
       ],
     },
     { type: 'h2', text: 'Ingest path' },
@@ -72,7 +72,7 @@ const article: SystemDesignArticle = {
       type: 'ol',
       items: [
         'App writes structured JSON logs (prefer this over free-text soup).',
-        'Agent batches (e.g. 1–5 MB or 1–2 s), sends HTTPS to collectors.',
+        'Agent batches (e.g. 1-5 MB or 1-2 s), sends HTTPS to collectors.',
         'Collector acks after Kafka produce with required acks.',
         'Indexer commits offsets only after durable index/blob write (at-least-once → dedupe by event_id if needed).',
       ],
@@ -86,15 +86,15 @@ const article: SystemDesignArticle = {
       type: 'table',
       headers: ['Tier', 'Store', 'Query'],
       rows: [
-        ['Hot (0–7d)', 'Elasticsearch / OpenSearch', 'Interactive search'],
-        ['Warm (7–30d)', 'Fewer replicas / spin-down nodes', 'Slower search'],
+        ['Hot (0-7d)', 'Elasticsearch / OpenSearch', 'Interactive search'],
+        ['Warm (7-30d)', 'Fewer replicas / spin-down nodes', 'Slower search'],
         ['Cold (30d+)', 'S3/GCS compressed', 'Async recreate or Athena-style scan'],
       ],
     },
     { type: 'h2', text: 'Query path' },
     {
       type: 'p',
-      text: 'Parse a Lucene-like query: service:checkout AND level:ERROR AND trace_id:X. Time range prunes indices (daily index pattern). Cap result size; paginate. Expensive queries go to an offline cluster or require sampling — protect the hot cluster like you protect an origin behind a [CDN](/system-design/design-cdn-content-delivery-network).',
+      text: 'Parse a Lucene-like query: service:checkout AND level:ERROR AND trace_id:X. Time range prunes indices (daily index pattern). Cap result size; paginate. Expensive queries go to an offline cluster or require sampling - protect the hot cluster like you protect an origin behind a [CDN](/system-design/design-cdn-content-delivery-network).',
     },
     { type: 'h2', text: 'Scaling and multi-tenancy' },
     {

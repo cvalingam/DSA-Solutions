@@ -62,18 +62,18 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Browse path (read-heavy)' },
     {
       type: 'p',
-      text: 'Product detail served from [cache](/system-design/caching-fundamentals-for-interviews) — CDN for images, Redis for JSON catalog rows. Category browse uses denormalized lists or search filters. Price may change — short TTL (60 sec) or version field on cache entry. [Load balancer](/system-design/load-balancing-and-scaling) scales stateless API tier horizontally. Database: PostgreSQL or Dynamo for catalog; [sharding](/system-design/database-sharding-replication) by product_id at billion-SKU scale.',
+      text: 'Product detail served from [cache](/system-design/caching-fundamentals-for-interviews) - CDN for images, Redis for JSON catalog rows. Category browse uses denormalized lists or search filters. Price may change - short TTL (60 sec) or version field on cache entry. [Load balancer](/system-design/load-balancing-and-scaling) scales stateless API tier horizontally. Database: PostgreSQL or Dynamo for catalog; [sharding](/system-design/database-sharding-replication) by product_id at billion-SKU scale.',
     },
     { type: 'h2', text: 'Cart' },
     {
       type: 'p',
-      text: 'Cart is ephemeral: `cart:{user_id}` hash in Redis — `sku_id → { qty, price_snapshot }`. No inventory reservation in cart (Amazon model) — reservation happens at checkout. Anonymous carts keyed by session cookie; merge on login. TTL 30 days for logged-in users. Cart writes are cheap; losing Redis loses carts — acceptable vs losing orders.',
+      text: 'Cart is ephemeral: `cart:{user_id}` hash in Redis - `sku_id → { qty, price_snapshot }`. No inventory reservation in cart (Amazon model) - reservation happens at checkout. Anonymous carts keyed by session cookie; merge on login. TTL 30 days for logged-in users. Cart writes are cheap; losing Redis loses carts - acceptable vs losing orders.',
     },
     { type: 'h2', text: 'Checkout and inventory' },
     {
       type: 'ol',
       items: [
-        'POST /checkout — validate cart SKUs still active and priced.',
+        'POST /checkout - validate cart SKUs still active and priced.',
         'Inventory: `UPDATE inventory SET reserved = reserved + ? WHERE sku_id = ? AND quantity - reserved >= ?` in transaction.',
         'If any SKU fails, abort entire checkout (all-or-nothing).',
         'Create order row status=PENDING_PAYMENT; call payment authorize.',
@@ -83,17 +83,17 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Overselling is the failure mode interviewers probe. Row-level lock or atomic UPDATE on inventory — same pattern as [ticket booking](/system-design/design-ticket-booking-system). Do not cache inventory counts for checkout writes.',
+      text: 'Overselling is the failure mode interviewers probe. Row-level lock or atomic UPDATE on inventory - same pattern as [ticket booking](/system-design/design-ticket-booking-system). Do not cache inventory counts for checkout writes.',
     },
     { type: 'h2', text: 'Order service and sagas' },
     {
       type: 'p',
-      text: 'Checkout spans inventory, payment, and shipping label — classic saga. Happy path: single orchestrated flow. Payment timeout: compensating transaction releases inventory reservation. Use idempotency key on `POST /checkout` so retry does not double-order ([unique IDs](/system-design/design-unique-id-generator)). Order state machine: PENDING_PAYMENT → CONFIRMED → SHIPPED → DELIVERED.',
+      text: 'Checkout spans inventory, payment, and shipping label - classic saga. Happy path: single orchestrated flow. Payment timeout: compensating transaction releases inventory reservation. Use idempotency key on `POST /checkout` so retry does not double-order ([unique IDs](/system-design/design-unique-id-generator)). Order state machine: PENDING_PAYMENT → CONFIRMED → SHIPPED → DELIVERED.',
     },
     { type: 'h2', text: 'Search and recommendations' },
     {
       type: 'p',
-      text: 'Catalog search mirrors [search engine](/system-design/design-search-engine) design: inverted index on title, brand, attributes. Autocomplete on product names ([typeahead](/system-design/design-typeahead-autocomplete)). Recommendations ("customers also bought") precomputed offline into Redis feature store — not on checkout critical path.',
+      text: 'Catalog search mirrors [search engine](/system-design/design-search-engine) design: inverted index on title, brand, attributes. Autocomplete on product names ([typeahead](/system-design/design-typeahead-autocomplete)). Recommendations ("customers also bought") precomputed offline into Redis feature store - not on checkout critical path.',
     },
     { type: 'h2', text: 'Data model sketch' },
     {
@@ -103,13 +103,13 @@ const article: SystemDesignArticle = {
         'inventory: sku_id, warehouse_id, quantity, reserved',
         'orders: order_id, user_id, status, total, payment_id, created_at',
         'order_items: order_id, sku_id, qty, price_at_purchase',
-        'carts: Redis only — not durable SQL',
+        'carts: Redis only - not durable SQL',
       ],
     },
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '100M SKUs × 2 KB metadata ≈ 200 GB catalog — fits sharded SQL with aggressive caching. 1M orders/day ≈ 12 order writes/sec average (500/sec peak on Black Friday) — modest for PostgreSQL. Browse 50M DAU × 20 page views × 5 KB ≈ 5 TB/day CDN traffic if uncached — cache product pages at edge. Black Friday: queue checkout if inventory service saturates ([rate limiter](/system-design/design-rate-limiter)).',
+      text: '100M SKUs × 2 KB metadata ≈ 200 GB catalog - fits sharded SQL with aggressive caching. 1M orders/day ≈ 12 order writes/sec average (500/sec peak on Black Friday) - modest for PostgreSQL. Browse 50M DAU × 20 page views × 5 KB ≈ 5 TB/day CDN traffic if uncached - cache product pages at edge. Black Friday: queue checkout if inventory service saturates ([rate limiter](/system-design/design-rate-limiter)).',
     },
     { type: 'h2', text: 'Failure modes' },
     {
@@ -127,27 +127,27 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'GET /products/{sku} — detail (cached)',
-        'GET /search?q= — Elasticsearch',
-        'POST /cart/items — add SKU',
-        'POST /checkout — idempotency-key header required',
-        'GET /orders/{id} — status',
+        'GET /products/{sku} - detail (cached)',
+        'GET /search?q= - Elasticsearch',
+        'POST /cart/items - add SKU',
+        'POST /checkout - idempotency-key header required',
+        'GET /orders/{id} - status',
       ],
     },
     { type: 'h2', text: 'Sample opening (first three minutes)' },
     {
       type: 'p',
-      text: 'Interviewer: "Design Amazon." You: "I will separate browse — cached catalog and search — from checkout — transactional inventory and payment. Cart lives in Redis without reservation. Checkout atomically reserves stock, charges payment with idempotency, and emits fulfillment events. I will clarify marketplace scope and estimate read vs write QPS."',
+      text: 'Interviewer: "Design Amazon." You: "I will separate browse - cached catalog and search - from checkout - transactional inventory and payment. Cart lives in Redis without reservation. Checkout atomically reserves stock, charges payment with idempotency, and emits fulfillment events. I will clarify marketplace scope and estimate read vs write QPS."',
     },
     { type: 'h2', text: 'Warehouse fulfillment (async)' },
     {
       type: 'p',
-      text: 'After order CONFIRMED, warehouse service consumes Kafka event, picks nearest fulfillment centre with stock, prints label, updates tracking. User sees SHIPPED via polling or push [notification](/system-design/design-notification-system). Returns flow increments inventory when item received — separate reverse saga. None of this blocks checkout latency.',
+      text: 'After order CONFIRMED, warehouse service consumes Kafka event, picks nearest fulfillment centre with stock, prints label, updates tracking. User sees SHIPPED via polling or push [notification](/system-design/design-notification-system). Returns flow increments inventory when item received - separate reverse saga. None of this blocks checkout latency.',
     },
     { type: 'h2', text: 'Reviews and ratings' },
     {
       type: 'p',
-      text: 'Product reviews are write-rare, read-often — eventual consistency fine. Aggregate rating updated async from review stream; detail page shows cached 4.3 stars with minutes of lag. Do not couple review writes to purchase transaction.',
+      text: 'Product reviews are write-rare, read-often - eventual consistency fine. Aggregate rating updated async from review stream; detail page shows cached 4.3 stars with minutes of lag. Do not couple review writes to purchase transaction.',
     },
     { type: 'h2', text: 'What to say in the last five minutes' },
     {
@@ -168,7 +168,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'E-commerce is two systems glued together: a fast catalog and a careful checkout. Nail inventory atomicity and payment idempotency — everything else is caching and search you have already practised on this site.',
+      text: 'E-commerce is two systems glued together: a fast catalog and a careful checkout. Nail inventory atomicity and payment idempotency - everything else is caching and search you have already practised on this site.',
     },
   ],
 }

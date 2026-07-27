@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Yelp (or “find coffee near me”) is the classic geospatial interview. The hard part is not storing businesses — it is answering “points within radius R of (lat, lng), filtered by category, ranked by distance and rating” in tens of milliseconds. You will reuse geo ideas from [Uber](/system-design/design-ride-hailing-uber) but optimize for read-heavy discovery instead of real-time driver matching.',
+      text: 'Yelp (or “find coffee near me”) is the classic geospatial interview. The hard part is not storing businesses - it is answering “points within radius R of (lat, lng), filtered by category, ranked by distance and rating” in tens of milliseconds. You will reuse geo ideas from [Uber](/system-design/design-ride-hailing-uber) but optimize for read-heavy discovery instead of real-time driver matching.',
     },
     {
       type: 'p',
@@ -38,7 +38,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Search p99 under ~100–150 ms.',
+        'Search p99 under ~100-150 ms.',
         'Freshness: new business visible within minutes; reviews near-real-time on detail page.',
         'Scale to tens of millions of businesses and high mobile QPS in dense cities.',
       ],
@@ -72,12 +72,12 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'Business service — metadata in PostgreSQL (business_id, name, category, lat, lng, hours).',
-        'Geo index — Redis sets keyed by geohash → business_ids, or Elasticsearch geo_point index.',
-        'Search / ranker — merge candidates, apply filters, score.',
-        'Review service — append-only reviews; aggregate rating async.',
-        'Media — S3 + CDN for photos.',
-        'Cache — hot geohash result pages in Redis ([caching](/system-design/caching-fundamentals-for-interviews)).',
+        'Business service - metadata in PostgreSQL (business_id, name, category, lat, lng, hours).',
+        'Geo index - Redis sets keyed by geohash → business_ids, or Elasticsearch geo_point index.',
+        'Search / ranker - merge candidates, apply filters, score.',
+        'Review service - append-only reviews; aggregate rating async.',
+        'Media - S3 + CDN for photos.',
+        'Cache - hot geohash result pages in Redis ([caching](/system-design/caching-fundamentals-for-interviews)).',
       ],
     },
     { type: 'h3', text: 'Why not SQL alone?' },
@@ -88,7 +88,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Ranking' },
     {
       type: 'p',
-      text: 'Score = f(distance, rating, review_count, text relevance, business response rate). Keep the formula simple: weighted sum. Personalization is a stretch. Never rank only by distance — a 4.9 café 200 m away beats a 2.0 café 50 m away for most products.',
+      text: 'Score = f(distance, rating, review_count, text relevance, business response rate). Keep the formula simple: weighted sum. Personalization is a stretch. Never rank only by distance - a 4.9 café 200 m away beats a 2.0 café 50 m away for most products.',
     },
     {
       type: 'ul',
@@ -122,10 +122,10 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'International date line / poles — use a library; mention you would not hand-roll spherical math.',
-        'Geohash boundaries — always include neighbors or results vanish at cell edges.',
-        'Moving user — mobile refetches on significant location change; debounce.',
-        'Duplicate listings — dedupe by place_id / address fingerprint.',
+        'International date line / poles - use a library; mention you would not hand-roll spherical math.',
+        'Geohash boundaries - always include neighbors or results vanish at cell edges.',
+        'Moving user - mobile refetches on significant location change; debounce.',
+        'Duplicate listings - dedupe by place_id / address fingerprint.',
       ],
     },
     { type: 'h2', text: 'Worked example' },
@@ -142,7 +142,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Autocomplete and discovery' },
     {
       type: 'p',
-      text: 'As the user types “piz”, hit a prefix index scoped to the current city or viewport — reuse [typeahead](/system-design/design-typeahead-autocomplete) with a geo filter. Popular queries (“best tacos near me”) can be cached as entire result lists keyed by coarse geohash + query hash.',
+      text: 'As the user types “piz”, hit a prefix index scoped to the current city or viewport - reuse [typeahead](/system-design/design-typeahead-autocomplete) with a geo filter. Popular queries (“best tacos near me”) can be cached as entire result lists keyed by coarse geohash + query hash.',
     },
     {
       type: 'table',
@@ -156,7 +156,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Fraudulent reviews and fake businesses need async moderation queues — not on the search critical path. Shadow-ban in the index by flipping an `is_visible` flag and reindexing.',
+      text: 'Fraudulent reviews and fake businesses need async moderation queues - not on the search critical path. Shadow-ban in the index by flipping an `is_visible` flag and reindexing.',
     },
     { type: 'h2', text: 'Map view vs list view' },
     {

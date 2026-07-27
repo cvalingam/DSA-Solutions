@@ -12,7 +12,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'The best system design answers use async somewhere — analytics on [URL shortener](/system-design/design-url-shortener) clicks, fan-out in [news feed](/system-design/design-news-feed), delivery in [notifications](/system-design/design-notification-system). This article explains when a queue helps, what Kafka gives you, and how to draw it without name-dropping tools blindly. Pair with [load balancing](/system-design/load-balancing-and-scaling) for consumer scaling.',
+      text: 'The best system design answers use async somewhere - analytics on [URL shortener](/system-design/design-url-shortener) clicks, fan-out in [news feed](/system-design/design-news-feed), delivery in [notifications](/system-design/design-notification-system). This article explains when a queue helps, what Kafka gives you, and how to draw it without name-dropping tools blindly. Pair with [load balancing](/system-design/load-balancing-and-scaling) for consumer scaling.',
     },
     { type: 'h2', text: 'Sync vs async' },
     {
@@ -34,11 +34,11 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Producer — service that publishes messages.',
-        'Topic — named stream of events (orders.created, clicks).',
-        'Partition — ordered sub-stream within a topic; enables parallelism.',
-        'Consumer group — workers share partitions; each partition consumed by one worker in group.',
-        'Offset — cursor of how far a consumer has read.',
+        'Producer - service that publishes messages.',
+        'Topic - named stream of events (orders.created, clicks).',
+        'Partition - ordered sub-stream within a topic; enables parallelism.',
+        'Consumer group - workers share partitions; each partition consumed by one worker in group.',
+        'Offset - cursor of how far a consumer has read.',
       ],
     },
     { type: 'h2', text: 'Kafka vs RabbitMQ (brief)' },
@@ -59,20 +59,20 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Ordering guarantees' },
     {
       type: 'p',
-      text: 'Kafka orders within one partition, not across partitions. Key by user_id or conversation_id so related events land in the same partition — critical for [chat](/system-design/design-chat-messaging) message ordering per conversation. Global order requires single partition (does not scale).',
+      text: 'Kafka orders within one partition, not across partitions. Key by user_id or conversation_id so related events land in the same partition - critical for [chat](/system-design/design-chat-messaging) message ordering per conversation. Global order requires single partition (does not scale).',
     },
     { type: 'h2', text: 'Delivery semantics' },
     {
       type: 'ul',
       items: [
-        'At-most-once — may lose messages; rare in production.',
-        'At-least-once — default; consumers must be idempotent.',
-        'Exactly-once — Kafka transactions or dedup with idempotency keys; expensive.',
+        'At-most-once - may lose messages; rare in production.',
+        'At-least-once - default; consumers must be idempotent.',
+        'Exactly-once - Kafka transactions or dedup with idempotency keys; expensive.',
       ],
     },
     {
       type: 'p',
-      text: 'Say "at-least-once with idempotent consumers" for most designs — ties to [API idempotency](/system-design/api-design-rest-interviews) and [unique event IDs](/system-design/design-unique-id-generator).',
+      text: 'Say "at-least-once with idempotent consumers" for most designs - ties to [API idempotency](/system-design/api-design-rest-interviews) and [unique event IDs](/system-design/design-unique-id-generator).',
     },
     { type: 'h2', text: 'Worked examples on this site' },
     { type: 'h3', text: 'URL shortener analytics' },
@@ -93,17 +93,17 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Consumer scaling' },
     {
       type: 'p',
-      text: 'Consumers in the same group split partitions — max parallel consumers equals partition count. Need more throughput? Add partitions (plan ahead; rebalancing is costly). Separate consumer groups for inventory, email, and analytics so slow email workers do not steal partitions from fast inventory handlers. Scale horizontally behind [load balancing](/system-design/load-balancing-and-scaling) is irrelevant here — Kafka assigns partitions, not round-robin HTTP.',
+      text: 'Consumers in the same group split partitions - max parallel consumers equals partition count. Need more throughput? Add partitions (plan ahead; rebalancing is costly). Separate consumer groups for inventory, email, and analytics so slow email workers do not steal partitions from fast inventory handlers. Scale horizontally behind [load balancing](/system-design/load-balancing-and-scaling) is irrelevant here - Kafka assigns partitions, not round-robin HTTP.',
     },
     { type: 'h2', text: 'Retry and exponential backoff' },
     {
       type: 'p',
-      text: 'Transient failures (downstream DB timeout) should retry with jittered backoff inside the consumer — not infinite tight loops that poison the partition. After N failures, publish to DLQ with original payload and error reason. Ops replays DLQ after fix. Say: "Poison message does not block the whole topic forever." That is more convincing than only naming DLQ.',
+      text: 'Transient failures (downstream DB timeout) should retry with jittered backoff inside the consumer - not infinite tight loops that poison the partition. After N failures, publish to DLQ with original payload and error reason. Ops replays DLQ after fix. Say: "Poison message does not block the whole topic forever." That is more convincing than only naming DLQ.',
     },
     { type: 'h2', text: 'Backpressure and DLQ' },
     {
       type: 'p',
-      text: 'If consumers lag, queue depth grows. Scale consumer instances (same group). Failed messages after N retries go to dead-letter queue (DLQ) for manual inspection. Alert on DLQ depth and consumer lag — ops concern interviewers like hearing.',
+      text: 'If consumers lag, queue depth grows. Scale consumer instances (same group). Failed messages after N retries go to dead-letter queue (DLQ) for manual inspection. Alert on DLQ depth and consumer lag - ops concern interviewers like hearing.',
     },
     { type: 'h2', text: 'When NOT to use a queue' },
     {
@@ -111,13 +111,13 @@ const article: SystemDesignArticle = {
       items: [
         'User needs immediate confirmation of downstream result (payment settled).',
         'Flow is simple CRUD with no peak decoupling need.',
-        'Team cannot operate Kafka yet — honest MVP answer: "start sync, queue when analytics lag hurts."',
+        'Team cannot operate Kafka yet - honest MVP answer: "start sync, queue when analytics lag hurts."',
       ],
     },
     { type: 'h2', text: 'Schema registry and evolution' },
     {
       type: 'p',
-      text: 'Events carry versioned JSON schema (Avro/Protobuf). Consumers tolerate unknown fields. Breaking changes get new topic or new schema version — mention briefly for senior loops.',
+      text: 'Events carry versioned JSON schema (Avro/Protobuf). Consumers tolerate unknown fields. Breaking changes get new topic or new schema version - mention briefly for senior loops.',
     },
     { type: 'h2', text: 'Monitoring' },
     {
@@ -142,12 +142,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'End-to-end tracing' },
     {
       type: 'p',
-      text: 'Propagate correlation_id from HTTP request into message headers. Consumers log same ID — debug "order placed but email missing" across services. Standard in event-driven systems paired with [notification](/system-design/design-notification-system) workers.',
+      text: 'Propagate correlation_id from HTTP request into message headers. Consumers log same ID - debug "order placed but email missing" across services. Standard in event-driven systems paired with [notification](/system-design/design-notification-system) workers.',
     },
     { type: 'h2', text: 'Sample event payload' },
     {
       type: 'p',
-      text: 'Topic orders.created: { "order_id": "sf_123", "user_id": "u_9", "total_cents": 4999, "correlation_id": "req_abc", "timestamp": 1710000000 }. Inventory service and email service consume same topic with different consumer groups — parallel independent processing.',
+      text: 'Topic orders.created: { "order_id": "sf_123", "user_id": "u_9", "total_cents": 4999, "correlation_id": "req_abc", "timestamp": 1710000000 }. Inventory service and email service consume same topic with different consumer groups - parallel independent processing.',
     },
     { type: 'h2', text: 'Fan-out vs task queue' },
     {
@@ -168,19 +168,19 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity back-of-envelope' },
     {
       type: 'p',
-      text: '10K events/sec × 1KB payload ≈ 10 MB/sec ingress — modest for Kafka. Retain 7 days at roughly 860 GB/day per topic tier at that rate — tune retention. Partition count ≈ max desired parallel consumers in one group. Too few partitions → consumer scaling ceiling; too many → broker metadata overhead.',
+      text: '10K events/sec × 1KB payload ≈ 10 MB/sec ingress - modest for Kafka. Retain 7 days at roughly 860 GB/day per topic tier at that rate - tune retention. Partition count ≈ max desired parallel consumers in one group. Too few partitions → consumer scaling ceiling; too many → broker metadata overhead.',
     },
     { type: 'h2', text: 'Exactly-once when payments matter' },
     {
       type: 'p',
-      text: 'For analytics clicks, at-least-once is fine. For ledger or inventory deduction, duplicate consumption is costly. Options: idempotent consumer with business key (order_id), Kafka transactional producer + read-process-write in one transaction, or database dedup table. Most interviews stop at idempotency — only go deeper if interviewer pushes on money movement.',
+      text: 'For analytics clicks, at-least-once is fine. For ledger or inventory deduction, duplicate consumption is costly. Options: idempotent consumer with business key (order_id), Kafka transactional producer + read-process-write in one transaction, or database dedup table. Most interviews stop at idempotency - only go deeper if interviewer pushes on money movement.',
     },
     { type: 'h2', text: 'Transactional outbox pattern' },
     {
       type: 'p',
       text: 'Problem: DB commit succeeds but Kafka publish fails (or vice versa). Solution: insert business row + outbox event in one SQL transaction. Relay worker polls outbox, publishes to topic, deletes or marks sent. Same pattern links [notifications](/system-design/design-notification-system) to order creation without two-phase commit across Postgres and Kafka.',
     },
-    { type: 'h2', text: 'URL shortener click — full async path' },
+    { type: 'h2', text: 'URL shortener click - full async path' },
     {
       type: 'ol',
       items: [
@@ -188,7 +188,7 @@ const article: SystemDesignArticle = {
         'Handler publishes { short_code, ts, referrer } to clicks topic (non-blocking).',
         'Analytics consumer group writes to ClickHouse.',
         'Fraud consumer group checks referrer against blocklist asynchronously.',
-        'If Kafka briefly down: buffer in local queue or drop analytics — never block redirect.',
+        'If Kafka briefly down: buffer in local queue or drop analytics - never block redirect.',
       ],
     },
     { type: 'h2', text: 'Common mistakes in interviews' },
@@ -203,20 +203,20 @@ const article: SystemDesignArticle = {
         ['Single consumer for everything', 'Separate consumer groups per downstream'],
       ],
     },
-    { type: 'h2', text: 'News feed fan-out — partition detail' },
+    { type: 'h2', text: 'News feed fan-out - partition detail' },
     {
       type: 'p',
-      text: 'Topic post_created, key = author_id so all posts from one author land in one partition (optional ordering for profile page). Fan-out workers in consumer group "timeline" read event, fetch follower list (or celebrity cache), write Redis timeline keys. Celebrity with 10M followers: hybrid — do not fan-out on write; merge on read for that author only. Connects directly to [news feed](/system-design/design-news-feed) hybrid model.',
+      text: 'Topic post_created, key = author_id so all posts from one author land in one partition (optional ordering for profile page). Fan-out workers in consumer group "timeline" read event, fetch follower list (or celebrity cache), write Redis timeline keys. Celebrity with 10M followers: hybrid - do not fan-out on write; merge on read for that author only. Connects directly to [news feed](/system-design/design-news-feed) hybrid model.',
     },
     { type: 'h2', text: 'Choreography vs orchestration' },
     {
       type: 'p',
-      text: 'Choreography: services react to events independently (order_created → inventory, email, analytics). Orchestration: central saga coordinator calls each step. Interviews usually prefer choreography with topics — simpler diagram. Mention saga coordinator only for strict multi-step rollback requirements (payments).',
+      text: 'Choreography: services react to events independently (order_created → inventory, email, analytics). Orchestration: central saga coordinator calls each step. Interviews usually prefer choreography with topics - simpler diagram. Mention saga coordinator only for strict multi-step rollback requirements (payments).',
     },
     { type: 'h2', text: 'Sample opening (first three minutes)' },
     {
       type: 'p',
-      text: 'Interviewer: "Where would you use a message queue in this design?" You: "Any side effect that must not block the user path — click analytics after a redirect, fan-out after a post, email after an order. I publish an event to a topic, return HTTP immediately, and consumers process at-least-once with idempotent handlers. Partition by user_id when order matters."',
+      text: 'Interviewer: "Where would you use a message queue in this design?" You: "Any side effect that must not block the user path - click analytics after a redirect, fan-out after a post, email after an order. I publish an event to a topic, return HTTP immediately, and consumers process at-least-once with idempotent handlers. Partition by user_id when order matters."',
     },
     { type: 'h2', text: 'What to say in the last five minutes' },
     {
@@ -237,7 +237,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'Queues turn synchronous bottlenecks into background work — use them for side effects, fan-out, and analytics, not for every read path.',
+      text: 'Queues turn synchronous bottlenecks into background work - use them for side effects, fan-out, and analytics, not for every read path.',
     },
   ],
 }

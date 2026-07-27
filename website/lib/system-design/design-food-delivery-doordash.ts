@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Food delivery sits between [Uber ride hailing](/system-design/design-ride-hailing-uber) and [e-commerce](/system-design/design-ecommerce-shopping-cart). You still match supply and demand in space and time, but the “trip” includes a restaurant prep constraint, a multi-stop courier sometimes, and a cart/checkout that looks like shopping. Interviewers listen for dispatch + ETA + order state machine — not a generic microservice collage.',
+      text: 'Food delivery sits between [Uber ride hailing](/system-design/design-ride-hailing-uber) and [e-commerce](/system-design/design-ecommerce-shopping-cart). You still match supply and demand in space and time, but the “trip” includes a restaurant prep constraint, a multi-stop courier sometimes, and a cart/checkout that looks like shopping. Interviewers listen for dispatch + ETA + order state machine - not a generic microservice collage.',
     },
     {
       type: 'p',
@@ -41,33 +41,33 @@ const article: SystemDesignArticle = {
       items: [
         'Order placement P99 under a second.',
         'Location updates every few seconds during active delivery.',
-        'Correctness on order state — no double charge, no lost orders.',
-        'Lunch/dinner peaks 5–10× baseline; degrade discovery before breaking checkout.',
+        'Correctness on order state - no double charge, no lost orders.',
+        'Lunch/dinner peaks 5-10× baseline; degrade discovery before breaking checkout.',
         'Geo accuracy good enough for ETA, not military GPS.',
       ],
     },
     {
       type: 'callout',
       title: 'Three-sided marketplace',
-      text: 'Optimize for customer ETA, restaurant idle time, and courier utilization together. A design that only minimizes customer wait will starve restaurants or burn couriers — say that out loud.',
+      text: 'Optimize for customer ETA, restaurant idle time, and courier utilization together. A design that only minimizes customer wait will starve restaurants or burn couriers - say that out loud.',
     },
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: 'City-scale: 50K active customers at dinner, 5K restaurants, 3K couriers online. Order rate ~200/sec peak in one region. Courier location updates at 0.2–1 Hz → few thousand points/sec — fine for Kafka + spatial index, similar order of magnitude to Uber’s location stream but with stickier “assignments.”',
+      text: 'City-scale: 50K active customers at dinner, 5K restaurants, 3K couriers online. Order rate ~200/sec peak in one region. Courier location updates at 0.2-1 Hz → few thousand points/sec - fine for Kafka + spatial index, similar order of magnitude to Uber’s location stream but with stickier “assignments.”',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'Catalog / discovery — restaurants, menus, hours; geo query ([Yelp-like](/system-design/design-yelp-nearby-places)).',
-        'Cart & order service — cart lines, pricing snapshot, order state machine.',
-        'Payment service — authorize on place, capture on handoff/delivery.',
-        'Restaurant device API — accept, mark ready.',
-        'Dispatch service — match order to courier with constraints.',
-        'Location & ETA — courier GPS stream, traffic-aware ETA ([maps](/system-design/design-google-maps) ideas).',
-        'Tracking — WebSocket/push to customer app.',
-        'Notifications — SMS/push on status changes.',
+        'Catalog / discovery - restaurants, menus, hours; geo query ([Yelp-like](/system-design/design-yelp-nearby-places)).',
+        'Cart & order service - cart lines, pricing snapshot, order state machine.',
+        'Payment service - authorize on place, capture on handoff/delivery.',
+        'Restaurant device API - accept, mark ready.',
+        'Dispatch service - match order to courier with constraints.',
+        'Location & ETA - courier GPS stream, traffic-aware ETA ([maps](/system-design/design-google-maps) ideas).',
+        'Tracking - WebSocket/push to customer app.',
+        'Notifications - SMS/push on status changes.',
       ],
     },
     { type: 'h2', text: 'Order state machine' },
@@ -82,7 +82,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Persist every transition with timestamps. Couriers and restaurants should not invent states client-side — servers own the machine. Idempotent status webhooks prevent double transitions when mobile networks flake.',
+      text: 'Persist every transition with timestamps. Couriers and restaurants should not invent states client-side - servers own the machine. Idempotent status webhooks prevent double transitions when mobile networks flake.',
     },
     { type: 'h2', text: 'Data model' },
     {
@@ -99,7 +99,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Discovery and cart' },
     {
       type: 'p',
-      text: 'Geohash or quadtree for “open restaurants near me,” then rank by ETA, rating, and promo. Cache menu reads aggressively ([caching](/system-design/caching-fundamentals-for-interviews)); invalidate on restaurant edits. Cart holds price snapshots so a menu change mid-checkout does not silently change the charged amount — same lesson as ticket holds.',
+      text: 'Geohash or quadtree for “open restaurants near me,” then rank by ETA, rating, and promo. Cache menu reads aggressively ([caching](/system-design/caching-fundamentals-for-interviews)); invalidate on restaurant edits. Cart holds price snapshots so a menu change mid-checkout does not silently change the charged amount - same lesson as ticket holds.',
     },
     { type: 'h2', text: 'Dispatch' },
     {
@@ -118,16 +118,16 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'ETA and tracking' },
     {
       type: 'p',
-      text: 'ETA = restaurant prep estimate + courier travel to restaurant + travel to customer, with traffic. Prep time from historical ML or restaurant-provided estimates. Push GPS to customers throttled (every 5–10 s) to save battery and bandwidth. Map tiles and routing can be delegated to a maps provider — do not build a full Google Maps unless asked.',
+      text: 'ETA = restaurant prep estimate + courier travel to restaurant + travel to customer, with traffic. Prep time from historical ML or restaurant-provided estimates. Push GPS to customers throttled (every 5-10 s) to save battery and bandwidth. Map tiles and routing can be delegated to a maps provider - do not build a full Google Maps unless asked.',
     },
     { type: 'h2', text: 'Scaling peaks' },
     {
       type: 'ul',
       items: [
-        'Shard by city/region — lunch in NYC should not contend with SF databases ([sharding](/system-design/database-sharding-replication)).',
+        'Shard by city/region - lunch in NYC should not contend with SF databases ([sharding](/system-design/database-sharding-replication)).',
         'Queue restaurant accept notifications; never lose an order on push failure (retry via [queues](/system-design/message-queues-async-processing)).',
         'Read replicas for browse; primary for place-order.',
-        'If dispatch is overloaded, widen search radius or fall back to sequential assignment — keep placing orders.',
+        'If dispatch is overloaded, widen search radius or fall back to sequential assignment - keep placing orders.',
       ],
     },
     { type: 'h2', text: 'Worked example' },

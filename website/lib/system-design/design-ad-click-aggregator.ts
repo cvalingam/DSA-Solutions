@@ -41,7 +41,7 @@ const article: SystemDesignArticle = {
       items: [
         'Very high write QPS; reads are fewer but bursty around business reviews.',
         'At-least-once delivery from clients → exactly-once-effect counts via event ids.',
-        'Billing accuracy over flashy real-time — eventually consistent UI is OK if batch reconciles.',
+        'Billing accuracy over flashy real-time - eventually consistent UI is OK if batch reconciles.',
         'Privacy: minimize PII; hash IPs where possible.',
       ],
     },
@@ -53,19 +53,19 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: '100K impressions/sec and 5K clicks/sec peak is a reasonable interview scale. Events ~200–500 bytes → tens of MB/s ingest. Aggregation keys: campaign_id × creative_id × minute can still explode — roll up carefully and expire hot keys.',
+      text: '100K impressions/sec and 5K clicks/sec peak is a reasonable interview scale. Events ~200-500 bytes → tens of MB/s ingest. Aggregation keys: campaign_id × creative_id × minute can still explode - roll up carefully and expire hot keys.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'Edge beacon / tracking pixel — 204 responses; never block the user page.',
-        'Ingest API / [API gateway](/system-design/design-api-gateway) — validate schema, [rate limit](/system-design/design-rate-limiter).',
-        'Kafka topics — impressions, clicks (partition by campaign_id or event_id hash).',
-        'Stream processors — Flink/Spark Streaming style: dedupe + increment counters.',
-        'Hot store — Redis / Druid / ClickHouse for real-time queries.',
-        'Data lake / warehouse — S3 + nightly jobs for billing-grade aggregates.',
-        'Query API — dashboards and advertiser reports.',
+        'Edge beacon / tracking pixel - 204 responses; never block the user page.',
+        'Ingest API / [API gateway](/system-design/design-api-gateway) - validate schema, [rate limit](/system-design/design-rate-limiter).',
+        'Kafka topics - impressions, clicks (partition by campaign_id or event_id hash).',
+        'Stream processors - Flink/Spark Streaming style: dedupe + increment counters.',
+        'Hot store - Redis / Druid / ClickHouse for real-time queries.',
+        'Data lake / warehouse - S3 + nightly jobs for billing-grade aggregates.',
+        'Query API - dashboards and advertiser reports.',
       ],
     },
     { type: 'h2', text: 'Event schema' },
@@ -84,7 +84,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'Dedupe with an exact KV/set of recent event_ids (e.g. 24 h for clicks). A Bloom filter is only a first pass — false positives can drop real events, which is unacceptable for billing.',
+        'Dedupe with an exact KV/set of recent event_ids (e.g. 24 h for clicks). A Bloom filter is only a first pass - false positives can drop real events, which is unacceptable for billing.',
         'On new event_id, increment hierarchical counters: minute → hour → day via rollups.',
         'Click-through joins: optionally attribute click to a prior impression_id within a lookback.',
         'Emit compensated metrics when late data arrives (stream corrections) or fix in batch.',
@@ -97,7 +97,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Fraud-light filters' },
     {
       type: 'p',
-      text: 'Drop impossible CTRs, datacenter ASNs, and click bursts from one IP. Keep filters explainable; heavy ML fraud can be an offline score that gates billing. Do not derail the interview into a full fraud product — one paragraph plus a dead-letter topic is enough.',
+      text: 'Drop impossible CTRs, datacenter ASNs, and click bursts from one IP. Keep filters explainable; heavy ML fraud can be an offline score that gates billing. Do not derail the interview into a full fraud product - one paragraph plus a dead-letter topic is enough.',
     },
     { type: 'h2', text: 'Query and billing' },
     {

@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'An online judge accepts source code, runs it against hidden tests in a sandbox, and returns Accepted or Wrong Answer. It is meta for this site — and a favorite interview because it mixes [async queues](/system-design/message-queues-async-processing), multi-tenant isolation, and spiky contest traffic. You do not need to invent Docker from scratch; you need clear trust boundaries.',
+      text: 'An online judge accepts source code, runs it against hidden tests in a sandbox, and returns Accepted or Wrong Answer. It is meta for this site - and a favorite interview because it mixes [async queues](/system-design/message-queues-async-processing), multi-tenant isolation, and spiky contest traffic. You do not need to invent Docker from scratch; you need clear trust boundaries.',
     },
     {
       type: 'p',
@@ -38,10 +38,10 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Isolate submissions — no filesystem escape, no crypto miner on your hosts.',
+        'Isolate submissions - no filesystem escape, no crypto miner on your hosts.',
         'Fair scheduling: one user cannot starve the queue.',
         'Handle contest start storms (10K submits in a minute).',
-        'Deterministic judging — same code → same verdict.',
+        'Deterministic judging - same code → same verdict.',
       ],
     },
     {
@@ -88,12 +88,12 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Pool warm VMs/containers per language to avoid cold starts. Dirty containers are destroyed or snapshotted back — do not reuse a filesystem a user just wrote.',
+      text: 'Pool warm VMs/containers per language to avoid cold starts. Dirty containers are destroyed or snapshotted back - do not reuse a filesystem a user just wrote.',
     },
     { type: 'h2', text: 'Queueing and fairness' },
     {
       type: 'p',
-      text: 'One shared Kafka topic can work; better: priority queues for contests vs practice, and per-user rate limits so a script cannot enqueue 10K jobs ([rate limiter](/system-design/design-rate-limiter), [API gateway](/system-design/design-api-gateway)). Scale workers on queue depth — classic [async processing](/system-design/message-queues-async-processing) autoscale.',
+      text: 'One shared Kafka topic can work; better: priority queues for contests vs practice, and per-user rate limits so a script cannot enqueue 10K jobs ([rate limiter](/system-design/design-rate-limiter), [API gateway](/system-design/design-api-gateway)). Scale workers on queue depth - classic [async processing](/system-design/message-queues-async-processing) autoscale.',
     },
     { type: 'h2', text: 'Contest mode' },
     {
@@ -108,7 +108,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Plagiarism and abuse' },
     {
       type: 'p',
-      text: 'Async job fingerprints ASTs or token hashes and flags similar pairs for review. Rate-limit submit bursts. Store audit logs of IP and user agent. Do not block the judge path on plagiarism — run it after verdict.',
+      text: 'Async job fingerprints ASTs or token hashes and flags similar pairs for review. Rate-limit submit bursts. Store audit logs of IP and user agent. Do not block the judge path on plagiarism - run it after verdict.',
     },
     { type: 'h2', text: 'Scaling math' },
     {
@@ -145,7 +145,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Interactive problems need a judge process talking to the user binary over pipes — mention as an extension. Floating-point compares use absolute/relative epsilon. Custom checkers are admin-uploaded programs run after stdout capture.',
+      text: 'Interactive problems need a judge process talking to the user binary over pipes - mention as an extension. Floating-point compares use absolute/relative epsilon. Custom checkers are admin-uploaded programs run after stdout capture.',
     },
     { type: 'h2', text: 'Interview narrative' },
     {

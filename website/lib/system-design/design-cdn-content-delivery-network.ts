@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'A CDN is the invisible half of Netflix, Spotify, and Instagram. Interviewers ask “design a CDN” to see if you understand latency, cache hierarchy, and failure domains — not whether you can recite Akamai marketing slides. You already touch CDN ideas in [video streaming](/system-design/design-video-streaming-netflix) and [file storage](/system-design/design-file-storage-dropbox); this article makes the CDN the product.',
+      text: 'A CDN is the invisible half of Netflix, Spotify, and Instagram. Interviewers ask “design a CDN” to see if you understand latency, cache hierarchy, and failure domains - not whether you can recite Akamai marketing slides. You already touch CDN ideas in [video streaming](/system-design/design-video-streaming-netflix) and [file storage](/system-design/design-file-storage-dropbox); this article makes the CDN the product.',
     },
     {
       type: 'p',
@@ -38,33 +38,33 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'P99 TTFB for hot objects under ~50–100 ms in-region.',
+        'P99 TTFB for hot objects under ~50-100 ms in-region.',
         'High hit ratio on popular content; origin protection under flash crowds.',
         'Availability: one PoP down should not take the whole CDN offline.',
-        'Consistency: purge eventually reaches all edges within seconds to minutes — be explicit about the SLA.',
+        'Consistency: purge eventually reaches all edges within seconds to minutes - be explicit about the SLA.',
       ],
     },
     {
       type: 'callout',
       title: 'CDN is a cache product',
-      text: 'Treat it as a globally distributed read-through cache with DNS/anycast steering. The hard parts are hierarchy, invalidation, and not melting the origin — same instincts as [Redis caching](/system-design/design-distributed-cache-redis), just at POP scale.',
+      text: 'Treat it as a globally distributed read-through cache with DNS/anycast steering. The hard parts are hierarchy, invalidation, and not melting the origin - same instincts as [Redis caching](/system-design/design-distributed-cache-redis), just at POP scale.',
     },
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: 'Assume 200 PoPs, peak 50 Tbps egress industry-scale for a large CDN, but in interview pick a slice: 10M RPS globally, 90%+ hit rate on hot catalog. A viral multi‑MB HLS segment (or a larger progressive file) at 1M concurrent viewers without a CDN would destroy origin; with a CDN, origin roughly sees one fill per PoP or shield — not one request per viewer.',
+      text: 'Assume 200 PoPs, peak 50 Tbps egress industry-scale for a large CDN, but in interview pick a slice: 10M RPS globally, 90%+ hit rate on hot catalog. A viral multi‑MB HLS segment (or a larger progressive file) at 1M concurrent viewers without a CDN would destroy origin; with a CDN, origin roughly sees one fill per PoP or shield - not one request per viewer.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'DNS / anycast — map client to nearest healthy PoP ([load balancing](/system-design/load-balancing-and-scaling) at geo scale).',
-        'Edge cache — SSD/RAM tiers; HTTP reverse proxy (NGINX/ATS-class).',
-        'Regional / mid-tier cache — optional parent before origin.',
-        'Origin shield — single regional choke point so 200 edges do not stampede one origin.',
-        'Origin — customer object store or app ([Dropbox-style](/system-design/design-file-storage-dropbox) buckets).',
-        'Control plane — config, purge API, cert management, analytics.',
-        'Logging — sampled access logs to a warehouse / [metrics](/system-design/design-metrics-monitoring-system).',
+        'DNS / anycast - map client to nearest healthy PoP ([load balancing](/system-design/load-balancing-and-scaling) at geo scale).',
+        'Edge cache - SSD/RAM tiers; HTTP reverse proxy (NGINX/ATS-class).',
+        'Regional / mid-tier cache - optional parent before origin.',
+        'Origin shield - single regional choke point so 200 edges do not stampede one origin.',
+        'Origin - customer object store or app ([Dropbox-style](/system-design/design-file-storage-dropbox) buckets).',
+        'Control plane - config, purge API, cert management, analytics.',
+        'Logging - sampled access logs to a warehouse / [metrics](/system-design/design-metrics-monitoring-system).',
       ],
     },
     { type: 'h2', text: 'Request path' },
@@ -91,7 +91,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Query-string allowlists matter: ignoring tracking params boosts hit ratio. Mention [CAP](/system-design/cap-theorem-consistency-models): edges are AP for reads — users may see slightly different versions until purge completes.',
+      text: 'Query-string allowlists matter: ignoring tracking params boosts hit ratio. Mention [CAP](/system-design/cap-theorem-consistency-models): edges are AP for reads - users may see slightly different versions until purge completes.',
     },
     { type: 'h2', text: 'Invalidation' },
     {
@@ -102,7 +102,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Origin shield / request coalescing — one in-flight fill per cache key per PoP.',
+        'Origin shield / request coalescing - one in-flight fill per cache key per PoP.',
         'Negative caching for 404s with short TTL.',
         '[Rate limit](/system-design/design-rate-limiter) abusive clients at the edge.',
         'Circuit-break a bad origin; serve stale if policy allows.',

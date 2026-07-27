@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'System design interviews feel different from LeetCode rounds. Nobody hands you a function signature and waits for O(n log n). Instead, you get a vague prompt — "design Twitter" or "design a parking lot" — and forty-five minutes to show you can think like an engineer who ships real software. The good news: interviewers are not looking for a perfect architecture. They want to see structured thinking, reasonable trade-offs, and honest communication when you do not know something.',
+      text: 'System design interviews feel different from LeetCode rounds. Nobody hands you a function signature and waits for O(n log n). Instead, you get a vague prompt - "design Twitter" or "design a parking lot" - and forty-five minutes to show you can think like an engineer who ships real software. The good news: interviewers are not looking for a perfect architecture. They want to see structured thinking, reasonable trade-offs, and honest communication when you do not know something.',
     },
     {
       type: 'p',
@@ -25,10 +25,10 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Requirement gathering — Do you clarify functional and non-functional needs before designing?',
-        'High-level design — Can you decompose the problem into services or components that make sense?',
-        'Deep dives — When the interviewer zooms in on one piece (the feed, the database, caching), can you go one level deeper with specifics?',
-        'Trade-offs — Do you explain why you chose SQL over NoSQL, or synchronous calls over async queues, instead of treating every decision as obvious?',
+        'Requirement gathering - Do you clarify functional and non-functional needs before designing?',
+        'High-level design - Can you decompose the problem into services or components that make sense?',
+        'Deep dives - When the interviewer zooms in on one piece (the feed, the database, caching), can you go one level deeper with specifics?',
+        'Trade-offs - Do you explain why you chose SQL over NoSQL, or synchronous calls over async queues, instead of treating every decision as obvious?',
       ],
     },
     {
@@ -44,11 +44,11 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'Minutes 0–5: Clarify requirements and constraints',
-        'Minutes 5–10: Back-of-envelope capacity estimation',
-        'Minutes 10–20: High-level architecture (API + main components)',
-        'Minutes 20–35: Deep dive on 1–2 critical paths',
-        'Minutes 35–45: Bottlenecks, failure modes, and what you would do next with more time',
+        'Minutes 0-5: Clarify requirements and constraints',
+        'Minutes 5-10: Back-of-envelope capacity estimation',
+        'Minutes 10-20: High-level architecture (API + main components)',
+        'Minutes 20-35: Deep dive on 1-2 critical paths',
+        'Minutes 35-45: Bottlenecks, failure modes, and what you would do next with more time',
       ],
     },
     { type: 'h2', text: 'Step 1: Clarify requirements (do not skip this)' },
@@ -59,7 +59,7 @@ const article: SystemDesignArticle = {
     { type: 'h3', text: 'Functional requirements' },
     {
       type: 'p',
-      text: 'Ask what the system must do. For a URL shortener, that might be: shorten a long URL, redirect when someone visits the short link, optional custom aliases, optional expiration. Write these down visibly — whiteboard, Excalidraw, or shared doc.',
+      text: 'Ask what the system must do. For a URL shortener, that might be: shorten a long URL, redirect when someone visits the short link, optional custom aliases, optional expiration. Write these down visibly - whiteboard, Excalidraw, or shared doc.',
     },
     { type: 'h3', text: 'Non-functional requirements' },
     {
@@ -93,7 +93,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Step 3: High-level design' },
     {
       type: 'p',
-      text: 'Start simple. A load balancer, an application tier, a database, and maybe a cache is a fine opening sketch for many problems. Name your APIs early — it forces you to think about data flow.',
+      text: 'Start simple. A load balancer, an application tier, a database, and maybe a cache is a fine opening sketch for many problems. Name your APIs early - it forces you to think about data flow.',
     },
   ],
 }
@@ -154,7 +154,7 @@ article.sections.push(
   { type: 'h2', text: 'How this connects to your DSA prep' },
   {
     type: 'p',
-    text: 'The same skills from LeetCode transfer. Hash maps become caches and indexes. BFS becomes message propagation. Heaps become priority queues for task scheduling. If you have been grinding patterns on this site, you already have the algorithmic vocabulary — system design is about applying it at warehouse scale with networking and storage in the mix.',
+    text: 'The same skills from LeetCode transfer. Hash maps become caches and indexes. BFS becomes message propagation. Heaps become priority queues for task scheduling. If you have been grinding patterns on this site, you already have the algorithmic vocabulary - system design is about applying it at warehouse scale with networking and storage in the mix.',
   },
   {
     type: 'p',
@@ -173,17 +173,17 @@ article.sections.push(
   {
     type: 'ul',
     items: [
-      'Jumping to microservices before proving you need them — a monolith with a cache often passes.',
-      'Naming technologies without explaining why — "we use Kafka" is worthless without the event flow.',
-      'Ignoring the write path on read-heavy systems — creation and redirect have different bottlenecks.',
-      'Forgetting failure modes — what happens when Redis or the database is unavailable?',
-      'Never checking back with the interviewer — treat it as a design review, not a solo exam.',
+      'Jumping to microservices before proving you need them - a monolith with a cache often passes.',
+      'Naming technologies without explaining why - "we use Kafka" is worthless without the event flow.',
+      'Ignoring the write path on read-heavy systems - creation and redirect have different bottlenecks.',
+      'Forgetting failure modes - what happens when Redis or the database is unavailable?',
+      'Never checking back with the interviewer - treat it as a design review, not a solo exam.',
     ],
   },
   { type: 'h2', text: 'Tools that help you practise' },
   {
     type: 'p',
-    text: 'Use Excalidraw or a whiteboard app and time yourself. Record a 45-minute mock and watch for long silences. Read one case study per week on this site, then redesign it from memory 48 hours later. Pair with our [From LeetCode Patterns to Real Systems](/system-design/from-leetcode-patterns-to-real-systems) article if DSA is your stronger side — it maps hash maps to indexes, BFS to fan-out, and heaps to schedulers.',
+    text: 'Use Excalidraw or a whiteboard app and time yourself. Record a 45-minute mock and watch for long silences. Read one case study per week on this site, then redesign it from memory 48 hours later. Pair with our [From LeetCode Patterns to Real Systems](/system-design/from-leetcode-patterns-to-real-systems) article if DSA is your stronger side - it maps hash maps to indexes, BFS to fan-out, and heaps to schedulers.',
   },
   { type: 'h2', text: 'How interview difficulty maps to level' },
   {
@@ -198,12 +198,12 @@ article.sections.push(
   },
   {
     type: 'p',
-    text: 'Match your preparation to the roles you apply for. A .NET developer interviewing for a product company at mid-level should nail URL shortener + rate limiter + caching — those three cover the majority of loop questions.',
+    text: 'Match your preparation to the roles you apply for. A .NET developer interviewing for a product company at mid-level should nail URL shortener + rate limiter + caching - those three cover the majority of loop questions.',
   },
   { type: 'h2', text: 'Whiteboard layout that interviewers can follow' },
   {
     type: 'p',
-    text: 'Divide the board into three zones: left = requirements and estimates (bullets, numbers), centre = architecture diagram (left-to-right data flow), right = deep dive detail (schema, cache keys, one sequence diagram). Interviewers photograph the board or share the Excalidraw link — a messy board hurts even good ideas. Label every arrow: "HTTPS", "async event", "read replica".',
+    text: 'Divide the board into three zones: left = requirements and estimates (bullets, numbers), centre = architecture diagram (left-to-right data flow), right = deep dive detail (schema, cache keys, one sequence diagram). Interviewers photograph the board or share the Excalidraw link - a messy board hurts even good ideas. Label every arrow: "HTTPS", "async event", "read replica".',
   },
   {
     type: 'p',
@@ -213,16 +213,16 @@ article.sections.push(
   {
     type: 'ul',
     items: [
-      'What scale should I design for — thousands, millions, or billions of users?',
+      'What scale should I design for - thousands, millions, or billions of users?',
       'Is this mobile-first, web-only, or API for third parties?',
-      'What consistency level is acceptable — can reads be stale by a few seconds?',
+      'What consistency level is acceptable - can reads be stale by a few seconds?',
       'Are we optimising for time-to-market or maximum scalability?',
       'Should I include analytics, admin tools, or stick to core user flows?',
     ],
   },
   {
     type: 'p',
-    text: 'Asking two or three of these is enough. Write the answers on the board — they become constraints that justify your later decisions.',
+    text: 'Asking two or three of these is enough. Write the answers on the board - they become constraints that justify your later decisions.',
   },
 )
 

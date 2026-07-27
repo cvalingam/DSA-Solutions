@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Caching is the first optimisation interviewers expect you to reach for on read-heavy systems. It is also where designs fall apart — stale data, thundering herds, and caches that never warm up. This article explains caching the way you would use it on a real .NET or Java backend, not as an abstract buzzword. You will apply these ideas directly in our [URL shortener](/system-design/design-url-shortener) and [rate limiter](/system-design/design-rate-limiter) walkthroughs.',
+      text: 'Caching is the first optimisation interviewers expect you to reach for on read-heavy systems. It is also where designs fall apart - stale data, thundering herds, and caches that never warm up. This article explains caching the way you would use it on a real .NET or Java backend, not as an abstract buzzword. You will apply these ideas directly in our [URL shortener](/system-design/design-url-shortener) and [rate limiter](/system-design/design-rate-limiter) walkthroughs.',
     },
     {
       type: 'p',
@@ -20,7 +20,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Why cache at all?' },
     {
       type: 'p',
-      text: 'Caches trade memory for latency and throughput. A PostgreSQL query that takes 15ms might become 1ms in Redis. More importantly, you protect the database from repetitive identical reads — the URL shortener redirect path, product catalog pages, user profile lookups. Without caching, viral traffic becomes a database outage.',
+      text: 'Caches trade memory for latency and throughput. A PostgreSQL query that takes 15ms might become 1ms in Redis. More importantly, you protect the database from repetitive identical reads - the URL shortener redirect path, product catalog pages, user profile lookups. Without caching, viral traffic becomes a database outage.',
     },
     {
       type: 'ul',
@@ -28,7 +28,7 @@ const article: SystemDesignArticle = {
         'Read-heavy workloads with repeated keys (80/20 rule: 20% of keys serve 80% of traffic).',
         'Expensive computation (aggregations, ML inference results).',
         'Session data and rate limit counters.',
-        'Static assets — images, JS bundles — via CDN at the edge.',
+        'Static assets - images, JS bundles - via CDN at the edge.',
       ],
     },
     {
@@ -40,15 +40,15 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'Client/browser cache — HTTP Cache-Control headers.',
-        'CDN — geographically close to users for static and some API responses.',
-        'Application in-memory cache — per-server, ultra fast, not shared (IMemoryCache in .NET).',
-        'Distributed cache — Redis, Memcached, shared across all app instances.',
-        'Database buffer pool — internal to PostgreSQL/SQL Server, not your design choice but worth acknowledging.',
+        'Client/browser cache - HTTP Cache-Control headers.',
+        'CDN - geographically close to users for static and some API responses.',
+        'Application in-memory cache - per-server, ultra fast, not shared (IMemoryCache in .NET).',
+        'Distributed cache - Redis, Memcached, shared across all app instances.',
+        'Database buffer pool - internal to PostgreSQL/SQL Server, not your design choice but worth acknowledging.',
       ],
     },
     { type: 'h2', text: 'The main caching patterns' },
-    { type: 'h3', text: 'Cache-aside (lazy loading) — default in interviews' },
+    { type: 'h3', text: 'Cache-aside (lazy loading) - default in interviews' },
     {
       type: 'p',
       text: 'The application owns cache logic. This is what you use in [URL shortener](/system-design/design-url-shortener) redirects and most REST APIs.',
@@ -70,7 +70,7 @@ const article: SystemDesignArticle = {
       items: [
         'App writes to database first (source of truth).',
         'On success: DELETE cache key, or UPDATE cache with new value.',
-        'Never update cache before DB commit — crash between steps causes permanent inconsistency.',
+        'Never update cache before DB commit - crash between steps causes permanent inconsistency.',
       ],
     },
     { type: 'h3', text: 'Read-through' },
@@ -101,7 +101,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'TTL and invalidation' },
     {
       type: 'p',
-      text: 'Time-to-live (TTL) is a safety net. Even if invalidation fails, data expires. Short TTL (30–60s) for semi-dynamic content; long TTL (hours) for static catalog data with explicit purge on update.',
+      text: 'Time-to-live (TTL) is a safety net. Even if invalidation fails, data expires. Short TTL (30-60s) for semi-dynamic content; long TTL (hours) for static catalog data with explicit purge on update.',
     },
     {
       type: 'p',
@@ -110,10 +110,10 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Delete key on write — simplest cache-aside approach.',
-        'Versioned keys — cache user:123:v5; bump version on update instead of hunting all derived keys.',
-        'Pub/sub broadcast — on update, all app servers evict local caches (useful with in-memory L1 + Redis L2).',
-        'Event-driven — change data capture from DB streams invalidates downstream caches.',
+        'Delete key on write - simplest cache-aside approach.',
+        'Versioned keys - cache user:123:v5; bump version on update instead of hunting all derived keys.',
+        'Pub/sub broadcast - on update, all app servers evict local caches (useful with in-memory L1 + Redis L2).',
+        'Event-driven - change data capture from DB streams invalidates downstream caches.',
       ],
     },
     {
@@ -126,29 +126,29 @@ const article: SystemDesignArticle = {
       type: 'table',
       headers: ['Layer', 'Latency', 'Shared?', 'Best for'],
       rows: [
-        ['In-process (IMemoryCache)', 'Nanoseconds', 'No — per pod only', 'Config, reference data, L1 hot keys'],
-        ['Redis / Memcached', 'Sub-ms to 1ms', 'Yes — all app servers', 'Sessions, API cache, rate limits'],
-        ['CDN edge', '5–30ms globally', 'Yes — per PoP', 'Static assets, cacheable GET responses'],
+        ['In-process (IMemoryCache)', 'Nanoseconds', 'No - per pod only', 'Config, reference data, L1 hot keys'],
+        ['Redis / Memcached', 'Sub-ms to 1ms', 'Yes - all app servers', 'Sessions, API cache, rate limits'],
+        ['CDN edge', '5-30ms globally', 'Yes - per PoP', 'Static assets, cacheable GET responses'],
       ],
     },
     {
       type: 'p',
-      text: 'In .NET: register IMemoryCache for L1, IDistributedCache backed by StackExchange.Redis for L2. CDN handles Cache-Control headers on static files — your API still sets TTL for cacheable JSON if needed.',
+      text: 'In .NET: register IMemoryCache for L1, IDistributedCache backed by StackExchange.Redis for L2. CDN handles Cache-Control headers on static files - your API still sets TTL for cacheable JSON if needed.',
     },
     { type: 'h2', text: 'Consistency vocabulary' },
     {
       type: 'ul',
       items: [
-        'Cache hit ratio — % of reads served from cache; monitor this in production.',
-        'Stale read — user sees old value after someone else updated; acceptable for social likes, not for seat reservations.',
-        'Cold start — empty cache after deploy; warm critical keys or use gradual rollout.',
-        'Cache penetration — queries for non-existent keys bypass cache every time; use short TTL on negative cache entries.',
+        'Cache hit ratio - % of reads served from cache; monitor this in production.',
+        'Stale read - user sees old value after someone else updated; acceptable for social likes, not for seat reservations.',
+        'Cold start - empty cache after deploy; warm critical keys or use gradual rollout.',
+        'Cache penetration - queries for non-existent keys bypass cache every time; use short TTL on negative cache entries.',
       ],
     },
     { type: 'h2', text: 'Worked example: URL shortener redirect' },
     {
       type: 'p',
-      text: 'Follow the redirect path from our [URL shortener case study](/system-design/design-url-shortener). User requests GET /abc123. App checks Redis key url:abc123. Hit → return long URL in 1ms. Miss → SELECT from PostgreSQL read replica → SET Redis with 24h TTL → redirect. On link delete, DEL url:abc123. On update, DEL or SET new value. Draw this flow in an interview before mentioning CDN — it shows you understand the core loop.',
+      text: 'Follow the redirect path from our [URL shortener case study](/system-design/design-url-shortener). User requests GET /abc123. App checks Redis key url:abc123. Hit → return long URL in 1ms. Miss → SELECT from PostgreSQL read replica → SET Redis with 24h TTL → redirect. On link delete, DEL url:abc123. On update, DEL or SET new value. Draw this flow in an interview before mentioning CDN - it shows you understand the core loop.',
     },
     { type: 'h2', text: '.NET implementation sketch' },
     {
@@ -159,35 +159,35 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Hit ratio — below 80% on a read-heavy path means TTL too short, wrong keys, or insufficient memory.',
-        'Eviction rate — Redis evicting keys means memory maxed; scale cluster or tighten TTLs.',
-        'Miss latency p99 — spikes indicate thundering herd or cold start after deploy.',
-        'Stale read incidents — track version mismatches after writes; alert if user-facing.',
+        'Hit ratio - below 80% on a read-heavy path means TTL too short, wrong keys, or insufficient memory.',
+        'Eviction rate - Redis evicting keys means memory maxed; scale cluster or tighten TTLs.',
+        'Miss latency p99 - spikes indicate thundering herd or cold start after deploy.',
+        'Stale read incidents - track version mismatches after writes; alert if user-facing.',
       ],
     },
     {
       type: 'p',
-      text: 'Interviewers at product companies appreciate when you mention observability without being asked. Caching is not fire-and-forget — bad cache config causes subtle production bugs for weeks.',
+      text: 'Interviewers at product companies appreciate when you mention observability without being asked. Caching is not fire-and-forget - bad cache config causes subtle production bugs for weeks.',
     },
     { type: 'h2', text: 'Interview sound bite' },
     {
       type: 'p',
       text: 'When the interviewer asks "how would you speed this up?", say: "This path is read-heavy with repeated keys. I would add a Redis cache-aside layer with a 5-minute TTL, invalidate on write, and put static assets on a CDN. I would monitor hit ratio and watch for thundering herd on hot keys." That single paragraph covers pattern, technology, invalidation, and operational awareness.',
     },
-    { type: 'h2', text: 'Cache stampede — step-by-step mitigation' },
+    { type: 'h2', text: 'Cache stampede - step-by-step mitigation' },
     {
       type: 'p',
-      text: 'Step 1: hot key expires. Step 2: 10,000 concurrent requests miss. Step 3: all 10,000 hit PostgreSQL. Step 4: database latency spikes, timeouts cascade. Mitigation A: single-flight — first miss acquires a lock, others wait for reload. Mitigation B: stale-while-revalidate — serve stale value while one worker refreshes. Mitigation C: jittered TTL so keys do not expire simultaneously.',
+      text: 'Step 1: hot key expires. Step 2: 10,000 concurrent requests miss. Step 3: all 10,000 hit PostgreSQL. Step 4: database latency spikes, timeouts cascade. Mitigation A: single-flight - first miss acquires a lock, others wait for reload. Mitigation B: stale-while-revalidate - serve stale value while one worker refreshes. Mitigation C: jittered TTL so keys do not expire simultaneously.',
     },
     { type: 'h2', text: 'CAP theorem in one interview sentence' },
     {
       type: 'p',
-      text: 'You cannot simultaneously guarantee perfect consistency, full availability, and tolerance to network partitions. Caches choose availability + partition tolerance with eventual consistency. Bank ledgers choose consistency over availability during a partition. Saying which letter you sacrifice — and why — is often enough at mid-level without a full lecture.',
+      text: 'You cannot simultaneously guarantee perfect consistency, full availability, and tolerance to network partitions. Caches choose availability + partition tolerance with eventual consistency. Bank ledgers choose consistency over availability during a partition. Saying which letter you sacrifice - and why - is often enough at mid-level without a full lecture.',
     },
     { type: 'h2', text: 'When the interviewer says "design a news feed"' },
     {
       type: 'p',
-      text: 'Feeds are a caching and fan-out problem. Precompute timelines (fan-out on write) and cache per user in Redis — fast reads, heavy writes when celebrities post. Or assemble on read (fan-out on read) — lighter writes, slower reads for users following thousands. Most answers blend both: cache hot users, assemble cold ones. Read our full [news feed walkthrough](/system-design/design-news-feed) and the [LeetCode-to-systems bridge](/system-design/from-leetcode-patterns-to-real-systems) (BFS fan-out).',
+      text: 'Feeds are a caching and fan-out problem. Precompute timelines (fan-out on write) and cache per user in Redis - fast reads, heavy writes when celebrities post. Or assemble on read (fan-out on read) - lighter writes, slower reads for users following thousands. Most answers blend both: cache hot users, assemble cold ones. Read our full [news feed walkthrough](/system-design/design-news-feed) and the [LeetCode-to-systems bridge](/system-design/from-leetcode-patterns-to-real-systems) (BFS fan-out).',
     },
   ],
 }

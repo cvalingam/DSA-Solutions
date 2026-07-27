@@ -11,11 +11,11 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Every production API eventually needs rate limiting. Without it, one misconfigured client — or one angry bot — can take down your database. In interviews, "design a rate limiter" tests whether you understand distributed state, time windows, and the difference between a correct algorithm on paper and one that works under concurrent requests.',
+      text: 'Every production API eventually needs rate limiting. Without it, one misconfigured client - or one angry bot - can take down your database. In interviews, "design a rate limiter" tests whether you understand distributed state, time windows, and the difference between a correct algorithm on paper and one that works under concurrent requests.',
     },
     {
       type: 'p',
-      text: 'We will design a service that enforces rules like "100 requests per minute per API key" and returns HTTP 429 Too Many Requests when exceeded. This applies to public REST APIs, login endpoints, and internal microservice protection. It pairs naturally with the [URL shortener](/system-design/design-url-shortener) design, where you rate-limit link creation, and relies on Redis — the same store used in our [caching](/system-design/caching-fundamentals-for-interviews) article.',
+      text: 'We will design a service that enforces rules like "100 requests per minute per API key" and returns HTTP 429 Too Many Requests when exceeded. This applies to public REST APIs, login endpoints, and internal microservice protection. It pairs naturally with the [URL shortener](/system-design/design-url-shortener) design, where you rate-limit link creation, and relies on Redis - the same store used in our [caching](/system-design/caching-fundamentals-for-interviews) article.',
     },
     { type: 'h2', text: 'Requirements' },
     {
@@ -23,7 +23,7 @@ const article: SystemDesignArticle = {
       items: [
         'Limit requests per client identity (API key, user ID, or IP address).',
         'Configurable limits: e.g. 100 req/min, 10,000 req/day per tier.',
-        'Low overhead — should not add more than a few milliseconds per request.',
+        'Low overhead - should not add more than a few milliseconds per request.',
         'Accurate enough across multiple API servers (distributed deployment).',
         'Return clear headers: X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After.',
       ],
@@ -41,9 +41,9 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'API gateway / load balancer — centralised, protects all backends, best for uniform policies.',
-        'Sidecar or middleware in each service — flexible per-route rules.',
-        'Dedicated rate-limiter microservice — called synchronously before business logic.',
+        'API gateway / load balancer - centralised, protects all backends, best for uniform policies.',
+        'Sidecar or middleware in each service - flexible per-route rules.',
+        'Dedicated rate-limiter microservice - called synchronously before business logic.',
       ],
     },
     {
@@ -74,7 +74,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Distributed implementation with Redis' },
     {
       type: 'p',
-      text: 'Multiple API servers must share counters. In-memory limits per server are wrong — a client could send 100 requests to each of ten servers. Redis (or similar) holds per-client state.',
+      text: 'Multiple API servers must share counters. In-memory limits per server are wrong - a client could send 100 requests to each of ten servers. Redis (or similar) holds per-client state.',
     },
     {
       type: 'ol',
@@ -89,12 +89,12 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Why Lua?',
-      text: 'Read-modify-write across network without atomicity races. Two simultaneous requests might both see 1 token left and both pass. A Lua script executes atomically on the Redis server — the same reason you would not implement a distributed lock with naive GET/SET.',
+      text: 'Read-modify-write across network without atomicity races. Two simultaneous requests might both see 1 token left and both pass. A Lua script executes atomically on the Redis server - the same reason you would not implement a distributed lock with naive GET/SET.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'p',
-      text: 'Draw the request path left to right. Every box should have one job. In an interview, narrate the flow before adding detail — interviewers follow you more easily than when you jump straight to Redis key names.',
+      text: 'Draw the request path left to right. Every box should have one job. In an interview, narrate the flow before adding detail - interviewers follow you more easily than when you jump straight to Redis key names.',
     },
     {
       type: 'ol',
@@ -121,17 +121,17 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Latency budget: Redis round-trip is ~1–3ms in-region. Lua script adds sub-millisecond CPU on the Redis node. Total added p99 should stay under 5ms — acceptable on a 200ms API. If Redis is remote or cross-region, consider local caching of "definitely blocked" clients with short TTL (advanced).',
+      text: 'Latency budget: Redis round-trip is ~1-3ms in-region. Lua script adds sub-millisecond CPU on the Redis node. Total added p99 should stay under 5ms - acceptable on a 200ms API. If Redis is remote or cross-region, consider local caching of "definitely blocked" clients with short TTL (advanced).',
     },
     {
       type: 'callout',
       title: 'Hot keys (mention if senior loop)',
-      text: 'One viral API key creates a Redis hot key — single shard overloaded. Mitigations: local token bucket per gateway node with periodic sync to Redis; dedicate a replica for read-heavy hot keys; or rate-limit at the API gateway before Redis. Do not shard one client\'s counter by request ID — that bypasses the limit entirely.',
+      text: 'One viral API key creates a Redis hot key - single shard overloaded. Mitigations: local token bucket per gateway node with periodic sync to Redis; dedicate a replica for read-heavy hot keys; or rate-limit at the API gateway before Redis. Do not shard one client\'s counter by request ID - that bypasses the limit entirely.',
     },
     { type: 'h2', text: 'Response contract' },
     {
       type: 'p',
-      text: 'Clients need predictable signals to back off and retry. Returning bare 429 without headers forces exponential guesswork. Stripe, GitHub, and Twitter all document standard headers — use the same names in your interview answer.',
+      text: 'Clients need predictable signals to back off and retry. Returning bare 429 without headers forces exponential guesswork. Stripe, GitHub, and Twitter all document standard headers - use the same names in your interview answer.',
     },
     {
       type: 'table',
@@ -146,24 +146,24 @@ const article: SystemDesignArticle = {
     { type: 'h3', text: 'Example: allowed request' },
     {
       type: 'p',
-      text: 'HTTP/1.1 200 OK — X-RateLimit-Limit: 100 — X-RateLimit-Remaining: 42 — X-RateLimit-Reset: 1717693200 — body: { "data": "..." }. Remaining decrements on every call, even on 200, so clients can throttle themselves proactively.',
+      text: 'HTTP/1.1 200 OK - X-RateLimit-Limit: 100 - X-RateLimit-Remaining: 42 - X-RateLimit-Reset: 1717693200 - body: { "data": "..." }. Remaining decrements on every call, even on 200, so clients can throttle themselves proactively.',
     },
     { type: 'h3', text: 'Example: rate limited request' },
     {
       type: 'p',
-      text: 'HTTP/1.1 429 Too Many Requests — Retry-After: 30 — X-RateLimit-Limit: 100 — X-RateLimit-Remaining: 0 — X-RateLimit-Reset: 1717693200 — body: { "error": "rate_limit_exceeded", "message": "Try again in 30 seconds" }. Well-behaved SDKs sleep for Retry-After before retrying; poorly behaved bots get blocked longer at the WAF layer.',
+      text: 'HTTP/1.1 429 Too Many Requests - Retry-After: 30 - X-RateLimit-Limit: 100 - X-RateLimit-Remaining: 0 - X-RateLimit-Reset: 1717693200 - body: { "error": "rate_limit_exceeded", "message": "Try again in 30 seconds" }. Well-behaved SDKs sleep for Retry-After before retrying; poorly behaved bots get blocked longer at the WAF layer.',
     },
     {
       type: 'p',
-      text: 'In ASP.NET Core, set headers in middleware via context.Response.Headers before calling next() or short-circuiting with 429. Attach headers on success too — not only on failure — so monitoring tools can graph consumption per API key.',
+      text: 'In ASP.NET Core, set headers in middleware via context.Response.Headers before calling next() or short-circuiting with 429. Attach headers on success too - not only on failure - so monitoring tools can graph consumption per API key.',
     },
     { type: 'h2', text: 'Edge cases to mention' },
     {
       type: 'ul',
       items: [
-        'Clock skew between servers — use Redis server time in Lua, not app server clocks.',
+        'Clock skew between servers - use Redis server time in Lua, not app server clocks.',
         'Redis outage: fail open (allow traffic) vs fail closed (reject). Payment APIs fail closed; read-only blogs often fail open.',
-        'Different limits per endpoint — login might be 5/min, search 1000/min.',
+        'Different limits per endpoint - login might be 5/min, search 1000/min.',
         'Whitelists for internal services and health checks.',
       ],
     },
@@ -175,21 +175,21 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Real-world API examples' },
     {
       type: 'p',
-      text: 'Stripe returns rate limit headers on every response and uses 429 with Retry-After. GitHub documents primary and secondary limits per endpoint. Twitter API tiers map to different token buckets. Showing you have seen these in production APIs — even as a consumer — signals polish. In a .NET API, implement middleware that calls Redis before the controller and attaches headers in OnStarting.',
+      text: 'Stripe returns rate limit headers on every response and uses 429 with Retry-After. GitHub documents primary and secondary limits per endpoint. Twitter API tiers map to different token buckets. Showing you have seen these in production APIs - even as a consumer - signals polish. In a .NET API, implement middleware that calls Redis before the controller and attaches headers in OnStarting.',
     },
     { type: 'h2', text: 'Hierarchical limits' },
     {
       type: 'ul',
       items: [
-        'Global limit — protect the whole platform (e.g. 50k req/sec total).',
-        'Per-tenant limit — API key or subscription tier (100/min free, 10k/min pro).',
-        'Per-endpoint limit — stricter on POST /login than GET /search.',
-        'Per-IP limit — catch abuse when API keys are stolen or absent.',
+        'Global limit - protect the whole platform (e.g. 50k req/sec total).',
+        'Per-tenant limit - API key or subscription tier (100/min free, 10k/min pro).',
+        'Per-endpoint limit - stricter on POST /login than GET /search.',
+        'Per-IP limit - catch abuse when API keys are stolen or absent.',
       ],
     },
     {
       type: 'p',
-      text: 'Check limits in order from cheapest to most expensive. Reject early on IP before hitting database-backed tenant lookup. Senior candidates discuss cost: every Redis round-trip adds latency — batch or pipeline when checking multiple rules.',
+      text: 'Check limits in order from cheapest to most expensive. Reject early on IP before hitting database-backed tenant lookup. Senior candidates discuss cost: every Redis round-trip adds latency - batch or pipeline when checking multiple rules.',
     },
     { type: 'h2', text: 'Connection to LeetCode' },
     {
@@ -201,23 +201,23 @@ const article: SystemDesignArticle = {
       type: 'p',
       text: 'Propose token bucket in Redis with atomic Lua scripts, enforce at the gateway, return standard headers, and discuss fail-open vs fail-closed. That answer is complete for most mid-level loops. Senior candidates can add hierarchical limits (per user AND per IP) and adaptive throttling under load.',
     },
-    { type: 'h2', text: 'Fixed vs sliding window — when to mention each' },
+    { type: 'h2', text: 'Fixed vs sliding window - when to mention each' },
     {
       type: 'p',
-      text: 'Fixed window is easiest to explain: reset counter every minute. Its flaw is boundary bursting. Sliding window log is accurate but memory-heavy. Token bucket is the sweet spot for APIs that allow controlled bursts — mobile clients batch requests on reconnect, for example. If the interviewer is a stickler for exact counts, propose sliding window counter; if they want simplicity, token bucket wins.',
+      text: 'Fixed window is easiest to explain: reset counter every minute. Its flaw is boundary bursting. Sliding window log is accurate but memory-heavy. Token bucket is the sweet spot for APIs that allow controlled bursts - mobile clients batch requests on reconnect, for example. If the interviewer is a stickler for exact counts, propose sliding window counter; if they want simplicity, token bucket wins.',
     },
     {
       type: 'p',
-      text: 'Interviewer: "Two requests arrive at the same millisecond with one token left." You: "That is why I use a Lua script in Redis — read, compute refill, decrement, and write happen atomically on the server. Without that, both app servers could pass." Interviewer: "Redis is down." You: "For a public blog API I fail open so the site stays up; for payments I fail closed. It depends on the product." Short answers with trade-offs beat long monologues.',
+      text: 'Interviewer: "Two requests arrive at the same millisecond with one token left." You: "That is why I use a Lua script in Redis - read, compute refill, decrement, and write happen atomically on the server. Without that, both app servers could pass." Interviewer: "Redis is down." You: "For a public blog API I fail open so the site stays up; for payments I fail closed. It depends on the product." Short answers with trade-offs beat long monologues.',
     },
     { type: 'h2', text: 'Where this appears in other designs' },
     {
       type: 'ul',
       items: [
-        '[URL shortener](/system-design/design-url-shortener) — limit POST /urls per IP to stop spam links.',
-        'Login endpoint — 5 attempts per minute per account against credential stuffing.',
-        'Third-party API integration — respect provider limits with client-side token bucket.',
-        'Internal microservices — prevent one noisy neighbour from exhausting shared DB connections.',
+        '[URL shortener](/system-design/design-url-shortener) - limit POST /urls per IP to stop spam links.',
+        'Login endpoint - 5 attempts per minute per account against credential stuffing.',
+        'Third-party API integration - respect provider limits with client-side token bucket.',
+        'Internal microservices - prevent one noisy neighbour from exhausting shared DB connections.',
       ],
     },
   ],

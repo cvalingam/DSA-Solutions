@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Zoom is harder than [Netflix](/system-design/design-video-streaming-netflix). Netflix is mostly one-way CDN delivery of pre-encoded files. Conferencing is interactive, low-latency, many-to-many media with people joining from bad hotel Wi-Fi. Interviewers want WebRTC vocabulary, SFU vs MCU, and a realistic signaling path — not a full DSP thesis.',
+      text: 'Zoom is harder than [Netflix](/system-design/design-video-streaming-netflix). Netflix is mostly one-way CDN delivery of pre-encoded files. Conferencing is interactive, low-latency, many-to-many media with people joining from bad hotel Wi-Fi. Interviewers want WebRTC vocabulary, SFU vs MCU, and a realistic signaling path - not a full DSP thesis.',
     },
     {
       type: 'p',
@@ -37,7 +37,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'End-to-end latency target ~150–300 ms glass-to-glass for conversation.',
+        'End-to-end latency target ~150-300 ms glass-to-glass for conversation.',
         'Adaptive bitrate when networks degrade.',
         'High availability of signaling; media can degrade gracefully (audio-only).',
         'Security: meeting passwords, encryption in transit (DTLS/SRTP).',
@@ -53,7 +53,7 @@ const article: SystemDesignArticle = {
       type: 'table',
       headers: ['Model', 'How media flows', 'When'],
       rows: [
-        ['Mesh', 'Every peer sends to every other peer', '2–4 people only; upload explodes'],
+        ['Mesh', 'Every peer sends to every other peer', '2-4 people only; upload explodes'],
         ['MCU', 'Server mixes all streams into one composite', 'Heavy CPU on server; simple clients'],
         ['SFU', 'Server forwards streams without mixing', 'Default for Zoom-like systems'],
       ],
@@ -66,12 +66,12 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'Meeting service — create meeting, auth, participant list (control plane).',
-        'Signaling service — WebSocket: SDP offer/answer, ICE candidates, mute events.',
-        'STUN/TURN — NAT traversal; TURN relays when P2P fails.',
-        'SFU media servers — receive RTP, forward to peers in the meeting.',
-        'Recording service — subscribe as a silent participant, write to object storage.',
-        'Chat / presence — sidecar services.',
+        'Meeting service - create meeting, auth, participant list (control plane).',
+        'Signaling service - WebSocket: SDP offer/answer, ICE candidates, mute events.',
+        'STUN/TURN - NAT traversal; TURN relays when P2P fails.',
+        'SFU media servers - receive RTP, forward to peers in the meeting.',
+        'Recording service - subscribe as a silent participant, write to object storage.',
+        'Chat / presence - sidecar services.',
       ],
     },
     { type: 'h2', text: 'Call setup walkthrough' },
@@ -88,7 +88,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'For 1:1, you might allow direct P2P after signaling (lower cost). For groups, always SFU. Load balancer for signaling is easy ([load balancing](/system-design/load-balancing-and-scaling)); media servers need sticky meeting affinity — all participants of meeting M pin to the same SFU shard (or a small SFU cluster that shares that meeting).',
+      text: 'For 1:1, you might allow direct P2P after signaling (lower cost). For groups, always SFU. Load balancer for signaling is easy ([load balancing](/system-design/load-balancing-and-scaling)); media servers need sticky meeting affinity - all participants of meeting M pin to the same SFU shard (or a small SFU cluster that shares that meeting).',
     },
     { type: 'h2', text: 'Scaling media servers' },
     {
@@ -108,12 +108,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Signaling vs media' },
     {
       type: 'p',
-      text: 'Signaling is small JSON over WebSocket — scale like [chat](/system-design/design-chat-messaging). Media is UDP-heavy and CPU/network bound on SFU boxes. Never push video frames through your app servers. Separate control and media planes clearly on the diagram.',
+      text: 'Signaling is small JSON over WebSocket - scale like [chat](/system-design/design-chat-messaging). Media is UDP-heavy and CPU/network bound on SFU boxes. Never push video frames through your app servers. Separate control and media planes clearly on the diagram.',
     },
     { type: 'h2', text: 'Recording and streaming' },
     {
       type: 'p',
-      text: 'Recording bot joins as a participant, receives streams, muxes to file, uploads to S3 — similar durable object story as [file storage](/system-design/design-file-storage-dropbox). Live stream to YouTube is RTMP egress from a compositor. Keep recording out of the critical interactive path.',
+      text: 'Recording bot joins as a participant, receives streams, muxes to file, uploads to S3 - similar durable object story as [file storage](/system-design/design-file-storage-dropbox). Live stream to YouTube is RTMP egress from a compositor. Keep recording out of the critical interactive path.',
     },
     { type: 'h2', text: 'Reliability and degraded modes' },
     {
@@ -131,7 +131,7 @@ const article: SystemDesignArticle = {
       items: [
         'Join tokens / meeting passwords; waiting room.',
         'DTLS-SRTP for media; TLS for signaling.',
-        'Optional E2E encryption is a research-level follow-up — acknowledge Zoom’s history without overclaiming.',
+        'Optional E2E encryption is a research-level follow-up - acknowledge Zoom’s history without overclaiming.',
         'Auth via [API gateway](/system-design/design-api-gateway) for REST meeting APIs.',
       ],
     },
@@ -149,7 +149,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Chat, reactions, and presence' },
     {
       type: 'p',
-      text: 'In-meeting chat and raise-hand are signaling messages, not media. Fan them out on the same WebSocket or a lightweight pub/sub channel keyed by meeting_id — patterns from [chat](/system-design/design-chat-messaging). Do not mux chat into RTP.',
+      text: 'In-meeting chat and raise-hand are signaling messages, not media. Fan them out on the same WebSocket or a lightweight pub/sub channel keyed by meeting_id - patterns from [chat](/system-design/design-chat-messaging). Do not mux chat into RTP.',
     },
     {
       type: 'table',
@@ -167,7 +167,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'PSTN and interoperability (stretch)' },
     {
       type: 'p',
-      text: 'Phone dial-in needs a SIP/PSTN gateway that appears to the SFU as another participant publishing audio only. Calendar invites and waiting rooms live in the meeting service. Keep these as “phase 2” unless the prompt requires telephony — core WebRTC + SFU already fills the slot.',
+      text: 'Phone dial-in needs a SIP/PSTN gateway that appears to the SFU as another participant publishing audio only. Calendar invites and waiting rooms live in the meeting service. Keep these as “phase 2” unless the prompt requires telephony - core WebRTC + SFU already fills the slot.',
     },
     { type: 'h2', text: 'Interview summary' },
     {

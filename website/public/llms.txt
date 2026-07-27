@@ -1,4 +1,4 @@
-# DSA Solutions — dsasolved.com
+# DSA Solutions - dsasolved.com
 
 > Clean LeetCode C# and GeeksforGeeks Java solutions with algorithm explanations, system design interview guides, complexity analysis, and interview prep.
 

@@ -7,7 +7,7 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide — 50 Practical Articles for Developers',
+  title: 'System Design Interview Guide - 50 Practical Articles for Developers',
   description:
     'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch live streaming, distributed logging, ad click aggregator, Google Calendar, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide — 50 Articles',
+    title: 'System Design Interview Guide - 50 Articles',
     description:
-      '50 practical system design articles for developers preparing for technical interviews — frameworks, case studies, and fundamentals.',
+      '50 practical system design articles for developers preparing for technical interviews - frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -99,7 +99,7 @@ export default function SystemDesignHubPage() {
         System Design for Interview Prep
       </h1>
       <p className="text-gray-500 dark:text-gray-400 mb-4 text-base leading-relaxed">
-        You have been grinding LeetCode patterns. System design is the next layer — same thinking,
+        You have been grinding LeetCode patterns. System design is the next layer - same thinking,
         different scale. These articles are written in plain language with real trade-offs, not
         copied bullet lists. Start with the framework, then work through the case studies.
       </p>
@@ -146,56 +146,56 @@ export default function SystemDesignHubPage() {
       <section className="mt-12 p-5 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-800">
         <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Suggested reading order</h2>
         <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside leading-relaxed">
-          <li>How to Approach System Design Interviews — learn the 45-minute framework first</li>
-          <li>Design a URL Shortener — classic case study end to end</li>
-          <li>Caching Fundamentals — you will need this on almost every design</li>
-          <li>Design a Rate Limiter — distributed state and atomicity</li>
-          <li>From LeetCode Patterns to Real Systems — connect what you already know</li>
-          <li>SQL vs NoSQL — pick the right store for each component</li>
-          <li>Load Balancing and Horizontal Scaling — scale the app tier correctly</li>
-          <li>Design a News Feed — fan-out on write vs read and the celebrity problem</li>
-          <li>Design a Chat / Messaging System — WebSockets, delivery, and groups</li>
-          <li>API Design and REST Best Practices — endpoints interviewers expect you to name</li>
-          <li>Design a Unique ID Generator — Snowflake, UUID, and when to use each</li>
-          <li>Message Queues and Async Processing — Kafka, ordering, and idempotent consumers</li>
-          <li>Design a Notification System — push, email, SMS, and idempotency</li>
-          <li>Design Typeahead / Autocomplete — trie, ranking, and hot-prefix caching</li>
-          <li>Design File Storage (Dropbox) — chunked upload, metadata vs blobs, sync</li>
-          <li>Design a Web Crawler — URL frontier, politeness, and deduplication</li>
-          <li>Design Ride Hailing (Uber) — geospatial matching and trip state machine</li>
-          <li>Design a Payment System — idempotency, ledger, and authorize/capture</li>
-          <li>CAP Theorem and Consistency Models — CP vs AP per component</li>
-          <li>Database Sharding and Replication — shard keys, replicas, and hot spots</li>
-          <li>Design a Video Streaming Platform (Netflix) — transcoding, HLS, and CDN delivery</li>
-          <li>Design a Search Engine — inverted index, ranking, and query fan-out</li>
-          <li>Design a Ticket Booking System — seat holds, flash sales, and strong consistency</li>
-          <li>Design a Distributed Cache (Redis) — consistent hashing, eviction, and stampede</li>
-          <li>Design an E-Commerce Platform — catalog, cart, inventory, and checkout</li>
-          <li>Design Pastebin — text storage, expiration, and read-heavy caching</li>
-          <li>Design a Real-Time Leaderboard — Redis sorted sets and top-K queries</li>
-          <li>Design an API Gateway — auth, routing, and rate limits at the edge</li>
-          <li>Design Google Docs — OT/CRDT, WebSockets, and collaborative editing</li>
-          <li>Design Instagram — photo upload, CDN, and feed at scale</li>
-          <li>Design Airbnb — listings, availability calendar, and booking holds</li>
-          <li>Design a Distributed Job Scheduler — cron at scale, locks, and retries</li>
-          <li>Design a Key-Value Store — consistent hashing, quorum, and replication</li>
-          <li>Design Yelp — geohash nearby search and local ranking</li>
-          <li>Design Zoom — WebRTC, SFU media servers, and signaling</li>
-          <li>Design Spotify — audio CDN, playlists, and play-event pipelines</li>
-          <li>Design Google Maps — tiles, routing, and live traffic</li>
-          <li>Design a Metrics Monitoring System — TSDB, labels, and alerting</li>
-          <li>Design a Distributed Lock — leases, Redis vs ZooKeeper, fencing</li>
-          <li>Design an Online Code Judge — sandboxes, queues, and contests</li>
-          <li>Design an Email Service (Gmail) — SMTP ingest, mailbox sharding, and search</li>
-          <li>Design a Recommendation System — candidate generation, ranking, and feedback loops</li>
-          <li>Design a Stock Trading Platform — orders, risk, ledger, and market data</li>
-          <li>Design Food Delivery (DoorDash) — dispatch, ETA, and three-sided marketplace</li>
-          <li>Design a Q&A Platform (Stack Overflow) — votes, reputation, and hot-post caching</li>
-          <li>Design a CDN — edge PoPs, origin shield, and cache invalidation</li>
-          <li>Design Live Streaming (Twitch) — ingest, transcode, HLS, and chat</li>
-          <li>Design a Distributed Logging System — agents, Kafka buffers, and hot/cold tiers</li>
-          <li>Design an Ad Click Aggregator — event ingest, dedupe, and billing-grade batch</li>
-          <li>Design Google Calendar — recurrence, invites, reminders, and sync</li>
+          <li>How to Approach System Design Interviews - learn the 45-minute framework first</li>
+          <li>Design a URL Shortener - classic case study end to end</li>
+          <li>Caching Fundamentals - you will need this on almost every design</li>
+          <li>Design a Rate Limiter - distributed state and atomicity</li>
+          <li>From LeetCode Patterns to Real Systems - connect what you already know</li>
+          <li>SQL vs NoSQL - pick the right store for each component</li>
+          <li>Load Balancing and Horizontal Scaling - scale the app tier correctly</li>
+          <li>Design a News Feed - fan-out on write vs read and the celebrity problem</li>
+          <li>Design a Chat / Messaging System - WebSockets, delivery, and groups</li>
+          <li>API Design and REST Best Practices - endpoints interviewers expect you to name</li>
+          <li>Design a Unique ID Generator - Snowflake, UUID, and when to use each</li>
+          <li>Message Queues and Async Processing - Kafka, ordering, and idempotent consumers</li>
+          <li>Design a Notification System - push, email, SMS, and idempotency</li>
+          <li>Design Typeahead / Autocomplete - trie, ranking, and hot-prefix caching</li>
+          <li>Design File Storage (Dropbox) - chunked upload, metadata vs blobs, sync</li>
+          <li>Design a Web Crawler - URL frontier, politeness, and deduplication</li>
+          <li>Design Ride Hailing (Uber) - geospatial matching and trip state machine</li>
+          <li>Design a Payment System - idempotency, ledger, and authorize/capture</li>
+          <li>CAP Theorem and Consistency Models - CP vs AP per component</li>
+          <li>Database Sharding and Replication - shard keys, replicas, and hot spots</li>
+          <li>Design a Video Streaming Platform (Netflix) - transcoding, HLS, and CDN delivery</li>
+          <li>Design a Search Engine - inverted index, ranking, and query fan-out</li>
+          <li>Design a Ticket Booking System - seat holds, flash sales, and strong consistency</li>
+          <li>Design a Distributed Cache (Redis) - consistent hashing, eviction, and stampede</li>
+          <li>Design an E-Commerce Platform - catalog, cart, inventory, and checkout</li>
+          <li>Design Pastebin - text storage, expiration, and read-heavy caching</li>
+          <li>Design a Real-Time Leaderboard - Redis sorted sets and top-K queries</li>
+          <li>Design an API Gateway - auth, routing, and rate limits at the edge</li>
+          <li>Design Google Docs - OT/CRDT, WebSockets, and collaborative editing</li>
+          <li>Design Instagram - photo upload, CDN, and feed at scale</li>
+          <li>Design Airbnb - listings, availability calendar, and booking holds</li>
+          <li>Design a Distributed Job Scheduler - cron at scale, locks, and retries</li>
+          <li>Design a Key-Value Store - consistent hashing, quorum, and replication</li>
+          <li>Design Yelp - geohash nearby search and local ranking</li>
+          <li>Design Zoom - WebRTC, SFU media servers, and signaling</li>
+          <li>Design Spotify - audio CDN, playlists, and play-event pipelines</li>
+          <li>Design Google Maps - tiles, routing, and live traffic</li>
+          <li>Design a Metrics Monitoring System - TSDB, labels, and alerting</li>
+          <li>Design a Distributed Lock - leases, Redis vs ZooKeeper, fencing</li>
+          <li>Design an Online Code Judge - sandboxes, queues, and contests</li>
+          <li>Design an Email Service (Gmail) - SMTP ingest, mailbox sharding, and search</li>
+          <li>Design a Recommendation System - candidate generation, ranking, and feedback loops</li>
+          <li>Design a Stock Trading Platform - orders, risk, ledger, and market data</li>
+          <li>Design Food Delivery (DoorDash) - dispatch, ETA, and three-sided marketplace</li>
+          <li>Design a Q&A Platform (Stack Overflow) - votes, reputation, and hot-post caching</li>
+          <li>Design a CDN - edge PoPs, origin shield, and cache invalidation</li>
+          <li>Design Live Streaming (Twitch) - ingest, transcode, HLS, and chat</li>
+          <li>Design a Distributed Logging System - agents, Kafka buffers, and hot/cold tiers</li>
+          <li>Design an Ad Click Aggregator - event ingest, dedupe, and billing-grade batch</li>
+          <li>Design Google Calendar - recurrence, invites, reminders, and sync</li>
         </ol>
       </section>
 

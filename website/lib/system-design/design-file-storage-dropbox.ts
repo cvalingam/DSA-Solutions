@@ -23,7 +23,7 @@ const article: SystemDesignArticle = {
         'Sync across multiple devices for the same user.',
         'Share files with other users (read/write permissions).',
         'Support large files (multi-GB) with resumable upload.',
-        'Deduplication optional — same content stored once (content-addressable).',
+        'Deduplication optional - same content stored once (content-addressable).',
       ],
     },
     { type: 'h3', text: 'Non-functional' },
@@ -64,7 +64,7 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Why direct-to-S3',
-      text: 'Bytes never stream through your API servers — only metadata and signed URLs. This is how you scale uploads without melting the app tier. Same pattern as [news feed](/system-design/design-news-feed) media upload.',
+      text: 'Bytes never stream through your API servers - only metadata and signed URLs. This is how you scale uploads without melting the app tier. Same pattern as [news feed](/system-design/design-news-feed) media upload.',
     },
     { type: 'h2', text: 'Download flow' },
     {
@@ -79,14 +79,14 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Sync across devices' },
     {
       type: 'p',
-      text: 'Each file has monotonic version or updated_at. Client stores last_sync_cursor. On app open: GET /v1/sync?since=cursor → list of changed files (metadata only). Client pulls new blobs as needed. For near-real-time: WebSocket notifies "file X changed" — lighter than full [chat](/system-design/design-chat-messaging) but same push idea.',
+      text: 'Each file has monotonic version or updated_at. Client stores last_sync_cursor. On app open: GET /v1/sync?since=cursor → list of changed files (metadata only). Client pulls new blobs as needed. For near-real-time: WebSocket notifies "file X changed" - lighter than full [chat](/system-design/design-chat-messaging) but same push idea.',
     },
     { type: 'h2', text: 'Multi-device edge cases' },
     {
       type: 'ul',
       items: [
         'Device offline for days: cursor may expire; fall back to full metadata snapshot for that user.',
-        'Same file edited on two laptops offline: conflict copies or LWW — state clearly in interview.',
+        'Same file edited on two laptops offline: conflict copies or LWW - state clearly in interview.',
         'Partial upload on phone: resume with same upload_id until TTL; other devices see file only after complete.',
         'Delete on web while mobile is offline: tombstone in sync delta; mobile removes local copy on next sync.',
       ],
@@ -118,7 +118,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '50M users, 5GB average stored → 250PB logical; with 30% dedup by chunk hash → ~175PB in S3. Metadata: 500 files/user × 200 bytes ≈ 5TB relational — tiny vs blobs. API: 10M DAU × 20 metadata ops/day ≈ 2,300 RPS average; upload init spikes higher. Blob egress dominates cost — CDN for shared public links, infrequent-access tier for cold archives.',
+      text: '50M users, 5GB average stored → 250PB logical; with 30% dedup by chunk hash → ~175PB in S3. Metadata: 500 files/user × 200 bytes ≈ 5TB relational - tiny vs blobs. API: 10M DAU × 20 metadata ops/day ≈ 2,300 RPS average; upload init spikes higher. Blob egress dominates cost - CDN for shared public links, infrequent-access tier for cold archives.',
     },
     { type: 'h2', text: 'Worked example: 2GB video upload' },
     {
@@ -135,7 +135,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity and cost' },
     {
       type: 'p',
-      text: 'Storage cost dominates — S3 + infrequent access tiers. Metadata is tiny vs blobs. 100M users × 10GB average = 1EB storage — mention sharding metadata by user_id and geographic S3 buckets. API tier scales with [load balancing](/system-design/load-balancing-and-scaling); blob tier scales with object store.',
+      text: 'Storage cost dominates - S3 + infrequent access tiers. Metadata is tiny vs blobs. 100M users × 10GB average = 1EB storage - mention sharding metadata by user_id and geographic S3 buckets. API tier scales with [load balancing](/system-design/load-balancing-and-scaling); blob tier scales with object store.',
     },
     { type: 'h2', text: 'Failure modes' },
     {
@@ -150,7 +150,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Small file fast path' },
     {
       type: 'p',
-      text: 'Files under 5MB: single pre-signed PUT, no chunk orchestration. Metadata and blob commit in one transaction. Reduces API round-trips for photos and documents — most user files are small.',
+      text: 'Files under 5MB: single pre-signed PUT, no chunk orchestration. Metadata and blob commit in one transaction. Reduces API round-trips for photos and documents - most user files are small.',
     },
     { type: 'h2', text: 'Trash and versioning' },
     {
@@ -182,7 +182,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Public share links' },
     {
       type: 'p',
-      text: 'Optional: share_token (random UUID) maps to file_id with read-only ACL. GET /s/{token} redirects to CDN signed URL — similar to [URL shortener](/system-design/design-url-shortener) opaque links. Revoke by deleting share row.',
+      text: 'Optional: share_token (random UUID) maps to file_id with read-only ACL. GET /s/{token} redirects to CDN signed URL - similar to [URL shortener](/system-design/design-url-shortener) opaque links. Revoke by deleting share row.',
     },
     { type: 'h2', text: 'API summary' },
     {
@@ -200,12 +200,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Folder hierarchy' },
     {
       type: 'p',
-      text: 'Folders are rows with is_folder=true. Path display is computed from parent chain or materialized path (/user/docs/2024). List children: SELECT * FROM files WHERE parent_id = ? AND deleted_at IS NULL — index on (parent_id, name) for fast folder browsing. Rename = update one metadata row; move = change parent_id with cycle check.',
+      text: 'Folders are rows with is_folder=true. Path display is computed from parent chain or materialized path (/user/docs/2024). List children: SELECT * FROM files WHERE parent_id = ? AND deleted_at IS NULL - index on (parent_id, name) for fast folder browsing. Rename = update one metadata row; move = change parent_id with cycle check.',
     },
     { type: 'h2', text: 'Metadata sharding' },
     {
       type: 'p',
-      text: 'Shard PostgreSQL by user_id hash when metadata QPS grows. Each user\'s tree lives on one shard — no cross-shard folder moves in v1. Blobs stay in global S3; only metadata shards. Cross-user share references file_id UUID globally unique via [Snowflake-style IDs](/system-design/design-unique-id-generator).',
+      text: 'Shard PostgreSQL by user_id hash when metadata QPS grows. Each user\'s tree lives on one shard - no cross-shard folder moves in v1. Blobs stay in global S3; only metadata shards. Cross-user share references file_id UUID globally unique via [Snowflake-style IDs](/system-design/design-unique-id-generator).',
     },
     { type: 'h2', text: 'Garbage collection' },
     {
@@ -214,7 +214,7 @@ const article: SystemDesignArticle = {
         'Orphan chunks: uploaded but no file_version references after upload_id TTL.',
         'Deleted files: soft-delete metadata; after 30 days remove chunk refs.',
         'Reference-count chunks table; delete S3 object when refcount hits zero.',
-        'Run GC as nightly [async job](/system-design/message-queues-async-processing) — never on request path.',
+        'Run GC as nightly [async job](/system-design/message-queues-async-processing) - never on request path.',
       ],
     },
     { type: 'h2', text: 'Metadata vs blob responsibilities' },
@@ -245,7 +245,7 @@ const article: SystemDesignArticle = {
       items: [
         'Separated metadata DB from blob object store.',
         'Walked chunked upload with content-hash dedup.',
-        'Explained pre-signed S3 URLs — bytes bypass API tier.',
+        'Explained pre-signed S3 URLs - bytes bypass API tier.',
         'Described sync cursor and conflict strategy.',
         'Mentioned ACL on every access path.',
       ],
@@ -253,7 +253,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'Never route file bytes through your API at scale. Metadata path and blob path are separate designs — nail both in the interview.',
+      text: 'Never route file bytes through your API at scale. Metadata path and blob path are separate designs - nail both in the interview.',
     },
   ],
 }

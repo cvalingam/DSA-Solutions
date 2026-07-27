@@ -4,7 +4,7 @@ const article: SystemDesignArticle = {
   slug: 'from-leetcode-patterns-to-real-systems',
   title: 'From LeetCode Patterns to Real Systems',
   description:
-    'How binary search, BFS, heaps, hash maps, and LRU cache problems map to production system design — databases, queues, caches, and load balancers explained for developers who learned DSA first.',
+    'How binary search, BFS, heaps, hash maps, and LRU cache problems map to production system design - databases, queues, caches, and load balancers explained for developers who learned DSA first.',
   readMinutes: 12,
   published: '2026-06-06',
   category: 'bridge',
@@ -25,7 +25,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Binary search → partitioning and load balancing' },
     {
       type: 'p',
-      text: 'Binary search works because the answer space is monotonic: if X is too small, everything below is too small. In systems, consistent hashing partitions keys across servers — given a key, you binary-search (or hash-mod) to find the right shard. Load balancers use similar logic to route requests to healthy backends.',
+      text: 'Binary search works because the answer space is monotonic: if X is too small, everything below is too small. In systems, consistent hashing partitions keys across servers - given a key, you binary-search (or hash-mod) to find the right shard. Load balancers use similar logic to route requests to healthy backends.',
     },
     {
       type: 'p',
@@ -38,21 +38,21 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Designing a news feed? Fan-out on write is BFS from the poster to all followers. Fan-out on read is DFS/BFS from the reader merging multiple timelines. You have done both — just on adjacency lists instead of microservices.',
+      text: 'Designing a news feed? Fan-out on write is BFS from the poster to all followers. Fan-out on read is DFS/BFS from the reader merging multiple timelines. You have done both - just on adjacency lists instead of microservices.',
     },
     { type: 'h2', text: 'Heaps → priority queues and scheduling' },
     {
       type: 'p',
-      text: 'Merge K Sorted Lists and Find Median from Data Stream use heaps. In production: task schedulers, rate limiter token refill queues, Dijkstra priority queues for routing. Kubernetes schedules pods by priority and resource fit — a heap problem with extra constraints.',
+      text: 'Merge K Sorted Lists and Find Median from Data Stream use heaps. In production: task schedulers, rate limiter token refill queues, Dijkstra priority queues for routing. Kubernetes schedules pods by priority and resource fit - a heap problem with extra constraints.',
     },
     {
       type: 'p',
-      text: 'When an interviewer asks how you would process urgent jobs first, say priority queue backed by a heap — O(log n) insert — and mention that .NET 6+ has PriorityQueue<TElement, TPriority> built in, the same abstraction you use on LeetCode.',
+      text: 'When an interviewer asks how you would process urgent jobs first, say priority queue backed by a heap - O(log n) insert - and mention that .NET 6+ has PriorityQueue<TElement, TPriority> built in, the same abstraction you use on LeetCode.',
     },
     { type: 'h2', text: 'LRU Cache → distributed caching' },
     {
       type: 'p',
-      text: 'LeetCode 146 implements get/put in O(1) with a hash map plus doubly linked list. Redis LRU eviction policies (allkeys-lru, volatile-lru) solve the same problem at server scale: limited memory, evict least recently used keys. The interview insight: caching is not magic — it is an LRU with TTL and network latency. Our [caching fundamentals](/system-design/caching-fundamentals-for-interviews) article walks through cache-aside, TTL, and thundering herd in detail.',
+      text: 'LeetCode 146 implements get/put in O(1) with a hash map plus doubly linked list. Redis LRU eviction policies (allkeys-lru, volatile-lru) solve the same problem at server scale: limited memory, evict least recently used keys. The interview insight: caching is not magic - it is an LRU with TTL and network latency. Our [caching fundamentals](/system-design/caching-fundamentals-for-interviews) article walks through cache-aside, TTL, and thundering herd in detail.',
     },
     { type: 'h2', text: 'Sliding window → rate limiting and log aggregation' },
     {
@@ -71,22 +71,22 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Dynamic programming → capacity planning' },
     {
       type: 'p',
-      text: 'DP optimises over overlapping subproblems. Autoscaling rules optimise cost vs latency — same structure, different objective. CDN cache placement: which keys to keep at edge given storage budget? You will not write recurrence relations on a whiteboard, but the mindset — define state, avoid recomputation — transfers directly.',
+      text: 'DP optimises over overlapping subproblems. Autoscaling rules optimise cost vs latency - same structure, different objective. CDN cache placement: which keys to keep at edge given storage budget? You will not write recurrence relations on a whiteboard, but the mindset - define state, avoid recomputation - transfers directly.',
     },
     { type: 'h2', text: 'What does not transfer directly' },
     {
       type: 'p',
-      text: 'Be honest about the gaps. LeetCode ignores network latency, partial failures, and operational cost. A O(n) algorithm that ships 10GB over the wire is worse than O(n log n) with aggressive caching. System design adds CAP theorem trade-offs, replication lag, and human factors (on-call, deployments). Learn those separately — but your pattern recognition is already half the battle.',
+      text: 'Be honest about the gaps. LeetCode ignores network latency, partial failures, and operational cost. A O(n) algorithm that ships 10GB over the wire is worse than O(n log n) with aggressive caching. System design adds CAP theorem trade-offs, replication lag, and human factors (on-call, deployments). Learn those separately - but your pattern recognition is already half the battle.',
     },
     { type: 'h2', text: 'Two pointers → read replicas and load balancing' },
     {
       type: 'p',
-      text: 'Two pointers converge from both ends of a sorted array. Read replicas split read load from a primary writer — same "divide the work" intuition. A load balancer round-robins across healthy app instances. When you explain horizontal scaling, you are describing algorithmic partitioning applied to servers.',
+      text: 'Two pointers converge from both ends of a sorted array. Read replicas split read load from a primary writer - same "divide the work" intuition. A load balancer round-robins across healthy app instances. When you explain horizontal scaling, you are describing algorithmic partitioning applied to servers.',
     },
     { type: 'h2', text: 'Graphs → service maps and dependency chains' },
     {
       type: 'p',
-      text: 'Course Schedule II gives you a topological order. Your CI/CD pipeline and microservice startup order use the same algorithm — service B cannot start until service A is healthy. When an interviewer asks "what breaks if the payment service goes down?", you are traversing a dependency graph.',
+      text: 'Course Schedule II gives you a topological order. Your CI/CD pipeline and microservice startup order use the same algorithm - service B cannot start until service A is healthy. When an interviewer asks "what breaks if the payment service goes down?", you are traversing a dependency graph.',
     },
     {
       type: 'p',
@@ -100,7 +100,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Monotonic stack → request scheduling' },
     {
       type: 'p',
-      text: 'Daily Temperatures finds the next greater element for each position in O(n). In systems, "next greater" appears when a higher-priority job preempts the current one, or when a load spike exceeds the previous max — stack-based schedulers process events in order without re-scanning.',
+      text: 'Daily Temperatures finds the next greater element for each position in O(n). In systems, "next greater" appears when a higher-priority job preempts the current one, or when a load spike exceeds the previous max - stack-based schedulers process events in order without re-scanning.',
     },
     {
       type: 'p',
@@ -139,7 +139,7 @@ article.sections.push(
       'Case studies: [notifications](/system-design/design-notification-system), [file storage](/system-design/design-file-storage-dropbox), [typeahead](/system-design/design-typeahead-autocomplete), [web crawler](/system-design/design-web-crawler), [ride hailing](/system-design/design-ride-hailing-uber), [payments](/system-design/design-payment-system), [video streaming](/system-design/design-video-streaming-netflix), [search engine](/system-design/design-search-engine), [ticket booking](/system-design/design-ticket-booking-system), [e-commerce](/system-design/design-ecommerce-shopping-cart).',
       'Fundamentals: [CAP theorem](/system-design/cap-theorem-consistency-models), [database sharding](/system-design/database-sharding-replication), [distributed cache](/system-design/design-distributed-cache-redis).',
       'For each pattern you learn, write one sentence: "In production this looks like ___."',
-      'Mock one 45-minute design out loud — record yourself and check for silence gaps.',
+      'Mock one 45-minute design out loud - record yourself and check for silence gaps.',
       'Skim real postmortems (AWS, Cloudflare blogs) to see how failures happen in practice.',
     ],
   },

@@ -12,7 +12,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Ride hailing connects riders and drivers in real time. The interview tests geospatial queries, state machines, and [WebSocket](/system-design/design-chat-messaging)-style location updates — not just CRUD. Clarify with the [framework](/system-design/how-to-approach-system-design-interviews): city-level launch vs global, and whether you need pooling or food delivery on the same platform.',
+      text: 'Ride hailing connects riders and drivers in real time. The interview tests geospatial queries, state machines, and [WebSocket](/system-design/design-chat-messaging)-style location updates - not just CRUD. Clarify with the [framework](/system-design/how-to-approach-system-design-interviews): city-level launch vs global, and whether you need pooling or food delivery on the same platform.',
     },
     { type: 'h2', text: 'Requirements' },
     { type: 'h3', text: 'Functional' },
@@ -31,9 +31,9 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'Match driver within 30 seconds in dense cities.',
-        'Location updates every 3–5 seconds during active trip.',
+        'Location updates every 3-5 seconds during active trip.',
         '1M daily trips; 100K concurrent drivers in peak city.',
-        'Strong consistency for trip state and payment — no double charge.',
+        'Strong consistency for trip state and payment - no double charge.',
       ],
     },
     {
@@ -65,7 +65,7 @@ const article: SystemDesignArticle = {
         'DRIVER_ARRIVED → geofence at pickup.',
         'IN_PROGRESS → rider picked up.',
         'COMPLETED → payment captured; ratings.',
-        'CANCELLED — by rider or driver with policy rules.',
+        'CANCELLED - by rider or driver with policy rules.',
       ],
     },
     {
@@ -75,7 +75,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Geospatial matching' },
     {
       type: 'p',
-      text: 'Drivers heartbeat location to Location service every few seconds when online. Index with Redis GEOADD or geohash grid: query GEORADIUS pickup lat/lng, 3 km, LIMIT 20. Filter by vehicle type and not already on trip. Rank by ETA (road network API or distance heuristic). Send offer to top 3 drivers serially or in parallel with 15s timeout — first accept wins.',
+      text: 'Drivers heartbeat location to Location service every few seconds when online. Index with Redis GEOADD or geohash grid: query GEORADIUS pickup lat/lng, 3 km, LIMIT 20. Filter by vehicle type and not already on trip. Rank by ETA (road network API or distance heuristic). Send offer to top 3 drivers serially or in parallel with 15s timeout - first accept wins.',
     },
     { type: 'h2', text: 'Pricing and surge' },
     {
@@ -85,12 +85,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Real-time location path' },
     {
       type: 'p',
-      text: 'Driver app → WebSocket to gateway → Location service → Redis GEO update. Active trip: fan-out driver position to rider subscription on same trip_id channel. Do not write every GPS point to Postgres — stream to Redis; archive trip polyline to object storage after completion for disputes.',
+      text: 'Driver app → WebSocket to gateway → Location service → Redis GEO update. Active trip: fan-out driver position to rider subscription on same trip_id channel. Do not write every GPS point to Postgres - stream to Redis; archive trip polyline to object storage after completion for disputes.',
     },
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '100K concurrent drivers × 1 update/4 sec ≈ 25K location writes/sec — Redis cluster handles this. 50K active trips × 2 WebSocket clients ≈ 100K connections on gateway fleet behind [load balancer](/system-design/load-balancing-and-scaling). Matching: 5K new requests/min in peak city × 3 driver pings each ≈ 15K offer notifications/min — async via push queue.',
+      text: '100K concurrent drivers × 1 update/4 sec ≈ 25K location writes/sec - Redis cluster handles this. 50K active trips × 2 WebSocket clients ≈ 100K connections on gateway fleet behind [load balancer](/system-design/load-balancing-and-scaling). Matching: 5K new requests/min in peak city × 3 driver pings each ≈ 15K offer notifications/min - async via push queue.',
     },
     { type: 'h2', text: 'Failure modes' },
     {
@@ -135,14 +135,14 @@ const article: SystemDesignArticle = {
       items: [
         'trips: id, rider_id, driver_id, status, pickup, dropoff, fare, surge_multiplier',
         'drivers: id, vehicle_type, online, current_trip_id',
-        'driver_locations: Redis GEO — not long-term Postgres rows',
+        'driver_locations: Redis GEO - not long-term Postgres rows',
         'trip_events: append-only status transitions for audit',
       ],
     },
     { type: 'h2', text: 'Cancellation and disputes' },
     {
       type: 'p',
-      text: 'Rider cancel before assign: no fee. After driver en route: cancellation fee to driver. Driver no-show vs rider no-show use geofence timestamps. Trip polyline in S3 for fare dispute. All policy rules in config service — not hardcoded in app.',
+      text: 'Rider cancel before assign: no fee. After driver en route: cancellation fee to driver. Driver no-show vs rider no-show use geofence timestamps. Trip polyline in S3 for fare dispute. All policy rules in config service - not hardcoded in app.',
     },
     { type: 'h2', text: 'Latency budget' },
     {
@@ -168,22 +168,22 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Geohash grid detail' },
     {
       type: 'p',
-      text: 'Geohash encodes lat/lng into a string prefix — nearby locations share prefix. Store drivers in cells; query pickup cell and 8 neighbors. Finer precision for dense downtown, coarser for suburbs (configurable). Alternative: Redis GEOADD is simpler in interviews — same concept, less math on the whiteboard.',
+      text: 'Geohash encodes lat/lng into a string prefix - nearby locations share prefix. Store drivers in cells; query pickup cell and 8 neighbors. Finer precision for dense downtown, coarser for suburbs (configurable). Alternative: Redis GEOADD is simpler in interviews - same concept, less math on the whiteboard.',
     },
     { type: 'h2', text: 'Multi-region and maps' },
     {
       type: 'p',
-      text: 'City-level deployment first: all matching in one region for low latency. ETA uses routing API (Google/OSRM) cached by (origin_cell, dest_cell) pairs. Map tiles are CDN — out of scope unless interviewer asks. [Database sharding](/system-design/database-sharding-replication) by city_id if trip history grows large.',
+      text: 'City-level deployment first: all matching in one region for low latency. ETA uses routing API (Google/OSRM) cached by (origin_cell, dest_cell) pairs. Map tiles are CDN - out of scope unless interviewer asks. [Database sharding](/system-design/database-sharding-replication) by city_id if trip history grows large.',
     },
     { type: 'h2', text: 'Driver supply incentives' },
     {
       type: 'p',
-      text: 'Surge is demand-side pricing; heatmaps push drivers toward high-demand zones (optional v2). Mention as product layer on top of location index — not required for core design pass.',
+      text: 'Surge is demand-side pricing; heatmaps push drivers toward high-demand zones (optional v2). Mention as product layer on top of location index - not required for core design pass.',
     },
     { type: 'h2', text: 'Pooling and scheduled rides (v2)' },
     {
       type: 'p',
-      text: 'Pooling matches multiple riders on overlapping routes — harder matching NP-hard heuristic. Scheduled rides pre-assign drivers 30 min ahead. Defer unless interviewer insists; mention as future complexity on top of core state machine.',
+      text: 'Pooling matches multiple riders on overlapping routes - harder matching NP-hard heuristic. Scheduled rides pre-assign drivers 30 min ahead. Defer unless interviewer insists; mention as future complexity on top of core state machine.',
     },
     { type: 'h2', text: 'Observability' },
     {
@@ -197,7 +197,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'ETA and routing cache' },
     {
       type: 'p',
-      text: 'Road network ETA is expensive — cache by rounded pickup/dropoff geohash pairs for 5 minutes. Fallback: haversine distance ÷ average city speed for matching rank only. Refresh ETA every 30s during trip from live driver position. Rider sees "3 min away" from cached route polyline progress.',
+      text: 'Road network ETA is expensive - cache by rounded pickup/dropoff geohash pairs for 5 minutes. Fallback: haversine distance ÷ average city speed for matching rank only. Refresh ETA every 30s during trip from live driver position. Rider sees "3 min away" from cached route polyline progress.',
     },
     { type: 'h2', text: 'Trust and safety (brief)' },
     {
@@ -218,7 +218,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'Ride hailing is real-time matching plus a strict trip state machine. Nail geospatial search, location streaming, and payment capture — the rest is product features on top.',
+      text: 'Ride hailing is real-time matching plus a strict trip state machine. Nail geospatial search, location streaming, and payment capture - the rest is product features on top.',
     },
   ],
 }

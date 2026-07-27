@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Almost every system design ends with "we put a load balancer in front." Interviewers want to know you understand what that actually does — and when horizontal scaling stops helping because state is stuck on one machine. This article covers the vocabulary and trade-offs you need, tied to designs like our [rate limiter](/system-design/design-rate-limiter) and [URL shortener](/system-design/design-url-shortener).',
+      text: 'Almost every system design ends with "we put a load balancer in front." Interviewers want to know you understand what that actually does - and when horizontal scaling stops helping because state is stuck on one machine. This article covers the vocabulary and trade-offs you need, tied to designs like our [rate limiter](/system-design/design-rate-limiter) and [URL shortener](/system-design/design-url-shortener).',
     },
     { type: 'h2', text: 'Vertical vs horizontal scaling' },
     {
@@ -24,16 +24,16 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Start vertical for simplicity. Scale horizontally when CPU or connection count exceeds one box. Databases scale differently — read replicas, sharding — covered briefly below.',
+      text: 'Start vertical for simplicity. Scale horizontally when CPU or connection count exceeds one box. Databases scale differently - read replicas, sharding - covered briefly below.',
     },
     { type: 'h2', text: 'Load balancer responsibilities' },
     {
       type: 'ul',
       items: [
         'Distribute incoming requests across healthy backends.',
-        'Terminate TLS (optional — also done at CDN edge).',
+        'Terminate TLS (optional - also done at CDN edge).',
         'Health checks: remove unhealthy instances from the pool.',
-        'Sticky sessions when needed (WebSocket, session in memory — avoid if possible).',
+        'Sticky sessions when needed (WebSocket, session in memory - avoid if possible).',
         'Single DNS entry for clients: api.example.com → LB → N app servers.',
       ],
     },
@@ -82,7 +82,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Auto-scaling' },
     {
       type: 'p',
-      text: 'Cloud auto-scaling groups add/remove instances based on CPU, request rate, or queue depth. Scale-out is fast (minutes); scale-in should drain connections first. Mention cold start: new instances need warmup before taking full traffic — use health checks that verify app readiness, not just TCP listen.',
+      text: 'Cloud auto-scaling groups add/remove instances based on CPU, request rate, or queue depth. Scale-out is fast (minutes); scale-in should drain connections first. Mention cold start: new instances need warmup before taking full traffic - use health checks that verify app readiness, not just TCP listen.',
     },
     { type: 'h2', text: 'Scaling the data layer' },
     {
@@ -125,7 +125,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'These patterns apply to the stateless tier in our [news feed](/system-design/design-news-feed) and [chat](/system-design/design-chat-messaging) designs — WebSocket gateways need connection draining on scale-in, which is harder than stateless HTTP.',
+      text: 'These patterns apply to the stateless tier in our [news feed](/system-design/design-news-feed) and [chat](/system-design/design-chat-messaging) designs - WebSocket gateways need connection draining on scale-in, which is harder than stateless HTTP.',
     },
     { type: 'h2', text: 'When horizontal scaling does not help' },
     {
@@ -135,7 +135,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Worked example: scaling the URL shortener' },
     {
       type: 'p',
-      text: 'Start with one app server and PostgreSQL. Traffic grows → add an L7 load balancer and N stateless app instances ([URL shortener](/system-design/design-url-shortener)). Read QPS still spikes on redirects → add Redis cache-aside. DB reads saturate → add read replicas. Write QPS exceeds primary capacity → shard url_mappings by hash of short_code. Each step solves a measured bottleneck — that narrative is what interviewers want.',
+      text: 'Start with one app server and PostgreSQL. Traffic grows → add an L7 load balancer and N stateless app instances ([URL shortener](/system-design/design-url-shortener)). Read QPS still spikes on redirects → add Redis cache-aside. DB reads saturate → add read replicas. Write QPS exceeds primary capacity → shard url_mappings by hash of short_code. Each step solves a measured bottleneck - that narrative is what interviewers want.',
     },
     {
       type: 'table',
@@ -156,24 +156,24 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Sticky sessions and WebSockets' },
     {
       type: 'p',
-      text: 'HTTP requests should be stateless — any server handles any request. WebSocket connections are stateful TCP pipes. Options: (1) sticky sessions by user_id cookie so the same user lands on the same chat server, (2) connection registry in Redis so any server can find any user\'s socket ([chat design](/system-design/design-chat-messaging)). Prefer (2) at scale; sticky sessions break when instances die mid-connection.',
+      text: 'HTTP requests should be stateless - any server handles any request. WebSocket connections are stateful TCP pipes. Options: (1) sticky sessions by user_id cookie so the same user lands on the same chat server, (2) connection registry in Redis so any server can find any user\'s socket ([chat design](/system-design/design-chat-messaging)). Prefer (2) at scale; sticky sessions break when instances die mid-connection.',
     },
     { type: 'h2', text: 'Capacity back-of-envelope' },
     {
       type: 'p',
-      text: 'One modest app server handles ~1,000–5,000 simple HTTP req/sec depending on work per request. If peak is 50,000 req/sec and each server sustains 2,500, you need ~20 instances plus headroom for deploys. WebSocket servers are connection-bound: 50K concurrent sockets per box is a planning number — millions of users online means hundreds of gateway nodes. State these assumptions aloud in interviews.',
+      text: 'One modest app server handles ~1,000-5,000 simple HTTP req/sec depending on work per request. If peak is 50,000 req/sec and each server sustains 2,500, you need ~20 instances plus headroom for deploys. WebSocket servers are connection-bound: 50K concurrent sockets per box is a planning number - millions of users online means hundreds of gateway nodes. State these assumptions aloud in interviews.',
     },
     { type: 'h2', text: 'Latency budget through the stack' },
     {
       type: 'table',
       headers: ['Hop', 'Typical cost'],
       rows: [
-        ['DNS lookup (cached)', '0–5ms'],
-        ['TLS handshake (first request)', '20–50ms'],
-        ['Load balancer', '1–5ms'],
-        ['App server logic', '2–20ms'],
-        ['Redis round-trip', '0.5–2ms'],
-        ['DB replica query (cache miss)', '5–20ms'],
+        ['DNS lookup (cached)', '0-5ms'],
+        ['TLS handshake (first request)', '20-50ms'],
+        ['Load balancer', '1-5ms'],
+        ['App server logic', '2-20ms'],
+        ['Redis round-trip', '0.5-2ms'],
+        ['DB replica query (cache miss)', '5-20ms'],
       ],
     },
     {

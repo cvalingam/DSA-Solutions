@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: '“Design Netflix recommendations” is not an invitation to derive matrix factorization on a whiteboard. Interviewers want a production shape: offline training, candidate generation, ranking, filters, and a feedback loop — wired to products you already know like [Netflix](/system-design/design-video-streaming-netflix), [Spotify](/system-design/design-spotify-music-streaming), or [e-commerce](/system-design/design-ecommerce-shopping-cart).',
+      text: '“Design Netflix recommendations” is not an invitation to derive matrix factorization on a whiteboard. Interviewers want a production shape: offline training, candidate generation, ranking, filters, and a feedback loop - wired to products you already know like [Netflix](/system-design/design-video-streaming-netflix), [Spotify](/system-design/design-spotify-music-streaming), or [e-commerce](/system-design/design-ecommerce-shopping-cart).',
     },
     {
       type: 'p',
@@ -38,10 +38,10 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'P99 latency under ~100–200 ms for online recommend API.',
+        'P99 latency under ~100-200 ms for online recommend API.',
         'Freshness: new viral items appear within minutes to hours, not only next day.',
         'Availability: degrade to popular/trending if personalization is down.',
-        'Diversity and fatigue — do not return 20 nearly identical items.',
+        'Diversity and fatigue - do not return 20 nearly identical items.',
       ],
     },
     {
@@ -52,36 +52,36 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: '100M DAU, homepage loads averaging 5 recommend calls → ~5K–10K QPS with peaks. Catalog 1M–100M items. Candidate stage must be O(log n) or precomputed — not a full scan. Feature store reads should be cached ([Redis](/system-design/design-distributed-cache-redis) / local).',
+      text: '100M DAU, homepage loads averaging 5 recommend calls → ~5K-10K QPS with peaks. Catalog 1M-100M items. Candidate stage must be O(log n) or precomputed - not a full scan. Feature store reads should be cached ([Redis](/system-design/design-distributed-cache-redis) / local).',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'Event pipeline — views, clicks, watches, purchases → [Kafka](/system-design/message-queues-async-processing).',
-        'Feature store — user and item features (batch + nearline).',
-        'Offline training — daily/ hourly jobs produce embeddings and ranker weights.',
-        'Candidate generators — collaborative filters, content similarity, trending, editorial.',
-        'Ranker service — scores candidates with gradient-boosted trees or a small neural net.',
-        'Filter / blender — business rules, dedupe, diversity, exploration.',
-        'Online API — assemble response; fall back shelves on failure.',
-        'Experimentation — assign users to variants; log exposures.',
+        'Event pipeline - views, clicks, watches, purchases → [Kafka](/system-design/message-queues-async-processing).',
+        'Feature store - user and item features (batch + nearline).',
+        'Offline training - daily/ hourly jobs produce embeddings and ranker weights.',
+        'Candidate generators - collaborative filters, content similarity, trending, editorial.',
+        'Ranker service - scores candidates with gradient-boosted trees or a small neural net.',
+        'Filter / blender - business rules, dedupe, diversity, exploration.',
+        'Online API - assemble response; fall back shelves on failure.',
+        'Experimentation - assign users to variants; log exposures.',
       ],
     },
     { type: 'h2', text: 'Candidate generation' },
     {
       type: 'ul',
       items: [
-        'Item-item CF: “users who liked X also liked Y” — precompute top-K neighbors in a KV store.',
+        'Item-item CF: “users who liked X also liked Y” - precompute top-K neighbors in a KV store.',
         'User embedding ANN: approximate nearest neighbors (Faiss / ScaNN) over item vectors.',
-        'Trending / popular: time-decayed counters — great cold-start baseline.',
+        'Trending / popular: time-decayed counters - great cold-start baseline.',
         'Graph / social: friends’ recent likes if the product has a social graph ([news feed](/system-design/design-news-feed) adjacency).',
-        'Co-occurrence from search or session — complementary to [search](/system-design/design-search-engine) logs.',
+        'Co-occurrence from search or session - complementary to [search](/system-design/design-search-engine) logs.',
       ],
     },
     {
       type: 'p',
-      text: 'Union candidates from 3–5 sources with caps per source so one noisy channel cannot dominate. Cap at ~500–1000 before ranking.',
+      text: 'Union candidates from 3-5 sources with caps per source so one noisy channel cannot dominate. Cap at ~500-1000 before ranking.',
     },
     { type: 'h2', text: 'Ranking and features' },
     {
@@ -113,12 +113,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Cold start' },
     {
       type: 'p',
-      text: 'New users: onboarding interests + popular-in-region + exploration. New items: content embeddings from title/metadata/transcript; boost in exploration slots until enough interactions exist. Never leave a blank homepage — product managers will veto your design in the room.',
+      text: 'New users: onboarding interests + popular-in-region + exploration. New items: content embeddings from title/metadata/transcript; boost in exploration slots until enough interactions exist. Never leave a blank homepage - product managers will veto your design in the room.',
     },
     { type: 'h2', text: 'Feedback loops and bias' },
     {
       type: 'p',
-      text: 'You only observe clicks on items you showed — position bias and selection bias are real. Say you will log impressions, use propensity weighting or random exploration slots, and separate training data from serving policy. This one paragraph signals senior judgment.',
+      text: 'You only observe clicks on items you showed - position bias and selection bias are real. Say you will log impressions, use propensity weighting or random exploration slots, and separate training data from serving policy. This one paragraph signals senior judgment.',
     },
     { type: 'h2', text: 'Scaling and failure' },
     {
@@ -127,7 +127,7 @@ const article: SystemDesignArticle = {
         'Precompute heavy candidates; keep online path CPU-light.',
         'Shard ANN indexes; replicate ranker replicas behind a [load balancer](/system-design/load-balancing-and-scaling).',
         'Circuit-break personalization → trending shelf ([CAP](/system-design/cap-theorem-consistency-models) favor availability for homepage).',
-        'Monitor recommendation quality with offline AUC and online A/B — not only QPS.',
+        'Monitor recommendation quality with offline AUC and online A/B - not only QPS.',
       ],
     },
     { type: 'h2', text: 'Worked example' },

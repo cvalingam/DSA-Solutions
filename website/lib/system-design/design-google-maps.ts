@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Google Maps combines three products: a slippy map of tiles, a places directory like [Yelp](/system-design/design-yelp-nearby-places), and a routing engine that turns “home to airport” into turn-by-turn guidance with live traffic. Interviewers rarely expect you to invent A* from scratch — they want tile CDNs, geo indexes, and a sane split between static road graph and dynamic traffic.',
+      text: 'Google Maps combines three products: a slippy map of tiles, a places directory like [Yelp](/system-design/design-yelp-nearby-places), and a routing engine that turns “home to airport” into turn-by-turn guidance with live traffic. Interviewers rarely expect you to invent A* from scratch - they want tile CDNs, geo indexes, and a sane split between static road graph and dynamic traffic.',
     },
     {
       type: 'p',
@@ -31,7 +31,7 @@ const article: SystemDesignArticle = {
         'Search places and addresses; show details and reviews.',
         'Compute route A→B with ETA; reroute on deviation.',
         'Show live traffic coloring on major roads.',
-        'Optional: Street View, transit — acknowledge as phase 2.',
+        'Optional: Street View, transit - acknowledge as phase 2.',
       ],
     },
     { type: 'h2', text: 'Non-functional' },
@@ -41,7 +41,7 @@ const article: SystemDesignArticle = {
         'Tile fetch p99 under ~100 ms from CDN.',
         'Route response under ~500 ms for city-scale trips.',
         'Fresh traffic within a few minutes; not millisecond-perfect.',
-        'Global coverage — shard data by region.',
+        'Global coverage - shard data by region.',
       ],
     },
     {
@@ -52,14 +52,14 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Map tiles' },
     {
       type: 'p',
-      text: 'The world is cut into square tiles at zoom levels 0…N (Web Mercator). Client requests `/{z}/{x}/{y}.pbf` or PNG. Pre-render or serve vector tiles from object storage + CDN — same edge story as [Instagram](/system-design/design-instagram-photo-sharing) images. Vector tiles are smaller and styleable on device; raster is simpler to explain.',
+      text: 'The world is cut into square tiles at zoom levels 0…N (Web Mercator). Client requests `/{z}/{x}/{y}.pbf` or PNG. Pre-render or serve vector tiles from object storage + CDN - same edge story as [Instagram](/system-design/design-instagram-photo-sharing) images. Vector tiles are smaller and styleable on device; raster is simpler to explain.',
     },
     {
       type: 'ul',
       items: [
         'Popular city tiles stay hot in CDN; oceans are cold.',
         'Version tiles (`v2026.07`) so clients can cache aggressively.',
-        'Never generate tiles on the request path at peak — batch pipeline.',
+        'Never generate tiles on the request path at peak - batch pipeline.',
       ],
     },
     { type: 'h2', text: 'Places and geocoding' },
@@ -94,7 +94,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'ETA = sum of segment times on the chosen path ± uncertainty. Reroute when GPS leaves the corridor or traffic spikes on the remaining path. Client sends location every few seconds — similar presence chatter to [chat](/system-design/design-chat-messaging) but to a location service, not a message bus for everyone.',
+      text: 'ETA = sum of segment times on the chosen path ± uncertainty. Reroute when GPS leaves the corridor or traffic spikes on the remaining path. Client sends location every few seconds - similar presence chatter to [chat](/system-design/design-chat-messaging) but to a location service, not a message bus for everyone.',
     },
     { type: 'h2', text: 'Architecture diagram (verbal)' },
     {
@@ -120,12 +120,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Privacy' },
     {
       type: 'p',
-      text: 'Location is sensitive. Aggregate probes, snap to roads, drop raw trails quickly, and let users opt out. Say this aloud — it signals product maturity beyond boxes and arrows.',
+      text: 'Location is sensitive. Aggregate probes, snap to roads, drop raw trails quickly, and let users opt out. Say this aloud - it signals product maturity beyond boxes and arrows.',
     },
     { type: 'h2', text: 'Client rendering tips' },
     {
       type: 'p',
-      text: 'Mobile clients request only visible tile IDs, prefetch neighbors while panning, and cancel in-flight fetches when the camera jumps. Polyline simplification (Douglas–Peucker) keeps route overlays light. These details show you have shipped map UIs, not only drawn CDNs.',
+      text: 'Mobile clients request only visible tile IDs, prefetch neighbors while panning, and cancel in-flight fetches when the camera jumps. Polyline simplification (Douglas-Peucker) keeps route overlays light. These details show you have shipped map UIs, not only drawn CDNs.',
     },
     {
       type: 'table',

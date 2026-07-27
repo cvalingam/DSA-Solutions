@@ -11,7 +11,7 @@ export interface RichExplanation {
   pitfalls?: string[]
 }
 
-/** Frozen at build time — used for sitemap lastModified and JSON-LD dateModified. */
+/** Frozen at build time - used for sitemap lastModified and JSON-LD dateModified. */
 export const BUILD_DATE = new Date()
 
 export const AUTHOR = {
@@ -25,7 +25,7 @@ export function getSiteStats() {
   return { lcCount, gfgCount, total: lcCount + gfgCount }
 }
 
-/** Google meta description sweet spot is ~150–160 characters. */
+/** Google meta description sweet spot is ~150-160 characters. */
 export function truncateDescription(text: string, max = 158): string {
   const clean = text.replace(/\s+/g, ' ').trim()
   if (clean.length <= max) return clean
@@ -39,7 +39,7 @@ export function buildLcDescription(
   rich?: RichExplanation,
 ): string {
   const primary = problem.primaryExt === 'cs' ? 'C#' : problem.primaryExt.toUpperCase()
-  let desc = `LeetCode ${problem.number} ${problem.title} (${problem.difficulty}) — ${primary} solution with code`
+  let desc = `LeetCode ${problem.number} ${problem.title} (${problem.difficulty}) - ${primary} solution with code`
 
   if (rich?.intuition) {
     desc += `. ${rich.intuition}`
@@ -62,7 +62,7 @@ export function buildGfgDescription(
   problem: GfgProblem,
   rich?: RichExplanation,
 ): string {
-  let desc = `GeeksforGeeks ${problem.title} — Java solution with explanation and full code`
+  let desc = `GeeksforGeeks ${problem.title} - Java solution with explanation and full code`
 
   if (rich?.intuition) {
     desc += `. ${rich.intuition}`
@@ -101,7 +101,7 @@ export function buildLcArticleGraph(
   primaryLabel: string,
 ) {
   const url = `${SITE_URL}/problems/${problem.slug}`
-  const headline = `${problem.number}. ${problem.title} — LeetCode ${primaryLabel} Solution`
+  const headline = `${problem.number}. ${problem.title} - LeetCode ${primaryLabel} Solution`
   const description = buildLcDescription(problem, rich)
 
   const graph: Record<string, unknown>[] = [
@@ -169,7 +169,7 @@ export function buildGfgArticleGraph(
   rich: RichExplanation | undefined,
 ) {
   const url = `${SITE_URL}/gfg/${problem.slug}`
-  const headline = `${problem.title} — GFG Java Solution`
+  const headline = `${problem.title} - GFG Java Solution`
   const description = buildGfgDescription(problem, rich)
 
   const graph: Record<string, unknown>[] = [
@@ -316,9 +316,9 @@ export function buildWorksPageSchema(
   return {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Works — Live Projects by Sivalingam Ramasamy',
+    name: 'Works - Live Projects by Sivalingam Ramasamy',
     description:
-      'Selected live projects by Sivalingam Ramasamy — NEET MDS Image Sizer, DSA Solutions, Skin Klove, Clinic OS, Invoice Generator, GST Bot, and Steel Express.',
+      'Selected live projects by Sivalingam Ramasamy - NEET MDS Image Sizer, DSA Solutions, Skin Klove, Clinic OS, Invoice Generator, GST Bot, and Steel Express.',
     url: `${SITE_URL}/works`,
     author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
     numberOfItems: projects.length,

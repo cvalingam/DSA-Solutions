@@ -12,7 +12,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Typeahead is "return top 5 suggestions as the user types." It is read-heavy, latency-sensitive, and a natural fit for [tries](/system-design/from-leetcode-patterns-to-real-systems) — the same prefix-tree thinking as LeetCode word search problems. Interviewers care about p99 latency under 100ms and how you rank "ap" → apple, app, application. Use the [interview framework](/system-design/how-to-approach-system-design-interviews) to clarify personal vs global suggestions.',
+      text: 'Typeahead is "return top 5 suggestions as the user types." It is read-heavy, latency-sensitive, and a natural fit for [tries](/system-design/from-leetcode-patterns-to-real-systems) - the same prefix-tree thinking as LeetCode word search problems. Interviewers care about p99 latency under 100ms and how you rank "ap" → apple, app, application. Use the [interview framework](/system-design/how-to-approach-system-design-interviews) to clarify personal vs global suggestions.',
     },
     { type: 'h2', text: 'Requirements' },
     { type: 'h3', text: 'Functional' },
@@ -31,14 +31,14 @@ const article: SystemDesignArticle = {
       items: [
         'Latency under 100ms p99; debounce handled client-side.',
         'Data updates as trends change (hourly or daily batch).',
-        'Graceful degradation when trie is stale — return cached popular list.',
+        'Graceful degradation when trie is stale - return cached popular list.',
         'Abuse-resistant: rate limits and minimum prefix length.',
       ],
     },
     {
       type: 'callout',
       title: 'Clarify scope',
-      text: 'Google-scale typeahead vs Netflix title search vs IDE symbol complete — scale and ranking differ. Ask if suggestions are global, per-user, or blended.',
+      text: 'Google-scale typeahead vs Netflix title search vs IDE symbol complete - scale and ranking differ. Ask if suggestions are global, per-user, or blended.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
@@ -56,7 +56,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Client-side behavior' },
     {
       type: 'p',
-      text: 'The browser debounces keystrokes (150–300ms) so "application" does not fire eight API calls. Cancel in-flight fetch when the user types the next character — stale responses must not overwrite newer ones (track request sequence number). Show cached suggestions from the previous prefix while loading ("app" results visible while "appl" loads). Minimum prefix length of 2–3 chars cuts noise and storage for single-letter prefixes that are almost always cache misses at scale.',
+      text: 'The browser debounces keystrokes (150-300ms) so "application" does not fire eight API calls. Cancel in-flight fetch when the user types the next character - stale responses must not overwrite newer ones (track request sequence number). Show cached suggestions from the previous prefix while loading ("app" results visible while "appl" loads). Minimum prefix length of 2-3 chars cuts noise and storage for single-letter prefixes that are almost always cache misses at scale.',
     },
     { type: 'h2', text: 'Trie-based approach' },
     {
@@ -74,12 +74,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Elasticsearch / prefix index alternative' },
     {
       type: 'p',
-      text: 'For richer ranking (freshness, location, user segment), use search index with edge n-grams or completion suggester. Higher latency (~20–50ms) but flexible scoring. Hybrid: trie for ultra-hot prefixes, ES for long tail. Mention [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) — this is a search index problem, not relational.',
+      text: 'For richer ranking (freshness, location, user segment), use search index with edge n-grams or completion suggester. Higher latency (~20-50ms) but flexible scoring. Hybrid: trie for ultra-hot prefixes, ES for long tail. Mention [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) - this is a search index problem, not relational.',
     },
     { type: 'h2', text: 'Caching strategy' },
     {
       type: 'p',
-      text: '80% of traffic hits short prefixes. [Cache](/system-design/caching-fundamentals-for-interviews) Redis key suggest:app → JSON array of top 5. TTL 5–60 minutes. Warm cache after offline trie rebuild. Use CDN for anonymous global suggestions at edge PoPs — same idea as [URL shortener](/system-design/design-url-shortener) redirect caching.',
+      text: '80% of traffic hits short prefixes. [Cache](/system-design/caching-fundamentals-for-interviews) Redis key suggest:app → JSON array of top 5. TTL 5-60 minutes. Warm cache after offline trie rebuild. Use CDN for anonymous global suggestions at edge PoPs - same idea as [URL shortener](/system-design/design-url-shortener) redirect caching.',
     },
     { type: 'h2', text: 'Personalization' },
     {
@@ -89,15 +89,15 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: '10M DAU, 20 keystrokes per search session, 50% trigger API calls after debounce → 100M suggest requests/day ≈ 1,200 RPS average, ~6K peak. Each response ~200 bytes → ~1.2 MB/s average bandwidth. Trie in RAM: 10M terms × avg 10 bytes + scores ≈ hundreds of MB — feasible on few nodes with replication.',
+      text: '10M DAU, 20 keystrokes per search session, 50% trigger API calls after debounce → 100M suggest requests/day ≈ 1,200 RPS average, ~6K peak. Each response ~200 bytes → ~1.2 MB/s average bandwidth. Trie in RAM: 10M terms × avg 10 bytes + scores ≈ hundreds of MB - feasible on few nodes with replication.',
     },
     { type: 'h2', text: 'API design' },
     {
       type: 'ul',
       items: [
-        'GET /v1/suggest?q={prefix}&limit=5 — 200 { suggestions: [{ text, score }] }',
-        'Debounce 150–300ms on client — do not call API every keypress.',
-        'Return 429 when abusive — [rate limiter](/system-design/design-rate-limiter) per IP.',
+        'GET /v1/suggest?q={prefix}&limit=5 - 200 { suggestions: [{ text, score }] }',
+        'Debounce 150-300ms on client - do not call API every keypress.',
+        'Return 429 when abusive - [rate limiter](/system-design/design-rate-limiter) per IP.',
       ],
     },
     { type: 'h2', text: 'Failure modes' },
@@ -113,22 +113,22 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Trie node structure detail' },
     {
       type: 'p',
-      text: 'Each node stores: children map (char → node), and min-heap or sorted array of top K (term, score) pairs in its subtree. When building offline, propagate best candidates up from leaves. Space trade-off: store only top 5 per node vs full term list at leaves — top-K per node is enough for autocomplete.',
+      text: 'Each node stores: children map (char → node), and min-heap or sorted array of top K (term, score) pairs in its subtree. When building offline, propagate best candidates up from leaves. Space trade-off: store only top 5 per node vs full term list at leaves - top-K per node is enough for autocomplete.',
     },
     { type: 'h2', text: 'Fuzzy matching (v2)' },
     {
       type: 'p',
-      text: 'Typo tolerance ("appl" → "apple") needs edit-distance search or secondary phonetic index — out of scope for v1. Mention as extension: Elasticsearch fuzzy query or SymSpell on top of prefix trie.',
+      text: 'Typo tolerance ("appl" → "apple") needs edit-distance search or secondary phonetic index - out of scope for v1. Mention as extension: Elasticsearch fuzzy query or SymSpell on top of prefix trie.',
     },
     { type: 'h2', text: 'Latency budget' },
     {
       type: 'table',
       headers: ['Step', 'Target'],
       rows: [
-        ['CDN / Redis cache hit', '5–15ms'],
+        ['CDN / Redis cache hit', '5-15ms'],
         ['Trie traversal in memory', '< 1ms'],
-        ['Personal merge + re-rank', '5–10ms'],
-        ['Miss → ES fallback', '20–50ms'],
+        ['Personal merge + re-rank', '5-10ms'],
+        ['Miss → ES fallback', '20-50ms'],
       ],
     },
     { type: 'h2', text: 'Offline analytics pipeline' },
@@ -145,12 +145,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Worked trie example' },
     {
       type: 'p',
-      text: 'Terms: app(100), apple(80), apply(50), apt(40). Node at "ap" stores top-3: app, apple, apply. Query "ap" returns those three without scanning full dictionary. Query "app" returns app, apple, apply from child node. Insert new trending term offline — rebuild affected subtree tops only.',
+      text: 'Terms: app(100), apple(80), apply(50), apt(40). Node at "ap" stores top-3: app, apple, apply. Query "ap" returns those three without scanning full dictionary. Query "app" returns app, apple, apply from child node. Insert new trending term offline - rebuild affected subtree tops only.',
     },
     { type: 'h2', text: 'Ranking signals' },
     {
       type: 'p',
-      text: 'Popularity (global search count) is v1. v2 blends: recency boost for trending queries, user affinity, locale, and safe-search filters. All scoring happens on a bounded candidate set from the trie — never score the whole dictionary at request time. Precompute scores offline; online merge is arithmetic on ≤50 candidates.',
+      text: 'Popularity (global search count) is v1. v2 blends: recency boost for trending queries, user affinity, locale, and safe-search filters. All scoring happens on a bounded candidate set from the trie - never score the whole dictionary at request time. Precompute scores offline; online merge is arithmetic on ≤50 candidates.',
     },
     { type: 'h2', text: 'Scaling the read path' },
     {
@@ -161,28 +161,28 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'Minimum prefix length 2–3 chars before API call.',
+        'Minimum prefix length 2-3 chars before API call.',
         '[Rate limit](/system-design/design-rate-limiter) per IP and per API key.',
         'Blocklist offensive terms from trie during offline build.',
-        'Do not log full queries with PII in plain text — hash user_id in analytics.',
+        'Do not log full queries with PII in plain text - hash user_id in analytics.',
       ],
     },
     { type: 'h2', text: 'Memory compression (DAFSA)' },
     {
       type: 'p',
-      text: 'A naive trie with hash maps per node uses heavy pointer overhead. Production systems use array-backed tries, double-array trie, or DAFSA (minimal acyclic automaton) built offline — same prefix logic as LeetCode trie problems, but the artifact is a flat byte array loaded mmap-style on boot. Interview line: "We build the structure offline; online path is read-only traversal with no allocation." That signals you understand ops cost, not just algorithm class.',
+      text: 'A naive trie with hash maps per node uses heavy pointer overhead. Production systems use array-backed tries, double-array trie, or DAFSA (minimal acyclic automaton) built offline - same prefix logic as LeetCode trie problems, but the artifact is a flat byte array loaded mmap-style on boot. Interview line: "We build the structure offline; online path is read-only traversal with no allocation." That signals you understand ops cost, not just algorithm class.',
     },
     { type: 'h2', text: 'Data freshness trade-off' },
     {
       type: 'p',
-      text: 'Hourly trie rebuild means breaking news may lag. Breaking-glass path: stream trending queries into Redis sorted set, merge at read time with offline trie for prefixes matching news keywords. Most interviews accept hourly batch — mention real-time stream as v2.',
+      text: 'Hourly trie rebuild means breaking news may lag. Breaking-glass path: stream trending queries into Redis sorted set, merge at read time with offline trie for prefixes matching news keywords. Most interviews accept hourly batch - mention real-time stream as v2.',
     },
     {
       type: 'table',
       headers: ['Approach', 'Latency', 'Freshness'],
       rows: [
         ['In-memory trie only', '< 5ms', 'Hours (batch rebuild)'],
-        ['Elasticsearch completion', '20–50ms', 'Seconds (near real-time index)'],
+        ['Elasticsearch completion', '20-50ms', 'Seconds (near real-time index)'],
         ['Hybrid trie + Redis trends', '< 15ms', 'Minutes for trending layer'],
       ],
     },
@@ -210,7 +210,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'Typeahead is prefix lookup plus ranking — trie for speed, batch analytics for scores, cache for traffic concentration. Connect to trie and heap patterns from DSA prep.',
+      text: 'Typeahead is prefix lookup plus ranking - trie for speed, batch analytics for scores, cache for traffic concentration. Connect to trie and heap patterns from DSA prep.',
     },
   ],
 }

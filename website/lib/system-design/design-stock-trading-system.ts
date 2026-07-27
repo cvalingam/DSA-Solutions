@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Trading platforms scare candidates into drawing a Wall Street exchange. Most interview prompts mean a retail broker: users place orders, you route or match, you keep a correct ledger of cash and positions. Latency matters, but correctness and idempotency matter more — same DNA as a [payment system](/system-design/design-payment-system), with a live market-data firehose on the side.',
+      text: 'Trading platforms scare candidates into drawing a Wall Street exchange. Most interview prompts mean a retail broker: users place orders, you route or match, you keep a correct ledger of cash and positions. Latency matters, but correctness and idempotency matter more - same DNA as a [payment system](/system-design/design-payment-system), with a live market-data firehose on the side.',
     },
     {
       type: 'p',
@@ -39,7 +39,7 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'Order path: low tens of milliseconds internally; never lose or double-apply a fill.',
-        'Strong consistency on balances and positions — AP is wrong here.',
+        'Strong consistency on balances and positions - AP is wrong here.',
         'Market data: high throughput, eventual display lag of hundreds of ms is often OK for retail.',
         'Auditability: immutable order/fill log for compliance.',
         'Idempotent order submission (client order ids).',
@@ -53,20 +53,20 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity sketch' },
     {
       type: 'p',
-      text: '10M users, peak order rates in the tens of thousands/sec at the open (retail is bursty at 9:30 ET — use whatever number the interviewer gives you). Market data: thousands of symbols × quote updates — easily 1M+ msgs/sec into your fan-out tier. Separate the hot market-data plane from the transactional order plane so a quote storm cannot stall bookings.',
+      text: '10M users, peak order rates in the tens of thousands/sec at the open (retail is bursty at 9:30 ET - use whatever number the interviewer gives you). Market data: thousands of symbols × quote updates - easily 1M+ msgs/sec into your fan-out tier. Separate the hot market-data plane from the transactional order plane so a quote storm cannot stall bookings.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
       type: 'ol',
       items: [
-        'API / mobile gateway — auth, [rate limits](/system-design/design-rate-limiter), schema validation ([API gateway](/system-design/design-api-gateway)).',
-        'Market data service — ingest exchange feeds, normalize, publish to clients via WebSocket.',
-        'Order gateway — validate, assign ids ([Snowflake](/system-design/design-unique-id-generator)), persist intent.',
-        'Risk engine — buying power, pattern-day-trader rules, notional limits.',
-        'Matching / router — simplify as an in-memory book per symbol or a smart order router to venues.',
-        'Ledger service — double-entry cash and positions; source of truth.',
-        'Notification — fills via [push](/system-design/design-notification-system).',
-        'Analytics / warehouse — async copy for tax lots and statements.',
+        'API / mobile gateway - auth, [rate limits](/system-design/design-rate-limiter), schema validation ([API gateway](/system-design/design-api-gateway)).',
+        'Market data service - ingest exchange feeds, normalize, publish to clients via WebSocket.',
+        'Order gateway - validate, assign ids ([Snowflake](/system-design/design-unique-id-generator)), persist intent.',
+        'Risk engine - buying power, pattern-day-trader rules, notional limits.',
+        'Matching / router - simplify as an in-memory book per symbol or a smart order router to venues.',
+        'Ledger service - double-entry cash and positions; source of truth.',
+        'Notification - fills via [push](/system-design/design-notification-system).',
+        'Analytics / warehouse - async copy for tax lots and statements.',
       ],
     },
     { type: 'h2', text: 'Order lifecycle' },
@@ -83,7 +83,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Treat fills as the only thing that mutates positions. UI optimism is fine; the ledger is not optimistic. Use exactly-once-effect processing with idempotent fill ids — classic [queue](/system-design/message-queues-async-processing) consumer pattern.',
+      text: 'Treat fills as the only thing that mutates positions. UI optimism is fine; the ledger is not optimistic. Use exactly-once-effect processing with idempotent fill ids - classic [queue](/system-design/message-queues-async-processing) consumer pattern.',
     },
     { type: 'h2', text: 'Data model' },
     {
@@ -101,7 +101,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Matching engine (keep honest)' },
     {
       type: 'p',
-      text: 'If you include matching: one single-threaded event loop per symbol (or shard of symbols) processing an input queue — determinism beats premature multi-threading. Price-time priority for limit books. Market orders consume the opposite side. Acknowledge that real exchanges are FPGA/colocated beasts; you are illustrating the state machine. For a broker-only design, replace this box with “venue adapter.”',
+      text: 'If you include matching: one single-threaded event loop per symbol (or shard of symbols) processing an input queue - determinism beats premature multi-threading. Price-time priority for limit books. Market orders consume the opposite side. Acknowledge that real exchanges are FPGA/colocated beasts; you are illustrating the state machine. For a broker-only design, replace this box with “venue adapter.”',
     },
     { type: 'h2', text: 'Market data fan-out' },
     {
@@ -115,7 +115,7 @@ const article: SystemDesignArticle = {
         'Account updates are [CP](/system-design/cap-theorem-consistency-models): better to reject orders than corrupt cash.',
         'Use database transactions or a transactional outbox when emitting fill events.',
         'Replay the order log to rebuild an in-memory book after matcher crash.',
-        'Circuit-break trading on a symbol if venue feed is stale — show “data delayed.”',
+        'Circuit-break trading on a symbol if venue feed is stale - show “data delayed.”',
         'Shard users for ledger hot spots; shard books by symbol for matching.',
       ],
     },

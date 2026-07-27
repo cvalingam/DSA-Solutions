@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Every company has “run this job every night at 2 AM” — until one box dies and nobody notices, or ten boxes all fire the same cron. A distributed job scheduler is the grown-up version of crontab: durable schedules, many workers, retries, and observability. Interviewers like it because it mixes [message queues](/system-design/message-queues-async-processing), locking, and clock skew without needing a flashy consumer product.',
+      text: 'Every company has “run this job every night at 2 AM” - until one box dies and nobody notices, or ten boxes all fire the same cron. A distributed job scheduler is the grown-up version of crontab: durable schedules, many workers, retries, and observability. Interviewers like it because it mixes [message queues](/system-design/message-queues-async-processing), locking, and clock skew without needing a flashy consumer product.',
     },
     {
       type: 'p',
@@ -38,7 +38,7 @@ const article: SystemDesignArticle = {
     {
       type: 'ul',
       items: [
-        'No single point of failure — scheduler and workers must survive node loss.',
+        'No single point of failure - scheduler and workers must survive node loss.',
         'At-least-once delivery of “run” signals; jobs must be idempotent.',
         'Bounded delay: fire within seconds of the scheduled time under normal load.',
         'Fairness: one noisy tenant cannot starve others.',
@@ -47,7 +47,7 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Idempotency is non-negotiable',
-      text: 'Distributed systems will double-fire under retries and network partitions. Design handlers to be safe if run twice — same lesson as [payments](/system-design/design-payment-system).',
+      text: 'Distributed systems will double-fire under retries and network partitions. Design handlers to be safe if run twice - same lesson as [payments](/system-design/design-payment-system).',
     },
     { type: 'h2', text: 'Capacity' },
     {
@@ -58,12 +58,12 @@ const article: SystemDesignArticle = {
     {
       type: 'ol',
       items: [
-        'API — create/update/delete schedules; auth via [API gateway](/system-design/design-api-gateway).',
-        'Job store — PostgreSQL or Cassandra: schedule definition + next_run_at.',
-        'Dispatcher — polls or listens for due jobs, claims them, pushes to queue.',
-        'Queue — Kafka / SQS with job_run_id payloads.',
-        'Workers — pull jobs, execute, report success/fail.',
-        'History / metrics — run logs, latency, failure rates.',
+        'API - create/update/delete schedules; auth via [API gateway](/system-design/design-api-gateway).',
+        'Job store - PostgreSQL or Cassandra: schedule definition + next_run_at.',
+        'Dispatcher - polls or listens for due jobs, claims them, pushes to queue.',
+        'Queue - Kafka / SQS with job_run_id payloads.',
+        'Workers - pull jobs, execute, report success/fail.',
+        'History / metrics - run logs, latency, failure rates.',
       ],
     },
     { type: 'h3', text: 'Why not every worker runs crontab?' },
@@ -88,7 +88,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Cron and next_run_at' },
     {
       type: 'p',
-      text: 'Store cron expression + timezone. After each successful run, compute next fire time with a cron library. Index `next_run_at` so dispatchers can `SELECT … ORDER BY next_run_at LIMIT N FOR UPDATE SKIP LOCKED` (Postgres) — excellent interview phrase. SKIP LOCKED lets multiple dispatchers poll without blocking each other.',
+      text: 'Store cron expression + timezone. After each successful run, compute next fire time with a cron library. Index `next_run_at` so dispatchers can `SELECT … ORDER BY next_run_at LIMIT N FOR UPDATE SKIP LOCKED` (Postgres) - excellent interview phrase. SKIP LOCKED lets multiple dispatchers poll without blocking each other.',
     },
     { type: 'h2', text: 'Thundering herd' },
     {
@@ -108,12 +108,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'One-shot vs recurring' },
     {
       type: 'p',
-      text: 'One-shot: delete or mark completed after success. Recurring: always advance next_run_at. Missed windows (dispatcher down for an hour): either catch up (run once for missed) or skip to next — product decision; say both options aloud.',
+      text: 'One-shot: delete or mark completed after success. Recurring: always advance next_run_at. Missed windows (dispatcher down for an hour): either catch up (run once for missed) or skip to next - product decision; say both options aloud.',
     },
     { type: 'h2', text: 'Storage choice' },
     {
       type: 'p',
-      text: 'PostgreSQL is enough for millions of schedules with a good `next_run_at` index. At extreme scale, shard by tenant or use a calendar queue in Redis sorted sets (`ZADD due_jobs score=timestamp member=job_id`) similar to [leaderboard](/system-design/design-leaderboard) ZSETs — score is fire time. Redis is fast but needs persistence story (AOF/RDB) or dual-write to SQL for durability.',
+      text: 'PostgreSQL is enough for millions of schedules with a good `next_run_at` index. At extreme scale, shard by tenant or use a calendar queue in Redis sorted sets (`ZADD due_jobs score=timestamp member=job_id`) similar to [leaderboard](/system-design/design-leaderboard) ZSETs - score is fire time. Redis is fast but needs persistence story (AOF/RDB) or dual-write to SQL for durability.',
     },
     { type: 'h2', text: 'Observability' },
     {
@@ -122,7 +122,7 @@ const article: SystemDesignArticle = {
         'Metrics: runs started, succeeded, failed, lag (now − scheduled_time).',
         'Trace run_id across dispatcher → queue → worker.',
         'Alert when lag > threshold or DLQ depth grows.',
-        'Audit who changed a cron — compliance loves this.',
+        'Audit who changed a cron - compliance loves this.',
       ],
     },
     { type: 'h2', text: 'Worked example' },
@@ -133,7 +133,7 @@ const article: SystemDesignArticle = {
         'At 02:00 IST, dispatcher claims job, enqueues run_id R1.',
         'Worker executes; billing API called with idempotency key R1.',
         'Success → next_run_at set to tomorrow 02:00 + 12s jitter.',
-        'If worker crashes mid-run, lease expires; another worker may retry — billing ignores duplicate R1.',
+        'If worker crashes mid-run, lease expires; another worker may retry - billing ignores duplicate R1.',
       ],
     },
     { type: 'h2', text: 'Multi-tenant isolation' },

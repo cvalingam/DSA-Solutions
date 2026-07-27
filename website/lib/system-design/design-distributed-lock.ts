@@ -17,7 +17,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'A distributed lock makes sure only one worker among many touches a critical section — leader election, unique cron runs, inventory decrement. It shows up inside [job schedulers](/system-design/design-distributed-job-scheduler), [ticket booking](/system-design/design-ticket-booking-system), and primary failover. The interview is less about APIs and more about failure: clocks, GC pauses, and believing you hold a lock you already lost.',
+      text: 'A distributed lock makes sure only one worker among many touches a critical section - leader election, unique cron runs, inventory decrement. It shows up inside [job schedulers](/system-design/design-distributed-job-scheduler), [ticket booking](/system-design/design-ticket-booking-system), and primary failover. The interview is less about APIs and more about failure: clocks, GC pauses, and believing you hold a lock you already lost.',
     },
     {
       type: 'p',
@@ -28,7 +28,7 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'acquire(lock_name, holder_id, ttl) → success/fail.',
-        'release(lock_name, holder_id) — only the owner can unlock.',
+        'release(lock_name, holder_id) - only the owner can unlock.',
         'Automatic expiry if the holder crashes (lease).',
         'Optional: fencing token so stale holders cannot commit.',
         'Optional: reentrant locks for the same holder.',
@@ -42,15 +42,15 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Lease-based locking' },
     {
       type: 'p',
-      text: 'Always use TTLs. Without expiry, a dead holder blocks the world forever. With TTL, a long GC pause can expire your lock while you still run — that is the classic bug. Mitigations: keep critical sections short, renew (heartbeat) while working, and use fencing tokens on the resource side.',
+      text: 'Always use TTLs. Without expiry, a dead holder blocks the world forever. With TTL, a long GC pause can expire your lock while you still run - that is the classic bug. Mitigations: keep critical sections short, renew (heartbeat) while working, and use fencing tokens on the resource side.',
     },
     { type: 'h2', text: 'Redis approach (Redlock debate)' },
     {
       type: 'ol',
       items: [
-        'SET lock:name holder_id NX PX ttl_ms — atomic acquire.',
+        'SET lock:name holder_id NX PX ttl_ms - atomic acquire.',
         'Do work; optionally extend with a Lua compare-and-PEXPIRE if value matches.',
-        'DEL only if value still equals holder_id (Lua) — never delete blindly.',
+        'DEL only if value still equals holder_id (Lua) - never delete blindly.',
       ],
     },
     {
@@ -75,7 +75,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Fencing tokens' },
     {
       type: 'p',
-      text: 'Every successful acquire increments a monotonic token. Storage writes must include the token; the DB rejects older tokens. Even if a zombie still “holds” an expired lock, its writes fail. This is the strongest practical answer to the GC-pause problem — mention it for [payment](/system-design/design-payment-system) or inventory mutations.',
+      text: 'Every successful acquire increments a monotonic token. Storage writes must include the token; the DB rejects older tokens. Even if a zombie still “holds” an expired lock, its writes fail. This is the strongest practical answer to the GC-pause problem - mention it for [payment](/system-design/design-payment-system) or inventory mutations.',
     },
     { type: 'h2', text: 'API sketch' },
     {
@@ -95,7 +95,7 @@ const article: SystemDesignArticle = {
         'Always acquire multiple locks in a global name order.',
         'Prefer try-lock + retry with jitter over infinite blocking.',
         'Keep TTLs >> expected critical section, but renew periodically.',
-        'Avoid giant coarse locks — lock the smallest resource key (order_id, not “orders”).',
+        'Avoid giant coarse locks - lock the smallest resource key (order_id, not “orders”).',
       ],
     },
     { type: 'h2', text: 'Architecture' },
@@ -106,7 +106,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'When not to use a lock' },
     {
       type: 'p',
-      text: 'Prefer idempotent writes, compare-and-swap on a version column, or single-partition Kafka consumers when you only need ordering. Locks are coordination — expensive and easy to get wrong. Reach for them when two writers truly cannot interleave, such as “only one primary regenerates this report.”',
+      text: 'Prefer idempotent writes, compare-and-swap on a version column, or single-partition Kafka consumers when you only need ordering. Locks are coordination - expensive and easy to get wrong. Reach for them when two writers truly cannot interleave, such as “only one primary regenerates this report.”',
     },
     {
       type: 'ul',
@@ -123,7 +123,7 @@ const article: SystemDesignArticle = {
         'Billing worker A acquires lock:invoice:42 with TTL 30s, token 105.',
         'A heartbeats renew every 10s while generating the PDF.',
         'A crashes; TTL expires; worker B acquires token 106.',
-        'Zombie A wakes and tries to upload — storage rejects token 105.',
+        'Zombie A wakes and tries to upload - storage rejects token 105.',
       ],
     },
     { type: 'h2', text: 'Interview summary' },

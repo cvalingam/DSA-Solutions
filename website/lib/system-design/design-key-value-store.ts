@@ -17,11 +17,11 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: '“Design a key-value store” is the interview behind Redis Cluster, DynamoDB, and Cassandra. You are building put/get with huge scale, not SQL joins. It sits under almost every other design — [URL shortener](/system-design/design-url-shortener) mappings, [session caches](/system-design/design-distributed-cache-redis), shopping carts. The difference from “design Redis cache” is durability and multi-node replication as first-class requirements.',
+      text: '“Design a key-value store” is the interview behind Redis Cluster, DynamoDB, and Cassandra. You are building put/get with huge scale, not SQL joins. It sits under almost every other design - [URL shortener](/system-design/design-url-shortener) mappings, [session caches](/system-design/design-distributed-cache-redis), shopping carts. The difference from “design Redis cache” is durability and multi-node replication as first-class requirements.',
     },
     {
       type: 'p',
-      text: 'Clarify with the [framework](/system-design/how-to-approach-system-design-interviews): value size limits, TTL support, strong vs eventual consistency, and whether range scans are needed (usually no — pure KV).',
+      text: 'Clarify with the [framework](/system-design/how-to-approach-system-design-interviews): value size limits, TTL support, strong vs eventual consistency, and whether range scans are needed (usually no - pure KV).',
     },
     { type: 'h2', text: 'API' },
     {
@@ -39,7 +39,7 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'Scale to billions of keys; horizontal add/remove of nodes.',
-        'High availability — survive node and rack failures.',
+        'High availability - survive node and rack failures.',
         'Tunable consistency (Quorum R + W > N) or declare eventual.',
         'Low latency gets (single-digit ms in-region).',
       ],
@@ -47,7 +47,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Partitioning: consistent hashing' },
     {
       type: 'p',
-      text: 'Hash the key onto a ring; each node owns a range. Virtual nodes (many tokens per physical machine) balance load when capacities differ. When a node joins, it takes keys from neighbors — same story as [distributed cache](/system-design/design-distributed-cache-redis) and [sharding](/system-design/database-sharding-replication). Mention virtual nodes unprompted — interviewers listen for it.',
+      text: 'Hash the key onto a ring; each node owns a range. Virtual nodes (many tokens per physical machine) balance load when capacities differ. When a node joins, it takes keys from neighbors - same story as [distributed cache](/system-design/design-distributed-cache-redis) and [sharding](/system-design/database-sharding-replication). Mention virtual nodes unprompted - interviewers listen for it.',
     },
     {
       type: 'callout',
@@ -85,7 +85,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'You do not need to implement Merkle trees on the whiteboard — name anti-entropy and move on. Gossip for membership beats a single ZooKeeper if you are designing Dynamo-style AP; CP systems often use consensus (Raft) for membership — mention both camps.',
+      text: 'You do not need to implement Merkle trees on the whiteboard - name anti-entropy and move on. Gossip for membership beats a single ZooKeeper if you are designing Dynamo-style AP; CP systems often use consensus (Raft) for membership - mention both camps.',
     },
     { type: 'h2', text: 'Storage engine on one node' },
     {
@@ -130,16 +130,16 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'TTL and deletion' },
     {
       type: 'p',
-      text: 'Lazy expiry on get (check timestamp) plus a background sweeper scanning tombstones keeps disk bounded — same dual approach as [Pastebin](/system-design/design-pastebin) expiration. Deletes write a tombstone so replicas do not resurrect keys via anti-entropy. Compact tombstones after a grace period.',
+      text: 'Lazy expiry on get (check timestamp) plus a background sweeper scanning tombstones keeps disk bounded - same dual approach as [Pastebin](/system-design/design-pastebin) expiration. Deletes write a tombstone so replicas do not resurrect keys via anti-entropy. Compact tombstones after a grace period.',
     },
     {
       type: 'p',
-      text: 'Secondary indexes are out of scope for pure KV. If the interviewer asks “query by value,” say that breaks the model — use Elasticsearch beside the store, or accept full scan. Stay disciplined about the API.',
+      text: 'Secondary indexes are out of scope for pure KV. If the interviewer asks “query by value,” say that breaks the model - use Elasticsearch beside the store, or accept full scan. Stay disciplined about the API.',
     },
     { type: 'h2', text: 'Put path deep dive' },
     {
       type: 'p',
-      text: 'Coordinator receives put, appends to local WAL, updates memtable, then parallel RPCs to replicas. If only W−1 replicas ack before timeout, you can still ack the client under sloppy quorum and repair later — or fail the write for stricter modes. Spell out which mode you choose. Checksums on values catch bit rot during anti-entropy. Compression (LZ4) on cold SSTables saves disk at CPU cost.',
+      text: 'Coordinator receives put, appends to local WAL, updates memtable, then parallel RPCs to replicas. If only W−1 replicas ack before timeout, you can still ack the client under sloppy quorum and repair later - or fail the write for stricter modes. Spell out which mode you choose. Checksums on values catch bit rot during anti-entropy. Compression (LZ4) on cold SSTables saves disk at CPU cost.',
     },
     { type: 'h2', text: 'Security and multi-tenancy' },
     {

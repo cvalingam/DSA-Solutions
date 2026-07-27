@@ -11,7 +11,7 @@ const article: SystemDesignArticle = {
   sections: [
     {
       type: 'p',
-      text: 'Chat systems combine a classic CRUD problem (store messages) with a real-time delivery problem (get them to the right device now). Interviewers want to see you separate one-to-one chat from group chat, and to discuss what "delivered" and "read" actually mean. Start with the [interview framework](/system-design/how-to-approach-system-design-interviews) — clarify requirements before drawing WebSocket boxes everywhere.',
+      text: 'Chat systems combine a classic CRUD problem (store messages) with a real-time delivery problem (get them to the right device now). Interviewers want to see you separate one-to-one chat from group chat, and to discuss what "delivered" and "read" actually mean. Start with the [interview framework](/system-design/how-to-approach-system-design-interviews) - clarify requirements before drawing WebSocket boxes everywhere.',
     },
     { type: 'h2', text: 'Requirements' },
     {
@@ -33,7 +33,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Capacity estimation' },
     {
       type: 'p',
-      text: 'Assume 500M DAU, each sends 40 messages/day → 20B messages/day ≈ 230,000 writes/sec average, ~1M/sec peak. Storage: 200 bytes metadata per message ≈ 4TB/day raw before replication and compaction. Peak concurrent connections: if 20% of DAU online at once, 100M WebSockets — plan hundreds of gateway nodes at ~50K connections each. State these numbers before drawing boxes.',
+      text: 'Assume 500M DAU, each sends 40 messages/day → 20B messages/day ≈ 230,000 writes/sec average, ~1M/sec peak. Storage: 200 bytes metadata per message ≈ 4TB/day raw before replication and compaction. Peak concurrent connections: if 20% of DAU online at once, 100M WebSockets - plan hundreds of gateway nodes at ~50K connections each. State these numbers before drawing boxes.',
     },
     { type: 'h2', text: 'High-level architecture' },
     {
@@ -74,7 +74,7 @@ const article: SystemDesignArticle = {
     {
       type: 'callout',
       title: 'Idempotency',
-      text: 'Clients retry on flaky networks. Store client_msg_id unique per sender and return the same server_msg_id on duplicate — same pattern as payment APIs.',
+      text: 'Clients retry on flaky networks. Store client_msg_id unique per sender and return the same server_msg_id on duplicate - same pattern as payment APIs.',
     },
     { type: 'h2', text: 'Group chat' },
     {
@@ -107,7 +107,7 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Connection registry' },
     {
       type: 'p',
-      text: 'When Alice\'s message must reach Bob, the delivery service needs to know which chat server holds Bob\'s socket. Store a mapping in Redis: user_id → { server_id, connection_id } with TTL refreshed by heartbeat. On disconnect, delete the entry. This decouples delivery from sticky DNS — any server can look up where to push.',
+      text: 'When Alice\'s message must reach Bob, the delivery service needs to know which chat server holds Bob\'s socket. Store a mapping in Redis: user_id → { server_id, connection_id } with TTL refreshed by heartbeat. On disconnect, delete the entry. This decouples delivery from sticky DNS - any server can look up where to push.',
     },
     {
       type: 'table',
@@ -127,12 +127,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'Storage and partitioning' },
     {
       type: 'p',
-      text: 'Partition messages by conversation_id so all messages in one chat live on the same shard — range queries stay local. Cassandra uses conv_id as partition key; PostgreSQL can use hash partitioning on conv_id. See [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) for why append-heavy chat logs favor wide-column stores at billion-message scale.',
+      text: 'Partition messages by conversation_id so all messages in one chat live on the same shard - range queries stay local. Cassandra uses conv_id as partition key; PostgreSQL can use hash partitioning on conv_id. See [SQL vs NoSQL](/system-design/sql-vs-nosql-for-interviews) for why append-heavy chat logs favor wide-column stores at billion-message scale.',
     },
     { type: 'h2', text: 'Delivery state machine' },
     {
       type: 'p',
-      text: 'Clients show checkmarks based on server-confirmed states — define them precisely:',
+      text: 'Clients show checkmarks based on server-confirmed states - define them precisely:',
     },
     {
       type: 'table',
@@ -145,7 +145,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Do not mark delivered until the recipient client confirms — server push alone is not enough on flaky mobile networks.',
+      text: 'Do not mark delivered until the recipient client confirms - server push alone is not enough on flaky mobile networks.',
     },
     { type: 'h2', text: 'Push notification path' },
     {
@@ -172,7 +172,7 @@ const article: SystemDesignArticle = {
     },
     {
       type: 'p',
-      text: 'Full [REST conventions](/system-design/api-design-rest-interviews) apply — version prefix, consistent errors, 429 on abuse.',
+      text: 'Full [REST conventions](/system-design/api-design-rest-interviews) apply - version prefix, consistent errors, 429 on abuse.',
     },
     { type: 'h2', text: 'Failure modes' },
     {
@@ -192,7 +192,7 @@ const article: SystemDesignArticle = {
       headers: ['Step', 'Target'],
       rows: [
         ['WebSocket receive + validate', '< 5ms'],
-        ['Persist to DB (async option)', '5–20ms sync, or ACK after queue'],
+        ['Persist to DB (async option)', '5-20ms sync, or ACK after queue'],
         ['Registry lookup + push to recipient', '< 10ms if online'],
         ['Delivered ACK back to sender', '< 30ms end-to-end p99'],
       ],
@@ -206,7 +206,7 @@ const article: SystemDesignArticle = {
       type: 'ul',
       items: [
         'Typing indicators: ephemeral events over WebSocket, not persisted.',
-        'End-to-end encryption: keys on device; server stores ciphertext only — major scope addition.',
+        'End-to-end encryption: keys on device; server stores ciphertext only - major scope addition.',
         'Message search: Elasticsearch index async from the message queue.',
         'Media messages: pre-signed S3 upload URL, then message body references object key.',
       ],
@@ -231,12 +231,12 @@ const article: SystemDesignArticle = {
     { type: 'h2', text: 'How this connects to DSA' },
     {
       type: 'p',
-      text: 'Message ordering within a conversation is a total order problem. Group delivery is [BFS fan-out](/system-design/from-leetcode-patterns-to-real-systems) at scale. Presence TTL is sliding-window expiry — same intuition as [rate limiting](/system-design/design-rate-limiter).',
+      text: 'Message ordering within a conversation is a total order problem. Group delivery is [BFS fan-out](/system-design/from-leetcode-patterns-to-real-systems) at scale. Presence TTL is sliding-window expiry - same intuition as [rate limiting](/system-design/design-rate-limiter).',
     },
     { type: 'h2', text: 'Closing summary' },
     {
       type: 'p',
-      text: 'Lead with WebSocket gateway, persistent message store, async delivery, presence in Redis, and push for offline. Separate 1:1 from group fan-out strategy. Discuss idempotency and delivery ACKs — that is what separates a diagram from a production design.',
+      text: 'Lead with WebSocket gateway, persistent message store, async delivery, presence in Redis, and push for offline. Separate 1:1 from group fan-out strategy. Discuss idempotency and delivery ACKs - that is what separates a diagram from a production design.',
     },
   ],
 }
