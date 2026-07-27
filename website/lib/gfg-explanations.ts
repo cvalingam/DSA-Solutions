@@ -8172,6 +8172,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'construct-a-full-binary-tree': {
+    intuition:
+      'A general binary tree is not unique from preorder alone, but a full binary tree (0 or 2 children) is uniquely fixed by its preorder together with the preorder of its mirror. Mirror preorder visits root, then original right, then original left — so the next value in original pre (start of the left subtree) appears later in preMirror and splits that range into left and right subtrees.',
+    algorithm: [
+      'Map every preMirror value to its index for O(1) lookups.',
+      'Recursively build with a shared preIndex into pre and a current [l, r] window in preMirror.',
+      'Create the root from pre[preIndex++]. If the window is a single node (or pre is exhausted), return the leaf.',
+      'Let idx = map[pre[preIndex]] — position of the upcoming left-subtree root inside preMirror.',
+      'Build left on [idx, r] and right on [l+1, idx−1] (sides swapped relative to mirror order).',
+      'Return the constructed root.',
+    ],
+    example: {
+      input: 'pre = [1, 2, 4, 5, 3, 6, 7], preMirror = [1, 3, 7, 6, 2, 5, 4]',
+      steps: [
+        'Root = 1. Next pre value is 2, found at index 4 in preMirror.',
+        'Left of 1 uses preMirror[4..6] = [2,5,4]; right uses preMirror[1..3] = [3,7,6].',
+        'Recursing yields left subtree 2→(4,5) and right subtree 3→(6,7).',
+      ],
+      output: 'tree with root 1, left 2 (children 4,5), right 3 (children 6,7)',
+    },
+    pitfalls: [
+      'Left/right ranges from preMirror are swapped versus original order — that is intentional for the mirror.',
+      'preIndex must be shared across recursive calls (instance field or by-reference), not reset per call.',
+      'Works only because the tree is full; a general binary tree would be ambiguous.',
+      'Values are unique; the HashMap index lookup assumes no duplicates.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

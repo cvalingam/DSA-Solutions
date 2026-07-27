@@ -9580,6 +9580,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1464: {
+    intuition:
+      'You need max (nums[i]−1)*(nums[j]−1) over distinct indices. Because x ↦ x−1 is strictly increasing for the positive values in the constraints, the product of the two largest decremented values is best — so find the two largest elements and multiply (max1−1)*(max2−1).',
+    algorithm: [
+      'Initialize max1 = max2 = 0.',
+      'For each num: if num > max1, shift max1 into max2 and set max1 = num; else if num > max2, set max2 = num.',
+      'Return (max1 − 1) * (max2 − 1).',
+    ],
+    example: {
+      input: 'nums = [3, 4, 5, 2]',
+      steps: [
+        'Scan: max1 becomes 3, then 4, then 5; max2 ends at 4.',
+        'Product (5−1)*(4−1) = 4*3 = 12.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Must use two different indices — do not square the single largest element.',
+      'Update max2 when promoting a new max1; otherwise the previous max is lost.',
+      'Constraints guarantee n ≥ 2 and positive nums, so the zero initialization is safe.',
+      'Sorting also works but is O(n log n); one pass is enough.',
+    ],
+  },
+
 }
 
 export default explanations
