@@ -8200,6 +8200,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'shortest-path-in-1-2-graph': {
+    intuition:
+      'Find the minimum-weight path from src to dest on an undirected graph whose edges weigh only 1 or 2. Non-negative weights make Dijkstra correct: always expand the unsettled node with the smallest known distance, and stop early when dest is dequeued.',
+    algorithm: [
+      'Build an undirected adjacency list from edges, storing (weight, neighbor) pairs.',
+      'Initialize dist[src] = 0 and all other dist values to infinity; push (0, src) into a min-heap.',
+      'While the heap is not empty, pop (d, u). If u is dest, return d.',
+      'For each neighbor v with edge weight w, if d + w < dist[v], set dist[v] = d + w and push (dist[v], v).',
+      'If the heap empties without reaching dest, return -1.',
+    ],
+    example: {
+      input: 'V = 4, src = 0, dest = 3, edges = [[0,1,1],[0,2,2],[1,3,2],[2,3,1]]',
+      steps: [
+        'From 0, reach 1 at distance 1 and 2 at distance 2.',
+        'Path 0 -> 1 -> 3 costs 1 + 2 = 3; path 0 -> 2 -> 3 costs 2 + 1 = 3.',
+        'Dijkstra reports shortest distance 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Add both directions for undirected edges.',
+      'Return -1 when dest is unreachable, not infinity.',
+      'Early-return when dest is first polled - later heap entries cannot improve it with non-negative weights.',
+      'Weights are only 1 or 2, so a 0-1 BFS / edge-split BFS can be O(V + E); Dijkstra is still correct and simpler.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

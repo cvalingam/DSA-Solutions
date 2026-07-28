@@ -9604,6 +9604,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3517: {
+    intuition:
+      's is guaranteed to be a palindrome, so rearranging it into another palindrome only means reordering the left half (and optionally the middle). The lexicographically smallest palindrome is the one whose left half is the sorted multiset of characters from that half, mirrored on the right.',
+    algorithm: [
+      'Take the first n/2 characters of s as the left half.',
+      'Sort that half ascending.',
+      'If n is odd, keep s[n/2] as the middle character; otherwise the middle is empty.',
+      'Return sortedHalf + middle + reverse(sortedHalf).',
+    ],
+    example: {
+      input: 's = "babab"',
+      steps: [
+        'Left half = "ba"; middle = "b".',
+        'Sort left half -> "ab".',
+        'Mirror: "ab" + "b" + "ba" = "abbba".',
+      ],
+      output: '"abbba"',
+    },
+    pitfalls: [
+      'Do not sort the whole string - that can break the palindrome pairing.',
+      'The middle character (odd length) must stay in the center; only the halves are rearranged.',
+      'Because s is already a palindrome, counting frequencies is optional - sorting the existing left half is enough.',
+      'A counting pass over a..z would make this O(n) instead of O(n log n) if needed.',
+    ],
+  },
+
 }
 
 export default explanations
