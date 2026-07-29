@@ -8227,6 +8227,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'split-array-into-minimum-subsets': {
+    intuition:
+      'Partition distinct positives into the fewest subsets where each subset is a run of consecutive integers. After sorting, consecutive numbers that belong together sit side by side, so each gap where arr[i] != arr[i-1] + 1 starts a new subset. The answer equals the number of such contiguous runs.',
+    algorithm: [
+      'Sort arr in non-decreasing order.',
+      'Initialize count = 1 (at least one subset if the array is non-empty).',
+      'For i from 1 to n-1: if arr[i] != arr[i-1] + 1, increment count.',
+      'Return count.',
+    ],
+    example: {
+      input: 'arr = [100, 56, 5, 6, 102, 58, 101, 57, 7, 103, 59]',
+      steps: [
+        'Sorted: [5,6,7,56,57,58,59,100,101,102,103].',
+        'Breaks after 7 and after 59 (next is not previous + 1).',
+        'Three runs: [5,6,7], [56..59], [100..103] -> answer 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Elements are distinct in the usual statement - duplicates would need a different rule.',
+      'This counts subsets of consecutive values, not arbitrary subsequences with other constraints.',
+      'Empty array edge case: the loop never runs; handle n = 0 if required by the judge.',
+      'A hash-set approach also works in expected O(n): count values x where x-1 is absent.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

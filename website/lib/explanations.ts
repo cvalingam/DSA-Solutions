@@ -9630,6 +9630,36 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3518: {
+    intuition:
+      'Same as part I: a palindrome is fixed by its left half plus an optional middle. Here we need the k-th distinct left-half multiset permutation in lex order (1-indexed), then mirror it. Instead of generating all permutations, at each position try letters from a to z and use combination counts to skip whole blocks when they are smaller than the remaining k.',
+    algorithm: [
+      'Count character frequencies. If more than one odd count exists, return "" (not needed when s is already a palindrome).',
+      'For each letter, put freq/2 into halfCount; keep the odd letter as midLetter.',
+      'If k exceeds the number of distinct multiset permutations of halfCount (capped at MAX), return "".',
+      'Build the left half position by position: for each letter with remaining count, temporarily use one and compute arrangements of the rest.',
+      'If arrangements >= k, keep that letter; else subtract arrangements from k, restore the count, and try the next letter.',
+      'Return leftHalf + midLetter + reverse(leftHalf).',
+    ],
+    example: {
+      input: 's = "abba", k = 2',
+      steps: [
+        'halfCount has one a and one b; mid is empty. Distinct left halves: "ab", "ba".',
+        'Total permutations = 2.',
+        'For k = 2: first position skips "a..." (1 arrangement) and takes "b", then "a" -> left = "ba".',
+        'Answer = "baab".',
+      ],
+      output: '"baab"',
+    },
+    pitfalls: [
+      'k is 1-indexed among distinct palindromes, not 0-indexed.',
+      'Combination counts can overflow int; use long and cap at MAX because k <= 1e6.',
+      'List.Reverse() mutates in place and returns void - copy to an array before reversing for the right half.',
+      'Restore halfCount[i] when skipping a letter; otherwise later positions use wrong frequencies.',
+      'Return "" when k is larger than the number of distinct palindromic permutations.',
+    ],
+  },
+
 }
 
 export default explanations

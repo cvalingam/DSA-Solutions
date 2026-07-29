@@ -1299,6 +1299,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3513: ['array', 'math', 'bit-manipulation'],
   1464: ['array', 'sorting', 'heap'],
   3517: ['string', 'sorting', 'counting', 'greedy'],
+  3518: ['hash-table', 'string', 'math', 'combinatorics', 'counting'],
 }
 
 /** Return tags for a given problem number. Returns [] if not in the map. */
