@@ -9660,6 +9660,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3014: {
+    intuition:
+      'A phone keypad has 8 letter keys. Each key can hold several letters stacked by push count (1st letter = 1 push, 2nd = 2 pushes, ...). To minimize total pushes, put the most frequent letters in the cheapest slots. With at most 26 letters, the eight cheapest slots are the first press on each key, then the second press, and so on.',
+    algorithm: [
+      'Count frequency of each letter a..z.',
+      'Sort the 26 counts ascending.',
+      'Walk from the largest count: for rank i = 0..25, add count[25-i] * (i/8 + 1) to the answer.',
+      'Return the sum.',
+    ],
+    example: {
+      input: 'word = "abcde"',
+      steps: [
+        'Five distinct letters, each frequency 1.',
+        'Ranks 0..4 all use cost i/8+1 = 1.',
+        'Total pushes = 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Only 8 keys matter for letters - cost increases every 8 letters (i/8 + 1).',
+      'Sort frequencies, not the characters of word, so rare letters take expensive slots.',
+      'Zero-frequency letters after sorting sit at the front and contribute nothing.',
+      'Part I usually has distinct letters; counting still handles repeats correctly.',
+    ],
+  },
+
 }
 
 export default explanations

@@ -8253,6 +8253,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-subset-xor': {
+    intuition:
+      'The maximum XOR over any subset equals the maximum value obtainable from the linear XOR-span of the array. Gaussian elimination from the highest bit builds a basis: each bit that can still be introduced gets one pivot vector, and all other numbers lose that bit. Then greedily fold basis vectors into the answer whenever XOR increases it.',
+    algorithm: [
+      'Set index = 0. For bit = 31 down to 0:',
+      '  Find the first arr[i] (i >= index) with that bit set; if none, continue.',
+      '  Swap it into position index.',
+      '  XOR arr[index] into every other element that still has that bit set.',
+      '  Increment index (basis size).',
+      'Initialize ans = 0. For each basis vector, set ans = max(ans, ans XOR vector).',
+      'Return ans.',
+    ],
+    example: {
+      input: 'arr = [2, 4, 5]',
+      steps: [
+        'Binary: 010, 100, 101.',
+        'After elimination the basis can represent combinations whose XOR reaches 7 (2 XOR 5).',
+        'Greedy pass yields ans = 7.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Process bits from high to low so the basis prioritizes higher bits.',
+      'Empty subset XOR is 0, but the greedy max with non-empty options still covers the best non-empty subset when positives help.',
+      'In-place XORs modify arr - that is intended for the basis construction.',
+      'Do not confuse with maximum XOR of two numbers (that is a different trie problem).',
+    ],
+  },
+
 }
 
 export default gfgExplanations
