@@ -8282,6 +8282,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'subsets-with-products-of-distinct-primes': {
+    intuition:
+      'Count subsets whose product is square-free (a product of distinct primes), modulo 1e9+7. Values are only 1..30, so there are 10 primes and every valid number is a small bit mask of those primes. Numbers with a squared factor (4, 8, 9, 12, ...) cannot appear. Ones are free multipliers: each 1 may be taken or not without changing the product.',
+    algorithm: [
+      'Count frequency of each value in 1..30.',
+      'For i = 2..30, factor using the 10 primes; if any prime repeats, mark invalid; else store the prime bit mask.',
+      'dp[mask] = ways to form a non-empty prime usage mask (dp[0] = 1 for empty).',
+      'For each valid i with freq[i] > 0: for every state m disjoint from mask[i], add dp[m] * freq[i] into next[m | mask[i]].',
+      'Sum dp[1..1023], then multiply by 2^freq[1] for optional ones. Return modulo 1e9+7.',
+    ],
+    example: {
+      input: 'arr = [1, 2, 3, 4]',
+      steps: [
+        '4 is invalid (2^2). Valid numbers: 2 (mask bit0), 3 (bit1).',
+        'Good subsets of {2,3}: {2}, {3}, {2,3}.',
+        'Each can optionally include the single 1, doubling the count: 3 * 2 = 6.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Skip non-square-free numbers; their mask stays 0 and they must not enter DP.',
+      'Ones are handled after DP - do not put 1 into the mask DP.',
+      'Clone/update carefully so the same number type is not applied twice on overlapping states in one pass.',
+      'Subtract or omit the empty subset; only non-empty good subsets count.',
+      'Answer can be large - always take modulo 1e9+7.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

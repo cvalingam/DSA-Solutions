@@ -7110,11 +7110,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3016: {
-    intuition: 'Minimum number of operations to make string of length n where each character replaces its value. Operations = insertions of characters to satisfy constraints.',
+    intuition:
+      'Same keypad idea as LC 3014: 8 letter keys, stacked push costs. Word II allows repeated letters, so frequency matters. Sort letter frequencies descending and assign the busiest letters to the cheapest push tiers (cost i/8 + 1 for the i-th busiest letter).',
     algorithm: [
-      'Each character contributes to constraints on adjacent characters. Count required insertions.',
+      'Count frequency of each letter a..z.',
+      'Sort the 26 counts ascending.',
+      'For rank i = 0..25 from the largest count, add count[25-i] * (i/8 + 1).',
+      'Return the total pushes.',
     ],
-    pitfalls: ['Count consecutive characters needing insertions between them based on their difference.'],
+    example: {
+      input: 'word = "xyzxyzxyzxyz"',
+      steps: [
+        'x, y, z each appear 4 times.',
+        'Three busiest letters all fit in the first press tier (cost 1).',
+        'Total = 4+4+4 = 12.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Do not treat this like Part I with distinct letters only - duplicates change which letters earn cheap slots.',
+      'Cost jumps every 8 letters: ranks 0..7 cost 1, 8..15 cost 2, and so on.',
+      'Sort frequencies, not the raw string characters.',
+      'Zero counts after sorting contribute nothing at the low end.',
+    ],
   },
 
   3020: {
