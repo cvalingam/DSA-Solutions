@@ -8310,6 +8310,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-after-m-range-increments': {
+    intuition:
+      'Start with an array of n zeros and apply m updates that add k[i] on every index in [a[i], b[i]]. Touching each range naively is too slow. A difference array marks +k at the start and -k just after the end so one prefix-sum pass materializes all final values and the maximum among them.',
+    algorithm: [
+      'Allocate diff of size n+1 initialized to 0.',
+      'For each operation i: diff[a[i]] += k[i]; diff[b[i]+1] -= k[i].',
+      'Scan i = 0..n-1: curr += diff[i]; track res = max(res, curr).',
+      'Return res.',
+    ],
+    example: {
+      input: 'n = 5, a = [0, 1], b = [2, 4], k = [100, 100]',
+      steps: [
+        'After marks: +100 at 0, -100 at 3; +100 at 1, -100 at 5.',
+        'Prefix: 100, 200, 200, 100, 100.',
+        'Maximum is 200.',
+      ],
+      output: '200',
+    },
+    pitfalls: [
+      'Need size n+1 so the end+1 decrement is in bounds when b[i] = n-1.',
+      'Only walk the first n positions when taking the prefix max - index n is a sentinel.',
+      'Indices a[i], b[i] are 0-based inclusive ranges.',
+      'Do not loop each range element-by-element - that is O(m*n) and will TLE.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

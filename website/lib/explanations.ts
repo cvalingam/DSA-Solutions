@@ -9704,6 +9704,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  486: {
+    intuition:
+      'Two players alternately take from either end of nums, both playing optimally. Player 1 wins if their score is at least Player 2. Track the score gap (picker minus opponent) on every subarray: picking an end leaves the opponent with the optimal gap on the remaining segment, so your gap is that end value minus the opponent gap.',
+    algorithm: [
+      'Clone nums into dp; for length-1 intervals the only pick is the element itself.',
+      'For distance d = 1..n-1, for each right endpoint j with i = j - d:',
+      '  dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1]).',
+      'Return true iff dp[n - 1] >= 0 (Player 1 difference on the full array is non-negative).',
+    ],
+    example: {
+      input: 'nums = [1, 5, 2]',
+      steps: [
+        'Length 2: [1,5] -> max(1-5, 5-1) = 4; [5,2] -> max(5-2, 2-5) = 3.',
+        'Full [1,5,2]: max(1-3, 2-4) = max(-2, -2) = -2.',
+        'Difference < 0, so Player 1 cannot win under optimal play.',
+      ],
+      output: 'false',
+    },
+    pitfalls: [
+      'The DP stores a signed difference, not Player 1 raw score alone.',
+      'Process increasing interval lengths so smaller intervals are already finalized.',
+      'A tie (difference 0) counts as a win for Player 1.',
+      'In-place 1D DP overwrites carefully from the right for each d.',
+    ],
+  },
+
 }
 
 export default explanations
