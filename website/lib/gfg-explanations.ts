@@ -8336,6 +8336,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'sequences-where-adjacent-divide': {
+    intuition:
+      'Count sequences of length n with each value in 1..m such that every adjacent pair has one dividing the other. Build position by position: the state is how many slots are filled and what the previous value was. From a previous value, every compatible next choice extends a valid prefix; from sentinel 0 any first value is allowed.',
+    algorithm: [
+      'Memoize solve(len, last): number of ways to finish a sequence after placing len elements ending with last.',
+      'Base: if len == n return 1 (one completed sequence).',
+      'Otherwise try each i in 1..m; accept if last == 0 or i % last == 0 or last % i == 0.',
+      'Sum recursive results and store in dp[len][last]. Call solve(0, 0) for the full answer.',
+    ],
+    example: {
+      input: 'n = 3, m = 2',
+      steps: [
+        'Valid pairs among {1,2}: (1,1), (1,2), (2,1), (2,2) - all adjacent pairs divide.',
+        'Every length-3 sequence over {1,2} works: 2^3 = 8.',
+        'DP reaches the same count by extending prefixes under the divisibility rule.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Use last = 0 only as a start sentinel - it is not a real array value.',
+      'Initialize the memo table to -1 so 0 ways are distinguishable from uncomputed.',
+      'Check both directions: i divides last or last divides i.',
+      'Naive m^n search without memo times out; state space is O(n*m) with O(m) work each.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

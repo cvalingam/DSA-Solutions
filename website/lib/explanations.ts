@@ -9730,6 +9730,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  877: {
+    intuition:
+      'Alice and Bob take turns removing a pile from either end; both play optimally and Alice starts. The winner is who ends with more stones. Store the optimal score gap (current player minus opponent) on every subarray of piles. Taking an end adds that pile and subtracts the opponent gap on what remains, so Alice wins when the full-array gap is positive.',
+    algorithm: [
+      'Clone piles into dp; length-1 intervals just hold the single pile value.',
+      'For distance d = 1..n-1, for each right j with i = j - d:',
+      '  dp[j] = max(piles[i] - dp[j], piles[j] - dp[j - 1]).',
+      'Return true iff dp[n - 1] > 0.',
+    ],
+    example: {
+      input: 'piles = [5, 3, 4, 5]',
+      steps: [
+        'Alice can open on either 5. Optimal play yields Alice 10 and Bob 8.',
+        'Full-array gap dp[n-1] ends positive, so Alice wins.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Strict inequality: Stone Game requires Alice strictly ahead (ties are not wins).',
+      'Constraints guarantee even n and positive piles, so Alice can always force a win; DP still proves it generally.',
+      'Fill by increasing interval length so shorter segments are ready before longer ones.',
+      'In-place 1D DP must walk j right-to-left for each d so values are not overwritten early.',
+    ],
+  },
+
 }
 
 export default explanations
