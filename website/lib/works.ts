@@ -60,9 +60,9 @@ export const WORKS: WorkProject[] = [
   },
   {
     id: 'ish-payload',
-    title: 'ISH Payload',
+    title: 'Steel Xpress Solution',
     description:
-      'Steel Express Solution - production Payload CMS site for industrial / logistics content.',
+      'Production Payload CMS site for industrial / logistics content.',
     url: 'https://www.steelxpresssolution.com',
     tags: ['Next.js', 'Payload CMS'],
   },

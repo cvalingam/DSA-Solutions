@@ -9755,6 +9755,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1406: {
+    intuition:
+      'Alice and Bob take 1, 2, or 3 piles from the front of the remaining row, both optimally. Track a relative score: stones the current player collects minus the best relative score the opponent can force on what is leftover. Working from the end, each start index tries all three take sizes and keeps the best gap. Alice wins if the gap from index 0 is positive, Bob if negative, else Tie.',
+    algorithm: [
+      'Let dp[n] = 0. Fill dp[i] for i = n-1 down to 0 as int.MinValue/2 initially.',
+      'From i, sum = 0; for j = i..min(i+2, n-1): sum += stoneValue[j]; dp[i] = max(dp[i], sum - dp[j+1]).',
+      'score = dp[0]; return "Alice" / "Bob" / "Tie" by comparing score to 0.',
+    ],
+    example: {
+      input: 'stoneValue = [1, 2, 3, 6]',
+      steps: [
+        'From the end, each position stores the best relative take of 1-3 piles.',
+        'Optimal play leaves equal totals for Alice and Bob, so score = 0.',
+      ],
+      output: 'Tie',
+    },
+    pitfalls: [
+      'Seed unused dp slots with a very small value so the first candidate assignment is not blocked by 0.',
+      'Take at most three piles and never past n - guard the inner loop with j < n.',
+      'Positive / negative / zero score maps to Alice / Bob / Tie - do not use absolute stone totals alone.',
+      'This is relative score DP, not an absolute sum for one player only.',
+    ],
+  },
+
 }
 
 export default explanations

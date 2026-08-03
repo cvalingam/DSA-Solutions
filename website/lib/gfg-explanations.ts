@@ -8362,6 +8362,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-sum-subarray-of-size-at-least-k': {
+    intuition:
+      'Find the maximum sum among contiguous subarrays whose length is at least k. Every candidate ending at i must include the last k elements ending at i. Prefill Kadane best-ending sums, then slide a window of size k and optionally glue on the best sum that ends just before the window when that helps.',
+    algorithm: [
+      'Build maxSum[i] = maximum subarray sum ending at i via Kadane.',
+      'sum = arr[0..k-1]; ans = sum.',
+      'For i = k..n-1: slide sum by +arr[i] - arr[i-k]; ans = max(ans, sum, sum + maxSum[i-k]).',
+      'Return ans.',
+    ],
+    example: {
+      input: 'arr = [1, -2, 2, -3], k = 2',
+      steps: [
+        'Exact windows of length 2: [1,-2]=-1, [-2,2]=0, [2,-3]=-1.',
+        'Extend with Kadane prefixes where helpful: [1,-2,2] sums to 1.',
+        'Best among length >= 2 is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Plain Kadane alone is wrong - it can return a subarray shorter than k.',
+      'Always compare both exact-k window and window plus maxSum[i-k].',
+      'If maxSum[i-k] is negative, the exact-k candidate wins automatically.',
+      'Array length is guaranteed >= k; still initialize ans from the first window.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

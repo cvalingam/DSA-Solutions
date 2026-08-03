@@ -763,6 +763,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1399: ['hash-table', 'math', 'counting'],
   1400: ['hash-table', 'string', 'greedy', 'counting'],
   1405: ['string', 'greedy', 'heap'],
+  1406: ['array', 'math', 'dynamic-programming', 'game-theory'],
   1408: ['array', 'string', 'string-matching'],
   1410: ['hash-table', 'string'],
   1411: ['dynamic-programming'],
