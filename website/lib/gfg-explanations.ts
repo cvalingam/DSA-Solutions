@@ -8388,6 +8388,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'pairs-with-less-than-k-diff': {
+    intuition:
+      'Count pairs of indices whose values differ by strictly less than k. After sorting, larger values sit to the right, so for each right endpoint the valid left partners form a contiguous prefix of the window ending at right. Maintain the leftmost index still within distance k-1 of arr[right] and add how many indices sit between left and right.',
+    algorithm: [
+      'If n < 2 return 0. Sort arr ascending.',
+      'left = 0. For right = 1..n-1:',
+      '  while arr[right] - arr[left] >= k: left++.',
+      '  count += right - left.',
+      'Return count.',
+    ],
+    example: {
+      input: 'arr = [1, 10, 4, 2], k = 3',
+      steps: [
+        'Sorted: [1, 2, 4, 10].',
+        'Pairs with diff < 3: (1,2) and (2,4). (1,4)=3 is not less than 3.',
+        'Two-pointer total is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Difference must be strictly less than k - equality does not count.',
+      'left only moves forward, so the scan after sorting is O(n).',
+      'Count index pairs; after sorting this is value pairs at distinct positions.',
+      'Return 0 immediately when fewer than two elements exist.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

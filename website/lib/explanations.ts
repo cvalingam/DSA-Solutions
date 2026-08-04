@@ -9779,6 +9779,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3731: {
+    intuition:
+      'The full original range runs from the smallest present value to the largest. Endpoints are guaranteed present, so only numbers strictly inside (mn, mx) can be missing. Put every nums value in a set, then walk that open interval and list absences in order.',
+    algorithm: [
+      'Scan once: track mn, mx, and insert each value into a HashSet.',
+      'For x from mn + 1 to mx - 1 inclusive, if x is not in the set, append it to the answer.',
+      'Return the list (already sorted by ascending x).',
+    ],
+    example: {
+      input: 'nums = [1, 4, 2, 5]',
+      steps: [
+        'mn = 1, mx = 5; set = {1,2,4,5}.',
+        'Check 2,3,4: only 3 is absent.',
+      ],
+      output: '[3]',
+    },
+    pitfalls: [
+      'Do not report mn or mx - they are present by construction.',
+      'Constraints allow seeding mn=100 and mx=0 because values lie in 1..100.',
+      'Values are unique, so a set has size n with no duplicates to worry about.',
+      'Empty answer is valid when the range is contiguous with no gaps.',
+    ],
+  },
+
 }
 
 export default explanations
