@@ -8415,6 +8415,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'subarrays-with-sum-in-range': {
+    intuition:
+      'Count subarrays whose sum sits in [l, r]. With non-negative elements, sums <= X can be counted with a sliding window: for each right end, shrink the left until the window sum is at most X, then every start in [left, right] is valid. Inclusive range then equals count(sums <= r) minus count(sums <= l-1).',
+    algorithm: [
+      'Return solve(arr, r) - solve(arr, l - 1).',
+      'solve(arr, x): if x < 0 return 0. Two pointers i,j with running sum s.',
+      'For j = 0..n-1: add arr[j]; while s > x shrink from i; add (j - i + 1) to the answer.',
+    ],
+    example: {
+      input: 'arr = [1, 2, 3], l = 2, r = 4',
+      steps: [
+        'sums <= 4: [1],[1,2],[2],[3],[1,2,3]? 6>4 so not - valid count is 4 ([1],[2],[3],[1,2]).',
+        'sums <= 1: only [1] -> 1.',
+        'Difference 4 - 1 = 3 covers [2],[1,2],[3].',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'This window assumes non-negative array values; negatives break monotonicity.',
+      'Handle x < 0 in solve so l = 0 does not under-shrink.',
+      'Add j - i + 1 before advancing j - count after an early j++ is an off-by-one.',
+      'Empty or all-too-large cases correctly contribute 0 when the window collapses past j.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

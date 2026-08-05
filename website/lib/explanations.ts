@@ -9803,6 +9803,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3310: {
+    intuition:
+      'Suspicious methods are k plus everything reachable from k on the directed invocation graph. You may delete that whole set only if nothing outside calls into it. After marking the directed closure, walk the undirected version of the graph from every safe method and clear the suspicious flag on anything you touch - an outside edge into the set makes removal illegal, so those methods must remain.',
+    algorithm: [
+      'Build g as directed edges a->b from invocations, and f as undirected (both directions).',
+      'DFS from k on g; mark every reachable node suspicious.',
+      'For each still non-suspicious, unvisited i: DFS2 on f, setting suspicious[j] = false for every reached j.',
+      'Return all indices with suspicious[i] == false (any order).',
+    ],
+    example: {
+      input: 'n = 5, k = 0, invocations = [[1,2],[0,2],[0,1],[3,4]]',
+      steps: [
+        'Directed DFS from 0 marks 0,1,2 as suspicious.',
+        'Component {3,4} is disjoint, so no undirected path clears those flags from the outside.',
+        'Removal is legal; remaining methods are 3 and 4.',
+      ],
+      output: '[3, 4]',
+    },
+    pitfalls: [
+      'If any outside method can reach a suspicious one undirected, keep the entire connected component - do not delete a partial set.',
+      'Use directed edges only for the initial suspicious closure from k.',
+      'Undirected edges catch reverse invokers that would block deletion.',
+      'If everything is suspicious and removable, the answer can be empty.',
+    ],
+  },
+
 }
 
 export default explanations

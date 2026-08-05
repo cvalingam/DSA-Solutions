@@ -1,6 +1,9 @@
-// Approach: DFS from suspicious nodes; mark reachable from invocations; exclude from result.
-// Time: O(n + E) Space: O(n)
-
+// Approach: Directed DFS from k marks the suspicious closure (k and everything
+// it can reach via invocations). Undirected edges then flood from every still
+// non-suspicious method, clearing the suspicious flag along the connected
+// component - any outside reach into the group means removal is illegal, so
+// those methods stay. Remaining methods are those with suspicious = false.
+// Time: O(n + E) Space: O(n + E)
 public class Solution
 {
     private bool[] suspicious;
