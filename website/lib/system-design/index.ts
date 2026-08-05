@@ -49,6 +49,11 @@ import designLiveStreamingTwitch from './design-live-streaming-twitch'
 import designDistributedLoggingSystem from './design-distributed-logging-system'
 import designAdClickAggregator from './design-ad-click-aggregator'
 import designGoogleCalendar from './design-google-calendar'
+import designObjectStorageS3 from './design-object-storage-s3'
+import designDnsSystem from './design-dns-system'
+import designAuthenticationOauth from './design-authentication-oauth'
+import designWebhookDeliverySystem from './design-webhook-delivery-system'
+import designServiceDiscovery from './design-service-discovery'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -102,6 +107,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designDistributedLoggingSystem,
   designAdClickAggregator,
   designGoogleCalendar,
+  designObjectStorageS3,
+  designDnsSystem,
+  designAuthenticationOauth,
+  designWebhookDeliverySystem,
+  designServiceDiscovery,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),
