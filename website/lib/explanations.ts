@@ -9829,6 +9829,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3345: {
+    intuition:
+      'Find the smallest integer x >= n whose digits multiply to a multiple of t. Digit product 0 is divisible by every positive t, and every stretch of 10 consecutive integers contains a multiple of 10 (a trailing zero). So it is enough to try x = n, n+1, ..., n+9 and return the first whose digit product is divisible by t.',
+    algorithm: [
+      'For num from n to n + 9 inclusive:',
+      '  Compute digitProd by repeatedly multiplying num % 10 and dividing by 10.',
+      '  If digitProd % t == 0, return num.',
+      'Constraints guarantee a hit inside that window.',
+    ],
+    example: {
+      input: 'n = 15, t = 3',
+      steps: [
+        '15 -> product 1*5 = 5, 5 % 3 != 0.',
+        '16 -> product 1*6 = 6, 6 % 3 == 0.',
+        'Return 16.',
+      ],
+      output: '16',
+    },
+    pitfalls: [
+      'Product 0 (any digit 0) satisfies the condition for every t >= 1.',
+      'You never need to scan past n+9 - a trailing-zero number appears by then.',
+      'n and t are tiny (n <= 100, t <= 10), so constant work is fine.',
+      'Do not confuse digit product with digit sum.',
+    ],
+  },
+
 }
 
 export default explanations

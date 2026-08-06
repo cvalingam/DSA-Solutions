@@ -8440,6 +8440,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-increment-or-double-operations-to-convert': {
+    intuition:
+      'Start from an all-zero array. You may add 1 to a single index or double every index at once. Doubles are shared across the array, so the needed double count is governed by the largest value, while each 1-bit in every number still needs its own increment. That yields sum(popcount(arr[i])) + floor(log2(max)).',
+    algorithm: [
+      'Scan the array: add Integer.bitCount(a) into incs; track maxi = max(arr).',
+      'If maxi == 0 return 0.',
+      'Return incs + 31 - Integer.numberOfLeadingZeros(maxi) (bit length of maxi equals floor(log2(maxi))+1; the formula matches the shared-double total).',
+    ],
+    example: {
+      input: 'arr = [2, 3]',
+      steps: [
+        'popcount(2)+popcount(3) = 1+2 = 3 increments needed across bits.',
+        'maxi = 3 -> floor(log2(3)) = 1 shared double.',
+        'Total 4. Reverse check: [2,3] -1 -> [2,2]; /2 -> [1,1]; -1,-1 -> [0,0].',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Double applies to the whole array - do not sum per-element double costs.',
+      'Guard maxi == 0; numberOfLeadingZeros(0) is 32 and would undercount/overflow the formula.',
+      'bitCount counts increments; leading-zero math encodes the shared doubles.',
+      'Thinking only forward simulation also works but the closed form is O(n).',
+    ],
+  },
+
 }
 
 export default gfgExplanations
