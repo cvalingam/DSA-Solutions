@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide - 55 Practical Articles for Developers',
+  title: 'System Design Interview Guide - 60 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, S3 object storage, DNS, OAuth authentication, webhooks, service discovery, distributed logging, ad click aggregator, Google Calendar, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, S3 object storage, DNS, OAuth authentication, webhooks, service discovery, feature flags, A/B testing, Bloom filters, distributed counters, MapReduce, distributed logging, ad click aggregator, Google Calendar, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -43,6 +43,11 @@ export const metadata: Metadata = {
     'authentication system design',
     'webhook system design',
     'service discovery system design',
+    'feature flag system design',
+    'A/B testing system design',
+    'Bloom filter system design',
+    'distributed counter system design',
+    'MapReduce system design',
     'recommendation system design',
     'stock trading system design',
     'DoorDash system design',
@@ -71,9 +76,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide - 55 Articles',
+    title: 'System Design Interview Guide - 60 Articles',
     description:
-      '55 practical system design articles for developers preparing for technical interviews - frameworks, case studies, and fundamentals.',
+      '60 practical system design articles for developers preparing for technical interviews - frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -208,6 +213,11 @@ export default function SystemDesignHubPage() {
           <li>Design Authentication (OAuth / SSO) - sessions vs JWTs, PKCE, refresh</li>
           <li>Design a Webhook Delivery System - signed POSTs, backoff, and DLQ</li>
           <li>Design Service Discovery - registries, leases, and client vs server-side</li>
+          <li>Design a Feature Flag System - targeting, sticky rollouts, and kill switches</li>
+          <li>Design an A/B Testing Platform - assignment, exposure logs, and SRM</li>
+          <li>Design a Bloom Filter Service - probabilistic membership and sizing</li>
+          <li>Design a Distributed Counter - sharding, CRDTs, and hot keys</li>
+          <li>Design MapReduce - map, shuffle, reduce, and fault tolerance</li>
         </ol>
       </section>
 

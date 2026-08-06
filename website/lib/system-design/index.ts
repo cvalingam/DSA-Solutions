@@ -54,6 +54,11 @@ import designDnsSystem from './design-dns-system'
 import designAuthenticationOauth from './design-authentication-oauth'
 import designWebhookDeliverySystem from './design-webhook-delivery-system'
 import designServiceDiscovery from './design-service-discovery'
+import designFeatureFlagSystem from './design-feature-flag-system'
+import designAbTestingPlatform from './design-ab-testing-platform'
+import designBloomFilter from './design-bloom-filter'
+import designDistributedCounter from './design-distributed-counter'
+import designMapreduceBatchProcessing from './design-mapreduce-batch-processing'
 import { estimateReadMinutes } from './word-count'
 
 export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
@@ -112,6 +117,11 @@ export const SYSTEM_DESIGN_ARTICLES: SystemDesignArticle[] = [
   designAuthenticationOauth,
   designWebhookDeliverySystem,
   designServiceDiscovery,
+  designFeatureFlagSystem,
+  designAbTestingPlatform,
+  designBloomFilter,
+  designDistributedCounter,
+  designMapreduceBatchProcessing,
 ].map(a => ({
   ...a,
   readMinutes: estimateReadMinutes(a.sections),
