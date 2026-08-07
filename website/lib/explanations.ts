@@ -9855,6 +9855,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3348: {
+    intuition:
+      'Find the smallest zero-free number (no digit 0) that is at least num and whose digit product is divisible by t. Digits 1-9 only supply primes 2, 3, 5, and 7, so any other prime factor in t makes the answer impossible (-1). Otherwise pack those primes into as few digits as possible (8, 9, 6, 4, ...), then either keep num, bump the leftmost possible digit and fill the suffix greedily, or grow the length by one when same-length answers fail.',
+    algorithm: [
+      'Factor t into 2/3/5/7 counts; if a remainder remains return "-1".',
+      'Convert counts into a multiset of digits via GetFactorCount (greedy 8s, 9s, then 6/4/2/3 merges).',
+      'If that multiset needs more digits than num.Length, return Construct(multiset) as the shortest answer.',
+      'If num is zero-free and already covers all required primes, return num.',
+      'Scan i from right to left (skipping past the first zero): try a larger digit at i; if remaining factors fit in the suffix, emit prefix + digit + ones + Construct(rest).',
+      'Otherwise return ones + Construct(full factors) with length num.Length + 1.',
+    ],
+    example: {
+      input: 'num = "1234", t = 256',
+      steps: [
+        '256 = 2^8; pack as digits whose twos sum to 8 (e.g. toward 1488).',
+        '1234 is too small / missing factors; bumping yields 1488.',
+        'Digit product 1*4*8*8 = 256, divisible by 256.',
+      ],
+      output: '1488',
+    },
+    pitfalls: [
+      'Zero-free means digit 0 is forbidden - you cannot lean on product 0 like in part I.',
+      't with primes outside {2,3,5,7} (for example 26 = 2*13) is always -1.',
+      'Fill leftover suffix slots with 1 (neutral for the product) to keep the number smallest.',
+      'Construct emits digits ascending so the packed suffix is the smallest arrangement of those factors.',
+    ],
+  },
+
 }
 
 export default explanations

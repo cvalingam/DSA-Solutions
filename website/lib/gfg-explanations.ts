@@ -8465,6 +8465,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'friends-pairing-problem': {
+    intuition:
+      'n friends can stay alone or pair up. Fix friend n: either alone, leaving f(n-1) ways for the others, or pair with one of the other n-1 friends, leaving f(n-2) ways for each choice. That recurrence builds every valid matching of singles and disjoint pairs.',
+    algorithm: [
+      'Base: f(0) = f(1) = 1 (empty or one person alone).',
+      'For i = 2..n: f(i) = f(i-1) + (i-1) * f(i-2).',
+      'Keep only prev = f(i-2) and curr = f(i-1); update in place and return curr.',
+    ],
+    example: {
+      input: 'n = 3',
+      steps: [
+        'f(2) = f(1) + 1*f(0) = 1 + 1 = 2 (both alone, or the pair).',
+        'f(3) = f(2) + 2*f(1) = 2 + 2 = 4.',
+        'The four matchings: all single; pair (1,2); pair (1,3); pair (2,3).',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Multiply by (i-1), not by i - friend i cannot pair with themselves.',
+      'Some GFG variants ask for answer modulo 1e9+7; this form assumes the raw count fits the return type.',
+      'f(0)=1 is the empty pairing convention needed by the recurrence.',
+      'O(n) DP is enough; no need to memoize a tree of recursive calls.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
