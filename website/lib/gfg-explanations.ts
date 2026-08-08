@@ -8490,6 +8490,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-edge-movements-to-connect-a-graph': {
+    intuition:
+      'Moving an edge removes it from one place and adds it between two components. Connecting c components needs c-1 bridges. If the graph has fewer than n-1 edges altogether, you cannot build a spanning tree no matter how you rearrange, so the answer is -1. Otherwise DFS (or Union-Find) counts components and returns components - 1.',
+    algorithm: [
+      'If edges.length < n - 1 return -1.',
+      'Build an undirected adjacency list from edges.',
+      'DFS/BFS from every unvisited node; each start increments the component count.',
+      'Return componentCount - 1.',
+    ],
+    example: {
+      input: 'n = 4, edges = [[0,1],[0,2],[1,2]]',
+      steps: [
+        '3 edges >= 4-1, so rearranging is possible.',
+        'Components: {0,1,2} and {3} -> 2 components.',
+        'Need 2 - 1 = 1 move to attach node 3.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Check the n-1 edge budget before counting components.',
+      'Extra edges inside a component are the ones you "move" - you do not need to model the moves explicitly.',
+      'Treat the graph as undirected when building adjacency.',
+      'Isolated nodes each count as their own component.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

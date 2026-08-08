@@ -9883,6 +9883,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3302: {
+    intuition:
+      'Pick increasing indices in word1 so the picked characters are almost equal to word2 (at most one mismatch), and among all such index arrays choose the lexicographically smallest. Greedy earliest picks work if you know the suffix of word2 is still coverable after a optional skip - that is what the right-to-left last[] table encodes.',
+    algorithm: [
+      'Build last[j] by matching word2 from the end through word1: last[j] is the latest index used for word2[j] in a greedy reverse match.',
+      'Scan word1 left to right with j = 0 and canSkip = true.',
+      'If word1[i] == word2[j], take i into ans and advance j.',
+      'Else if canSkip and (j is the last position of word2 or i < last[j+1]), take i as the single mismatch, set canSkip false, advance j.',
+      'Return ans if j reaches word2.Length, else [].',
+    ],
+    example: {
+      input: 'word1 = "vbcca", word2 = "abc"',
+      steps: [
+        'Reverse match places last so the suffix "bc" remains feasible after an early skip.',
+        'Greedy left scan takes indices [0,1,2]: change v->a, keep b, keep c.',
+        'That index array is lexicographically smallest among valid sequences.',
+      ],
+      output: '[0, 1, 2]',
+    },
+    pitfalls: [
+      'Lexicographically smallest refers to the index array, not the string of characters.',
+      'You may skip at most once - canSkip must flip to false after the mismatch.',
+      'Only skip at i when the remaining exact match of word2[j+1..] still fits after i (i < last[j+1]).',
+      'Empty array when even one mismatch cannot rescue an impossible subsequence.',
+    ],
+  },
+
 }
 
 export default explanations
