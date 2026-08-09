@@ -8516,6 +8516,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-zigzag-sequence': {
+    intuition:
+      'In an n x n matrix, pick exactly one cell per row from top to bottom so consecutive picks never share a column, and maximize the sum. Ending a row in column j costs mat[i][j] plus the best previous-row total among all columns except j. Tracking the top two previous-row totals (and which column holds the best) turns each row into an O(n) update.',
+    algorithm: [
+      'dp[0][j] = mat[0][j] for every column j.',
+      'For each row i = 1..n-1: scan dp[i-1] to find max1, max2, and col1 (column of max1).',
+      'For each j: dp[i][j] = mat[i][j] + (j != col1 ? max1 : max2).',
+      'Answer is the maximum value in dp[n-1].',
+    ],
+    example: {
+      input: 'mat = [[4, 2, 1], [3, 9, 6], [1, 0, 5]]',
+      steps: [
+        'Row 0 seeds: 4, 2, 1.',
+        'Row 1: best prior is 4 at col 0, second is 2 - so col 0 gets 3+2=5, col 1 gets 9+4=13, col 2 gets 6+4=10.',
+        'Row 2: max prior 13 at col 1 - best path ends at 5 + 13 = 18 (columns 0 -> 1 -> 2: 4+9+5).',
+      ],
+      output: '18',
+    },
+    pitfalls: [
+      'Adjacent rows cannot reuse the same column - that is the zigzag constraint.',
+      'When the best previous column equals j, fall back to the second-best previous total.',
+      'Naive per-cell scan of the previous row is O(n^3); top-two tracking keeps it O(n^2).',
+      'Initialize max1/max2 carefully when all values could be zero or negative if constraints allow.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

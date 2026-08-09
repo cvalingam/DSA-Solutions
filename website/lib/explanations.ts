@@ -4085,13 +4085,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1140: {
-    intuition: 'Game DP. dp[i][m] = max stones current player can get from piles[i..end] with current M. Both play optimally.',
+    intuition:
+      'Alice and Bob take turns on piles from the front. On a turn with parameter M you may take X in 1..2M piles, then M becomes max(M, X). Both maximize their own stones. The current player from index i with M wants the maximum of (suffix sum from i minus the opponent optimal from the leftover). Cap useful M at about n/2 because once 2M covers the remaining piles you take everything.',
     algorithm: [
-      'Suffix sums.',
-      'If 2*m >= remaining piles: take all.',
-      'Else: dp[i][m] = suffixSum[i] - min over x=1..2m of dp[i+x][max(m,x)].',
+      'Build suffix[i] = sum(piles[i..n)).',
+      'Bottom-up: for i = n-1..0 and m = 1..(n+1)/2:',
+      '  If 2*m >= n-i: dp[i][m] = suffix[i].',
+      '  Else: dp[i][m] = max over x=1..2m of (suffix[i] - dp[i+x][min(max(m,x), mMax)]).',
+      'Return dp[0][1] (Alice starts with M = 1).',
     ],
-    pitfalls: ['Current player maximizes, so subtract opponent optimal from total suffix sum.'],
+    example: {
+      input: 'piles = [2, 7, 9, 4, 4]',
+      steps: [
+        'Alice can open with 1 or 2 piles. Optimal play yields Alice 10.',
+        'One optimal line: Alice takes 2, Bob takes 2+4 of remaining choices under updated M, Alice finishes with more total than Bob.',
+      ],
+      output: '10',
+    },
+    pitfalls: [
+      'Maximize own score via suffix[i] - opponent, not by maximizing immediate take alone.',
+      'Clamp next M to mMax; values beyond that are equivalent to the take-all base case.',
+      'Fill from the end of the array so later states exist before earlier ones.',
+      'Time is O(n^3) in the usual analysis even with the M cap - n <= 100 keeps it fine.',
+    ],
   },
 
   1161: {
