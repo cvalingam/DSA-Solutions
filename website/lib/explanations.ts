@@ -9926,6 +9926,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1510: {
+    intuition:
+      'Alice and Bob remove a positive perfect-square number of stones each turn; the player who cannot move loses. Alice starts. A pile size i is winning if there exists a square j*j that leaves a losing size for the opponent. Fill dp[0..n] bottom-up: dp[0] is losing, and dp[i] becomes true as soon as one move hits a false state.',
+    algorithm: [
+      'Allocate bool dp[0..n]; dp[0] = false.',
+      'For i = 1..n: for each j with j*j <= i, if !dp[i - j*j] set dp[i] = true and break.',
+      'Return dp[n].',
+    ],
+    example: {
+      input: 'n = 2',
+      steps: [
+        'dp[1]: remove 1 -> leave 0 (losing for opponent) -> Alice wins with 1 stone.',
+        'dp[2]: only remove 1 -> leave 1 (winning for opponent) -> Alice loses with 2 stones.',
+      ],
+      output: 'false',
+    },
+    pitfalls: [
+      'dp[0] must stay false - no square removal is possible from an empty pile.',
+      'Break early once a winning move is found for i to save work.',
+      'Squares start at 1 - removing 0 stones is not a legal move.',
+      'Both players optimal: existence of one move to a losing state is enough for a win.',
+    ],
+  },
+
 }
 
 export default explanations

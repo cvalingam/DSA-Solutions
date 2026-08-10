@@ -8542,6 +8542,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'high-effort-vs-low-effort': {
+    intuition:
+      'Each day you may rest, do a low-effort task, or do a high-effort task. High effort is allowed only when the previous day was rest. Maximize total points over n days by remembering, for every day, the best future total after ending that day in rest, low, or high.',
+    algorithm: [
+      'dp[i][0] = best from day i onward if you rest on day i.',
+      'dp[i][1] = best if you take low[i] on day i; dp[i][2] = best if you take high[i].',
+      'Base on day n-1: rest = 0, low = low[n-1], high = high[n-1].',
+      'For i = n-2..0: rest takes max of all next states; low/high take low[i]/high[i] plus max of next rest or low (next high is illegal).',
+      'Answer is max(dp[0][0], dp[0][1], dp[0][2]).',
+    ],
+    example: {
+      input: 'high = [3, 6, 8], low = [2, 3, 4]',
+      steps: [
+        'Day 2 base: rest 0, low 4, high 8.',
+        'Day 1: high 6 + max(0,4) = 10; low 3 + max(0,4) = 7; rest 8.',
+        'Day 0: high 3 + max(rest,low next) = 3+8 = 11; other options are not better.',
+      ],
+      output: '11',
+    },
+    pitfalls: [
+      'High needs a rest day immediately before it - after low or high, the next day cannot be high.',
+      'Rest is useful because it unlocks high the following day.',
+      'Fill from the end; each state only depends on day i+1.',
+      'Space can roll to O(1) with three previous variables if desired.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
