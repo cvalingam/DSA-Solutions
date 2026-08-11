@@ -7,9 +7,9 @@ import {
 } from '@/lib/system-design'
 
 export const metadata: Metadata = {
-  title: 'System Design Interview Guide - 60 Practical Articles for Developers',
+  title: 'System Design Interview Guide - 65 Practical Articles for Developers',
   description:
-    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, S3 object storage, DNS, OAuth authentication, webhooks, service discovery, feature flags, A/B testing, Bloom filters, distributed counters, MapReduce, distributed logging, ad click aggregator, Google Calendar, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
+    'System design interview prep: URL shortener, rate limiter, news feed, chat, payments, Uber, Airbnb, Zoom, Yelp, Spotify, Google Maps, Gmail, CDN, Twitch, S3 object storage, DNS, OAuth authentication, webhooks, service discovery, feature flags, A/B testing, Bloom filters, distributed counters, MapReduce, circuit breakers, config service, secrets manager, health checks, Sagas, distributed logging, ad click aggregator, Google Calendar, recommendation systems, stock trading, DoorDash, Stack Overflow, metrics monitoring, distributed locks, online judge, key-value store, job scheduler, Pastebin, leaderboard, API gateway, Google Docs, Instagram, web crawler, Netflix, search engine, ticketing, Redis, e-commerce, CAP theorem, sharding, Kafka, and more.',
   keywords: [
     'system design interview',
     'system design',
@@ -48,6 +48,12 @@ export const metadata: Metadata = {
     'Bloom filter system design',
     'distributed counter system design',
     'MapReduce system design',
+    'circuit breaker system design',
+    'configuration service system design',
+    'secrets manager system design',
+    'health check system design',
+    'Saga pattern system design',
+    'distributed transactions system design',
     'recommendation system design',
     'stock trading system design',
     'DoorDash system design',
@@ -76,9 +82,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/system-design' },
   openGraph: {
-    title: 'System Design Interview Guide - 60 Articles',
+    title: 'System Design Interview Guide - 65 Articles',
     description:
-      '60 practical system design articles for developers preparing for technical interviews - frameworks, case studies, and fundamentals.',
+      '65 practical system design articles for developers preparing for technical interviews - frameworks, case studies, and fundamentals.',
     url: '/system-design',
     type: 'website',
   },
@@ -218,6 +224,11 @@ export default function SystemDesignHubPage() {
           <li>Design a Bloom Filter Service - probabilistic membership and sizing</li>
           <li>Design a Distributed Counter - sharding, CRDTs, and hot keys</li>
           <li>Design MapReduce - map, shuffle, reduce, and fault tolerance</li>
+          <li>Design a Circuit Breaker - closed, open, half-open, and bulkheads</li>
+          <li>Design a Configuration Service - versioned snapshots and rollbacks</li>
+          <li>Design a Secrets Manager - envelope encryption and rotation</li>
+          <li>Design Health Checks / Status - liveness vs readiness</li>
+          <li>Design Distributed Transactions - 2PC vs Saga compensations</li>
         </ol>
       </section>
 
