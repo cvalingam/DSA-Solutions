@@ -8569,6 +8569,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-odd-squares-with-limited-1s': {
+    intuition:
+      'Each query asks for the largest odd side-length square centered at (r, c) whose number of 1s is at most k. Odd side means equal radius left/right/up/down. Ones only grow as the radius grows, so the feasible radii form a prefix - binary search the largest radius that still stays within k after O(1) range sums from a 2D prefix table.',
+    algorithm: [
+      'Build psum where psum[i+1][j+1] stores the sum of mat[0..i][0..j].',
+      'For each query (row, col): if mat[row][col] > k answer -1.',
+      'Binary search radius mid in 0..maxFit; accept mid when squareOnes(row,col,mid) <= k.',
+      'Return 2*bestRadius+1 for that query.',
+    ],
+    example: {
+      input: 'mat = [[0,1,0],[1,1,1],[0,1,0]], queries = [[1,1]], k = 4',
+      steps: [
+        'Center (1,1) is 1 and <= 4, so side at least 1.',
+        'Radius 1 covers the full 3x3 with five 1s > 4 - too big.',
+        'Best radius 0 -> side 1.',
+      ],
+      output: '[1]',
+    },
+    pitfalls: [
+      'Side length must stay odd and fully inside the matrix around the center.',
+      'Binary search needs monotonicity - here mat is 0/1 so expanding never drops ones.',
+      'Inclusive 2D prefix: use psum[r2+1][c2+1] - psum[r1][c2+1] - psum[r2+1][c1] + psum[r1][c1].',
+      'Return -1 only when the 1x1 center itself exceeds k.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

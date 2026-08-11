@@ -9950,6 +9950,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2996: {
+    intuition:
+      'Take the longest prefix that stays consecutive (+1 each step) starting at nums[0], sum it, then walk upward from that sum until you hit a value missing from the array. With values capped at 50, a bool[51] is enough for membership, and any candidate past 50 is automatically missing.',
+    algorithm: [
+      'Mark seen[x] = true for every nums value (x in 1..50).',
+      'ans = nums[0]; extend while nums[i] == nums[i-1] + 1, adding into ans.',
+      'While ans <= 50 and seen[ans], increment ans.',
+      'Return ans.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3, 2, 5]',
+      steps: [
+        'Longest sequential prefix [1,2,3] sums to 6.',
+        '6 is not in the array, so the answer is 6.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Only the prefix from index 0 matters - later consecutive runs do not count.',
+      'A single-element prefix is always sequential.',
+      'Constraints guarantee 1 <= nums[i] <= 50, so bool[51] is safe.',
+      'If the sum already exceeds 50, return it immediately - it cannot appear in nums.',
+    ],
+  },
+
 }
 
 export default explanations
