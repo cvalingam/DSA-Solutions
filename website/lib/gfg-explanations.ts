@@ -8595,6 +8595,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'adventure-in-a-maze': {
+    intuition:
+      'From each cell you may move right (value 1), down (value 2), or either (value 3). Work backward from the exit: paths and best adventure for a cell depend only on the allowed neighbors that already know how to reach the destination. Rolling one previous row keeps O(n) memory while still filling every cell in O(n^2).',
+    algorithm: [
+      'paths[j] / best[j] mean ways and max path-sum from the cell below (then from the current row) to the exit.',
+      'Seed the bottom-right: paths = 1, best = grid[n-1][n-1]. Fill the bottom row right-to-left using only right moves when allowed and the neighbor is reachable.',
+      'For each row i from n-2 down to 0, build nextPaths / nextBest right-to-left.',
+      'If value is 1 or 3 and the right cell has paths > 0: take its ways and add g to its best sum.',
+      'If value is 2 or 3 and the down cell (old paths[j]) has paths > 0: add those ways (mod 1e9+7) and take max with g + down best.',
+      'Swap to the new row arrays. Answer is [paths[0] % MOD, best[0]] from the start cell.',
+    ],
+    example: {
+      input: 'grid = [[3, 2], [3, 1]]',
+      steps: [
+        'Exit (1,1) has 1 way and sum 1.',
+        'Cell (1,0)=3 can go right: 1 way, sum 3+1=4. Cell (0,1)=2 can go down: 1 way, sum 2+1=3.',
+        'Start (0,0)=3: right gives sum 3+3=6; down gives sum 3+4=7. Two ways, max adventure 7.',
+      ],
+      output: '[2, 7]',
+    },
+    pitfalls: [
+      'A neighbor with 0 paths is unreachable - do not add its sum even if the move type allows it.',
+      'Path count must use modulo 1e9+7; the adventure sum is not modded.',
+      'Process right-to-left within a row so the right neighbor already holds the new-row values.',
+      'Bottom-right is always reachable from itself (1 way) even if its value would not allow a further move.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

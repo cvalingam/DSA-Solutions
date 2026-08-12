@@ -9950,6 +9950,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2958: {
+    intuition:
+      'A subarray is good when every value appears at most k times. As you grow a window, the only way it becomes bad is that the newly added value exceeds k - every other count was already legal. Shrink from the left until that value is back to k. Every window [l, r] you keep is good, so track the maximum length.',
+    algorithm: [
+      'Keep a frequency map for the current window [l, r] and ans = 0.',
+      'For each right endpoint r: increment freq[nums[r]].',
+      'While freq[nums[r]] > k: decrement freq[nums[l]] and advance l.',
+      'Update ans with r - l + 1 (the current valid window length).',
+      'Return ans. Leaving zero counts in the map is fine - unused keys do not affect correctness.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3, 1, 2, 3, 1, 2], k = 2',
+      steps: [
+        'Grow to [1,2,3,1,2,3] - each of 1, 2, 3 appears twice; length 6.',
+        'Add the next 1 -> count(1) = 3 > 2. Shrink from the left until count(1) <= 2.',
+        'No later window is longer than 6, so the answer is 6.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'You only need to shrink while the newly added value exceeds k - other values cannot suddenly break the limit.',
+      'n can be 1e5, so O(n^2) nested scans will TLE; each index moves at most once.',
+      'k can equal n; then the whole array is always good.',
+      'Do not confuse "at most k frequency per value" with "at most k distinct values".',
+    ],
+  },
+
   2996: {
     intuition:
       'Take the longest prefix that stays consecutive (+1 each step) starting at nums[0], sum it, then walk upward from that sum until you hit a value missing from the array. With values capped at 50, a bool[51] is enough for membership, and any candidate past 50 is automatically missing.',

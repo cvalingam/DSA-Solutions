@@ -1118,6 +1118,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2943: ['math', 'matrix', 'enumeration'],
   2946: ['array', 'matrix', 'simulation'],
   2948: ['array', 'greedy', 'sorting', 'ordered-set'],
+  2958: ['array', 'hash-table', 'sliding-window'],
   2962: ['array', 'sliding-window'],
   2965: ['array', 'hash-table', 'matrix'],
   2966: ['array', 'greedy', 'sorting'],
