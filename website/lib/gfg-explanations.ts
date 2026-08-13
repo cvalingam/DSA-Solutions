@@ -8623,6 +8623,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-path-in-a-directed-acyclic-graph': {
+    intuition:
+      'Longest paths are NP-hard on general graphs, but a DAG has a topological order. Process vertices in that order and relax each outgoing edge by maximizing distance - the same idea as shortest paths on a DAG, with max instead of min. Unreachable nodes stay at INT_MIN (shown as INF by the driver).',
+    algorithm: [
+      'Build an adjacency list of (neighbor, weight) and in-degrees from edges.',
+      'Kahn topological sort: queue all in-degree 0 nodes, peel edges, record order.',
+      'dist[i] = INT_MIN for all i; dist[src] = 0.',
+      'For each u in topo order with dist[u] reachable: for each edge u -> v with weight w, set dist[v] = max(dist[v], dist[u] + w).',
+      'Return dist.',
+    ],
+    example: {
+      input: 'V = 5, src = 1, edges = [[0,1,1],[0,2,2],[1,4,4],[3,2,-1],[4,2,3],[4,3,6]]',
+      steps: [
+        'dist starts as [INF, 0, INF, INF, INF].',
+        'From 1 relax 1->4: dist[4]=4. From 4: dist[2]=7, dist[3]=10.',
+        'From 3 relax 3->2: dist[2]=max(7, 10+(-1))=9. Vertex 0 stays INF.',
+      ],
+      output: '[INF, 0, 9, 10, 4]',
+    },
+    pitfalls: [
+      'Do not run Dijkstra for longest paths - it assumes minimizing and positive weights.',
+      'Only relax from nodes with a finite dist; otherwise you invent paths from nowhere.',
+      'INT_MIN is the unreachable sentinel - the platform prints it as INF.',
+      'Negative edge weights are fine on a DAG with this topo + relax method.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

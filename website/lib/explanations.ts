@@ -10002,6 +10002,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2213: {
+    intuition:
+      'After each point update you need the longest run of one character in the whole string. Rescanning is O(n) per query and too slow. A segment tree stores, for every range, the best run plus the prefix and suffix run (letter and length) so merging two halves can form a longer run that crosses the midpoint in O(1).',
+    algorithm: [
+      'Build a segment tree over s. A leaf is a single character with all run lengths 1.',
+      'Merge left and right: maxLength is max of both sides, and also left.suffixLength + right.prefixLength when the boundary letters match.',
+      'Prefix of the parent is left.prefix, extended by right.prefix only when left is entirely that letter and equals right.prefixLetter.',
+      'Suffix is symmetric from the right child.',
+      'For each query, update the leaf at queryIndices[i] to queryCharacters[i], rematerialize ancestors, and record root.maxLength.',
+    ],
+    example: {
+      input: 's = "babacc", queryCharacters = "bcb", queryIndices = [1, 3, 3]',
+      steps: [
+        'Update index 1 to b -> "bbbacc"; longest run is bbb length 3.',
+        'Update index 3 to c -> "bbbccc"; longest run is ccc length 3.',
+        'Update index 3 to b -> "bbbbcc"; longest run is bbbb length 4.',
+      ],
+      output: '[3, 3, 4]',
+    },
+    pitfalls: [
+      'Merging must extend prefix/suffix only when the left (or right) child is fully uniform of that letter.',
+      'Crossing the midpoint only helps when left.suffixLetter equals right.prefixLetter.',
+      'n and q can both be 1e5 - any O(n) scan per query will TLE.',
+      'Updates replace one character; they do not insert or delete indices.',
+    ],
+  },
+
 }
 
 export default explanations

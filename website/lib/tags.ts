@@ -960,6 +960,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2206: ['array', 'hash-table', 'sorting', 'bit-manipulation', 'counting'],
   2210: ['array', 'counting'],
   2211: ['array', 'stack', 'simulation'],
+  2213: ['array', 'string', 'segment-tree'],
   2220: ['bit-manipulation'],
   2221: ['array', 'math', 'simulation'],
   2225: ['array', 'hash-table', 'sorting', 'counting'],
