@@ -10029,6 +10029,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3090: {
+    intuition:
+      'You want the longest substring where every letter appears at most twice. As the right end grows, the window becomes invalid only when the newly added letter exceeds count 2. Shrink from the left until that letter is back to 2, then the whole window is valid again - track the maximum length.',
+    algorithm: [
+      'Maintain count[26] for the current window [l, r] and ans = 0.',
+      'For each r: increment count[s[r]].',
+      'While count[s[r]] > 2: decrement count[s[l]] and advance l.',
+      'Update ans with r - l + 1.',
+      'Return ans.',
+    ],
+    example: {
+      input: 's = "bcbbbcba"',
+      steps: [
+        'Indices: 0:b 1:c 2:b 3:b 4:b 5:c 6:b 7:a.',
+        'When the third b enters (index 3), shrink from the left until b appears at most twice.',
+        'A longest valid window is "bcba" (indices 4..7) with length 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'At most two occurrences of each character, not at most two distinct characters.',
+      'Only the count of the newly added letter can break the window - shrink until that letter is <= 2.',
+      'Lowercase English only, so a size-26 array beats a hash map.',
+      'Any substring of length at most 2 is always valid.',
+    ],
+  },
+
 }
 
 export default explanations

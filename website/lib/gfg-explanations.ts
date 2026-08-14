@@ -8650,6 +8650,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'subset-sum-on-generated-sequence': {
+    intuition:
+      'Start with s on the paper; each next number is (current total) + arr[i]. That makes every new value at least the sum of all earlier ones, so the sequence is superincreasing-style and subset sum reduces to greedy from largest to smallest. Numbers grow exponentially, so only O(log x) terms matter. You can rebuild those terms from the final total while scanning arr backward instead of storing a list.',
+    algorithm: [
+      'If x == 0 return true (empty subset). If x == s return true. If x < s return false.',
+      'total = s; for each a in arr, next = total + a; stop when next would exceed x; else total += next and count it.',
+      'target = x. For i from last generated index down to 0: last = (total + arr[i]) / 2.',
+      'If last <= target, subtract it from target (return true if target hits 0). Set total = (total - arr[i]) / 2.',
+      'Finally return whether the remaining target equals s (take the initial number).',
+    ],
+    example: {
+      input: 'arr = [1, 2], s = 3, x = 7',
+      steps: [
+        'Sequence: 3, then 3+1=4 (total 7), then 7+2=9 > 7 so stop. Numbers used: [3, 4].',
+        'Greedy on 7: take 4, left 3; take 3, left 0.',
+        'Possible.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'x == 0 must be true - do not reject it with an x < s check.',
+      'Use long for totals; values roughly double each step and can overflow int.',
+      'Stop generating when the next value would exceed x - later values only get larger.',
+      'When reconstructing, last = (total + arr[i]) / 2 always divides evenly because total = 2*prev + arr[i].',
+    ],
+  },
+
 }
 
 export default gfgExplanations
