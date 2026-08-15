@@ -1286,6 +1286,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3661: ['array', 'sorting', 'greedy'],
   3620: ['graph', 'binary-search', 'heap', 'shortest-path'],
   3700: ['math', 'dynamic-programming', 'matrix'],
+  3702: ['array', 'bit-manipulation'],
   3713: ['string'],
   3714: ['string'],
   3719: ['array'],

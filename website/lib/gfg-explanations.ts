@@ -8677,6 +8677,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'numbers-without-d-as-digit': {
+    intuition:
+      'Count integers in 1..n whose decimal form never uses digit d. Brute force over n is too slow when n is large, so build the answer digit by digit (digit DP). States remember the position, whether we are still glued to the upper bound n (tight), and whether we have started the number yet so leading zeros are not treated as forbidden digit d until a real digit is placed.',
+    algorithm: [
+      'If n == 0 return 0. Convert n to a digit string and clear a memo[pos][tight][started].',
+      'DFS(pos, tight, started): if pos reaches the end, return 1 if started else 0.',
+      'Limit the current digit to digits[pos] when tight, else 9.',
+      'For each digit 0..limit: if not started and digit is 0, continue with started=false (leading zero). Else if digit != d, continue with started=true.',
+      'Memoize and return the count.',
+    ],
+    example: {
+      input: 'n = 13, d = 1',
+      steps: [
+        'Valid numbers in 1..13 with no digit 1: 2,3,4,5,6,7,8,9.',
+        '10,11,12,13 each contain digit 1 and are skipped.',
+        'Answer is 8.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Leading zeros must not count as using digit d - keep a started flag.',
+      'Reset memo for every query; states depend on the digit string of n.',
+      'When digit == d and the number has started, skip that branch entirely.',
+      'n == 0 is an empty range - return 0, not 1.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

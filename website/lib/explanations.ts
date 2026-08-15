@@ -10056,6 +10056,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3702: {
+    intuition:
+      'Every subsequence XOR is 0 only when every element is 0. Otherwise the answer is almost the full array: if the XOR of all elements is non-zero, length n works; if it is 0, dropping any single non-zero element leaves XOR equal to that element, so length n-1 is always best.',
+    algorithm: [
+      'Compute xor of all nums and whether any element is non-zero.',
+      'If every element is 0, return 0.',
+      'If xor != 0, return n.',
+      'Otherwise return n - 1.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3]',
+      steps: [
+        'Full XOR is 1^2^3 = 0, and there are non-zero values.',
+        'Dropping 1 leaves 2^3 = 1 != 0, length 2.',
+        'No length-3 non-zero-XOR subsequence exists, so answer is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'All zeros is the only case that returns 0 - a single non-zero element already forms a valid subsequence of length 1.',
+      'When full XOR is 0, removing a zero does not help (new XOR stays 0); remove a non-zero element.',
+      'You never need length less than n-1 when a non-zero exists - no deeper search is required.',
+      'n can be 1e5, so any O(n^2) subsequence DP will TLE.',
+    ],
+  },
+
 }
 
 export default explanations
