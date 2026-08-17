@@ -10082,6 +10082,59 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1563: {
+    intuition:
+      'On each turn the row is split into two non-empty contiguous parts; the heavier sum is discarded (either if equal) and the current player scores the kept sum, then the opponent plays on what remains. Alice\'s optimal score on an interval is interval DP: try every split, take the legal keep-side, and memoize with prefix sums for O(1) range sums.',
+    algorithm: [
+      'Build prefix sums. Memoize dp[i][j] = best score for the player to move on stoneValue[i..j].',
+      'Base: i == j returns 0 (cannot split).',
+      'For each split p in [i, j): leftSum = sum(i..p), rightSum = sum(p+1..j).',
+      'If leftSum < rightSum, keep left: candidate = leftSum + dp[i][p].',
+      'If leftSum > rightSum, keep right: candidate = rightSum + dp[p+1][j].',
+      'If equal, take the max of both options. dp[i][j] is the max over splits.',
+    ],
+    example: {
+      input: 'stoneValue = [6, 2, 3, 4, 5, 5]',
+      steps: [
+        'Alice tries every first split; equal-sum splits let her pick the side that yields more later points.',
+        'With optimal replies from Bob, her total score reaches 18.',
+      ],
+      output: '18',
+    },
+    pitfalls: [
+      'Discard the larger sum side - the player does not freely choose which side to keep unless the sums tie.',
+      'Only the kept sum is scored that turn; discarded stones never score for anyone.',
+      'Use prefix sums - naive range summing inside O(n^2) splits is too slow.',
+      'A single remaining stone ends the game with score 0 for that state.',
+    ],
+  },
+
+  2029: {
+    intuition:
+      'The game only cares about stone values mod 3. Playing a stone adds its residue to a running total that must stay non-zero mod 3 after each move. Type 0 never changes the residue; types 1 and 2 alternate. Counting the three residues is enough to decide whether Alice has a winning strategy.',
+    algorithm: [
+      'count[r] = number of stones with stone % 3 == r.',
+      'If count[0] is even: Alice wins iff both count[1] and count[2] are at least 1.',
+      'If count[0] is odd: Alice wins iff |count[1] - count[2]| > 2.',
+      'Otherwise Bob wins (return false).',
+    ],
+    example: {
+      input: 'stones = [2, 1]',
+      steps: [
+        'Residues: 2 and 1 -> counts [0, 1, 1].',
+        'count[0] is even and both type 1 and type 2 exist, so Alice wins.',
+        'Alice plays one residue; Bob is forced to play the other and the sum becomes 0 mod 3.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Do not simulate every move order - n can be 1e5; the closed counting rule is enough.',
+      'stone % 3 == 0 acts like a pass on the residue but still consumes a turn.',
+      'If either type 1 or type 2 is missing while count[0] is even, Alice cannot force a win.',
+      'Bob wins automatically if stones run out without a losing move.',
+    ],
+  },
+
 }
 
 export default explanations

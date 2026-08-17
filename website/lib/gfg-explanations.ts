@@ -8704,6 +8704,57 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-product-subset': {
+    intuition:
+      'A negative product is always smaller than a positive one, so use as many negatives as needed to make the sign negative while multiplying large magnitudes. That means: take the product of all non-zero elements when the negative count is odd; when it is even, drop the negative closest to zero (divide it out) so the sign flips. With no negatives, the minimum element wins (0 if a zero exists).',
+    algorithm: [
+      'Scan once: multiply all non-zeros into completeProduct, count negatives, track maxNeg (least-magnitude negative) and the overall min.',
+      'If neg is odd, return completeProduct.',
+      'If neg is 0, return min.',
+      'Otherwise return completeProduct / maxNeg.',
+    ],
+    example: {
+      input: 'arr = [4, -2, 5]',
+      steps: [
+        'One negative, non-zero product = 4*(-2)*5 = -40.',
+        'Odd negatives -> answer is -40.',
+      ],
+      output: '-40',
+    },
+    pitfalls: [
+      'Never multiply zeros into the running product - they only matter when no negative product is possible.',
+      'For even negatives, remove maxNeg (closest to zero), not the most negative value.',
+      'All-positive arrays: answer is the smallest element, not the full product.',
+      'Single-element arrays are already the answer.',
+    ],
+  },
+
+  'snake-and-ladder-problem': {
+    intuition:
+      'Each dice throw costs one move and can advance 1..6 cells, optionally followed by an instant snake or ladder jump. That is an unweighted shortest-path graph on cells 1..n^2, so BFS from 1 yields the minimum throws to reach n^2 (or -1 if unreachable).',
+    algorithm: [
+      'Build jump[1..n^2] from ladder/snake pairs (lad and sn store start,end alternating).',
+      'BFS from cell 1 with a visited array; each queue layer is one dice throw.',
+      'From curr, try curr+1..curr+6 within the board; if jump[next] is set, go to jump[next].',
+      'When N = n*n is dequeued, return the current throw count.',
+      'If the queue empties first, return -1.',
+    ],
+    example: {
+      input: 'n = 6, ladders include 5->8 and 11->35, snakes include 17->4 (illustrative 6x6)',
+      steps: [
+        'One optimal path: 1 -dice4-> 5 -ladder-> 8 -dice3-> 11 -ladder-> 35 -dice1-> 36.',
+        'BFS first reaches 36 after 3 throws.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Mark visited on the destination after applying the jump, not on the pre-jump cell alone.',
+      'Do not move past n^2 - discard dice results that overshoot.',
+      'Snakes and ladders are applied immediately; you do not roll again in the same throw.',
+      'Return -1 when the last cell is unreachable (e.g. blocked by snakes).',
+    ],
+  },
+
 }
 
 export default gfgExplanations
