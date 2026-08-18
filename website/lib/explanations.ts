@@ -10135,6 +10135,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3471: {
+    intuition:
+      'x is almost missing when it sits in exactly one subarray of length k. The interesting windows always cover the interior, so most values appear in several windows. Only three cases matter: the whole array (k = n), each singleton (k = 1), or the two endpoints when 1 < k < n.',
+    algorithm: [
+      'If k == n, return the maximum of nums (one window contains every value).',
+      'If k == 1, count frequencies in a size-51 array and return the largest value with count 1 (or -1).',
+      'Otherwise scan once: an endpoint is a candidate only if that value never appears elsewhere.',
+      'Return the max of the unique endpoints, or -1 if neither is unique.',
+    ],
+    example: {
+      input: 'nums = [3, 9, 2, 1, 7], k = 3',
+      steps: [
+        'k is neither 1 nor n, so only 3 and 7 can be unique-window values.',
+        '3 and 7 each appear once in the array, so both are candidates.',
+        'The larger is 7.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Values in the middle of the array always sit in more than one k-window when 1 < k < n.',
+      'k == 1 is not the same as uniqueness of endpoints - every singleton window counts, so take the largest globally unique number.',
+      'If the two endpoints are the same unique value, it still appears twice, so it is not almost missing.',
+      'Return -1 when no candidate exists, not 0.',
+    ],
+  },
+
 }
 
 export default explanations

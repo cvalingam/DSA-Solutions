@@ -8755,6 +8755,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'secret-cipher': {
+    intuition:
+      'A * doubles the string decoded so far, so it can only replace a second copy of the current prefix. That is possible exactly when a prefix has even length and consists of an even number of copies of its smallest period. KMP LPS finds that period in linear time. Walking right-to-left greedily takes every such star (covering the largest repeating prefixes first) and yields the shortest encoding.',
+    algorithm: [
+      'Build the LPS array: lps[i] is the longest proper prefix that is also a suffix of s[0..i].',
+      'Walk i from n-1 down to 1. Let len = i+1.',
+      'If len is even, period = len - lps[i], and lps[i]*2 >= len, len % period == 0, and (len/period) is even: append * and jump to the first half (i = len/2 - 1).',
+      'Otherwise append s[i] and decrement i.',
+      'Append s[0], reverse the builder, and return it.',
+    ],
+    example: {
+      input: 's = "ababcababcd"',
+      steps: [
+        'Prefix "ababcababc" (len 10) is two copies of "ababc", so replace the second half with *.',
+        'Prefix "abab" is two copies of "ab", so another *.',
+        'Remaining letters give ab*c*d, which decompresses back to the original.',
+      ],
+      output: 'ab*c*d',
+    },
+    pitfalls: [
+      'Odd-length prefixes cannot split into two equal halves, so they never get a star at that index.',
+      'lps[i]*2 >= len is not enough - the smallest period must also divide len with an even copy count.',
+      'Process from the right so nested stars (as in z*z*z for zzzzzzz) stay shortest.',
+      '* is cheaper than writing the second copy of letters, so take every valid star.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
