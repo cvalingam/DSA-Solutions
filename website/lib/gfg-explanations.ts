@@ -8782,6 +8782,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'triplets-with-sum-in-range': {
+    intuition:
+      'The count in [l, r] is (triplets with sum <= r) minus (triplets with sum <= l-1). After sorting, fix arr[i] and scan the rest with two pointers: when arr[i]+arr[lo]+arr[hi] is small enough, every hi between lo+1 and the current hi also works, so add hi-lo at once. Two shrinking right pointers in one pass cover both bounds.',
+    algorithm: [
+      'Sort arr. atMostR = atMostLm1 = 0, lim = l-1.',
+      'For i from 0 to n-3: if arr[i]+arr[i+1]+arr[i+2] > r, break (later mins only grow).',
+      'hiR = hiL = n-1. For lo from i+1 to n-2: shrink hiR while the sum with arr[hiR] > r, shrink hiL while > lim.',
+      'If hiR > lo, add hiR-lo to atMostR. Same for hiL and atMostLm1.',
+      'Return atMostR - atMostLm1.',
+    ],
+    example: {
+      input: 'arr = [8, 3, 5, 2], l = 7, r = 11',
+      steps: [
+        'Sorted: [2, 3, 5, 8].',
+        'Only triplet with sum in [7, 11] is 2+3+5 = 10.',
+        '2+3+8 = 13 and 3+5+8 = 16 are above 11.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Use long for three-way sums - values can be large enough to overflow int.',
+      'The formula is <= r minus <= l-1, not < r minus < l.',
+      'After sorting, arr[i]+arr[i+1]+arr[i+2] is non-decreasing in i, so you can stop once that min exceeds r.',
+      'Count unordered index triples i < j < k, not permutations of the same three values.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -756,6 +756,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1380: ['array', 'hash-table', 'matrix'],
   1381: ['stack', 'design', 'array'],
   1382: ['tree', 'binary-search-tree', 'divide-and-conquer', 'binary-tree'],
+  1386: ['array', 'hash-table', 'greedy', 'bit-manipulation'],
   1390: ['math'],
   1392: ['string', 'string-matching', 'hash-function', 'rolling-hash'],
   1394: ['array', 'hash-table', 'sorting'],

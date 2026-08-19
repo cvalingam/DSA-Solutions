@@ -10161,6 +10161,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1386: {
+    intuition:
+      'A four-person group only uses seats 2-5, 4-7, or 6-9. Seats 1 and 10 never matter. An empty row always takes two groups (left and right). n can be 1e9, so only walk rows that have a reserved seat in 2-9, start from 2*n, and subtract what those rows lose.',
+    algorithm: [
+      'For each reserved seat, skip 1 and 10. Pack seats 2-9 into a bitmask per row (bit 0 = seat 2).',
+      'ans = 2 * n.',
+      'For each touched row: left = seats 2-5, mid = 4-7, right = 6-9.',
+      'If left, mid, and right are all blocked, subtract 2. Otherwise subtract 1 (the row still fits one group, or would have fit two if empty).',
+      'Return ans.',
+    ],
+    example: {
+      input: 'n = 3, reservedSeats = [[1,2],[1,3],[1,8],[2,6],[3,1],[3,10]]',
+      steps: [
+        'Empty-row baseline: 3 rows * 2 = 6.',
+        'Row 1: 2,3,8 reserved - left and right blocked, middle 4-7 still open, so 1 group (subtract 1).',
+        'Row 2: seat 6 blocks mid and right; left 2-5 is still open, so 1 group (subtract 1).',
+        'Row 3: only 1 and 10 reserved, ignored, still 2 groups. Answer 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not iterate 1..n - n can be 1e9.',
+      'Aisle seats 1 and 10 do not block any family; a row with only those reserved still fits 2 groups.',
+      'Left and right together are 2 groups; you cannot also count the middle on the same row.',
+      'A row that appears in the map has some seat in 2-9 reserved, so it cannot fit two groups - subtract 1 if any of left/mid/right is free, else subtract 2.',
+    ],
+  },
+
 }
 
 export default explanations
