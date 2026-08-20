@@ -10189,6 +10189,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3069: {
+    intuition:
+      'arr1 starts with nums[0], arr2 with nums[1]. Each later element goes to whichever array has the larger last value (ties go to arr2). There is no lookahead - just simulate and concatenate arr1 then arr2.',
+    algorithm: [
+      'Write nums[0] to arr1 and nums[1] to arr2; track last1 and last2.',
+      'For k from 2 to n-1: if last1 > last2 append nums[k] to arr1, else to arr2; update the matching last.',
+      'Copy arr1 then arr2 into the result array of length n.',
+      'Return the merged array.',
+    ],
+    example: {
+      input: 'nums = [2, 1, 3]',
+      steps: [
+        'Start arr1=[2], arr2=[1]. last1=2, last2=1.',
+        '2 > 1 so 3 goes to arr1 -> arr1=[2,3], arr2=[1].',
+        'Result is [2, 3, 1].',
+      ],
+      output: '[2, 3, 1]',
+    },
+    pitfalls: [
+      'When last1 == last2, the next element must go to arr2, not arr1.',
+      'The first two elements are fixed - the loop starts at index 2.',
+      'Result order is arr1 followed by arr2, not interleaved.',
+      'n is at least 3 per constraints.',
+    ],
+  },
+
 }
 
 export default explanations

@@ -8809,6 +8809,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'node-and-ancestor-max-diff': {
+    intuition:
+      'You want the largest value of (ancestor.data - descendant.data) where the ancestor is above the descendant on the tree. For a fixed node, the best ancestor is the maximum value on the path from root to that node. Carry that max down in a pre-order DFS and update the answer at every non-root node.',
+    algorithm: [
+      'DFS(node, maxAnc): if node is null, return.',
+      'If maxAnc is set, ans = max(ans, maxAnc - node.data).',
+      'maxAnc = max(maxAnc, node.data).',
+      'Recurse on left and right with the updated maxAnc.',
+      'Start from root with no ancestor (sentinel) and return ans.',
+    ],
+    example: {
+      input: 'root = 8, left=3 (1,6 with 4,7), right=10 (14 with 13)',
+      steps: [
+        'At node 1 the path max ancestor is 8, so 8-1=7.',
+        'Other pairs like 8-3=5 or 3-7=-4 are smaller.',
+        'Maximum ancestor minus descendant is 7.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'GFG subtracts descendant from ancestor, not absolute difference - negative diffs are allowed but you take the max.',
+      'The root has no ancestor, so skip updating ans there.',
+      'Ancestor means any node on the path from root down, not only the parent.',
+      'A single-node tree has no valid pair; handle if the platform allows it.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
