@@ -1,76 +1,73 @@
-// Approach: Binary search on value; count valid amounts ≤ mid using LCM inclusion-exclusion over coin subsets.
-// Time: O(2^n * n * log answer) Space: O(2^n)
-
+// Approach: Binary search the answer x. Count how many distinct amounts <= mid
+// via inclusion-exclusion over coin-subset LCMs (add odd subsets, subtract even).
+// Precompute each subset's LCM once with a +/- sign.
+// Complexity: O(2^n * n + 2^n * log(k * minCoin)) time, O(2^n) space.
 public class Solution
 {
     public long FindKthSmallest(int[] coins, int k)
     {
-        List<long>[] sizeToLcms = GetSizeToLcms(coins);
-        long l = 0;
-        long r = (long)k * coins.Min();
+        long[] signedLcms = BuildSignedLcms(coins);
+        long lo = 1;
+        long hi = (long)k * coins.Min();
 
-        while (l < r)
+        while (lo < hi)
         {
-            long m = (l + r) / 2;
-            if (NumDenominationsNoGreaterThan(sizeToLcms, m) >= k)
-                r = m;
+            long mid = lo + (hi - lo) / 2;
+            if (CountUpTo(signedLcms, mid) >= k)
+                hi = mid;
             else
-                l = m + 1;
+                lo = mid + 1;
         }
 
-        return l;
+        return lo;
     }
 
-    // Returns the number of denominations <= m.
-    private long NumDenominationsNoGreaterThan(List<long>[] sizeToLcms, long m)
+    private long CountUpTo(long[] signedLcms, long m)
     {
         long res = 0;
-        for (int sz = 1; sz < sizeToLcms.Length; ++sz)
-            foreach (long lcm in sizeToLcms[sz])
-                res += m / lcm * (long)Math.Pow(-1, sz + 1);
+        foreach (long signed in signedLcms)
+        {
+            long lcm = Math.Abs(signed);
+            if (lcm > m)
+                continue;
+            res += m / lcm * Math.Sign(signed);
+        }
         return res;
     }
 
-    // Returns the LCMs for each number of combination of coins.
-    private List<long>[] GetSizeToLcms(int[] coins)
+    private long[] BuildSignedLcms(int[] coins)
     {
         int n = coins.Length;
         int maxMask = 1 << n;
-        List<long>[] sizeToLcms = new List<long>[n + 1];
+        var list = new List<long>(maxMask - 1);
 
-        for (int i = 1; i <= n; ++i)
-            sizeToLcms[i] = new List<long>();
-
-        for (int mask = 1; mask < maxMask; ++mask)
+        for (int mask = 1; mask < maxMask; mask++)
         {
-            long lcmOfSelectedCoins = 1;
-            for (int i = 0; i < n; ++i)
-                if ((mask >> i & 1) == 1)
-                    lcmOfSelectedCoins = Lcm(lcmOfSelectedCoins, coins[i]);
-            sizeToLcms[CountBits(mask)].Add(lcmOfSelectedCoins);
+            long lcm = 1;
+            int bits = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if ((mask & (1 << i)) == 0)
+                    continue;
+                bits++;
+                lcm = Lcm(lcm, coins[i]);
+            }
+            list.Add((bits & 1) == 1 ? lcm : -lcm);
         }
 
-        return sizeToLcms;
+        return list.ToArray();
     }
 
-    private long Lcm(long a, long b)
-    {
-        return a * b / Gcd(a, b);
-    }
+    private long Lcm(long a, long b) => a / Gcd(a, b) * b;
 
     private long Gcd(long a, long b)
     {
-        return b == 0 ? a : Gcd(b, a % b);
-    }
-
-    private int CountBits(int mask)
-    {
-        int count = 0;
-        while (mask > 0)
+        while (b != 0)
         {
-            count += mask & 1;
-            mask >>= 1;
+            long t = a % b;
+            a = b;
+            b = t;
         }
-        return count;
+        return a;
     }
 }

@@ -8836,6 +8836,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'transform-string': {
+    intuition:
+      'You may only pick a character in s1 and move it to the front. That means any suffix of s2 that already appears in order as a subsequence of s1 can stay put - everything else has to be moved. First confirm the two strings are anagrams (otherwise impossible). Then walk both from the right: whenever s1 does not match the next needed s2 char, that s1 char will need a move later, so bump the cost and keep scanning left in s1 until the match lines up again.',
+    algorithm: [
+      'If lengths differ, return -1.',
+      'Build a 256-slot frequency table: +1 for s1, -1 for s2. Any leftover non-zero means not anagrams -> -1.',
+      'Set i = j = n-1 and ops = 0.',
+      'While i >= 0: while s1[i] != s2[j], ops++, i--. When they match, step both left.',
+      'Return ops.',
+    ],
+    example: {
+      input: 's1 = "ABCD", s2 = "CBAD"',
+      steps: [
+        'Frequencies match, so a transform exists.',
+        'From the right, D matches D. Then C vs A mismatch - skip C and B in s1 (2 moves) until A matches A.',
+        'B matches B. Cost is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Always check anagrams first - unequal letter bags can never become each other under this operation.',
+      'Scan from the right; a left-to-right greedy misses how move-to-front reshapes prefixes.',
+      'Only count mismatches in s1 while hunting for s2[j] - do not move j until you have a match.',
+      'Same length alone is not enough; character multisets must match too.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

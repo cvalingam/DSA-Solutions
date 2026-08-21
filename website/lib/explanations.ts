@@ -7317,11 +7317,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3116: {
-    intuition: 'Kth smallest amount using coins: binary search + inclusion-exclusion on multiples of coin combinations.',
+    intuition:
+      'Each coin only produces its own multiples - you never mix denominations. So the valid amounts are just the union of those arithmetic sequences. k can be up to 2e9, so you cannot generate them. Instead binary search the answer x and ask: how many distinct valid amounts are <= x? That count is monotonic, so the smallest x with count >= k is the answer.',
     algorithm: [
-      'Binary search on value v. Count numbers <= v that are multiples of at least one coin using inclusion-exclusion.',
+      'Precompute every non-empty coin subset: take its LCM, and store it with a + sign if the subset size is odd, - if even (inclusion-exclusion).',
+      'Binary search lo=1, hi=k*min(coins). For mid, count = sum over signed LCMs of mid/lcm (skip when lcm > mid).',
+      'If count >= k, try smaller (hi = mid); else lo = mid + 1.',
+      'Return lo.',
     ],
-    pitfalls: ['Include-exclude on coin LCMs. Binary search on the answer.'],
+    example: {
+      input: 'coins = [3, 6, 9], k = 3',
+      steps: [
+        'Valid amounts in order: 3, 6, 9, 12, 15, ...',
+        'At x = 9, multiples of 3 give 3, of 6 give 1, of 9 give 1; subtract overlaps via LCM so the distinct count is 3.',
+        'So the 3rd amount is 9.',
+      ],
+      output: '9',
+    },
+    pitfalls: [
+      'A plain sum of floor(x/coin) double-counts shared multiples - you need inclusion-exclusion on LCMs.',
+      'Compute LCM as a/gcd*b to avoid overflowing a*b.',
+      'n is at most 15, so 2^n subsets are fine; k is huge, so heap generation will not work.',
+      'hi = k * min(coins) is a safe upper bound because the smallest coin alone already covers k multiples by then.',
+    ],
   },
 
   3122: {

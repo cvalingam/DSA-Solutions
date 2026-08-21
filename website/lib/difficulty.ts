@@ -157,7 +157,7 @@ const difficultyMap: Record<number, 'Easy' | 'Medium' | 'Hard'> = {
   3054:'Medium',3055:'Medium',3056:'Easy',3065:'Easy',3066:'Medium',3067:'Hard',3068:'Hard',3069:'Easy',3070:'Easy',
   3071:'Medium',3073:'Medium',3075:'Medium',3083:'Easy',3084:'Medium',3085:'Easy',3087:'Easy',3090:'Easy',
   3091:'Medium',3095:'Easy',3097:'Medium',3099:'Medium',3100:'Easy',3101:'Medium',3102:'Medium',3105:'Easy',
-  3106:'Medium',3107:'Medium',3110:'Easy',3111:'Medium',3114:'Easy',3115:'Medium',3116:'Medium',3120:'Medium',
+  3106:'Medium',3107:'Medium',3110:'Easy',3111:'Medium',3114:'Easy',3115:'Medium',3116:'Hard',3120:'Medium',
   3127:'Medium',3128:'Medium',3131:'Easy',3132:'Medium',3133:'Medium',3134:'Medium',3135:'Medium',3136:'Easy',
   3137:'Medium',3138:'Medium',3142:'Easy',3143:'Medium',3148:'Medium',3149:'Medium',3152:'Medium',3153:'Medium',
   3154:'Medium',3159:'Medium',3160:'Medium',3162:'Medium',3168:'Easy',3169:'Medium',3174:'Easy',3175:'Medium',
