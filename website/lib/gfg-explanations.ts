@@ -8863,6 +8863,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'number-of-turns-in-binary-tree': {
+    intuition:
+      'A turn is a left-then-right (or right-then-left) change on the unique path between two nodes. That path always goes up to the LCA and then down. Count direction changes on each leg from the LCA. If the two nodes sit in different subtrees you also pay one extra turn at the LCA itself. If they line up with no change of direction, the platform wants -1 rather than 0.',
+    algorithm: [
+      'If first equals second, return -1.',
+      'Find the LCA of first and second.',
+      'DFS from the LCA: dir 0 at the start, 1 after a left edge, 2 after a right edge. When dir flips, bump the turn count for that walk.',
+      'Record how many turns sit on the path to each target.',
+      'If the LCA is one of the targets, return the other path\'s turns, or -1 when that value is 0. Otherwise return turnsP + turnsQ + 1.',
+    ],
+    example: {
+      input: 'tree with LCA at 1, first = 2 on a left-left path, second = 3 on a right child',
+      steps: [
+        'Neither target is the LCA, so the path crosses from the left subtree to the right.',
+        'The left leg may be straight (0 turns). The right leg is a single edge (0 turns).',
+        'The switch at the LCA adds 1, so the answer is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Do not count the first edge leaving the LCA as a turn - there is no previous direction yet.',
+      'When one node is an ancestor of the other, the LCA is that ancestor; there is no extra +1 at the LCA.',
+      'A path that never changes direction should return -1, not 0.',
+      'Building two full L/R strings from the root works but uses extra memory; counting from the LCA is enough.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

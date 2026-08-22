@@ -10233,6 +10233,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3622: {
+    intuition:
+      'You only need two numbers from the digits of n: their sum and their product. Add those together and ask whether n is a multiple of that total. Walking digits with modulo 10 is enough - no extra data structure.',
+    algorithm: [
+      'Copy n. Start sum = 0 and product = 1.',
+      'While the copy is non-zero: take the last digit (copy % 10), add it to the sum, multiply it into the product, then drop it (copy / 10).',
+      'Let total = sum + product.',
+      'Return whether n % total == 0.',
+    ],
+    example: {
+      input: 'n = 99',
+      steps: [
+        'Digits 9 and 9: sum = 18, product = 81, total = 99.',
+        '99 % 99 == 0, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'A zero digit zeros the product. The divisor then equals the digit sum, which is still valid.',
+      'Start the product at 1, not 0, or every answer becomes n % sum.',
+      'Do not mutate n while peeling digits if you still need the original for the modulo check.',
+      'Constraints keep n small, so digit product will not overflow a 32-bit int.',
+    ],
+  },
+
 }
 
 export default explanations
