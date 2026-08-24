@@ -8890,6 +8890,58 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'geek-in-a-maze': {
+    intuition:
+      'Geek may move up, down, left, or right, but only down and up are budgeted. A shortest path in "number of downs" lets you recover ups from geometry: net row change is downs minus ups, so ups = downs + (startRow - row). Left and right never cost a vertical move, so they should be processed before a down. That is 0-1 BFS: free edges to the front of the deque, down edges to the back.',
+    algorithm: [
+      'If the start cell is blocked, return 0.',
+      'dist[i][j] = fewest downs to (i, j), start at 0, others infinity.',
+      '0-1 BFS from (r, c). Neighbors that go down have cost 1; up, left, and right have cost 0.',
+      'Relax a neighbor when dist[cur] + cost is strictly smaller. Push front on cost 0, back on cost 1.',
+      'Count unblocked cells with dist != infinity, downs <= d, and downs + (r - i) <= u.',
+    ],
+    example: {
+      input: 'start (0, 0), u = 1, d = 1, open 2x2 grid',
+      steps: [
+        '(0, 0) has downs = 0, ups = 0. Both budgets allow it.',
+        'Right to (0, 1) is free: downs = 0, ups = 0.',
+        'Down to (1, 0) costs 1: downs = 1, ups = 1 + 0 - 1 = 0.',
+        'If d and u are at least 1, every open cell is reachable.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not run a normal queue BFS. A down-first path can mark a cell with too many downs before a free path arrives.',
+      'Up is not free in the budget even though it is free in the BFS cost. Convert with ups = downs + r - i after the search.',
+      'Blocked cells (\'#\') are never counted, including the start.',
+      'Relax only on a strictly better downs count. Equal dist should not re-enqueue.',
+    ],
+  },
+
+  'count-prefix-balanced-binary-strings': {
+    intuition:
+      'A prefix-balanced binary string with n zeros and n ones is a Dyck word: in every prefix the running balance never goes negative, and the whole string ends at zero. Those strings are counted by the Catalan number C_n = C(2n, n) / (n + 1). Work modulo 1e9+7 by multiplying (n+1) through (2n) in the numerator and (n+1)! in the denominator, then one modular inverse.',
+    algorithm: [
+      'Set numerator = 1 and denominator = n + 1.',
+      'For i from 1 to n: numerator *= (n + i), denominator *= i, both mod 1e9+7.',
+      'Return numerator * inv(denominator) mod 1e9+7, where inv is Fermat (p-2).',
+    ],
+    example: {
+      input: 'n = 2',
+      steps: [
+        'C_2 = C(4, 2) / 3 = 6 / 3 = 2.',
+        'The two strings are 0011 and 0101 in 0/1 form (or the matching bracket pairs).',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Invert once: fold 1/(n+1) into (n+1)! instead of two separate Fermat calls.',
+      'Multiply modulo the prime at every step so intermediate products stay in range of 64-bit.',
+      'n = 0 is C_0 = 1 (empty product, denominator 1).',
+      'This is not 2^n. Unrestricted binary strings overcount strings that go negative in prefix.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

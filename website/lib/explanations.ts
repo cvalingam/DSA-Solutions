@@ -10233,6 +10233,60 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1872: {
+    intuition:
+      'Each move replaces stones[0..i] with their sum, so the new first stone is prefix[i] and the opponent faces the leftover suffix. The score you just scored is prefix[i], then the opponent plays optimally on that suffix. That gives dp[i] = max over later starts j of prefix[j] - dp[j]. Walking from the right, only the next dp value is live, so one variable is enough. Alice must take at least two stones, so the last start index is 1.',
+    algorithm: [
+      'Overwrite stones[i] with the prefix sum through i.',
+      'Set ans = stones[n-1] (take the whole prefix as the last remaining move).',
+      'For i from n-2 down to 1: ans = max(ans, stones[i] - ans).',
+      'Return ans. This is Alice minus Bob under optimal play.',
+    ],
+    example: {
+      input: 'stones = [-1, 2, -3, 4, -5]',
+      steps: [
+        'Prefixes: [-1, 1, -2, 2, -3].',
+        'Start with ans = -3 (take everything).',
+        'i = 3: max(-3, 2 - (-3)) = 5.',
+        'i = 2: max(5, -2 - 5) = 5.',
+        'i = 1: max(5, 1 - 5) = 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'The first take must cover at least two stones, so do not consider i = 0 as a start.',
+      'Score is prefix of the take, not the sum of remaining stones.',
+      'The recurrence uses the opponent\'s best from the next state, so a left-to-right pass needs a full array; right-to-left folds it.',
+      'Mutating stones stores prefixes in place. A copy is only needed if the caller forbids writes.',
+    ],
+  },
+
+  1927: {
+    intuition:
+      'Alice wants the two halves different; Bob wants them equal. Each question mark can become any digit 0..9. Under optimal play that choice is worth 4.5, the midpoint of the range. Add 4.5 (or the known digit) on the left half and subtract it on the right. If the signed total is not zero, Alice can keep the halves apart. If it is zero, Bob can always cancel.',
+    algorithm: [
+      'Let n be the even length of num. Initialise ans = 0.',
+      'For i in [0, n/2): add 4.5 if num[i] is \'?\', else add the digit.',
+      'For i in [n/2, n): subtract the same value.',
+      'Return whether ans is not 0.',
+    ],
+    example: {
+      input: 'num = "25??"',
+      steps: [
+        'Left half "25" contributes 2 + 5 = 7.',
+        'Right half "??" contributes 4.5 + 4.5 = 9.',
+        '7 - 9 = -2, not zero, so Alice wins.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Compare with 0.0 after the signed sum. Do not early-return on the first question mark.',
+      'A known digit is itself, not 4.5. Only \'?\' uses the midpoint.',
+      'The two halves are equal length. Split at n/2, not at the first \'?\'.',
+      'This is not a simulation of turns. The 4.5 test already encodes optimal play.',
+    ],
+  },
+
   3622: {
     intuition:
       'You only need two numbers from the digits of n: their sum and their product. Add those together and ask whether n is a multiple of that total. Walking digits with modulo 10 is enough - no extra data structure.',
