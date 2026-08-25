@@ -10312,6 +10312,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3718: {
+    intuition:
+      'The answer is the smallest positive multiple of k that does not appear in nums. Constraints cap every nums[i] at 100, so a boolean table of size 101 records presence. Then try k, 2k, 3k, ... The first multiple that is unmarked, or that is already larger than 100, cannot sit in the array.',
+    algorithm: [
+      'Allocate s[101] = false. For each x in nums, if x < 101 set s[x] = true.',
+      'For i = 1, 2, 3, ... let x = k * i.',
+      'If x >= 101 or s[x] is false, return x.',
+    ],
+    example: {
+      input: 'nums = [8, 2, 3, 4, 6], k = 2',
+      steps: [
+        'Mark 2, 3, 4, 6, 8.',
+        '2, 4, 6, 8 are present. 10 is larger than any possible nums[i] (or unmarked), so 10 is missing.',
+      ],
+      output: '10',
+    },
+    pitfalls: [
+      'Ignore values >= 101 if they ever appear; under the stated constraints they do not.',
+      'Do not return k without checking whether k itself is in nums.',
+      'The loop is over multiples, not over nums a second time.',
+      'k itself can be 100. Then 100 may be present and the answer is 200, which the x >= 101 branch covers.',
+    ],
+  },
+
 }
 
 export default explanations

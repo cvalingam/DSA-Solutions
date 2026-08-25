@@ -8942,6 +8942,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-moves-to-sort-permutation': {
+    intuition:
+      'You may pick any value and move it somewhere else. The values you should leave alone are a longest stretch of consecutive numbers that already appear in increasing order in the array, such as 3 then 4 then 5 later on. Anything not on that stretch has to be moved, so the answer is n minus that length. Because arr is a permutation of 1..n, the stretch ending at x is just one more than the stretch ending at x-1 when x-1 showed up earlier.',
+    algorithm: [
+      'Let run[0..n] start at 0. best = 0.',
+      'For each x in arr: run[x] = run[x-1] + 1. Update best if run[x] is larger.',
+      'Return n - best.',
+    ],
+    example: {
+      input: 'arr = [4, 1, 2, 5, 3]',
+      steps: [
+        '4 starts a run of 1. 1 starts a run of 1. 2 continues 1, run = 2.',
+        '5 continues 4, run = 2. 3 continues 2, run = 3.',
+        'Longest consecutive increasing run is 1, 2, 3. Moves = 5 - 3 = 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'This is not LIS of any increasing sequence. 1, 3, 5 is increasing but not consecutive, so it does not form one run.',
+      'A HashMap is unnecessary. Indices 1..n fit in an int array.',
+      'If x-1 has not been seen, run[x-1] is 0 and the run restarts at 1.',
+      'Already sorted 1..n has best = n and needs 0 moves.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
