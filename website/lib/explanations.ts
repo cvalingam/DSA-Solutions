@@ -10336,6 +10336,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2904: {
+    intuition:
+      'A beautiful substring has exactly k ones. Among those, you want the shortest, and if several share that length, the lexicographically smallest. Any shortest candidate must start and end on a 1: leading zeros only make the window longer. So keep a sliding window with exactly k ones, strip leading zeros, and compare only those tight windows.',
+    algorithm: [
+      'Expand right. When s[r] is 1, increment ones.',
+      'While ones > k, or ones == k and s[l] is 0, advance l (decrement ones when you drop a 1).',
+      'When ones == k, the window [l, r] is tight. If it is shorter than the best, or the same length and lexicographically smaller, record it.',
+      'If no window ever had k ones, return the empty string. Otherwise return the recorded substring.',
+    ],
+    example: {
+      input: 's = "100011001", k = 3',
+      steps: [
+        'First tight window with 3 ones is indices covering "100011001" trimmed to start/end on 1.',
+        'Later windows may be shorter. Among equal lengths, string.Compare picks the lex smaller start.',
+        'One valid shortest answer is "11001".',
+      ],
+      output: '"11001"',
+    },
+    pitfalls: [
+      'Do not compare windows that still have a leading 0. They are never shortest.',
+      'Exactly k ones, not at least k. Shrinking past an extra 1 is required when ones exceeds k.',
+      'If the string has fewer than k ones, return "".',
+      'On equal length, compare the substrings themselves, not only their start indices.',
+    ],
+  },
+
 }
 
 export default explanations

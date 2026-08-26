@@ -8967,6 +8967,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'negative-weight-cycle': {
+    intuition:
+      'Dijkstra cannot handle negative edges. Bellman-Ford can: if you relax every edge V-1 times and one more relax still improves a distance, some path got shorter by looping, which means a negative cycle. Starting every distance at 0 is the same as adding a virtual source with weight-0 edges into all vertices, so every component is checked in one run.',
+    algorithm: [
+      'Allocate dist[0..V-1] = 0.',
+      'For up to V-1 rounds: for each edge (u, v, w), if dist[u] + w < dist[v], set dist[v] = dist[u] + w. If a round changes nothing, stop early.',
+      'Scan every edge once more. If any edge can still relax, return true.',
+      'Otherwise return false.',
+    ],
+    example: {
+      input: 'V = 3, edges = [[0,1,-1],[1,2,-2],[2,0,-3]]',
+      steps: [
+        'Round 1 can pull distances down along the triangle.',
+        'After V-1 rounds, the same edges still improve a distance because the cycle weight is -6.',
+        'The final scan reports a negative cycle.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'A DFS that checks path weight from the DFS root is not the cycle weight and misses finished components.',
+      'Initialize all dist to 0 (or use an explicit super-source). Starting from one vertex alone misses cycles in other components.',
+      'You need the extra V-th pass (or equivalent check). Stopping after V-1 rounds only is not enough to detect the cycle.',
+      'Early exit when a round is idle is optional but correct; it does not replace the final negative-cycle check if updates happened.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
