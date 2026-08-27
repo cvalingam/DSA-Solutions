@@ -8993,6 +8993,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-rectangle-with-column-swaps': {
+    intuition:
+      'You may reorder columns freely, so a solid rectangle of 1s is limited only by how many columns share a given streak of consecutive 1s ending at the current row. Treat each row as the bottom of a histogram: height[j] is the run of 1s in column j. For every possible minimum height h, the usable width is the number of columns with height at least h. The area is h times that width; take the maximum over rows and heights.',
+    algorithm: [
+      'Keep heights[0..m-1] for consecutive 1s ending at the current row.',
+      'For each row i: set heights[j] = heights[j]+1 if mat[i][j] is 1, else 0.',
+      'Count frequencies of heights in 0..n.',
+      'Walk h from n down to 1, adding freq[h] into width (columns with height >= h). Update answer with h * width.',
+      'Return the maximum area seen.',
+    ],
+    example: {
+      input: 'mat = [[0,1,1],[1,1,0],[1,1,1]]',
+      steps: [
+        'After row 0, heights = [0,1,1]. Width for h=1 is 2, area = 2.',
+        'After row 1, heights = [1,2,0]. Width for h=1 is 2, area = 2; for h=2 width = 1, area = 2.',
+        'After row 2, heights = [2,3,1]. For h=1 width = 3 area = 3; h=2 width = 2 area = 4; h=3 width = 1 area = 3.',
+        'Best area is 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Do not run the classic largest-rectangle-in-histogram stack on unsorted heights. Column swaps make any order legal, so sorting (or counting) is required.',
+      'Heights reset to 0 on a 0 cell; they do not carry across zeros.',
+      'Counting sort over 0..n is enough. A full comparison sort is slower and unnecessary.',
+      'width after scanning down to h counts columns with height >= h, not only height exactly h.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

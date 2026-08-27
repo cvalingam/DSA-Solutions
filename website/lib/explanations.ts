@@ -10362,6 +10362,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3720: {
+    intuition:
+      'You need the lexicographically smallest permutation of s that beats target. Among all valid answers, the best one shares the longest possible prefix with target, then places the smallest letter still available that is greater than target at the first difference, then fills the rest with the leftover letters in ascending order. Recording every feasible step-up while walking left to right and keeping the rightmost one yields that answer.',
+    algorithm: [
+      'Count the 26 letter frequencies in s.',
+      'For i from 0 to n-1: if any remaining letter is > target[i], remember i and the smallest such letter. Then try to spend one copy of target[i]; if none remains, stop.',
+      'If no step-up was ever possible, return "".',
+      'Rebuild counts from s. Copy target[0..bestPos-1], place bestChar, then append remaining letters from a to z.',
+    ],
+    example: {
+      input: 's = "abc", target = "bba"',
+      steps: [
+        'At index 0, c > b is possible. Match b and continue.',
+        'At index 1, c > b is possible (rightmost step-up). Cannot match a second b, so stop.',
+        'Rebuild: prefix "b", place c, leftover a -> "bca".',
+      ],
+      output: '"bca"',
+    },
+    pitfalls: [
+      'A later first difference is lexicographically smaller than an earlier one when both beat target, so keep the rightmost feasible step-up.',
+      'Check for a larger letter before consuming target[i] for the matched prefix.',
+      'If s and target use the same multiset and target is already the largest permutation, the answer is "".',
+      'After the step-up, sort the suffix ascending, not descending.',
+    ],
+  },
+
 }
 
 export default explanations
