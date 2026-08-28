@@ -1301,6 +1301,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3718: ['array', 'hash-table', 'enumeration'],
   3719: ['array'],
   3720: ['string', 'greedy', 'sorting', 'counting'],
+  3734: ['string', 'greedy', 'backtracking', 'counting'],
   3721: ['array', 'dynamic-programming'],
   3731: ['array', 'hash-table'],
   3737: ['array', 'prefix-sum', 'binary-indexed-tree'],

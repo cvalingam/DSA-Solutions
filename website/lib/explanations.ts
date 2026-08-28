@@ -10388,6 +10388,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3734: {
+    intuition:
+      'A palindrome is determined by its left half (and the middle letter when n is odd). You need the smallest palindromic rearrangement of s that is strictly greater than target. Match target from the left while you still can, but a match at one index does not force the smallest fill to win later. If target[i] still fits, recurse; otherwise place the smallest letter > target[i], fill the rest with the smallest available letters, and mirror to finish.',
+    algorithm: [
+      'Count letters in s. If more than one odd count, no palindrome exists.',
+      'DFS/build from left to right on the half (plus middle). When still tied to target, try target[i] and recurse.',
+      'If target[i] cannot be extended to any beating palindrome, try the next letter.',
+      'When you place c > target[i], fill the remaining half with the smallest letters, set the middle if needed, mirror, and return.',
+      'At the end, return the built string only if it is strictly greater than target.',
+    ],
+    example: {
+      input: 's = "aabb", target = "abaa"',
+      steps: [
+        'Palindromes are "abba" and "baab". Both beat "abaa".',
+        'Match target through index 6 is not needed here: match "abababa" on the left half, then bump index 7 from a to b.',
+        'Smallest fill after that bump gives "abba".',
+      ],
+      output: '"abba"',
+    },
+    pitfalls: [
+      'Do not require target[i] == target[n-1-i] when matching a pair. Only the left choice is fixed; the right mirrors it.',
+      'Checking only the smallest completion after a match is wrong. A later index may still provide the needed bump.',
+      'Rightmost-bump logic from ordinary permutations (LC 3720) is not correct for palindromes.',
+      'If every position matches and the full palindrome equals target, return "".',
+    ],
+  },
+
 }
 
 export default explanations

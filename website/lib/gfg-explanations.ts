@@ -9021,6 +9021,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-cost-selection': {
+    intuition:
+      'Each row has three options and you cannot pick the same option as the previous row. That is the classic paint-house recurrence: the cheapest way to end row i on color j is mat[i][j] plus the better of the two costs from the other colors on row i-1. Only the previous row matters, so keep three rolling values.',
+    algorithm: [
+      'Set prev0, prev1, prev2 from the first row.',
+      'For each later row i: curr0 = mat[i][0] + min(prev1, prev2), curr1 = mat[i][1] + min(prev0, prev2), curr2 = mat[i][2] + min(prev0, prev1).',
+      'Shift curr into prev.',
+      'Return min(prev0, prev1, prev2).',
+    ],
+    example: {
+      input: 'mat = [[1,5,3],[2,9,4],[3,6,2]]',
+      steps: [
+        'Row 0 costs are 1, 5, 3.',
+        'Row 1: color 0 costs 2+3=5, color 1 costs 9+1=10, color 2 costs 4+1=5.',
+        'Row 2: best ends on color 0 with 3+4=7.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Each new color must differ from the previous row, not from its neighbors in the same row.',
+      'Initialize from row 0 directly; there is no row -1.',
+      'The answer is the minimum of the three final states, not any single column sum.',
+      'Use long only if costs can overflow int; typical GFG constraints fit in int.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
