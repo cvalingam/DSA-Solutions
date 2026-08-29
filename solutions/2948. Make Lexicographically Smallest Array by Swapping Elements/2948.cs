@@ -1,48 +1,38 @@
-// Approach: Sort with original indices; group by proximity (diff ≤ limit); assign sorted values to slots.
-// Time: O(n log n) Space: O(n)
-
+// Approach: Sort indices by value. Consecutive values with gap <= limit form a
+// component that can be freely rearranged. For each component, sort its indices
+// and write the already-sorted values into those positions (lex-smallest).
+// Complexity: O(n log n) time and O(n) extra space.
 public class Solution
 {
     public int[] LexicographicallySmallestArray(int[] nums, int limit)
     {
-        int[] ans = new int[nums.Length];
-        List<List<KeyValuePair<int, int>>> numAndIndexesGroups = new List<List<KeyValuePair<int, int>>>();
+        int n = nums.Length;
+        int[] idx = new int[n];
+        for (int i = 0; i < n; i++)
+            idx[i] = i;
 
-        foreach (var numAndIndex in GetNumAndIndexes(nums))
-        {
-            if (numAndIndexesGroups.Count == 0 ||
-                numAndIndex.Key - numAndIndexesGroups.Last().Last().Key > limit)
-                // Start a new group.
-                numAndIndexesGroups.Add(new List<KeyValuePair<int, int>> { numAndIndex });
-            else
-                // Append to the existing group.
-                numAndIndexesGroups.Last().Add(numAndIndex);
-        }
+        Array.Sort(idx, (a, b) => nums[a].CompareTo(nums[b]));
 
-        foreach (var numAndIndexesGroup in numAndIndexesGroups)
+        int[] ans = new int[n];
+        int start = 0;
+
+        for (int i = 1; i <= n; i++)
         {
-            List<int> sortedNums = new List<int>();
-            List<int> sortedIndices = new List<int>();
-            foreach (var pair in numAndIndexesGroup)
-            {
-                sortedNums.Add(pair.Key);
-                sortedIndices.Add(pair.Value);
-            }
-            sortedIndices.Sort();
-            for (int i = 0; i < sortedNums.Count; ++i)
-                ans[sortedIndices[i]] = sortedNums[i];
+            if (i < n && nums[idx[i]] - nums[idx[i - 1]] <= limit)
+                continue;
+
+            int len = i - start;
+            int[] slots = new int[len];
+            for (int j = 0; j < len; j++)
+                slots[j] = idx[start + j];
+
+            Array.Sort(slots);
+            for (int j = 0; j < len; j++)
+                ans[slots[j]] = nums[idx[start + j]];
+
+            start = i;
         }
 
         return ans;
-    }
-
-    private KeyValuePair<int, int>[] GetNumAndIndexes(int[] nums)
-    {
-        KeyValuePair<int, int>[] numAndIndexes = new KeyValuePair<int, int>[nums.Length];
-        for (int i = 0; i < nums.Length; ++i)
-            numAndIndexes[i] = new KeyValuePair<int, int>(nums[i], i);
-
-        Array.Sort(numAndIndexes, (a, b) => a.Key.CompareTo(b.Key));
-        return numAndIndexes;
     }
 }

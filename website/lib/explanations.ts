@@ -10415,6 +10415,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2948: {
+    intuition:
+      'You may swap two values only when their absolute difference is at most limit. That relation is transitive along a chain of nearby values, so after sorting the numbers, consecutive gaps of size at most limit glue them into connected components. Inside one component every value can move to any index that belongs to that same component. The lexicographically smallest layout puts the sorted values of the component into the sorted indices of the component.',
+    algorithm: [
+      'Build an index array 0..n-1 and sort it by nums[i] ascending.',
+      'Scan the sorted indices. Split into groups wherever nums[idx[i]] - nums[idx[i-1]] > limit.',
+      'For each group, copy its indices, sort those indices, and write the already-sorted group values into those positions.',
+      'Return the filled answer array.',
+    ],
+    example: {
+      input: 'nums = [1, 5, 3, 9, 8], limit = 2',
+      steps: [
+        'Sorted values: 1, 3, 5, 8, 9. Gaps: 2, 2, 3, 1.',
+        'Groups: {1}, {3,5}, {8,9} because 5 to 8 differs by 3 > 2.',
+        'Place sorted values into sorted indices of each group: [1,3,5,8,9].',
+      ],
+      output: '[1, 3, 5, 8, 9]',
+    },
+    pitfalls: [
+      'Compare consecutive values after sorting by value, not by original index order.',
+      'A gap larger than limit starts a new group even if both ends could swap with some middle value that is not present.',
+      'Values inside a group are already sorted from the global sort; only the destination indices need a second sort.',
+      'Do not try pairwise swaps in place. The component view is what guarantees the global lex minimum.',
+    ],
+  },
+
 }
 
 export default explanations

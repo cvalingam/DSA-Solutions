@@ -9047,6 +9047,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-subsequences-divisible-by-n': {
+    intuition:
+      'Track how many non-empty subsequences form a number congruent to each residue mod n. Appending a digit d to a subsequence with residue r produces residue (10*r + d) mod n. You also always keep the option of not taking the digit, and of starting a brand-new one-digit subsequence. The answer is the count of residue 0.',
+    algorithm: [
+      'Let dp[r] be the number of subsequences with value ≡ r (mod n). Start with all zeros.',
+      'For each digit d in s: copy dp into next (skip case).',
+      'For every residue r with dp[r] > 0, add those ways to next[(10*r + d) % n].',
+      'Add 1 to next[d % n] for the singleton subsequence made of this digit alone.',
+      'Swap next into dp. After the last digit, return dp[0] mod 1e9+7.',
+    ],
+    example: {
+      input: 's = "123", n = 3',
+      steps: [
+        'Digit 1: singleton residue 1. dp = [0,1,0].',
+        'Digit 2: keep old, extend 1 to 12 ≡ 0, add singleton 2. dp = [1,1,1].',
+        'Digit 3: extend each residue, add singleton 3 ≡ 0. Residue 0 ends with 3 ways: "12", "3", "123".',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Do not count the empty subsequence. Start dp at zeros and only increment when a digit is taken.',
+      'Use (10L * r + d) % n to avoid int overflow when multiplying residues.',
+      'Copy the previous dp before extending; updating in place would reuse the same digit twice in one pass.',
+      'Reuse two arrays and swap instead of cloning a fresh array on every character.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
