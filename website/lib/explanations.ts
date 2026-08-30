@@ -10441,6 +10441,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2091: {
+    intuition:
+      'You only need to remove the current minimum and maximum. Removals happen from either end, so the cheapest plan is one of three patterns: delete everything from the left through the farther of the two, delete everything from the right through the nearer of the two, or delete one from the left and one from the right. Scan once to find the two indices, then take the minimum of those three costs.',
+    algorithm: [
+      'Scan nums and record the index of the smallest value and the largest value.',
+      'Let a = min(minIndex, maxIndex) and b = max(minIndex, maxIndex).',
+      'Cost both from the front: b + 1.',
+      'Cost both from the back: n - a.',
+      'Cost one from each end: a + 1 + n - b.',
+      'Return the minimum of the three.',
+    ],
+    example: {
+      input: 'nums = [2, 10, 7, 5, 4, 1, 8, 6]',
+      steps: [
+        'Min 1 is at index 5. Max 10 is at index 1. So a = 1, b = 5, n = 8.',
+        'Front: 5+1 = 6. Back: 8-1 = 7. Split: 1+1 + 8-5 = 5.',
+        'Best is 5: drop the left end once (10) and the right end four times until 1 is gone.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'If min and max share the same index (n = 1), all three formulas still work and return 1.',
+      'You must cover both indices. Deleting only through a from the front leaves b in the array.',
+      'The split formula is a+1 from the left plus n-b from the right, not a+b.',
+      'A second scan is unnecessary. One pass to find the two indices is enough.',
+    ],
+  },
+
 }
 
 export default explanations

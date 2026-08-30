@@ -9074,6 +9074,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'marks-from-ranks': {
+    intuition:
+      'The intervals are sorted and disjoint, so the valid marks form one increasing sequence without listing them. Interval i contributes r[i] - l[i] + 1 consecutive ranks. A prefix of those sizes tells you, for any rank, which interval it lands in. Once you have that interval, the mark is just an offset from the right (or left) endpoint.',
+    algorithm: [
+      'Build prefix[i] = total number of marks in intervals 0..i.',
+      'For each query rank q, binary search the first i with prefix[i] >= q.',
+      'The mark is r[i] - (prefix[i] - q), which is the q-th mark counted from the left of the merged sequence.',
+      'Collect those marks in query order and return the list.',
+    ],
+    example: {
+      input: 'l = [1, 8], r = [3, 10], rank = [1, 5, 4]',
+      steps: [
+        'Intervals [1,3] and [8,10] give 3 + 3 = 6 marks. prefix = [3, 6].',
+        'Rank 1 sits in interval 0: mark = 3 - (3-1) = 1.',
+        'Rank 5 sits in interval 1: mark = 10 - (6-5) = 9. Rank 4: mark = 10 - (6-4) = 8.',
+      ],
+      output: '[1, 9, 8]',
+    },
+    pitfalls: [
+      'Do not expand every integer in each interval. Wide ranges make that time and memory blow up.',
+      'Ranks are 1-based. Compare prefix against q, not q-1, when locating the interval.',
+      'Use a long prefix if interval lengths can overflow int when summed.',
+      'The leftover-list merge in the naive code is wrong when l and r are parallel interval endpoints, not two sorted streams.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
