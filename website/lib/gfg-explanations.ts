@@ -9100,6 +9100,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-cost-for-n-characters': {
+    intuition:
+      'You start from zero characters and want exactly n copies of the same letter. Each step you may insert one character for cost i, delete the last character for cost d, or copy everything on screen for cost c (doubling the length). The cheapest way to reach length x is either grow one by one from x-1, or build half (or nearly half) and copy, paying extra insert or delete when the copy overshoots on odd lengths.',
+    algorithm: [
+      'Let dp[0] = 0 and dp[x] = infinity for x > 0.',
+      'For x from 1 to n: set dp[x] = dp[x-1] + i.',
+      'If x is even: also try dp[x/2] + c.',
+      'If x is odd: also try dp[x/2] + c + i (copy floor half then insert one) and dp[x/2 + 1] + c + d (copy ceil half then delete one).',
+      'Return dp[n].',
+    ],
+    example: {
+      input: 'n = 9, insert = 1, delete = 2, copy = 1',
+      steps: [
+        'Build 4 with cost 4, copy to 8 with +1, insert once to reach 9.',
+        'That beats inserting all nine characters one by one.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Copy doubles the current string length. You cannot copy from a non-integer half without building it first.',
+      'Odd lengths need both floor-half plus insert and ceil-half plus delete options.',
+      'Deleting costs d, not i. Do not model delete as another insert.',
+      'dp needs size n+1 because transitions read dp[x/2] and dp[x/2 + 1].',
+    ],
+  },
+
 }
 
 export default gfgExplanations

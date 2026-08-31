@@ -10469,6 +10469,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2058: {
+    intuition:
+      'A critical point is a node whose value is a strict local maximum or minimum compared with its neighbors. You need the smallest and largest number of nodes between two critical points, measured by index distance. One left-to-right pass is enough: remember the first critical index, update the minimum gap whenever you see another critical point, and at the end the maximum gap is last minus first.',
+    algorithm: [
+      'Start with prev at head and curr at head.next. index counts nodes from the head.',
+      'While curr.next is not null, check whether curr is a peak or valley.',
+      'On the first critical point, store its index. On later ones, update minDistance with index minus previous critical index.',
+      'Move prev and curr forward and increment index.',
+      'If fewer than two critical points were found, return [-1, -1]. Otherwise return [minDistance, lastCritical - firstCritical].',
+    ],
+    example: {
+      input: 'head = [3, 1]',
+      steps: [
+        'Only one interior node (value 1) with neighbors 3 and null on the right, so it is not a critical point.',
+        'No second critical point exists.',
+      ],
+      output: '[-1, -1]',
+    },
+    pitfalls: [
+      'The last node can never be critical because it has no right neighbor. Stop when curr.next is null.',
+      'Use strict comparisons. Equal neighbors do not form a peak or valley.',
+      'Indices are 1-based in the problem statement. Start counting from the head as index 1.',
+      'maxDistance uses the first and last critical indices, not the minimum gap pair.',
+    ],
+  },
+
 }
 
 export default explanations

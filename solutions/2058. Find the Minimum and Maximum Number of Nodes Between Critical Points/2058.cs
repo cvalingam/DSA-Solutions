@@ -1,5 +1,7 @@
-// Approach: Single pass tracking first and last critical point indices; compute min gap between consecutive.
-// Time: O(n) Space: O(1)
+// Approach: Walk the list once. A critical point is a local peak or valley. Track
+// the first index, the previous critical index, and the min gap between
+// consecutive critical points. Max distance is last minus first.
+// Complexity: O(n) time and O(1) extra space.
 
 public class ListNode
 {
