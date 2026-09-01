@@ -9126,6 +9126,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-palindromic-strings-with-constraints': {
+    intuition:
+      'Count palindromic strings of every length from 1 through n that use only distinct letters, drawn from an alphabet of size k. A palindrome is fixed by its first half (and the middle letter when length is odd). Pick m distinct symbols for the mirrored pairs in order: that is P(k, m). For odd length 2m+1, the center must be a new symbol, giving k minus m choices.',
+    algorithm: [
+      'Let perm track P(k, m), starting at 1 for m = 0.',
+      'For m from 0 while 2m <= n and m <= k: update perm when m > 0.',
+      'If 2m+1 <= n, add perm * (k - m) for odd lengths.',
+      'If m > 0 and 2m <= n, add perm for even lengths.',
+      'Return the sum modulo 1e9+7.',
+    ],
+    example: {
+      input: 'n = 3, k = 3',
+      steps: [
+        'm = 0: length 1 palindromes, 3 choices.',
+        'm = 1: length 2 gives P(3,1) = 3; length 3 gives 3 * 2 = 6.',
+        'Total 3 + 3 + 6 = 12.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Stop when m > k. Further terms are zero because you cannot pick m distinct symbols.',
+      'Even length 2m uses perm at m, not perm at m-1.',
+      'The center factor for odd length is (k - m), not k.',
+      'Sum all valid lengths up to n, not only palindromes of length exactly n.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

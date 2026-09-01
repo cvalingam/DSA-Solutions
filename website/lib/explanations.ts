@@ -10495,6 +10495,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3568: {
+    intuition:
+      'You start at S with a fixed energy budget per stretch between recharge tiles R. Each move costs one energy unless you step onto R, which refills you. Every litter cell L must be visited at least once. The fewest moves is a shortest path in state space: position, remaining energy, and which litter spots are still dirty. Breadth-first search on that graph finds the answer.',
+    algorithm: [
+      'Map each L cell to one bit in a mask. Start with all bits set at S with full energy.',
+      'BFS queue states (row, col, energy, mask). Mark visited in a 4D table.',
+      'From each state, try the four neighbors that are not walls X.',
+      'On R, reset energy to the maximum. On L, clear that bit. Other tiles cost one energy.',
+      'The first dequeued state with mask 0 is reached at minimum depth. Return -1 if the queue empties.',
+    ],
+    example: {
+      input: 'classroom with S, one L, one R, energy = 3',
+      steps: [
+        'Walk from S toward L, spending energy each step.',
+        'If energy runs low, route through R to refill before reaching every L.',
+        'When the litter mask becomes 0, return the BFS layer count.',
+      ],
+      output: 'minimum move count',
+    },
+    pitfalls: [
+      'Energy must stay in the visited state. Same cell and mask with more energy can still matter.',
+      'Stepping onto R sets energy to the full budget, not plus one.',
+      'If there is no litter, return 0 without running BFS.',
+      'Precompute a bit per litter cell so clearing uses mask & ~bit instead of recomputing indices.',
+    ],
+  },
+
 }
 
 export default explanations
