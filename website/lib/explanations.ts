@@ -10522,6 +10522,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3875: {
+    intuition:
+      'Each nums2[i] can stay nums1[i] or become a difference nums1[i] - nums1[j]. Parity of a difference follows parity rules: odd minus even and even minus odd are odd. If nums1 is already uniform in parity, copy it. If both parities appear, subtract an element of opposite parity at every index and every value becomes odd.',
+    algorithm: [
+      'Check whether all nums1 entries share parity (all even or all odd).',
+      'If yes, nums2 = nums1 works.',
+      'If not, find any odd value and any even value in nums1.',
+      'For each i, set nums2[i] = nums1[i] minus a chosen value of opposite parity.',
+      'All results are odd, so return true. Under the problem constraints the answer is always true.',
+    ],
+    example: {
+      input: 'nums1 = [2, 3]',
+      steps: [
+        'Mixed parity: use odd minus even.',
+        'nums2[0] = 2 - 3 = -1 (odd). nums2[1] = 3 (odd).',
+        'Both odd, so construction succeeds.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'The answer is always true for n >= 1 with distinct values; do not overthink with search.',
+      'Difference parity depends on the two operands, not on their order beyond sign.',
+      'You may keep some indices as nums1[i] and use differences on others.',
+      'Distinctness guarantees two different indices for the subtraction when n > 1.',
+    ],
+  },
+
 }
 
 export default explanations

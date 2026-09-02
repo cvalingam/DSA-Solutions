@@ -9153,6 +9153,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'unoccupied-computers': {
+    intuition:
+      'Each uppercase letter appears exactly twice: first arrival, then departure. There are n computers. On first sight of a customer, seat them if a machine is free; otherwise they walk away. On second sight, they leave and free a seat only if they were seated. Count how many first visits happen when no computer is available.',
+    algorithm: [
+      'Keep state per letter: 0 absent, 1 inside without seat, 2 seated.',
+      'Scan the string left to right.',
+      'First visit: if a computer is free, take one and mark seated; else increment walkaways and mark waiting.',
+      'Second visit: if seated, release a computer; reset state to absent.',
+      'Return the walkaway count.',
+    ],
+    example: {
+      input: 'n = 2, s = "ABACBE"',
+      steps: [
+        'A arrives and takes a seat (1 free left).',
+        'B arrives and takes the last seat.',
+        'C arrives with no seats and walks away.',
+        'Later departures free machines for following arrivals.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Only decrement available computers when the departing customer was seated.',
+      'Walkaways still need a second letter in the log; their state is waiting, not absent until leave.',
+      'Use a byte or int state array, not ad hoc char markers that confuse arrival and departure.',
+      'n is the computer count, not the string length.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
