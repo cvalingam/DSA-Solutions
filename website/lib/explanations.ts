@@ -10549,6 +10549,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3876: {
+    intuition:
+      'You may keep nums1[i] or replace it with a positive difference nums1[i] - nums1[j]. All-even nums2 is only possible when nums1 is already all even, because subtracting an odd from an even yields an odd. When both parities appear, the only hope is an all-odd array. Every even must subtract the smallest odd so the result stays positive and odd, which means the smallest even must be strictly larger than the smallest odd.',
+    algorithm: [
+      'Scan once and track the minimum odd and the minimum even.',
+      'If either is missing, nums1 is already uniform. Return true.',
+      'Otherwise return whether minEven is greater than minOdd.',
+    ],
+    example: {
+      input: 'nums1 = [1, 4, 7]',
+      steps: [
+        'minOdd = 1, minEven = 4, and 4 > 1.',
+        'Keep 1 and 7. Set 4 - 1 = 3.',
+        'nums2 = [1, 3, 7] is all odd.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Unlike part I, mixed parity is not always possible. An even smaller than every odd cannot become a positive odd difference.',
+      'Use a single pass for both minima. Two scans work but are unnecessary.',
+      'Strict inequality matters: minEven must be greater than minOdd, not equal.',
+      'All-even and all-odd inputs succeed by copying nums1.',
+    ],
+  },
+
 }
 
 export default explanations

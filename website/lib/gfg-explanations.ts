@@ -9181,6 +9181,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-adjacent-diffs-sum-with-1-replacements': {
+    intuition:
+      'Any entry may stay as written or become 1. The score is the sum of absolute gaps between neighbors. At each index only two ending values matter: the original number or 1. Remember the best score for each ending choice and extend both options from the previous index.',
+    algorithm: [
+      'If length is at most 1, return 0.',
+      'Let dp0 be the best sum ending with arr[i] kept, and dp1 the best ending with 1.',
+      'For each i from 1 to n-1, compute new dp0 from both previous states using |arr[i] - prev|.',
+      'Compute new dp1 from previous kept using |1 - arr[i-1]|, and from previous 1 using 0.',
+      'Return the max of the final dp0 and dp1.',
+    ],
+    example: {
+      input: 'arr = [3, 2, 1, 4, 5]',
+      steps: [
+        'Replace some values with 1 to stretch large neighbors, for example [3, 1, 1, 4, 1].',
+        'Gaps become 2 + 0 + 3 + 3 = 8.',
+        'Rolling DP reaches the same maximum without enumerating every mask.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'You may change any number of positions to 1, not only one position.',
+      'Keep only the previous two scores. A full n by 2 table wastes space.',
+      'When both ends are 1 the gap is 0, so the replace state carries dp1 forward unchanged.',
+      'n = 1 has no adjacent pair, so answer 0.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
