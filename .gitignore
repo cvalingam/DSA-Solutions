@@ -2,6 +2,9 @@
 website/.next/
 website/out/
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # Dependencies
 website/node_modules/
 
