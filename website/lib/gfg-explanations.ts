@@ -9208,6 +9208,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'bird-and-max-fruit-gathering': {
+    intuition:
+      'Trees sit in a circle and the bird walks m steps along neighbors. Each visit adds that tree value again, so m steps equal floor(m/n) full laps plus a leftover arc of length m % n. Full laps contribute the circle sum that many times. The leftover is the maximum sum of any contiguous circular window of that length.',
+    algorithm: [
+      'Build prefix sums of the fruit array.',
+      'Add (m / n) * totalSum as the base from complete laps.',
+      'Let rem = m % n. If rem is 0, return the base.',
+      'For every start i, score the next rem trees, wrapping with prefix[n] - prefix[i] + prefix[extra] when needed.',
+      'Return base plus the best rem window.',
+    ],
+    example: {
+      input: 'arr = [7, 2, 1, 3, 4], m = 2',
+      steps: [
+        'No full lap. Check every length-2 arc.',
+        'Linear arcs top out at 9. The wrap 4 + 7 = 11 is best.',
+      ],
+      output: '11',
+    },
+    pitfalls: [
+      'Add the leftover window to the full-lap base. Taking max(base, window) drops fruits from complete circles.',
+      'When rem = 0, do not invent an empty window; the answer is exactly the lap total.',
+      'Wrapping arcs need the suffix from i plus a prefix of length rem - (n - i).',
+      'If m is large, reduce with m / n and m % n instead of simulating every step.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

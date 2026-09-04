@@ -10574,6 +10574,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3903: {
+    intuition:
+      'Stability at index i compares the tallest value on the left closed segment with the shortest value on the right closed segment. Precompute every suffix minimum once, then walk left to right with a running maximum. The first place where that gap is at most k is the answer.',
+    algorithm: [
+      'Build right[i] = min(nums[i], nums[i+1], ..., nums[n-1]) from the back.',
+      'Initialize leftMax = 0.',
+      'For i from 0 to n-1, set leftMax = max(leftMax, nums[i]).',
+      'If leftMax - right[i] <= k, return i.',
+      'If no index works, return -1.',
+    ],
+    example: {
+      input: 'nums = [5, 0, 1, 4], k = 3',
+      steps: [
+        'Suffix mins: [0, 0, 1, 4].',
+        'i = 0,1,2 give scores 5, 5, 4, all above 3.',
+        'i = 3 gives 5 - 4 = 1, which is at most 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Both sides include index i, so use suffix min at i, not at i+1.',
+      'Return the smallest index, so stop at the first success while scanning left to right.',
+      'If every score exceeds k, return -1.',
+      'n can be 1: score is always 0 and index 0 is stable when k >= 0.',
+    ],
+  },
+
 }
 
 export default explanations
