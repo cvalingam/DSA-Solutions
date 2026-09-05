@@ -9234,6 +9234,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-subsequence-with-adjacent-diff-as-1': {
+    intuition:
+      'Pick elements in input order, not by sorting. The last chosen value decides what can follow: only x-1 or x+1. Track the longest chain ending at each value. When you see x again, extend from the best neighbor length already stored.',
+    algorithm: [
+      'Let dp[v] be the longest valid subsequence that ends with value v.',
+      'Scan the array left to right.',
+      'For each x, set dp[x] = 1 + max(dp[x-1], dp[x+1]).',
+      'Keep the global maximum length seen.',
+      'Return that maximum.',
+    ],
+    example: {
+      input: 'arr = [10, 9, 4, 5, 4, 8, 6]',
+      steps: [
+        'Chains grow at 10, 9, then around 4 and 5.',
+        'Best length-3 paths include {10,9,8}, {4,5,4}, and {4,5,6}.',
+        'No chain of length 4 is possible.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Subsequence order follows the array. You cannot reorder values freely.',
+      'A value may appear many times; each visit can extend a longer neighbor chain.',
+      'A direct table by value is faster than a hash map when values are dense.',
+      'Guard x-1 and x+1 at the ends of the value range if 0 or the max can appear.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

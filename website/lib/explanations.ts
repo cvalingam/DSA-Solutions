@@ -10601,6 +10601,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3904: {
+    intuition:
+      'This is the same stability rule as part I, but arrays can be much longer. The score at i still depends only on the prefix maximum and the suffix minimum that both include i. Precompute suffix minima once, then scan forward with a running max.',
+    algorithm: [
+      'Build right[i] = min(nums[i], nums[i+1], ..., nums[n-1]) from the back.',
+      'Walk i from 0 to n-1 with leftMax = max(nums[0..i]).',
+      'If leftMax - right[i] <= k, return i immediately.',
+      'If the scan finishes with no hit, return -1.',
+    ],
+    example: {
+      input: 'nums = [3, 2, 1], k = 1',
+      steps: [
+        'Suffix mins are [1, 1, 1].',
+        'Every index has score 3 - 1 = 2.',
+        '2 is greater than k, so no stable index exists.',
+      ],
+      output: '-1',
+    },
+    pitfalls: [
+      'Same formula as 3903; only the input size limit changes.',
+      'Use O(n) suffix storage. Recomputing suffix min per index would be O(n^2).',
+      'leftMax must include nums[i] before comparing to right[i].',
+      'Return the first qualifying index, not the last.',
+    ],
+  },
+
 }
 
 export default explanations
