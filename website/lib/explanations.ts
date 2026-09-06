@@ -10627,6 +10627,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  115: {
+    intuition:
+      'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
+    algorithm: [
+      'If t is longer than s, return 0.',
+      'Let dp[j] be ways to form t[0..j-1] from the s prefix processed so far.',
+      'Initialize dp[0] = 1 (empty subsequence).',
+      'For each character of s, scan j from n down to 1.',
+      'If s[i] equals t[j-1], add dp[j-1] to dp[j].',
+      'Return dp[n].',
+    ],
+    example: {
+      input: 's = "rabbbit", t = "rabbit"',
+      steps: [
+        'Extra b letters in s create extra choices at matching positions.',
+        'Each duplicate letter multiplies the number of valid pick sets.',
+        'Total distinct ways to spell rabbit is 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Iterate j right to left so dp[j-1] still refers to the previous row.',
+      'On a match, add dp[j-1]; do not overwrite dp[j] with only that value.',
+      'dp[0] stays 1 throughout because empty t is always formable.',
+      'Use long if counts can overflow; here int fits LeetCode limits.',
+    ],
+  },
+
 }
 
 export default explanations

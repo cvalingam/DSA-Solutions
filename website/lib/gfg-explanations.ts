@@ -9261,6 +9261,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'sum-of-pairwise-ands': {
+    intuition:
+      'Summing AND over all pairs looks quadratic, but each bit position contributes independently. Bit b appears in the final sum only when both numbers in a pair have that bit set. Count how many array values have bit b, then every pair among them adds 2^b.',
+    algorithm: [
+      'Initialize ans = 0.',
+      'For each bit b from 0 to 30, count elements with that bit set.',
+      'Pairs with both bits set: count * (count - 1) / 2.',
+      'Add pairs * (1L << b) to ans.',
+      'Return ans.',
+    ],
+    example: {
+      input: 'arr = [5, 10, 15]',
+      steps: [
+        'Pairs: 5&10=0, 5&15=5, 10&15=10.',
+        'Bit 0: two numbers set, one pair, adds 1.',
+        'Bit 2 and bit 3 each add one pair worth 4 and 8.',
+        'Total 0 + 5 + 10 = 15.',
+      ],
+      output: '15',
+    },
+    pitfalls: [
+      'Use long for counts and the answer; pair products grow quickly.',
+      'Check 31 bit positions for typical GFG int inputs.',
+      'Do not enumerate all n choose 2 pairs when bit counting is enough.',
+      'Each unordered pair i < j is counted once in the bit formula.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
