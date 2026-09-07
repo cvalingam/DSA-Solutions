@@ -10655,6 +10655,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  940: {
+    intuition:
+      'Count every distinct non-empty subsequence of s. Each new character can extend all existing subsequences and also start a fresh one-letter string. Repeating a letter would double-count old endings, so subtract how many subsequences already ended with that letter.',
+    algorithm: [
+      'Keep ans as total distinct subsequences and endsIn[c] per ending letter.',
+      'For each character c, set add = ans - endsIn[c] + 1.',
+      'Update ans += add and endsIn[c] += add, all modulo 1e9+7.',
+      'Return ans.',
+    ],
+    example: {
+      input: 's = "aba"',
+      steps: [
+        'After a: one subsequence "a".',
+        'After b: add "b" and "ab".',
+        'Second a: extend prior chains but not the first a ending, giving 6 total.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Subtract endsIn[c] to remove duplicate extensions on repeated letters.',
+      'Keep a running ans instead of summing 26 counts every step.',
+      'Add MOD before modulo when subtracting to avoid negative values.',
+      'Empty subsequence is excluded; the +1 is only the single-letter c.',
+    ],
+  },
+
 }
 
 export default explanations

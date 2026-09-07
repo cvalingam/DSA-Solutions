@@ -9289,6 +9289,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-elements-outside-subsequences': {
+    intuition:
+      'Each array value may join a strictly increasing chain, a strictly decreasing chain, or stay unused. An element cannot sit in both chains. Track the last index placed on each chain and decide per position whether to skip or extend one chain while preserving strict order.',
+    algorithm: [
+      'DP state: minimum skipped count from idx with given incLast and decLast.',
+      'Base at idx = n is 0 skipped.',
+      'From idx backward: skip costs 1 + next[inc][dec].',
+      'If arr[idx] beats the inc tail, try placing on inc with new tail idx.',
+      'If arr[idx] is below the dec tail, try placing on dec similarly.',
+      'Use two (n+1) by (n+1) layers and roll after each idx.',
+    ],
+    example: {
+      input: 'arr = [1, 4, 2, 3, 3, 2, 4]',
+      steps: [
+        'One inc chain can be 1, 2, 3, 4 in order.',
+        'One dec chain can be 4, 3, 2 using later values.',
+        'Every element fits, so zero are left outside.',
+      ],
+      output: '0',
+    },
+    pitfalls: [
+      'Strict inequalities: equal values cannot extend the same chain.',
+      'Store last indices, not values, so transitions compare arr[idx] to arr[last].',
+      'Shift -1 tails to index 0 in the table with last + 1.',
+      'Time is O(n^3); rolling layers cut space from O(n^3) to O(n^2).',
+    ],
+  },
+
 }
 
 export default gfgExplanations
