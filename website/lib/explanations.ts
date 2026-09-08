@@ -10681,6 +10681,30 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3870: {
+    intuition:
+      'Commas appear every three digits from the right. Here n is at most 10^5, so numbers never reach a second comma layer. Every integer from 1000 through n contributes exactly one comma.',
+    algorithm: [
+      'If n is below 1000, return 0.',
+      'Otherwise return n minus 999.',
+      'That counts integers 1000, 1001, ..., n.',
+    ],
+    example: {
+      input: 'n = 1002',
+      steps: [
+        '1000, 1001, and 1002 each use one comma.',
+        'Count is 1002 - 999 = 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Do not loop thresholds unless n can exceed 999999.',
+      'Use n - 999, not n - 1000, to include 1000 itself.',
+      'Return 0 for n <= 999 instead of a negative value.',
+      'Part II allows huge n and needs the 1000^k threshold sum.',
+    ],
+  },
+
 }
 
 export default explanations

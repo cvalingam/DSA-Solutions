@@ -9317,6 +9317,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'word-in-grid-all-occurrences': {
+    intuition:
+      'The word must appear in a straight line across 8 directions. Every grid cell can start a search, but only when it matches the first letter. From there, march with fixed row and column deltas until the word ends or a mismatch hits.',
+    algorithm: [
+      'Define 8 direction offset pairs.',
+      'Scan every cell (i, j). Skip unless mat[i][j] equals word[0].',
+      'For each direction, walk k steps comparing mat to word[k].',
+      'On full match, append [i, j] and stop other directions for that cell.',
+      'Return all starting coordinates found.',
+    ],
+    example: {
+      input: 'grid with row abc, word = "abc"',
+      steps: [
+        'Cell (0,0) is a, matching the first letter.',
+        'Direction right reads a, then b, then c.',
+        'Add [0,0] once even if other dirs were possible.',
+      ],
+      output: '[[0,0]]',
+    },
+    pitfalls: [
+      'Lines are straight; zig-zag paths are not allowed.',
+      'List each starting coordinate once even if several directions work.',
+      'Check bounds on every step, not only the first cell.',
+      'Prune with the first character before trying all eight directions.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
