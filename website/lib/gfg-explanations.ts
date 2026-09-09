@@ -9344,6 +9344,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-digit-sum-number-in-1-to-n': {
+    intuition:
+      'Digit sum grows when low digits become 9s. From n, the useful rivals are formed by cutting one digit by one and filling every digit to its right with 9. Compare those few candidates with n; take the largest digit sum, and on a tie take the bigger number.',
+    algorithm: [
+      'Start with result = n and maxSum = digitSum(n).',
+      'Set temp = n and multiplier = 1.',
+      'While temp is positive, build candidate = (temp - 1) * multiplier + (multiplier - 1).',
+      'If its digit sum is better, or equal with a larger value, update result.',
+      'Divide temp by 10 and multiply the multiplier by 10.',
+      'Return result.',
+    ],
+    example: {
+      input: 'n = 521',
+      steps: [
+        'Candidates include 521, 520, 519, and 499.',
+        'Digit sums are 8, 7, 15, and 22.',
+        '499 wins with the maximum digit sum.',
+      ],
+      output: '499',
+    },
+    pitfalls: [
+      'Do not scan all of 1..n; only the digit-flip candidates matter.',
+      'On equal digit sums, prefer the larger integer.',
+      'Single-digit n is already optimal; return it immediately.',
+      'The formula (temp - 1) * 10^k + (10^k - 1) writes all 9s on the right.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

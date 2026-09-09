@@ -10705,6 +10705,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3871: {
+    intuition:
+      'Commas appear at every three digits from the right. Crossing 1000 adds the first comma, crossing 1e6 adds a second, and so on. For each threshold x = 1000^k, every number from x through n contributes one more comma, so add n - x + 1.',
+    algorithm: [
+      'Initialize ans = 0 and x = 1000.',
+      'While x is at most n, add n - x + 1 to ans.',
+      'Multiply x by 1000 and repeat.',
+      'Return ans as a long.',
+    ],
+    example: {
+      input: 'n = 1000000',
+      steps: [
+        'At x = 1000: add 1000000 - 1000 + 1 numbers with at least one comma.',
+        'At x = 1000000: add 1 more for the second comma on 1000000 itself.',
+        'Next threshold exceeds n, so stop.',
+      ],
+      output: '999002',
+    },
+    pitfalls: [
+      'n can reach 10^15, so use long for both n and the answer.',
+      'Include the threshold itself with n - x + 1, not n - x.',
+      'Unlike part I, max(0, n - 999) is wrong once a second comma layer appears.',
+      'The loop runs only a few times because x grows by 1000x each step.',
+    ],
+  },
+
 }
 
 export default explanations
