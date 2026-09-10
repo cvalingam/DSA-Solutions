@@ -9372,6 +9372,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'pairs-with-given-gcd-and-lcm': {
+    intuition:
+      'If gcd is x and lcm is y, then a*b = x*y and both a and b are multiples of x. Write a = x*v and b = x*w. Then v*w = y/x and gcd(v, w) must be 1. Counting ordered pairs (a, b) becomes counting ordered coprime factor pairs of n = y/x.',
+    algorithm: [
+      'If y is not divisible by x, return 0.',
+      'Set n = y / x.',
+      'For each factor i up to sqrt(n), let j = n / i.',
+      'If gcd(i, j) is 1, add 2 for the ordered pair, or 1 when i equals j.',
+      'Return the total.',
+    ],
+    example: {
+      input: 'x = 2, y = 12',
+      steps: [
+        'n = 6. Coprime factor pairs are (1,6) and (2,3).',
+        'They map to (2,12), (12,2), (4,6), and (6,4).',
+        'Total ordered pairs: 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'LCM must be a multiple of GCD; otherwise the answer is 0.',
+      'Count ordered pairs, so (a, b) and (b, a) both count when a differs from b.',
+      'Only keep factor pairs that are coprime.',
+      'Avoid scanning all values up to y; work on factors of y/x only.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

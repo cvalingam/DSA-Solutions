@@ -10731,6 +10731,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2265: {
+    intuition:
+      'A node counts when its value equals the integer average of every node in its subtree. Postorder DFS returns each subtree sum and size, so a parent can combine both children in constant time and compare sum/count to its own value.',
+    algorithm: [
+      'Run DFS that returns (sum, count) for the current subtree.',
+      'Null nodes return (0, 0).',
+      'Sum children with the current value; count is 1 plus both child counts.',
+      'If sum / count equals the node value, increment the answer.',
+      'Return the pair upward so parents can reuse it.',
+    ],
+    example: {
+      input: 'root = [4,8,5,0,1,null,6]',
+      steps: [
+        'Leaves 0, 1, and 6 each match their own average.',
+        'Node 5 has subtree sum 11 and count 2, average 5.',
+        'Root 4 has sum 24 and count 6, average 4. Five nodes qualify.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Use integer division; the problem floors the average.',
+      'One DFS is enough. Do not recompute subtree sums from scratch at every node.',
+      'Include the node itself in both the sum and the count.',
+      'Space is O(h) from recursion, not O(1), on skewed trees.',
+    ],
+  },
+
 }
 
 export default explanations
