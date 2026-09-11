@@ -10758,6 +10758,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3483: {
+    intuition:
+      'Form distinct three-digit even numbers from a digit multiset. Digits only run from 0 to 9, so count frequencies once, then try every valid hundreds, tens, and even units triple and keep those the bag can supply.',
+    algorithm: [
+      'Build a frequency array of size 10.',
+      'Loop hundreds from 1 to 9, tens from 0 to 9, units over 0,2,4,6,8.',
+      'For each triple, check that needed counts do not exceed available frequencies.',
+      'Count every accepted triple.',
+    ],
+    example: {
+      input: 'digits = [1,2,3,4]',
+      steps: [
+        'Units must be even, so 2 or 4.',
+        'Hundreds cannot be 0, and each digit is used at most as often as it appears.',
+        'Twelve distinct numbers such as 124 and 312 are possible.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Repeated digits need enough copies in the frequency bag.',
+      'Leading zeros are invalid for a three-digit number.',
+      'Do not permute the full array; frequency checks are enough.',
+      'Units must be even; odds never form a valid answer.',
+    ],
+  },
+
 }
 
 export default explanations

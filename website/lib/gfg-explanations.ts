@@ -9399,6 +9399,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'values-with-equal-array-remainders': {
+    intuition:
+      'A modulus k gives the same remainder for every array value exactly when k divides every pairwise difference. Those differences are captured by the gcd of each value minus the minimum. Every positive divisor of that gcd is a valid k.',
+    algorithm: [
+      'Find the minimum value in the array.',
+      'Compute g = gcd of all (arr[i] - min).',
+      'If g is 0, every element is equal, so return -1.',
+      'Count the positive divisors of g and return that count.',
+    ],
+    example: {
+      input: 'arr = [2, 4, 6]',
+      steps: [
+        'min = 2, so differences are 0, 2, 4 and g = 2.',
+        'Divisors of 2 are 1 and 2.',
+        'Both leave remainder 0 for every element.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'All equal elements mean infinitely many k; the problem asks for -1.',
+      'Do not scan k up to max(arr); only divisors of g matter.',
+      'g = 0 is the all-equal case, not a divisor to count.',
+      'Use long when checking i * i <= g to avoid overflow.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
