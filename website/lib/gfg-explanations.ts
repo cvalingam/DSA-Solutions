@@ -9425,6 +9425,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-product-subsequence-of-size-k': {
+    intuition:
+      'After sorting, the best size-k product comes from extremes: large positives on the right and large-magnitude negatives on the left. For even counts, greedily take the better end pair each time. Odd k needs one extra positive (or the least-bad negatives if everything is non-positive).',
+    algorithm: [
+      'Sort the array ascending.',
+      'If k equals n, multiply everything.',
+      'If the max is non-positive and k is odd, multiply the k rightmost values.',
+      'If k is odd otherwise, take the largest value and reduce k by one.',
+      'While k remains, compare the product of the two leftmost vs two rightmost and keep the larger pair.',
+    ],
+    example: {
+      input: 'arr = [-4, -2, 3, 5], k = 3',
+      steps: [
+        'Odd k: take 5 first, then need two more.',
+        'Left pair (-4)*(-2)=8 beats right pair of what remains.',
+        'Product is 5 * 8 = 40.',
+      ],
+      output: '40',
+    },
+    pitfalls: [
+      'Two negatives can beat two positives; always compare pair products.',
+      'All-negative odd k must stay negative, so prefer smaller absolute values.',
+      'Use long for intermediate products before casting back.',
+      'Sorting is required; order in the original array does not matter for subsequences here.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

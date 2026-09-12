@@ -10784,6 +10784,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3414: {
+    intuition:
+      'Pick at most four weighted intervals that share no points, including endpoints. Sort by start, then DP over position and remaining quota. Taking an interval jumps to the first later start that is strictly after its end. Keep the lex-smallest original index list when weights tie.',
+    algorithm: [
+      'Attach original indices and sort by left endpoint.',
+      'Precompute next[i] as the first interval whose left is greater than intervals[i].right.',
+      'DP(i, quota) compares skipping i with taking i plus DP(next[i], quota - 1).',
+      'When weights are equal, prefer the lexicographically smaller sorted index list.',
+      'Return the indices from DP(0, 4).',
+    ],
+    example: {
+      input: 'intervals = [[1,3,2],[4,5,2],[1,5,5]]',
+      steps: [
+        'Taking the single heavy interval [1,5] scores 5.',
+        'Taking [1,3] and [4,5] also scores 4, which is worse.',
+        'Best is one interval; return its original index.',
+      ],
+      output: 'depends on input indices; max weight with lex-smallest indices',
+    },
+    pitfalls: [
+      'Sharing an endpoint counts as overlap; next start must be strictly greater than the prior right.',
+      'Quota is at most 4, so the DP width stays constant.',
+      'Always compare sorted original indices, not the order they were picked.',
+      'Use long for weight sums to avoid overflow.',
+    ],
+  },
+
 }
 
 export default explanations
