@@ -696,6 +696,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   829:  ['math'],
   832:  ['array', 'bit-manipulation', 'simulation'],
   834:  ['tree', 'depth-first-search', 'graph'],
+  835:  ['array', 'matrix', 'bit-manipulation'],
   838:  ['array', 'two-pointers', 'string', 'dynamic-programming', 'simulation'],
   839:  ['string', 'depth-first-search', 'breadth-first-search', 'union-find'],
   840:  ['array', 'hash-table', 'math', 'matrix'],

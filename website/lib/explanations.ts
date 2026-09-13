@@ -10811,6 +10811,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  835: {
+    intuition:
+      'Slide one binary image over the other by every (row, col) offset and count cells that are 1 in both. Pack each row into a bitmask so a horizontal shift is a bit shift and an overlap count is a popcount of an AND.',
+    algorithm: [
+      'Encode each row of both images as a long bitmask.',
+      'For every dr and dc in [1-n, n-1], scan overlapping rows.',
+      'Shift the first image row by dc, mask to n bits, AND with the matching second-image row.',
+      'Add PopCount of that AND to the overlap for this shift.',
+      'Return the maximum overlap over all shifts.',
+    ],
+    example: {
+      input: 'img1 = [[1,1,0],[0,1,0],[0,1,0]], img2 = [[0,0,0],[0,1,1],[0,0,1]]',
+      steps: [
+        'Shift img1 right 1 and down 1.',
+        'Three positions are 1 in both images.',
+        'No other shift beats 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Bits shifted past the n-bit window must be cleared with a mask.',
+      'Ones that leave the board do not wrap around.',
+      'n is at most 30, so long bitmasks and O(n^3) shifts are enough.',
+      'Empty images correctly return 0.',
+    ],
+  },
+
 }
 
 export default explanations

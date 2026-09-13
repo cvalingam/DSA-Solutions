@@ -9452,6 +9452,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'party-in-town': {
+    intuition:
+      'Pick one house so the farthest other house is as close as possible. On a tree that value is the radius, which equals ceil(diameter / 2). Find the diameter with two BFS passes from a farthest-node endpoint.',
+    algorithm: [
+      'BFS from house 0 to find a farthest node A.',
+      'BFS from A to find the farthest distance; that length is the diameter.',
+      'Return (diameter + 1) / 2.',
+    ],
+    example: {
+      input: 'tree path of 4 edges (diameter 4)',
+      steps: [
+        'First BFS reaches one end of the path.',
+        'Second BFS measures diameter 4.',
+        'Best party house sits near the middle with max distance 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Adjacency entries may be 1-based house numbers; convert before indexing.',
+      'Do not BFS from every house; two passes already give the diameter.',
+      'Use integer (d + 1) / 2 for ceil(d / 2).',
+      'The graph is a tree, so distances are unique paths.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
