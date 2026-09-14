@@ -9477,6 +9477,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'shortest-safe-route-in-grid': {
+    intuition:
+      'Cross from the left column to the right while avoiding landmines and any cell next to a mine. Mark unsafe cells first, then multi-source BFS from every safe left-edge cell. The first time the right edge is reached is the shortest path length.',
+    algorithm: [
+      'Initialize every cell as safe.',
+      'For each landmine, mark it and its four neighbors unsafe.',
+      'Enqueue all safe cells in column 0 and mark them visited.',
+      'BFS in four directions through safe unvisited cells.',
+      'When a cell in the last column is dequeued, return the current distance.',
+      'If the queue empties first, return -1.',
+    ],
+    example: {
+      input: 'grid with a clear corridor from left to right around mines',
+      steps: [
+        'Mine neighbors become blocked.',
+        'BFS expands from every open left cell.',
+        'First hit on the right column gives the minimum steps.',
+      ],
+      output: 'path length or -1',
+    },
+    pitfalls: [
+      'Adjacent to a mine is unsafe even if the cell itself is not a mine.',
+      'Diagonal moves are not allowed.',
+      'Distance usually counts cells on the path, starting at 1 on the left column.',
+      'Mark visited on enqueue to avoid duplicate queue entries.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

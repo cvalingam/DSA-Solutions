@@ -10838,6 +10838,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  836: {
+    intuition:
+      'Two axis-aligned rectangles share positive area only when their intervals overlap on both axes. Touching on an edge or corner has zero area, so the inequalities must be strict.',
+    algorithm: [
+      'Treat each rectangle as [x1, y1, x2, y2] bottom-left to top-right.',
+      'Require rec1.x1 < rec2.x2 and rec2.x1 < rec1.x2 for horizontal overlap.',
+      'Require rec1.y1 < rec2.y2 and rec2.y1 < rec1.y2 for vertical overlap.',
+      'Return true only if both conditions hold.',
+    ],
+    example: {
+      input: 'rec1 = [0,0,2,2], rec2 = [1,1,3,3]',
+      steps: [
+        'x ranges [0,2] and [1,3] overlap.',
+        'y ranges [0,2] and [1,3] overlap.',
+        'Intersection has positive area.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Use strict less-than so edge-only contact returns false.',
+      'Do not assume rec1 is left of rec2; check both orders.',
+      'Coordinates can be negative; comparisons still work.',
+      'The problem guarantees each input is a valid non-zero rectangle.',
+    ],
+  },
+
 }
 
 export default explanations
