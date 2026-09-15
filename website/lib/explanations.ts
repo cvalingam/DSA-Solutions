@@ -10864,6 +10864,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2472: {
+    intuition:
+      'You want as many non-overlapping palindromic pieces of length at least k as possible. Taking a long palindrome never beats splitting into shorter valid ones, so it is enough to consider endings of length exactly k and k+1. That covers both even and odd centers while keeping the DP cheap.',
+    algorithm: [
+      'Build forward and reverse polynomial hashes of s so any substring palindrome test is O(1).',
+      'Let dp[i] be the best count using only the first i characters.',
+      'Set dp[i] = dp[i-1] (skip the last character).',
+      'If s[i-k .. i-1] is a palindrome, try 1 + dp[i-k].',
+      'If s[i-k-1 .. i-1] is a palindrome, try 1 + dp[i-k-1].',
+      'Return dp[n].',
+    ],
+    example: {
+      input: 's = "abaccdbbd", k = 3',
+      steps: [
+        'Near the start, "aba" is a length-3 palindrome and can be taken.',
+        'Later, "dbbd" is a length-4 palindrome of the k+1 form.',
+        'Those two intervals do not overlap, so the answer reaches 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'You do not need every palindrome length; k and k+1 already suffice.',
+      'Guard the k+1 window when the start index would go negative.',
+      'Hash equality is probabilistic; a large modulus and base keep collisions rare for contest constraints.',
+      'dp indexes prefixes by length, so the substring ending at i-1 starts at i-k or i-k-1.',
+    ],
+  },
+
 }
 
 export default explanations

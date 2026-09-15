@@ -9505,6 +9505,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'visit-leaves-with-budget': {
+    intuition:
+      'Visiting a leaf costs its level, with the root at level 1. To maximize how many leaves you can afford, always buy the cheapest ones first. Level order traversal already meets leaves in nondecreasing cost order, so a BFS can take them greedily without sorting.',
+    algorithm: [
+      'If the tree is empty, return 0.',
+      'BFS from the root, tracking the current level.',
+      'When a leaf appears, if its level exceeds the remaining budget, stop and return the count so far.',
+      'Otherwise subtract the level from the budget and increment the count.',
+      'Enqueue children of non-leaf nodes and advance the level after each wave.',
+      'Return the count when the queue is empty or the budget is spent.',
+    ],
+    example: {
+      input: 'budget 8, leaves at levels 3, 3, and 4',
+      steps: [
+        'BFS reaches the two level-3 leaves first and spends 6.',
+        'The next leaf costs 4, which is more than the remaining 2, so stop.',
+        'Two leaves were taken.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Root level must be 1, not 0.',
+      'Internal nodes have no visit cost; only leaves do.',
+      'Stop as soon as the next leaf is too expensive; deeper leaves only cost more.',
+      'Same-level leaves share one cost, so order among them does not matter.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
