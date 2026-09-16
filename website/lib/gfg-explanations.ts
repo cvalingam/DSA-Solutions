@@ -9533,6 +9533,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'dominant-pairs': {
+    intuition:
+      'A dominant pair mixes one value from the left half with one from the right half so the left value is at least five times the right. After sorting each half, larger left values only unlock more right partners, so a single advancing pointer counts them all.',
+    algorithm: [
+      'Let mid = n / 2 and sort arr[0..mid) and arr[mid..n) ascending.',
+      'Start right at mid.',
+      'For each left index from 0 to mid-1, advance right while arr[left] >= 5 * arr[right].',
+      'Add (right - mid) to the answer; those right positions all work with the current left.',
+      'Return the total count.',
+    ],
+    example: {
+      input: 'arr = [10, 5, 2, 1] so halves [10,5] and [2,1]',
+      steps: [
+        'After sorting halves stay [5,10] and [1,2].',
+        'left = 5 reaches both rights because 5 >= 5*1 and 5 >= 5*2 is false only for 2 after 1 counts.',
+        'left = 10 covers both rights, adding the running total of valid partners.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Only cross-half pairs count; indices must keep i < n/2 and j >= n/2.',
+      'Multiply with 64-bit values so 5 * arr[j] does not overflow.',
+      'Sorting each half separately is fine because relative order inside a half does not matter for the count.',
+      'The right pointer never moves backward; restarting it would waste work.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

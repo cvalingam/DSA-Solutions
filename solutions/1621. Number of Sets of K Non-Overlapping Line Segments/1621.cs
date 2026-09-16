@@ -1,40 +1,47 @@
-// Approach: DP with memoization - state (point, segments, prevUsed) to count valid placements.
-// Time: O(n²k) Space: O(nk)
-
+// Approach: Sharing endpoints maps to C(n + k - 1, 2k): each of k segments
+// needs 2 endpoints, and k-1 "glue" units encode shared joins, so pick 2k
+// positions from n+k-1. Compute the binomial mod 1e9+7 multiplicatively.
+// Complexity: O(k log MOD) time, O(1) extra space.
 public class Solution
 {
+    private const int Mod = 1_000_000_007;
+
     public int NumberOfSets(int n, int k)
     {
-        int?[][][] mem = new int?[n][][];
-        for (int i = 0; i < n; i++)
-        {
-            mem[i] = new int?[k + 1][];
-            for (int j = 0; j <= k; j++)
-                mem[i][j] = new int?[2];
-        }
-        
-        return NumberOfSets(0, k, false, n, mem).Value;
+        return Comb(n + k - 1, 2 * k);
     }
 
-    private const int kMod = 1000000007;
-
-    private int? NumberOfSets(int i, int k, bool drawing, int n, int?[][][] mem)
+    // C(n, r) mod Mod via product form; uses min(r, n-r).
+    private static int Comb(int n, int r)
     {
-        if (k == 0) // Find a way to draw k segments.
-            return 1;
-        if (i == n) // Reach the end.
+        if (r < 0 || r > n)
             return 0;
-        if (mem[i][k][drawing ? 1 : 0] != null)
-            return mem[i][k][drawing ? 1 : 0].Value;
+        r = Math.Min(r, n - r);
+        long res = 1;
+        for (int i = 1; i <= r; i++)
+        {
+            res = res * (n - r + i) % Mod;
+            res = res * ModInverse(i) % Mod;
+        }
+        return (int)res;
+    }
 
-        // 1. Keep drawing at i and move to i + 1.
-        // 2. Stop at i so decrease k. We can start from i for the next segment.
-        if (drawing)
-            return mem[i][k][drawing ? 1 : 0] = (NumberOfSets(i + 1, k, true, n, mem) +
-                                                  NumberOfSets(i, k - 1, false, n, mem)) % kMod;
-        // 1. Skip i and move to i + 1.
-        // 2. Start at i and move to i + 1.
-        return mem[i][k][drawing ? 1 : 0] = (NumberOfSets(i + 1, k, false, n, mem) +
-                                              NumberOfSets(i + 1, k, true, n, mem)) % kMod;
+    private static long ModInverse(int a)
+    {
+        return ModPow(a, Mod - 2);
+    }
+
+    private static long ModPow(long baseVal, int exp)
+    {
+        long res = 1;
+        baseVal %= Mod;
+        while (exp > 0)
+        {
+            if ((exp & 1) == 1)
+                res = res * baseVal % Mod;
+            baseVal = baseVal * baseVal % Mod;
+            exp >>= 1;
+        }
+        return res;
     }
 }

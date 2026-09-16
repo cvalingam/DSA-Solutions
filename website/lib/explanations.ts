@@ -4998,13 +4998,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1621: {
-    intuition: 'Count pairs of integers from 1..n where abs(i-j) > target. Equivalent to total pairs minus pairs with abs(i-j) <= target.',
+    intuition:
+      'You must place exactly k segments on n points so they never cross interiors, though they may share an endpoint. That counting problem collapses to a single binomial: choose 2k positions from n+k-1 after inserting k-1 glue units that encode shared joins.',
     algorithm: [
-      'Total pairs = n*(n-1)/2.',
-      'Pairs with diff <= target: for each d from 1 to target: (n-d) pairs. Sum = target*n - target*(target+1)/2.',
-      'Answer = total - close_pairs.',
+      'Recognize the answer equals C(n + k - 1, 2k) modulo 1e9+7.',
+      'Compute the binomial multiplicatively: start at 1 and for i from 1 to r multiply by (n-r+i) then by the modular inverse of i.',
+      'Use r = min(2k, n+k-1-2k) to keep the product short.',
+      'Take inverses with Fermat pow since the modulus is prime.',
+      'Return the combination as the number of valid segment sets.',
     ],
-    pitfalls: ['Handle edge case where target >= n (then close_pairs includes all).'],
+    example: {
+      input: 'n = 4, k = 2',
+      steps: [
+        'Need C(4+2-1, 4) = C(5, 4).',
+        'That equals 5, matching the five drawings of two non-crossing segments on four points.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Segments must cover at least two points; length zero is illegal.',
+      'Sharing an endpoint is allowed; overlapping interiors is not.',
+      'Do not confuse this with C(n, 2k), which forbids shared endpoints.',
+      'Always reduce modulo 1e9+7; raw factorials overflow quickly.',
+    ],
   },
 
   1622: {
