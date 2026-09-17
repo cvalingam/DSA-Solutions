@@ -9560,6 +9560,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-edge-reversals-for-path': {
+    intuition:
+      'To go from src to dst you may keep an edge as written or flip it. Keeping costs nothing and flipping costs one, so the fewest flips is a shortest path on a graph whose edges only weigh 0 or 1.',
+    algorithm: [
+      'For every original directed edge u to v, add u to v with weight 0 and v to u with weight 1.',
+      'Run 0-1 BFS from src using a deque.',
+      'When relaxing a neighbor with weight 0, push it to the front; with weight 1, push it to the back.',
+      'If dst is reached, return its distance.',
+      'If the deque empties first, return -1.',
+    ],
+    example: {
+      input: 'edges force one reverse on the only route from src to dst',
+      steps: [
+        'Forward edges stay free to traverse.',
+        'The missing forward hop is taken as a reverse of cost 1.',
+        '0-1 BFS reports distance 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Do not use a general Dijkstra heap; 0-1 BFS is enough and faster.',
+      'Nodes may be 1-indexed up to n; size arrays accordingly.',
+      'Unreachable destinations must return -1, not a sentinel distance.',
+      'Pushing the wrong end of the deque breaks the nondecreasing distance order.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

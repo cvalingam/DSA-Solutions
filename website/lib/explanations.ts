@@ -4763,6 +4763,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Stack front elements are candidate discounts. Check that the discount is within k distance.'],
   },
 
+  1477: {
+    intuition:
+      'You need two disjoint subarrays that each sum to target, and their lengths should be as small as possible together. Because every value is positive, each right endpoint has at most one left endpoint that makes the window sum equal target, so a sliding window finds every candidate in linear time.',
+    algorithm: [
+      'Keep a sliding window [l, r] and its sum.',
+      'Expand r, and shrink l while the sum exceeds target.',
+      'best[i] stores the shortest target subarray ending at or before i.',
+      'When the window sums to target, if best[l-1] exists, update the answer with best[l-1] plus the current window length.',
+      'Refresh a running shortest length and write it into best[r].',
+      'Return the answer, or -1 if no valid pair was found.',
+    ],
+    example: {
+      input: 'arr = [3,2,2,4,3], target = 3',
+      steps: [
+        'The single-element windows [3] at the start and [3] at the end each hit the target.',
+        'Pairing those two non-overlapping windows gives length sum 2.',
+        'No shorter pair exists.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'The two windows must not share indices; pairing a window with best just before its left edge enforces that.',
+      'Positive array values are required for the unique sliding window; negatives would break it.',
+      'best must carry forward the minimum even on indices that do not end a target window.',
+      'Return -1 when fewer than two valid windows can be placed without overlap.',
+    ],
+  },
+
   1482: {
     intuition: 'Binary search on number of days. For d days: count bouquets = sum of floor(consecutive_1s / k). Check if >= m.',
     algorithm: [
