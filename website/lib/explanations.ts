@@ -4882,6 +4882,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1520: {
+    intuition:
+      'A valid substring must include every occurrence of each letter it contains. Longer valid ranges that wrap shorter ones never help the count, so take the shortest valid pieces greedily from left to right and replace a previous piece whenever a later valid interval nests inside it.',
+    algorithm: [
+      'Record the first and last index of each letter in one pass.',
+      'At each index that is a letter first occurrence, expand right until every letter inside is fully covered.',
+      'If any letter in that range starts before the candidate left, reject the candidate.',
+      'If the candidate starts after the previous chosen interval, append it; otherwise replace the previous interval with this shorter nested one.',
+      'Materialize the chosen intervals as substrings at the end.',
+    ],
+    example: {
+      input: 's = "adefaddaccc"',
+      steps: [
+        'Letter ranges force some large candidates that nest smaller valid pieces.',
+        'Greedy replacement keeps compact pieces such as "e", "f", and "ccc".',
+        'Those intervals do not overlap and maximize the count.',
+      ],
+      output: '["e","f","ccc"]',
+    },
+    pitfalls: [
+      'Only start expansion at a letter first occurrence; later starts are redundant.',
+      'Expanding right may grow as new letters appear; keep updating the end bound.',
+      'Prefer nested shorter intervals over earlier longer ones to maximize count and minimize total length.',
+      'There are at most 26 candidate starts, so the scan stays linear.',
+    ],
+  },
+
   1523: {
     intuition: 'Count odd numbers in range [low, high]. Formula: ceil((high-low+1)/2) adjusted for parity of low.',
     algorithm: [

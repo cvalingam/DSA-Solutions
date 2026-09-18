@@ -9587,6 +9587,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-absolute-difference-in-bst': {
+    intuition:
+      'Inorder traversal of a BST visits values in sorted order. The smallest absolute gap in a sorted list always sits between two neighbors, so you only need consecutive inorder values.',
+    algorithm: [
+      'Walk the tree inorder with a recursive DFS.',
+      'Keep the previously visited value, initially unset.',
+      'At each node after the left subtree, if a previous value exists, update the answer with node.data minus previous.',
+      'Set previous to the current node value and recurse on the right subtree.',
+      'Return the running minimum after the traversal finishes.',
+    ],
+    example: {
+      input: 'BST inorder sequence 1, 3, 6',
+      steps: [
+        'Gap 3-1 equals 2.',
+        'Gap 6-3 equals 3.',
+        'The minimum is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Do not compare non-adjacent values; sorted order makes that unnecessary.',
+      'Skip the first node when updating because it has no previous neighbor.',
+      'Storing the full inorder list wastes space; one previous integer is enough.',
+      'Because inorder is nondecreasing, subtraction without abs is safe for the gap.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
