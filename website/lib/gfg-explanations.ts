@@ -9614,6 +9614,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-cost-to-make-two-strings-identical': {
+    intuition:
+      'You may only delete characters, each with a fixed cost per string. Characters that stay must form a common subsequence, so the cheapest plan keeps a longest common subsequence and deletes everything else.',
+    algorithm: [
+      'If needed, swap the strings so the shorter one sizes the DP row.',
+      'Compute LCS length with two rolling arrays using the standard match or max skip recurrence.',
+      'Let L be the LCS length after the DP finishes.',
+      'Return (n - L) * costS1 + (m - L) * costS2.',
+    ],
+    example: {
+      input: 's1 = "abcd", s2 = "acdb", costS1 = 10, costS2 = 20',
+      steps: [
+        'An LCS such as "acd" has length 3.',
+        'Delete one character from s1 and one from s2.',
+        'Cost is 10 + 20 = 30.',
+      ],
+      output: '30',
+    },
+    pitfalls: [
+      'You cannot insert or substitute; only deletions are allowed.',
+      'Keeping any common subsequence works correctly, but a longest one minimizes deletions.',
+      'Swap costs when you swap strings so each cost stays attached to its string.',
+      'Rolling-row DP must not reuse a cell before the previous-row diagonal value is read.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

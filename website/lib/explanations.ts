@@ -4599,6 +4599,32 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Each palindrome string can absorb at most one odd-frequency character as center. Also k must be <= s.length.'],
   },
 
+  1401: {
+    intuition:
+      'A circle and an axis-aligned rectangle overlap when the circle reaches the closest point of the rectangle to its center. Clamp the center into the rectangle bounds to find that point, then compare squared distances so you never need a square root.',
+    algorithm: [
+      'Clamp xCenter into [x1, x2] to get closestX.',
+      'Clamp yCenter into [y1, y2] to get closestY.',
+      'Let dx = xCenter - closestX and dy = yCenter - closestY.',
+      'Return true if dx*dx + dy*dy is at most radius*radius.',
+    ],
+    example: {
+      input: 'radius = 1, center = (0,0), rect = [1,-1,3,1]',
+      steps: [
+        'Closest point on the rectangle is (1,0).',
+        'Squared distance is 1, equal to radius squared.',
+        'The shapes touch, which counts as overlap.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Touching the boundary is overlap; use <= not <.',
+      'Work with squared distances to avoid floating point and sqrt.',
+      'If the center lies inside the rectangle, the closest point is the center itself and distance is zero.',
+      'The rectangle is axis-aligned; do not rotate it.',
+    ],
+  },
+
   1405: {
     intuition: 'Greedily append the most frequent character that isn\'t the same as last two appended. Use a max-heap.',
     algorithm: [
