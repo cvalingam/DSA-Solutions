@@ -9647,6 +9647,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3498: {
+    intuition:
+      'Reverse degree scores each character by how far it sits from the end of the alphabet, then weights that score by its 1-based index. Summing those products in one left-to-right pass is the whole answer.',
+    algorithm: [
+      'Initialize ans to 0.',
+      'For each index i from 0 to n-1, let reversePos = 26 - (s[i] - a).',
+      'Add reversePos * (i + 1) to ans.',
+      'Return ans.',
+    ],
+    example: {
+      input: 's = "abc"',
+      steps: [
+        'a contributes 26 * 1 = 26.',
+        'b contributes 25 * 2 = 50.',
+        'c contributes 24 * 3 = 72, for a total of 148.',
+      ],
+      output: '148',
+    },
+    pitfalls: [
+      'Positions are 1-indexed in the formula, so multiply by i + 1.',
+      'Reverse rank of a is 26, of z is 1.',
+      'No sorting or extra structures are needed; a single pass is enough.',
+      'Use int carefully only if constraints grow; current constraints fit in 32-bit.',
+    ],
+  },
+
   3499: {
     intuition:
       'Treat the string as augmented with outer 1s. One trade first turns a surrounded block of 1s into 0s, then turns a surrounded block of 0s into 1s. That is equivalent to picking two consecutive zero-runs (with 1s between them) and activating both - net gain equals the sum of their lengths. So count all existing 1s, then add the best adjacent zero-pair length.',

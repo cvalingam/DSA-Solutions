@@ -9640,6 +9640,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-subsquare-surrounded-by-x': {
+    intuition:
+      'Only the border of the square must be X. Precompute how far consecutive X runs stretch left and up into each cell, then for every bottom-right corner test shrinking side lengths until the left and top borders also qualify.',
+    algorithm: [
+      'Build hor[i][j] as consecutive X ending at (i, j) from the left.',
+      'Build ver[i][j] as consecutive X ending at (i, j) from above.',
+      'Scan cells from bottom-right toward top-left.',
+      'Let size start at min(hor[i][j], ver[i][j]) and decrease while larger than the best answer.',
+      'Accept size when ver[i][j-size+1] and hor[i-size+1][j] are both at least size.',
+      'Return the best accepted side length.',
+    ],
+    example: {
+      input: 'matrix with an X-bordered 2x2 square and a larger open region',
+      steps: [
+        'Prefix counts show solid bottom and right borders at a candidate corner.',
+        'Checking the opposite borders confirms side length 2.',
+        'Larger candidates fail a border check, so the answer stays 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'This is not the filled maximal-square DP; interior cells may be O.',
+      'Stop shrinking once size is not better than the current best.',
+      'Reset consecutive counts when an O breaks a run.',
+      'Indices j-size+1 and i-size+1 must stay inside the matrix, which follows from size <= hor/ver.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
