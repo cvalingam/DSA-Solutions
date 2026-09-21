@@ -9835,6 +9835,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3524: {
+    intuition:
+      'Removing a non-overlapping prefix and suffix just leaves one contiguous subarray. The x-value for each remainder is therefore the number of non-empty subarrays whose product is congruent to x modulo k. Track endings with a small DP over residues because k is at most 5.',
+    algorithm: [
+      'Keep dp[r] as the count of subarrays ending at the previous index with product % k == r.',
+      'For each num, build next with next[num % k] = 1 for the singleton subarray.',
+      'For every prior residue r with a positive count, add that count into next[(r * (num % k)) % k].',
+      'Add every next[r] into ans[r], then swap dp with next.',
+      'Return ans.',
+    ],
+    example: {
+      input: 'nums = [1,2,3,4,5], k = 3',
+      steps: [
+        'Singleton [1] contributes to remainder 1.',
+        'Extending and starting at later indices fills counts for products mod 3.',
+        'Summing over all endings yields the full remainder histogram.',
+      ],
+      output: 'array of k counts',
+    },
+    pitfalls: [
+      'Empty remaining arrays are forbidden; every counted piece is a non-empty subarray.',
+      'Multiply with 64-bit intermediates before taking mod k.',
+      'Reuse two length-k buffers instead of allocating a new array every step.',
+      'Skip zero dp[r] when extending to avoid useless work.',
+    ],
+  },
+
   3014: {
     intuition:
       'A phone keypad has 8 letter keys. Each key can hold several letters stacked by push count (1st letter = 1 push, 2nd = 2 pushes, ...). To minimize total pushes, put the most frequent letters in the cheapest slots. With at most 26 letters, the eight cheapest slots are the first press on each key, then the second press, and so on.',

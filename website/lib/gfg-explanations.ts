@@ -9668,6 +9668,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'check-level-anagrams-in-binary-trees': {
+    intuition:
+      'Two trees are level-anagrams when every corresponding level holds the same multiset of values. Breadth-first search visits levels in order; comparing frequency maps per level is enough and avoids sorting.',
+    algorithm: [
+      'Return true if both roots are null, false if exactly one is null.',
+      'BFS both trees with queues of equal starting size.',
+      'For each level, if queue sizes differ, return false.',
+      'Poll paired nodes: add +1 for tree1 values and -1 for tree2 values in one map.',
+      'Enqueue children from both nodes.',
+      'If any frequency is nonzero after the level, return false.',
+      'After the first queue empties, return whether the second queue is also empty.',
+    ],
+    example: {
+      input: 'same values per level, possibly different child order',
+      steps: [
+        'Level 0 values match.',
+        'Level 1 multisets match after counting.',
+        'All later levels agree, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Structure can differ; only the multiset per level matters.',
+      'Unequal level widths mean the trees are not level-anagrams.',
+      'Sorting each level works but is slower than counting.',
+      'Empty trees are anagrams of each other; one empty and one nonempty is not.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
