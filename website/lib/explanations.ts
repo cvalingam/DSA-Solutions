@@ -9862,6 +9862,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3525: {
+    intuition:
+      'Each query updates one value, then asks how many suffixes you can drop from nums[start..] so the product of what remains is congruent to x modulo k. That is exactly the prefix residue counts of the range [start, n). A segment tree keeps those counts so an update and a range merge both cost a few multiplications.',
+    algorithm: [
+      'Reduce every array value modulo k before building the tree.',
+      'A leaf for value v stores product v and a single count on residue v.',
+      'Merge a left child and a right child by multiplying products modulo k, copying the left counts, then adding each right count onto residue (r * leftProduct) % k.',
+      'For a query, point-update nums[index] to value % k.',
+      'Query the segment [start, n) and read the count stored for residue x.',
+    ],
+    example: {
+      input: 'nums = [1,2,3], k = 3, one update and a start of 0',
+      steps: [
+        'The whole array is one range whose prefixes are [1], [1,2], and [1,2,3].',
+        'Their products mod 3 are 1, 2, and 0.',
+        'A later point update rebuilds only the O(log n) nodes on that index path.',
+      ],
+      output: 'the count for the requested residue',
+    },
+    pitfalls: [
+      'An empty out-of-range piece must use product 1 so it does not wipe the other side.',
+      'Counts describe prefixes of the queried range, which is the same as dropping a suffix after start.',
+      'k is at most 5, so storing five residue fields on a struct avoids per-node arrays.',
+      'Reduce the updated value modulo k before writing the leaf.',
+    ],
+  },
+
   3014: {
     intuition:
       'A phone keypad has 8 letter keys. Each key can hold several letters stacked by push count (1st letter = 1 push, 2nd = 2 pushes, ...). To minimize total pushes, put the most frequent letters in the cheapest slots. With at most 26 letters, the eight cheapest slots are the first press on each key, then the second press, and so on.',

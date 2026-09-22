@@ -9697,6 +9697,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-matching-in-dictionary-with-removals': {
+    intuition:
+      'A dictionary word survives deletions from s exactly when it is a subsequence. Among those, you want the longest word, and if several share that length, the lexicographically smallest. Precomputing where each letter sits in s lets every character of a word jump to its next match with binary search.',
+    algorithm: [
+      'Build 26 lists of indices, one per lowercase letter, by scanning s once.',
+      'Walk the dictionary while remembering the best word so far.',
+      'Skip a word shorter than the best, or the same length and not strictly smaller in dictionary order.',
+      'Match the word left to right: binary search the next index strictly after the previous match.',
+      'If every character finds such an index, replace the best word.',
+      'Return the best word, or an empty string when nothing matched.',
+    ],
+    example: {
+      input: 's = "abpcplea", dictionary = ["ale","apple","monkey","plea"]',
+      steps: [
+        'ale matches at positions of a, l, and e.',
+        'apple is longer and also matches, so it replaces ale.',
+        'monkey fails because m never appears, and plea is shorter than apple.',
+      ],
+      output: '"apple"',
+    },
+    pitfalls: [
+      'Order of characters must be preserved; this is a subsequence, not an anagram.',
+      'Equal lengths must compare the whole word, not only the first letter.',
+      'The next match index must be strictly greater than the previous one.',
+      'Words that cannot beat the current best should be skipped before searching.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
