@@ -9725,6 +9725,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'pyramid-array-with-reduce-operations': {
+    intuition:
+      'You may only decrease stone heights. A pyramid of height h uses the stones 1, 2, ..., h, ..., 2, 1, which sum to h times h. Paying for every removed unit is the same as maximizing the stones you keep, so the cheapest pyramid is the tallest one the row can support.',
+    algorithm: [
+      'Scan from the right. The tallest rise ending at i is min(arr[i], the next rise plus 1), and the last cell is at most 1.',
+      'Scan from the left with a running height that follows the same rule.',
+      'At each index the feasible peak is the minimum of the left height and the right height.',
+      'Track the maximum of peak times peak while summing the original array.',
+      'Return the array sum minus that maximum kept sum.',
+    ],
+    example: {
+      input: 'arr = [1, 5, 1]',
+      steps: [
+        'The middle can rise to 2 from both sides, and the ends stay at 1.',
+        'A height-2 pyramid keeps 4 stones.',
+        'The original sum is 7, so 3 units are reduced.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Heights can only decrease, never increase past arr[i].',
+      'A peak of height h needs h cells on each side, counting the peak once, which the plus-one growth already enforces.',
+      'The kept sum of a valid pyramid is h times h, not the triangular number h(h+1)/2.',
+      'Use 64-bit arithmetic for the array sum and for h times h.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -5173,6 +5173,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Answer = min over all split positions of: b\'s to the left (delete) + a\'s to the right (delete).'],
   },
 
+  1658: {
+    intuition:
+      'Each operation removes one value from the left end or the right end, and the removed values must sum to x. What stays is one contiguous middle. Because every value is positive, the longest middle that sums to total minus x is exactly the piece you should keep, and the number of operations is the length you throw away.',
+    algorithm: [
+      'Add every nums[i] to get total.',
+      'Let target = total - x. If target is negative, return -1. If it is zero, return n.',
+      'Slide a window [l, r]: add nums[r], and while the window sum exceeds target, subtract nums[l] and advance l.',
+      'Whenever the window sum equals target, record the maximum window length.',
+      'Return n minus that length, or -1 when no window hit the target.',
+    ],
+    example: {
+      input: 'nums = [1,1,4,2,3], x = 5',
+      steps: [
+        'The array sums to 11, so the middle must sum to 6.',
+        'The window [1,1,4] has length 3 and sum 6.',
+        'Two end values, 2 and 3, are removed.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Operations only take from the two ends, so the kept part must be one subarray.',
+      'Positive values make the sliding window valid; a prefix map is unnecessary.',
+      'target 0 means the whole array is removed, so the answer is n.',
+      'If x is larger than the array sum, return -1.',
+    ],
+  },
+
   1671: {
     intuition: 'Find length of minimum mountain removals. The answer is n - maxBitonic where maxBitonic = max LIS ending at i + LDS starting at i - 1 (for valid peaks).',
     algorithm: [
