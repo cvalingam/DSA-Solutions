@@ -9752,6 +9752,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-height-disc-stack': {
+    intuition:
+      'A disc can sit on another only when both its radius and its height are strictly smaller. Sorting by radius turns the radius rule into the scan order, and sorting equal radii by descending height keeps those discs from stacking on each other. What remains is a weighted increasing subsequence on height.',
+    algorithm: [
+      'Pair each radius with its height.',
+      'Sort by radius ascending, and by height descending when radii are equal.',
+      'Compress the distinct heights into ranks for a Fenwick tree of maximums.',
+      'For each disc in sorted order, query the best stack among strictly smaller heights.',
+      'The candidate height is that best stack plus the current height.',
+      'Write the candidate back at this height rank and keep the global maximum.',
+    ],
+    example: {
+      input: 'r = [5,7,3], h = [6,5,4]',
+      steps: [
+        'Sorted by radius, the discs are (3,4), then (5,6), then (7,5).',
+        '(5,6) extends (3,4) because both dimensions grow, for a total of 10.',
+        '(7,5) cannot extend that stack because its height is not larger than 6.',
+      ],
+      output: '10',
+    },
+    pitfalls: [
+      'Both radius and height must be strictly smaller, not merely one of them.',
+      'Equal radii must be ordered by descending height so they do not chain.',
+      'Query one rank below the current height so equal heights do not stack.',
+      'Compress heights before indexing the tree; raw heights may be far larger than n.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

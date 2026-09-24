@@ -9916,6 +9916,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3550: {
+    intuition:
+      'The smallest index is the first one you meet while scanning from the left, so there is no need to collect every match. A digit sum never exceeds the number, and with values at most 1000 the largest digit sum is 27, so most indexes can be rejected before any division.',
+    algorithm: [
+      'Stop the scan at index 27, because no later index can equal a digit sum.',
+      'Skip nums[i] when it is smaller than i.',
+      'Otherwise add digits with repeated mod 10 and divide by 10.',
+      'Return i as soon as the digit sum equals i.',
+      'Return -1 when the limited scan finishes with no match.',
+    ],
+    example: {
+      input: 'nums = [1,10,11]',
+      steps: [
+        'Index 0 holds 1, and its digit sum is 1, which is not 0.',
+        'Index 1 holds 10, and 1+0 equals 1.',
+        'That is the smallest match, so index 2 is never needed.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Return the smallest index, not every index that matches.',
+      'Digit sum of 0 is 0, so index 0 matches a zero.',
+      'Values at most 1000 cannot have a digit sum above 27.',
+      'Do not compare the raw value with the index unless the value is smaller than the index, which is only a skip.',
+    ],
+  },
+
   3014: {
     intuition:
       'A phone keypad has 8 letter keys. Each key can hold several letters stacked by push count (1st letter = 1 push, 2nd = 2 pushes, ...). To minimize total pushes, put the most frequent letters in the cheapest slots. With at most 26 letters, the eight cheapest slots are the first press on each key, then the second press, and so on.',

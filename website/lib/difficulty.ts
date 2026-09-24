@@ -213,6 +213,7 @@ const difficultyMap: Record<number, 'Easy' | 'Medium' | 'Hard'> = {
   3518:'Hard',
   3524:'Medium',
   3525:'Hard',
+  3550:'Easy',
   3014:'Easy',
 }
 
