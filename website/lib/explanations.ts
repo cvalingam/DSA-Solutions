@@ -4023,6 +4023,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Trace DP table, not just the LCS string. Append remaining chars from both strings after reaching edge.'],
   },
 
+  1096: {
+    intuition:
+      'Braces encode a small grammar: a comma list is a union, and two expressions written next to each other are concatenated in every combination. Nested braces are just the same grammar on a smaller span, so a recursive parse builds the set of words and a final sort puts them in order.',
+    algorithm: [
+      'Scan a span from left to right, tracking brace depth.',
+      'At depth 0, a letter is a one-word set and is concatenated onto the current group.',
+      'At depth 0, a comma starts a new group that will be unioned with the others.',
+      'A matching brace pair is parsed recursively and concatenated onto the current group.',
+      'Union the groups with a hash set so duplicate words collapse.',
+      'Sort the top-level set once and return it.',
+    ],
+    example: {
+      input: 'expression = "{a,b}{c,{d,e}}"',
+      steps: [
+        '{a,b} is the union of a and b.',
+        '{c,{d,e}} is the union of c, d, and e.',
+        'Concatenating the two sets produces ac, ad, ae, bc, bd, and be.',
+      ],
+      output: '["ac","ad","ae","bc","bd","be"]',
+    },
+    pitfalls: [
+      'Adjacent expressions are a product, not a union.',
+      'Overlapping options such as {a,ab} and {b} can create the same word twice; keep a set.',
+      'Only the final list must be sorted. Sorting every nested group is extra work.',
+      'Match braces by depth so a comma inside nested braces does not split the outer expression.',
+    ],
+  },
+
   1105: {
     intuition: 'DP: dp[i] = minimum height for first i books. For each book i, try extending previous shelf by adding books j..i together.',
     algorithm: [

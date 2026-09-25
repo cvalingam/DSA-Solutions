@@ -9780,6 +9780,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'box-stacking': {
+    intuition:
+      'Any side of a box can be its height, and a box may sit on another only when both base sides are strictly smaller. Generating the three rotations and sorting them by base length turns the search into a weighted increasing subsequence: each rotation extends the best earlier rotation that can support it.',
+    algorithm: [
+      'For each box, create three rotations and store the base so width is at most length.',
+      'Sort rotations by length descending.',
+      'Let dp[i] start as the height of rotation i.',
+      'For every earlier rotation j, if both of its base sides are strictly larger, set dp[i] to the max of dp[i] and dp[j] plus the height of i.',
+      'Return the largest dp value.',
+    ],
+    example: {
+      input: 'height = [4,1,4,10], width = [6,2,5,12], length = [7,3,6,32]',
+      steps: [
+        'Each box contributes three possible bases.',
+        'A decreasing chain of bases can place several rotations in one stack.',
+        'The tallest such chain has height 60.',
+      ],
+      output: '60',
+    },
+    pitfalls: [
+      'Both base sides must be strictly smaller. A larger area is not enough.',
+      'Equal bases cannot stack, so one copy of a rotation is enough.',
+      'Sort by one base side so a valid support always appears earlier in the list.',
+      'The answer is the tallest dp value, not the sum of every rotation.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

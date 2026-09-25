@@ -593,6 +593,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1080: ['tree', 'depth-first-search', 'binary-tree'],
   1081: ['string', 'stack', 'greedy', 'monotonic-stack'],
   1092: ['string', 'dynamic-programming'],
+  1096: ['string', 'stack', 'breadth-first-search', 'recursion'],
   1105: ['array', 'dynamic-programming'],
   1106: ['string', 'stack', 'recursion'],
   1110: ['tree', 'depth-first-search', 'binary-tree'],
