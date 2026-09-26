@@ -9807,6 +9807,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-cost-pizza-selection': {
+    intuition:
+      'You may buy any number of small, medium, and large pizzas, and you only need the total area to reach x. That is an unbounded knapsack: the cheapest way to make each exact area is the cheapest way to make a smaller area plus one more pizza. Extra area past x never helps, because every price is positive.',
+    algorithm: [
+      'Drop a pizza when another one has at least as much area and a better price.',
+      'Let dp[i] be the minimum cost of exactly area i, with dp[0] = 0.',
+      'The table runs through x + maxSize - 1, the farthest one last pizza can overshoot.',
+      'From each reachable area below x, try each remaining pizza and relax the next area.',
+      'When an area is at least x, record its cost and do not buy anything more from there.',
+      'Return the smallest recorded cost.',
+    ],
+    example: {
+      input: 'x = 5, areas 2, 3, 4 with costs 3, 4, 5',
+      steps: [
+        'One medium pizza and one small pizza cover area 5 for cost 7.',
+        'Two medium pizzas cover area 6 for cost 8.',
+        'One large pizza is only area 4, so it still needs another pizza.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'The target is at least x, so a little extra area can be cheaper than an exact fit.',
+      'Do not keep buying after the area already reaches x.',
+      'Skip unreachable areas instead of adding a cost onto an infinite sentinel.',
+      'A larger pizza with a lower or equal price makes the smaller one useless.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

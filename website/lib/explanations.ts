@@ -5476,6 +5476,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Sum from peak of height h going k steps: sum = h + (h-1) + ... = arithmetic series capped at 1.'],
   },
 
+  1807: {
+    intuition:
+      'Each bracket pair is a key lookup. The knowledge list becomes a map from key to value, then one left-to-right scan copies the plain text and replaces each (key) with its value, or with ? when the key was never given.',
+    algorithm: [
+      'Insert every knowledge pair into a hash map.',
+      'Walk s. While the current character is not an opening bracket, append that plain run in one slice.',
+      'On an opening bracket, read until the closing bracket and take the text in between as the key.',
+      'Append the mapped value, or ? if the key is absent.',
+      'Return the built string.',
+    ],
+    example: {
+      input: 's = "(name)is(age)yearsold", knowledge = [["name","bob"],["age","two"]]',
+      steps: [
+        '(name) maps to bob.',
+        'The letters is are copied as they are.',
+        '(age) maps to two, then yearsold is copied.',
+      ],
+      output: '"bobistwoyearsold"',
+    },
+    pitfalls: [
+      'A missing key becomes ?, not an empty string.',
+      'Brackets are not nested, so the next closing bracket ends the key.',
+      'Store the inner key only. The parentheses are not part of the lookup.',
+      'Literal text between brackets should be appended as a slice, not one character at a time.',
+    ],
+  },
+
   1823: {
     intuition: 'Josephus problem. Find winner when counting k positions starting from 1. Recurrence: winner(1)=0, winner(n) = (winner(n-1)+k) % n.',
     algorithm: [

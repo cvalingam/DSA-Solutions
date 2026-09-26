@@ -867,6 +867,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1799: ['array', 'math', 'dynamic-programming', 'bit-manipulation', 'backtracking'],
   1800: ['array'],
   1802: ['binary-search', 'greedy'],
+  1807: ['array', 'hash-table', 'string'],
   1813: ['two-pointers', 'string'],
   1823: ['array', 'math', 'recursion', 'queue', 'simulation'],
   1829: ['array', 'bit-manipulation', 'prefix-sum'],
