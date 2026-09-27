@@ -1,29 +1,39 @@
-// Approach: Stack-based; push the current StringBuilder position on '('; on ')' reverse the substring since that open paren.
-// Time: O(n²) Space: O(n)
-
+// Approach: Pair each parenthesis with its match. Walk the string with a
+// direction. Hitting '(' or ')' jumps to the partner and flips direction,
+// which writes the enclosed letters in reverse without copying the span.
+// Complexity: O(n) time, O(n) extra space.
 public class Solution
 {
     public string ReverseParentheses(string s)
     {
-        var st = new Stack<int>();
-        var sb = new StringBuilder();
+        int n = s.Length;
+        int[] pair = new int[n];
+        var stack = new Stack<int>();
 
-        foreach (char ch in s)
+        for (int i = 0; i < n; i++)
         {
-            if (ch == '(')
-                st.Push(sb.Length);
-            else if (ch == ')')
+            if (s[i] == '(')
+                stack.Push(i);
+            else if (s[i] == ')')
             {
-                var reversed = new StringBuilder();
-                for (int sz = sb.Length - st.Pop(); sz > 0; sz--)
-                {
-                    reversed.Append(sb[sb.Length - 1]);
-                    sb.Remove(sb.Length - 1, 1);
-                }
-                sb.Append(reversed);
+                int open = stack.Pop();
+                pair[i] = open;
+                pair[open] = i;
+            }
+        }
+
+        var sb = new StringBuilder();
+        for (int i = 0, dir = 1; i < n; i += dir)
+        {
+            if (s[i] == '(' || s[i] == ')')
+            {
+                i = pair[i];
+                dir = -dir;
             }
             else
-                sb.Append(ch);
+            {
+                sb.Append(s[i]);
+            }
         }
 
         return sb.ToString();

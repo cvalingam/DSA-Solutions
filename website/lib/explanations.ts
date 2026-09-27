@@ -4175,14 +4175,31 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1190: {
-    intuition: 'Stack-based: on close paren, pop until open paren, reverse, push back. Build result from remaining characters.',
+    intuition:
+      'Each pair of parentheses reverses the text inside it, and a nested pair reverses that piece again. Matching every bracket first lets one walk produce the final order. When the walk hits a parenthesis it jumps to the partner and turns around, so the enclosed letters are read backwards without copying that span into a new string.',
     algorithm: [
-      'Stack of chars.',
-      'On non-) chars: push.',
-      'On ): pop until (, reverse, push back.',
-      'Build result from stack.',
+      'Scan the string with a stack of opening indexes. Each closing parenthesis pops its match, and the two indexes point at each other.',
+      'Start at the first character and move forward.',
+      'A letter is appended, then the walk takes one step in the current direction.',
+      'A parenthesis jumps to the stored partner and flips the direction. The following step lands just inside the pair, which is where the reversed reading continues.',
+      'The walk ends when the index leaves the string. The builder holds the answer.',
     ],
-    pitfalls: ['O(n^2) with this approach. O(n) with wormhole technique using precomputed bracket pairs.'],
+    example: {
+      input: 's = "(u(love)i)"',
+      steps: [
+        'The outer parentheses sit at the two ends, and the inner pair wraps love.',
+        'The walk enters through the outer opening, jumps to the end, and reads i while moving left.',
+        'The inner closing parenthesis jumps to its opening and flips direction, so love is read from left to right.',
+        'After love the walk is moving left again and appends u.',
+      ],
+      output: '"iloveu"',
+    },
+    pitfalls: [
+      'Reversing each span as soon as it closes copies the same letters many times and is quadratic.',
+      'The jump lands on the partner, and the direction step then moves past it. Do not also skip that partner by hand.',
+      'Parentheses are never written. Only letters go into the result.',
+      'Each boundary flips the direction once, so an inner span is reversed again by every outer pair that contains it.',
+    ],
   },
 
   1200: {

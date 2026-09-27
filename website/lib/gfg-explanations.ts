@@ -9835,6 +9835,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-colored-path': {
+    intuition:
+      'The tree nodes are colored red or blue, and a valid path is either one color the whole way or a single red stretch joined to a single blue stretch. Nodes of the same color that stay connected through that color form a tree of their own. Inside a tree, two breadth first searches from the ends of a diameter give every node its longest same color distance. A red blue edge can then attach those two arms. The answer is the number of nodes on the best path.',
+    algorithm: [
+      'Build the undirected tree. Edge endpoints in the input are 1 indexed, so subtract one before linking them.',
+      'Explore each same color component on its own. A search from any node finds one end of that component, and a second search from that end finds the other end together with the distances to it.',
+      'A third search from the opposite end fills the remaining distances. Each node keeps the larger of the two, which is how far it can reach while staying on its own color.',
+      'The one color answer for the component is one more than the distance between the two ends, because the score counts nodes.',
+      'For every edge whose endpoints have different colors, add the two same color reaches and then add two for the endpoints of that edge. Keep the maximum.',
+    ],
+    example: {
+      input: 's = "RBBRR", edges = [[1,2],[2,3],[2,4],[4,5]]',
+      steps: [
+        'Node 1 is red. Nodes 2 and 3 are blue. Nodes 4 and 5 are red.',
+        'The longest blue path is nodes 3 and 2. The longest all red path is nodes 4 and 5.',
+        'The edge between 2 and 4 joins those arms into the path 3, 2, 4, 5.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'The score counts nodes. An edge distance of d covers d + 1 nodes.',
+      'A path may change color only once. Red, then blue, then red is two changes and is not allowed.',
+      'Same color nodes in different parts of the tree are separate components when no same color edge connects them.',
+      'Edges are 1 indexed. Using them as array indexes without subtracting one walks off the color string.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
