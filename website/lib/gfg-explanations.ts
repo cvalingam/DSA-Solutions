@@ -9862,6 +9862,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'range-gcd-queries': {
+    intuition:
+      'Each query either replaces one array value or asks for the GCD of a contiguous segment. A segment tree keeps the GCD of every half of the array, so a point change touches only the nodes above that index and a range read merges a few of those nodes. The GCD of a number with 0 is the number itself, which makes 0 a safe empty result. The moment a running GCD becomes 1, the rest of the range cannot change it.',
+    algorithm: [
+      'Place the array in the leaves of a tree of size 2n and fill every parent with the GCD of its two children.',
+      'On an update, write the new value into the leaf. Walk toward the root and stop when a parent GCD stays the same, because every ancestor above it stays the same too.',
+      'On a range query, cover the inclusive segment with a logarithmic number of nodes and combine their GCDs.',
+      'If the running GCD becomes 1, return 1 immediately.',
+      'Append each query answer and return the list.',
+    ],
+    example: {
+      input: 'arr = [2,4,6,8], queries = [[0,0,3],[1,2,9],[0,1,3],[0,0,1]]',
+      steps: [
+        'The GCD of the whole array is 2.',
+        'Index 2 changes from 6 to 9, so the array is 2, 4, 9, 8.',
+        'The GCD from index 1 through 3 is 1.',
+        'The GCD of the first two values is still 2.',
+      ],
+      output: '[2, 1, 2]',
+    },
+    pitfalls: [
+      'A prefix structure can keep sums because subtraction reverses them. GCD has no such inverse, so a range that is not a prefix needs a segment tree.',
+      'Query type 0 reads a range. Query type 1 writes one index.',
+      'The query bounds are inclusive. A half open loop must add one to the right end before it starts.',
+      'An update that does not change a parent GCD can stop. Ancestors above an unchanged node cannot change either.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

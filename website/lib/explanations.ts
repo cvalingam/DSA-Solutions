@@ -5123,6 +5123,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['BFS on bit states. States are all numbers reachable. Distance = min flips.'],
   },
 
+  1614: {
+    intuition:
+      'The string is a valid formula, so every closing parenthesis matches an earlier opening one. Depth is just how many parentheses are currently open. One counter goes up on each opening parenthesis and down on each closing one, and the answer is the highest value that counter reaches. Digits and operators sit between the parentheses and do not change the depth.',
+    algorithm: [
+      'Start the current depth and the answer at 0.',
+      'Walk each character once.',
+      'On an opening parenthesis, increase the depth and keep it if it is larger than the answer.',
+      'On a closing parenthesis, decrease the depth.',
+      'Skip every other character.',
+      'Return the answer.',
+    ],
+    example: {
+      input: 's = "(1+(2*3)+((8)/4))+1"',
+      steps: [
+        'The first parenthesis opens depth 1, and the parenthesis before 2 opens depth 2.',
+        'The pair around 8 opens one more level, so the depth reaches 3.',
+        'Each closing parenthesis steps the depth back down.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'The answer is the deepest point, not the number of parenthesis pairs.',
+      'Digits and operators are part of the string and must be ignored.',
+      'A stack of every character uses extra memory. The open count already stores the only value that stack would hold.',
+      'The string is valid, so the depth never goes negative and finishes at 0.',
+    ],
+  },
+
   1621: {
     intuition:
       'You must place exactly k segments on n points so they never cross interiors, though they may share an endpoint. That counting problem collapses to a single binomial: choose 2k positions from n+k-1 after inserting k-1 glue units that encode shared joins.',
