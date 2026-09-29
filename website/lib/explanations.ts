@@ -6014,6 +6014,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['First digit cannot be zero. Inner groups can have one zero. Trailing zeros stay.'],
   },
 
+  2267: {
+    intuition:
+      'A path moves only down or right, so every path from the top left to the bottom right has exactly m + n - 1 cells. What matters at a cell is the balance, the number of opening minus closing parentheses so far. A path is valid when that balance never drops below zero and ends at zero. Each cell only needs the set of balances that can reach it, and that set fits in a row of bits.',
+    algorithm: [
+      'Return false right away if the path length is odd, the first cell is a closing parenthesis, or the last cell is an opening one.',
+      'Keep one bitset per column for the current row. Bit k is set when some path reaches that cell with balance k.',
+      'For each cell, take the union of the bitset above and the bitset to the left. The start cell begins with balance 0 only.',
+      'An opening parenthesis shifts every balance up by one. A closing parenthesis shifts every balance down by one, and a balance of 0 falls off because it would go negative.',
+      'After the last cell, the answer is whether balance 0 is still set.',
+    ],
+    example: {
+      input: 'grid = [["(","(","("],[")","(",")"],["(","(",")"],["(","(",")"]]',
+      steps: [
+        'The path has 4 + 3 - 1 = 6 cells, an even length, so a match is possible.',
+        'Going down, down, right, right, down reads ( ) ( ( ) ).',
+        'The balance goes 1, 0, 1, 2, 1, 0 and never drops below zero.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'A balance can never exceed the number of cells left, so the set stays small and the bitset has about (m + n) / 64 words.',
+      'Every path into a cell has the same length, which is why one set of balances per cell is enough.',
+      'Shifting down must drop the zero bit. Keeping it would accept a prefix with more closing than opening parentheses.',
+      'Only one previous row is needed, because a cell reads from the cell above and the cell to its left.',
+    ],
+  },
+
   2270: {
     intuition: 'Count splits where left sum equals right sum. Prefix sum from left, suffix from right.',
     algorithm: [

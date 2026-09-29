@@ -9890,6 +9890,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-steps-by-knight': {
+    intuition:
+      'Every knight move costs the same, so the fewest moves is a shortest path in an unweighted graph whose nodes are the board squares. A breadth first search from the knight reaches squares in order of distance, one level per move. The first time a move lands on the target, that level is the answer. The board edges and corners change distances, so a formula for an unbounded board does not work here.',
+    algorithm: [
+      'Convert both positions from 1 indexed to 0 indexed. If they are the same square, return 0.',
+      'Store each square as one number, row times n plus column, in a flat array queue. Mark the starting square as seen.',
+      'Process the queue one level at a time. For each square, try the eight knight moves and skip any that leave the board.',
+      'If a move lands on the target, return the current level. Otherwise queue unseen squares and mark them as seen.',
+      'If the queue empties first, the target cannot be reached, so return -1.',
+    ],
+    example: {
+      input: 'knightPos = [4,5], targetPos = [1,1], n = 6',
+      steps: [
+        'The first move reaches squares such as (2,4).',
+        'The second move reaches (3,2) from (2,4).',
+        'The third move goes from (3,2) to (1,1), which is the target.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'The input positions are 1 indexed. Subtract one before using them as indexes.',
+      'Some squares on tiny boards are unreachable, such as the center of a 3 by 3 board. The search must return -1 there.',
+      'Mark squares as seen when they are queued. Marking them only when they are removed can add the same square many times.',
+      'Creating a new object for every square slows the search. One number per square in an array is enough.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
