@@ -4078,6 +4078,32 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Handle original root as potential forest root. Post-order ensures children handled before parent.'],
   },
 
+  1111: {
+    intuition:
+      'The goal is to split one valid parentheses string into two valid strings so the deeper of the two is as shallow as possible. If the original depth is d, one group has to hold at least half of it. Sending alternate nesting levels to alternate groups reaches that bound: odd levels go to one group and even levels to the other. The depth before any index has the same parity as the index itself, so the group can be read straight from the index without tracking depth.',
+    algorithm: [
+      'Create an answer array the same length as the string.',
+      'For each index i, start with i % 2.',
+      'If the character is a closing parenthesis, flip that bit.',
+      'Store the result as the group for that character and return the array.',
+    ],
+    example: {
+      input: 'seq = "(()())"',
+      steps: [
+        'The outer pair sits at indexes 0 and 5 and both get group 0.',
+        'The two inner pairs sit at indexes 1 through 4 and all get group 1.',
+        'Group 0 is "()" and group 1 is "()()", so each has depth 1 while the original depth is 2.',
+      ],
+      output: '[0,1,1,1,1,0]',
+    },
+    pitfalls: [
+      'Any optimal split is accepted, so the labels may differ from the sample as long as both depths stay minimal.',
+      'An opening parenthesis and its matching close must land in the same group, or that group stops being valid.',
+      'Before index i, the opens minus closes has the same parity as i. That is why flipping for a closing parenthesis keeps each pair together.',
+      'Putting each whole top level pair in one group does not help, because a single deep pair keeps its full depth.',
+    ],
+  },
+
   1123: {
     intuition: 'Find LCA of all deepest leaves. Same as problem 865: DFS returning (depth, lca_of_deepest).',
     algorithm: [

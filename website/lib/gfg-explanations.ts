@@ -9917,6 +9917,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'ways-to-reach-origin': {
+    intuition:
+      'From (x, y) each move reduces x by one or y by one, and the walk ends at the origin. Every route therefore uses exactly x moves of one kind and y moves of the other, just in a different order. Counting routes is the same as choosing which of the x + y moves are the x moves, which is the binomial coefficient C(x + y, x). Computing that one number replaces filling a whole table.',
+    algorithm: [
+      'Let n = x + y and k = min(x, y), since C(n, x) equals C(n, y) and the smaller side needs fewer steps.',
+      'Multiply the k numerator terms n minus k plus 1 up to n, reducing modulo 1e9+7 after each step.',
+      'Multiply 1 through k into a denominator the same way.',
+      'The modulus is prime, so the denominator inverse is its power MOD minus 2 by fast exponentiation.',
+      'Return the numerator times that inverse, reduced modulo 1e9+7.',
+    ],
+    example: {
+      input: 'x = 3, y = 6',
+      steps: [
+        'There are 9 moves in total and 3 of them reduce x.',
+        'The numerator is 7 times 8 times 9, which is 504. The denominator is 1 times 2 times 3, which is 6.',
+        '504 divided by 6 gives 84 routes.',
+      ],
+      output: '84',
+    },
+    pitfalls: [
+      'Division does not work directly under a modulus. Multiply by the modular inverse instead.',
+      'Take the remainder after every multiplication, or the product overflows a long.',
+      'When x or y is 0 there is exactly one route, and the loop runs zero times to give 1.',
+      'Filling an x by y table also works but costs quadratic time and memory for the same number.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
