@@ -9944,6 +9944,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-time-to-finish-project': {
+    intuition:
+      'Tasks run in parallel unless a dependency forces an order, so the project takes as long as the slowest chain of dependent tasks. A task can start only after all its prerequisites finish, which means its finish time is its own duration plus the latest finish among those prerequisites. Processing tasks in topological order guarantees every prerequisite is final before it is used. If the dependencies form a cycle, some tasks never become free and the project cannot finish.',
+    algorithm: [
+      'Count the indegree of each task and group outgoing edges into flat arrays so each task lists the tasks that wait on it.',
+      'Set each finish time to the task duration and queue every task with indegree 0.',
+      'Pop a task and update the answer with its finish time.',
+      'For each waiting task, set its finish time to the larger of its current value and this finish plus its own duration. Lower its indegree and queue it when that reaches 0.',
+      'If fewer than n tasks were processed, return -1. Otherwise return the largest finish time.',
+    ],
+    example: {
+      input: 'duration = [3,2,5], dependencies = [[0,2],[1,2]]',
+      steps: [
+        'Tasks 0 and 1 have no prerequisites, so they finish at 3 and 2.',
+        'Task 2 waits for both, so it starts at 3 and finishes at 3 + 5 = 8.',
+        'Every task was processed, so there is no cycle.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Independent tasks overlap. Adding every duration together overstates the time.',
+      'A task finish time must use the maximum over all prerequisites, not just the last one processed.',
+      'A cycle leaves some tasks with indegree above 0 forever. Check the processed count before returning.',
+      'A list of boxed integers for every task is slower than one shared edge array indexed by start offsets.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

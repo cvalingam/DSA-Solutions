@@ -134,6 +134,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  20: {
+    intuition:
+      'Brackets close in the reverse order they open, so the most recent unmatched opening bracket is always the one the next closing bracket must match. A stack holds exactly those unmatched brackets. Pushing the closing character each opener expects turns every check into one comparison with the top of the stack. A string with an odd length can never balance, and once more than half the string is open brackets, the rest cannot close them all.',
+    algorithm: [
+      'Return false if the length is odd.',
+      'Allocate a character stack of size n / 2.',
+      'For an opening bracket, push the closing bracket it needs. If the stack is already full, return false.',
+      'For a closing bracket, return false if the stack is empty or its top is a different character. Otherwise pop it.',
+      'After the scan, the string is valid only when the stack is empty.',
+    ],
+    example: {
+      input: 's = "{[]}"',
+      steps: [
+        'The brace pushes a closing brace, and the square bracket pushes a closing square bracket.',
+        'The next character is a closing square bracket. It matches the top, so it is popped.',
+        'The final closing brace matches the remaining top. The stack ends empty.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'A closing bracket with an empty stack is invalid, as in a string that starts with ).',
+      'Leftover openers at the end make the string invalid even if every closer matched.',
+      'Crossed pairs such as ([)] fail because the top of the stack expects ] when ) arrives.',
+      'Counting each bracket type separately misses crossed pairs. The order matters, so a stack is needed.',
+    ],
+  },
+
   // --- 22. Generate Parentheses -----------------------------------------------
   22: {
     intuition:
