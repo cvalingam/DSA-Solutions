@@ -164,26 +164,28 @@ const explanations: Record<number, RichExplanation> = {
   // --- 22. Generate Parentheses -----------------------------------------------
   22: {
     intuition:
-      'At each position in the string we have at most two choices: place "(" or ")". The constraints  -  open count <= n and close count <= open count  -  automatically prune all invalid branches, so every leaf of the recursion tree is already a valid string. No post-validation is needed.',
+      'Every position holds either an opening or a closing parenthesis. A prefix stays valid as long as no more than n openers are used and closers never outnumber openers. Choosing only moves that keep those two rules means every complete string is already valid, so nothing needs checking afterward. Writing into one shared character buffer and turning it into a string only when it is full avoids copying the prefix on every step.',
     algorithm: [
-      'Recurse with state: (currentString, openCount, closeCount).',
-      'Base case: if currentString.Length == 2*n, add it to results.',
-      'If openCount < n: recurse with "(" appended and openCount+1.',
-      'If closeCount < openCount: recurse with ")" appended and closeCount+1.',
+      'Allocate a character buffer of length 2n and presize the result list to the Catalan number of n.',
+      'Recurse with the open and close counts. Their sum is the next position to fill.',
+      'When the buffer is full, add a new string built from it.',
+      'If open is below n, write an opening parenthesis at that position and recurse with open plus one.',
+      'If close is below open, write a closing parenthesis there and recurse with close plus one.',
     ],
     example: {
       input: 'n = 2',
       steps: [
-        'Start: ("", 0, 0). Can add "(" -> ("(", 1, 0).',
-        'From ("(", 1, 0): add "(" -> ("((", 2, 0) or add ")" -> ("()", 1, 1).',
-        'From ("((", 2, 0): can only add ")" -> ("(()", 2, 1) -> ("(())", 2, 2) .',
-        'From ("()", 1, 1): add "(" -> ("()(", 2, 1) -> ("()()", 2, 2) .',
+        'Position 0 can only take an opening parenthesis, because nothing is open yet.',
+        'At position 1, another opener leads to (( and then two closers give (()).',
+        'Choosing a closer at position 1 gives (), and then an opener and a closer give ()().',
       ],
-      output: '["(())", "()()"]',
+      output: '["(())","()()"]',
     },
     pitfalls: [
-      'Do not use close < n as the condition for adding ")". Use close < open  -  otherwise you generate invalid strings like "))(".',
-      'The total valid combinations equal the Catalan number C(n), not 2^(2n).',
+      'Allow a closing parenthesis only while close is below open. Checking close against n instead creates strings like ))((.',
+      'The number of answers is the Catalan number, which grows much more slowly than 2 to the power 2n.',
+      'Concatenating a new string at every call copies the prefix each time. Overwriting one buffer position is enough because each level only changes its own slot.',
+      'The output itself has Catalan many strings of length 2n, so no method can run faster than writing them out.',
     ],
   },
 

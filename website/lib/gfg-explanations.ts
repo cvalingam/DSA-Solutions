@@ -9971,6 +9971,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'lexicographically-smallest-rotation': {
+    intuition:
+      'Checking every rotation against every other takes quadratic time. Instead, keep two candidate starting positions and compare the rotations that begin there one character at a time. When they first differ after k equal characters, the candidate with the larger character loses, and so does every start up to k positions after it, because each of those rotations would lose the same comparison. Every comparison either extends a match or discards at least one start, so the whole search is linear.',
+    algorithm: [
+      'Copy the string into a character array and set i = 0, j = 1, k = 0.',
+      'While i, j, and k are all below n, compare the characters at i + k and j + k, wrapping past the end by subtracting n.',
+      'If they are equal, increase k.',
+      'If the character at i is larger, move i forward by k + 1. Otherwise move j forward by k + 1. If the two starts collide, move j one more step. Reset k to 0.',
+      'The smaller of i and j is the start of the smallest rotation. Copy the suffix from there, then the prefix before it.',
+    ],
+    example: {
+      input: 's = "bca"',
+      steps: [
+        'Start 0 reads b and start 1 reads c. b is smaller, so j moves to 2.',
+        'Start 0 reads b and start 2 reads a. a is smaller, so i moves to 1.',
+        'Start 1 reads c and start 2 reads a. i moves to 2, collides with j, and j moves to 3, which ends the loop.',
+      ],
+      output: '"abc"',
+    },
+    pitfalls: [
+      'After a mismatch, skip k + 1 positions, not just one. That jump is what keeps the algorithm linear.',
+      'If both pointers land on the same start, separate them, or every later comparison matches itself.',
+      'A string of repeated characters lets k reach n. The loop must stop there and still return the rotation at start 0.',
+      'Wrap indices with one subtraction. Each index is below 2n, so a modulo on every step is unnecessary.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
