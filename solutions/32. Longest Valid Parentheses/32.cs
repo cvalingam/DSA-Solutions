@@ -1,26 +1,45 @@
-// Approach: DP where dp[i] = length of the longest valid parentheses string ending at index i.
-// If s[i] == ')' and s[i-1] == '(': dp[i] = dp[i-2] + 2 (direct match with immediate predecessor).
-// If s[i] == ')' and s[i-1] == ')': check the char at i - dp[i-1] - 1.
-//   If it is '(', then dp[i] = dp[i-1] + 2 + dp[i - dp[i-1] - 2] (extend through the prior valid run).
-// The answer is the maximum dp value.
-// Prepend ')' to avoid out-of-bounds indexing at position 0.
-// Time: O(n) Space: O(n) for the dp array.
+// Approach: Two counter scans. Left to right, count opens and closes. When
+// they are equal the current run is balanced, and when closes exceed opens
+// the run is broken, so both counters reset. That pass misses runs that
+// still have extra opens at the end, such as "(()", so a right to left pass
+// with the roles swapped catches them.
+// Time: O(n) Space: O(1)
 
 public class Solution
 {
     public int LongestValidParentheses(string s)
     {
-        string s2 = ")" + s;
-        // dp[i] := the length of the longest valid parentheses in the substring
-        // s2[1..i]
-        int[] dp = new int[s2.Length];
+        int best = 0;
+        int open = 0;
+        int close = 0;
 
-        for (int i = 1; i < s2.Length; ++i)
+        for (int i = 0; i < s.Length; i++)
         {
-            if (s2[i] == ')' && s2[i - dp[i - 1] - 1] == '(')
-                dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2;
+            if (s[i] == '(')
+                open++;
+            else
+                close++;
+
+            if (open == close)
+                best = Math.Max(best, 2 * close);
+            else if (close > open)
+                open = close = 0;
         }
 
-        return dp.Max();
+        open = close = 0;
+        for (int i = s.Length - 1; i >= 0; i--)
+        {
+            if (s[i] == '(')
+                open++;
+            else
+                close++;
+
+            if (open == close)
+                best = Math.Max(best, 2 * open);
+            else if (open > close)
+                open = close = 0;
+        }
+
+        return best;
     }
 }

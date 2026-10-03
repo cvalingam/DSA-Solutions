@@ -774,26 +774,29 @@ const explanations: Record<number, RichExplanation> = {
   // --- 32. Longest Valid Parentheses ------------------------------------------
   32: {
     intuition:
-      'Use a stack to track indices of unmatched characters. Push -1 as a base sentinel. When ")" is seen and the stack top is a "(" index, pop it (they form a matched pair) and the current valid length is i - stack.Peek(). If the stack becomes empty, push i as the new base.',
+      'A run of parentheses is balanced exactly when it has as many openers as closers and no prefix ever has more closers than openers. Scanning left to right with two counters checks both rules: equal counts mark a balanced run, and extra closers break the run so both counters restart. That pass never sees a run that still has extra openers at the end, such as the one inside "(()". Scanning again from the right with the roles swapped catches those runs, and no stack or array is needed.',
     algorithm: [
-      'Push -1 onto stack as base.',
-      'For each index i: if s[i] == "(", push i.',
-      'Else (s[i] == ")"): pop from stack. If stack is empty, push i as new base. Else update maxLen = max(maxLen, i - stack.Peek()).',
-      'Return maxLen.',
+      'Scan left to right, counting opening and closing parentheses.',
+      'When the counts are equal, record twice the count as a candidate length.',
+      'When closers exceed openers, reset both counters to 0.',
+      'Scan right to left the same way, but reset when openers exceed closers.',
+      'Return the largest length recorded in either pass.',
     ],
     example: {
       input: 's = ")()())"',
       steps: [
-        'i=0 ")" : pop -1 -> empty. Push 0 as base.',
-        'i=1 "(" : push 1. i=2 ")" : pop 1. Stack=[0]. len=2-0=2.',
-        'i=3 "(" : push 3. i=4 ")" : pop 3. Stack=[0]. len=4-0=4.',
-        'i=5 ")" : pop 0 -> empty. Push 5 as base.',
-        'maxLen=4.',
+        'The first closer has no opener, so the counters reset.',
+        'The next four characters keep the counts equal at 1 and then 2, so the length reaches 4.',
+        'The last closer breaks the run and the counters reset again.',
+        'The right to left pass finds nothing longer.',
       ],
       output: '4',
     },
     pitfalls: [
-      'The base sentinel (-1 or the index of an unmatched ")") is critical for correct length calculation.',
+      'One pass is not enough. In "(()" the left pass never sees equal counts, while the right pass finds length 2.',
+      'Reset only when the run becomes impossible to fix, which is extra closers going left to right and extra openers going right to left.',
+      'Record the length when the counts are equal, not when they reset.',
+      'The stack and DP methods also run in linear time but need linear memory. Two counters need constant memory.',
     ],
   },
 

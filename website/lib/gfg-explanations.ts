@@ -9998,6 +9998,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'coils-in-matrix': {
+    intuition:
+      'The matrix is filled in row order, so the value at row r and column c is r times 4n plus c plus 1, and nothing has to be built. Every ring splits into two halves: down the left column then along the bottom, and up the right column then back along the top. The coils take those halves in turns from ring to ring. The second half of each ring is the first half rotated 180 degrees, which means the second coil is simply 16n squared plus 1 minus each entry of the first.',
+    algorithm: [
+      'Let size be 4n and walk the rings from the outside in.',
+      'On an even ring, coil 1 goes down the left column, then right along the bottom row, stopping before the corner.',
+      'On an odd ring, coil 1 goes up the right column, then left along the top row, stopping before the corner.',
+      'Compute each value from its row and column instead of reading a stored matrix.',
+      'Build coil 2 by replacing every value v of coil 1 with 16n squared plus 1 minus v.',
+    ],
+    example: {
+      input: 'n = 1',
+      steps: [
+        'The outer ring is even, so coil 1 reads 1, 5, 9, 13 down the left and then 14, 15 along the bottom.',
+        'The inner ring is odd, so coil 1 reads 11 and then 7 up its right column.',
+        'Coil 2 subtracts each value from 17, giving 16, 12, 8, 4, 3, 2, 6, 10.',
+      ],
+      output: '[[1,5,9,13,14,15,11,7],[16,12,8,4,3,2,6,10]]',
+    },
+    pitfalls: [
+      'Each half ring stops one cell before the next corner, or the two coils share a corner cell.',
+      'The coils swap which half they take on every ring, so check the ring parity.',
+      'Building the full 4n by 4n matrix uses 16n squared extra cells that the row and column formula makes unnecessary.',
+      'Walking both coils separately doubles the work. The 180 degree symmetry gives the second coil from the first.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
