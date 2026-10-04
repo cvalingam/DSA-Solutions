@@ -2984,16 +2984,30 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 678. Valid Parenthesis String -------------------------------------------
   678: {
-    intuition: 'Track the range [lo, hi] of possible open bracket counts. \'(\' increases both, \')\' decreases both, \'*\' expands range. If hi<0 at any point, invalid. Return lo==0 at end.',
+    intuition:
+      'A star can act as an opening parenthesis, a closing one, or nothing. Two failures are possible: a closing parenthesis with nothing able to open it, or an opening parenthesis with nothing able to close it. Reading left to right and treating every star as an opener is the most generous way to cover closers, so if that count still goes negative, no choice of stars helps. Reading right to left and treating every star as a closer checks the openers the same way. If neither count ever goes negative, the stars can be assigned to balance the string.',
     algorithm: [
-      'lo=0, hi=0.',
-      'For each char: if \'(\': lo++,hi++. If \')\': lo--,hi--. If \'*\': lo--,hi++.',
-      'lo = max(lo, 0) (can\'t have negative open count).',
-      'If hi < 0: return false.',
-      'Return lo == 0.',
+      'Keep two counters and walk index i from 0 to n minus 1.',
+      'The forward counter reads s[i]. Add one for an opening parenthesis or a star, and subtract one for a closing parenthesis.',
+      'The backward counter reads s[n minus 1 minus i]. Add one for a closing parenthesis or a star, and subtract one for an opening parenthesis.',
+      'If either counter drops below zero, return false right away.',
+      'If the loop finishes, return true.',
     ],
-    example: { input: '"(*)"', steps: ['(: lo=1,hi=1. *: lo=0,hi=2. ): lo=-1?0, hi=1. End lo=0 ?.'], output: 'true' },
-    pitfalls: ['Clamp lo to 0 after each step. If hi goes negative, it\'s impossible.'],
+    example: {
+      input: 's = "(*))"',
+      steps: [
+        'Forward, the counter goes 1, 2, 1, 0 because the star counts as an opener. It never goes negative.',
+        'Backward, it reads ), ), *, ( and goes 1, 2, 3, 2. It never goes negative either.',
+        'The star can act as an opener, giving (()), so the string is valid.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'One pass is not enough. "((*" passes the forward check, but the backward check fails because the second opener has nothing to close it.',
+      'A star may also be empty. The two checks cover that, because a star that is not needed in either direction can be dropped.',
+      'Stop as soon as a counter is negative. Later characters cannot repair an unmatched prefix.',
+      'The low and high open count method is another linear, constant memory solution with the same cost.',
+    ],
   },
 
   // --- 684. Redundant Connection -----------------------------------------------

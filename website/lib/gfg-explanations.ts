@@ -10025,6 +10025,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'perimeter-of-shapes-in-binary-matrix': {
+    intuition:
+      'Each 1-cell on its own has four sides. When two 1-cells touch along a side, that side is inside the shape, so it disappears from both cells and the total drops by two. The answer is four times the number of 1-cells minus two times the number of touching pairs. Counting only the neighbor above and the neighbor to the left visits every touching pair exactly once, so one scan of the grid is enough and no flood fill is needed.',
+    algorithm: [
+      'Start the perimeter at 0 and scan every cell row by row.',
+      'Skip any cell that is not 1.',
+      'For a 1-cell, add 4.',
+      'If the cell above is also 1, subtract 2. If the cell to the left is also 1, subtract 2.',
+      'Return the total after the scan.',
+    ],
+    example: {
+      input: 'mat = [[0,1,0,0,0],[1,1,1,0,0],[1,0,0,0,0]]',
+      steps: [
+        'There are five 1-cells, which gives 20 sides.',
+        'The cells touch in four places: the top cell with the center below it, the center with its left and right neighbors, and the left cell with the one below it.',
+        'Each touching pair removes 2, so the perimeter is 20 minus 8.',
+      ],
+      output: '12',
+    },
+    pitfalls: [
+      'Check only up and left. Checking all four directions counts each shared side twice.',
+      'Separate shapes do not need separate handling, because the formula adds up every shape at once.',
+      'A recursive flood fill can overflow the stack on a large connected shape.',
+      'Marking visited cells by overwriting the input changes the caller matrix. The counting pass leaves it alone.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
