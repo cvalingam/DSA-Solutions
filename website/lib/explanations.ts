@@ -3413,15 +3413,30 @@ const explanations: Record<number, RichExplanation> = {
 
   // --- 856. Score of Parentheses -----------------------------------------------
   856: {
-    intuition: 'Use a stack to track running scores. \'(\' pushes 0 (new context). \')\' pops: if top was 0, contribute 1; else double the popped value. Add to new top.',
+    intuition:
+      'Only an empty pair () creates score. Every pair wrapped around it doubles that value, and side by side pieces simply add. So an empty pair nested inside d other pairs contributes 2 to the power d, and the total is the sum over all empty pairs. Tracking the current depth while scanning finds each empty pair and its depth in one pass, with no stack.',
     algorithm: [
-      'Initialize stack with [0].',
-      'For \'(\': push 0.',
-      'For \')\': v = pop(). top += v == 0 ? 1 : 2*v.',
-      'Return stack[0].',
+      'Start the answer and the depth at 0.',
+      'Look at each character together with the next one.',
+      'If an opening parenthesis is immediately followed by a closing one, add 1 shifted left by the current depth.',
+      'Increase the depth on an opening parenthesis and decrease it on a closing one.',
+      'Return the answer.',
     ],
-    example: { input: '"(()(()))"', steps: ['Push(0)(0)?pop 0?top+=1?[0,1]. Push(0)?pop 0?top+=1?[0,2]. Pop 2?top+=4?[4].'], output: '6' },
-    pitfalls: ['Empty pairs "()" score 1. Non-empty "(X)" score 2*score(X). The stack approach handles arbitrary nesting.'],
+    example: {
+      input: 's = "(()(()))"',
+      steps: [
+        'The first empty pair starts at index 1, inside one outer pair, so it adds 2.',
+        'The second empty pair starts at index 4, inside two pairs, so it adds 4.',
+        'No other opener is followed directly by a closer, so the total is 6.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Only an opener directly followed by a closer scores. A closer that ends a bigger group adds nothing by itself.',
+      'Read the depth before updating it for the current opener, so the empty pair uses the depth of the pairs around it.',
+      'The constraints keep the depth small, so the shifted value fits in an int.',
+      'A stack of partial scores gives the same answer but uses linear memory. The depth counter needs constant memory.',
+    ],
   },
 
   // --- 860. Lemonade Change ----------------------------------------------------

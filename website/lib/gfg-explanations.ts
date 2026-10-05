@@ -10052,6 +10052,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'your-social-network': {
+    intuition:
+      'Each user from 2 to n points to one friend with a smaller number, so the links form a tree rooted at user 1. The users reachable from i are exactly the friends along the chain from i down to 1, and the distance is the number of links taken. Because every link goes to a smaller number, the chain is already in decreasing order. Writing it from the back of a small array gives increasing order with no sort, and the total work matches the size of the output.',
+    algorithm: [
+      'Compute the depth of every user in one pass. User 1 has depth 0, and user i has the depth of its friend plus one.',
+      'The sum of all depths is the number of output rows, so presize the result list to it.',
+      'For each user i, follow the friend links depth[i] times, writing each reached user into a scratch array from the last slot toward the first.',
+      'Read the scratch array from the front. The user at position k is at distance depth[i] minus k, so append the row [i, user, distance].',
+      'Box every number from 0 to n once and reuse those objects for every row.',
+    ],
+    example: {
+      input: 'arr = [1,1,2]',
+      steps: [
+        'User 2 follows user 1 and user 3 follows user 1, so each gives one row with distance 1.',
+        'User 4 follows user 2, which follows user 1. The chain is 2 then 1.',
+        'Reversed, user 4 reaches 1 at distance 2 and 2 at distance 1.',
+      ],
+      output: '[[2,1,1],[3,1,1],[4,1,2],[4,2,1]]',
+    },
+    pitfalls: [
+      'Rows for one user must list the reached users in increasing order. Reversing the chain gives that without sorting.',
+      'The friend of user i is arr[i minus 2], because the array starts at user 2.',
+      'A long single chain produces about n squared over 2 rows. That is the output size, so no method can avoid it.',
+      'Boxing the same small range of numbers for every row creates many objects. A shared array of boxed values avoids that.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
