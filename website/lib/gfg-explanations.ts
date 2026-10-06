@@ -10079,6 +10079,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-increasing-path-in-matrix': {
+    intuition:
+      'Draw an arrow from each cell to every neighbor with a strictly larger value. Values only go up along arrows, so the arrows can never loop back, and the grid becomes a directed acyclic graph. The longest increasing path is the longest chain of arrows. Peeling that graph in layers finds it without recursion: cells with no smaller neighbor form the first layer, removing them frees the next layer, and the number of layers is the answer.',
+    algorithm: [
+      'For each cell, count how many neighbors are strictly smaller. Queue every cell whose count is 0.',
+      'Process the queue one layer at a time and count the layers.',
+      'For each cell removed, look at every strictly larger neighbor and lower its count.',
+      'When a count reaches 0, every smaller neighbor has been removed, so queue that cell for the next layer.',
+      'Return the number of layers processed.',
+    ],
+    example: {
+      input: 'matrix = [[1,2,9],[5,3,8],[4,6,7]]',
+      steps: [
+        'Cells 1 and 4 have no smaller neighbor, so they form the first layer.',
+        'Along the longest chain, each later layer frees the next value: 2, then 3, then 6, then 7, then 8, then 9.',
+        'The path 1, 2, 3, 6, 7, 8, 9 spans seven layers.',
+      ],
+      output: '7',
+    },
+    pitfalls: [
+      'Use strictly larger values. Equal neighbors do not extend an increasing path.',
+      'A recursive search with memoization is also linear, but a long snake shaped path can overflow the stack.',
+      'Count layers, not cells. Many cells can share a layer.',
+      'Searching from every cell without memoization repeats the same work and can take exponential time.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

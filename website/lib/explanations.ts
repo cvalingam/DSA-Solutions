@@ -3741,24 +3741,27 @@ const explanations: Record<number, RichExplanation> = {
 
   921: {
     intuition:
-      'Scan left to right maintaining how many unmatched opening parentheses remain. A closing bracket without a matching open must be fixed by inserting an open earlier; leftover opens need closing brackets appended. Minimum additions = unmatched opens + unmatched closes.',
+      'Every character that cannot be matched needs exactly one inserted partner, and every match that is possible should be taken. Scanning left to right, a closing parenthesis should pair with any opener still waiting, because leaving it unpaired only creates more work. If nothing is waiting, the closer can only be fixed by inserting an opener before it. Whatever openers are still waiting at the end each need a closer appended. A stack would hold exactly those unmatched characters, so two counters are enough.',
     algorithm: [
-      'Initialize open = 0, close = 0.',
-      'For each char: if \'(\', open++. If \')\' and open > 0, open-- (match). Else close++ (unmatched close).',
-      'Return open + close.',
+      'Start with open = 0 for waiting openers and adds = 0 for inserted openers.',
+      'On an opening parenthesis, increase open.',
+      'On a closing parenthesis, decrease open if it is positive. Otherwise increase adds.',
+      'After the scan, return adds plus open.',
     ],
     example: {
-      input: 's = "())"',
+      input: 's = "()))(("',
       steps: [
-        '\'(\' → open=1. \')\' → open=0. \')\' → close=1 (no open to match).',
-        'Need 1 insert for extra close; 0 leftover opens.',
+        'The first pair matches, so open returns to 0.',
+        'The next two closers find nothing waiting, so adds becomes 2.',
+        'The last two openers are still waiting at the end, so open is 2.',
       ],
-      output: '1',
+      output: '4',
     },
     pitfalls: [
-      'Greedy: always match a close with the nearest pending open.',
-      'Do not count matched pairs toward additions.',
-      'Empty string needs 0 additions.',
+      'Match a closer with a waiting opener whenever possible. Skipping a match never lowers the total.',
+      'Openers left at the end also need partners, so add them to the answer.',
+      'A closer that comes before any opener cannot be matched by an opener later in the string.',
+      'A stack works but uses linear memory. The two counts carry everything it would store.',
     ],
   },
 

@@ -1,24 +1,25 @@
-// Approach: Use a stack; unmatched '(' and ')' characters remain; the stack size at the end equals the number of additions needed.
-// Time: O(n) Space: O(n)
+// Approach: The stack only ever holds unmatched closers below unmatched
+// openers, so two counters replace it. open counts openers still waiting for
+// a match. A closer uses one of them if possible; otherwise it needs an added
+// opener. The answer is those added openers plus the openers left at the end.
+// Time: O(n) Space: O(1)
 
 public class Solution
 {
     public int MinAddToMakeValid(string s)
     {
-        Stack<char> st = new Stack<char>();
-        for (int i = 0; i < s.Length; i++)
+        int open = 0;
+        int adds = 0;
+        foreach (char c in s)
         {
-            if (s[i] == '(')
-                st.Push(s[i]);
+            if (c == '(')
+                open++;
+            else if (open > 0)
+                open--;
             else
-            {
-                if (st.Count > 0 && st.Peek() == '(')
-                    st.Pop();
-                else
-                    st.Push(s[i]);
-            }
+                adds++;
         }
 
-        return st.Count;
+        return adds + open;
     }
 }
