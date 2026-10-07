@@ -326,6 +326,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   295: ['two-pointers', 'design', 'sorting', 'heap'],
   297: ['string', 'tree', 'depth-first-search', 'breadth-first-search', 'design', 'binary-tree'],
   300: ['array', 'binary-search', 'dynamic-programming'],
+  301: ['string', 'backtracking', 'breadth-first-search'],
   303: ['array', 'design', 'prefix-sum'],
   304: ['array', 'design', 'prefix-sum', 'matrix'],
   307: ['array', 'design', 'binary-indexed-tree', 'segment-tree'],

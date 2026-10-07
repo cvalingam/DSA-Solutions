@@ -2070,6 +2070,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Count non-bull occurrences only  -  do not double-count bull positions in the cow calculation.'],
   },
 
+  301: {
+    intuition:
+      'Removing the fewest parentheses means fixing exactly the places where the string goes wrong. Scanning left to right, the first time closers outnumber openers, one closer at or before that point has to go, and any of them works. After that prefix is fixed, the scan continues from the same spot. Extra openers are the mirror problem, so reversing the string and swapping the roles of the two parentheses handles them with the same code. Every string that survives both passes is valid, and careful choices keep each one from being built twice.',
+    algorithm: [
+      'Scan from the last scan position with a balance that rises on an opener and falls on a closer.',
+      'At the first point where the balance is negative, try removing each closer from the last removal position up to that point. Skip a closer that directly follows another closer, because removing either one gives the same string.',
+      'Recurse on each shorter string, continuing the scan at the same index and the removals at the removed index.',
+      'When a forward scan finishes balanced, reverse the string and run the same process with the opening parenthesis as the closer.',
+      'When the reversed pass also finishes, reverse back and add the string to the answer.',
+    ],
+    example: {
+      input: 's = "()())()"',
+      steps: [
+        'The balance first goes negative at index 4, so one of the closers at indexes 1, 3, or 4 must go.',
+        'Removing index 1 gives "(())()". Removing index 3 gives "()()()". Index 4 directly follows another closer, so it is skipped.',
+        'Both strings have no extra openers, so the reversed pass changes nothing.',
+      ],
+      output: '["(())()","()()()"]',
+    },
+    pitfalls: [
+      'Removals must not move back before the last removal point, or the same string is reached in two different orders.',
+      'Letters are kept and never removed. Only the two parenthesis characters affect the balance.',
+      'Trying every deletion and filtering with a set at the end works but builds far more strings.',
+      'The answer can contain many strings, so the worst case is still exponential. The pruning only removes wasted work.',
+    ],
+  },
+
   // --- 303. Range Sum Query  -  Immutable ----------------------------------------
   303: {
     intuition:

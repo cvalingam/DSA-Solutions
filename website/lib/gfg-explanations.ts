@@ -10106,6 +10106,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-path-sum-between-two-leaves': {
+    intuition:
+      'Any path between two leaves turns around at exactly one node, and that node must have both a left and a right child. So for every node it is enough to know the best sum of a path going down from it to a leaf. A node with two children joins its best left and best right downward paths into a leaf to leaf candidate. A node with one child is not a leaf, so its downward path must continue through that child even when the sum gets worse.',
+    algorithm: [
+      'Return -1 for an empty tree.',
+      'List the nodes in level order and remember each child position. Every parent appears before its children.',
+      'Walk that list backwards. A leaf has a downward sum equal to its value.',
+      'A node with two children updates the answer with its value plus both children sums, and its downward sum is its value plus the larger child sum.',
+      'A node with one child has a downward sum of its value plus that child sum.',
+      'If no node had two children, there are fewer than two leaves, so return -1. Otherwise return the best candidate.',
+    ],
+    example: {
+      input: 'root = [3,4,5,-10,4]',
+      steps: [
+        'The leaves -10, 4, and 5 return their own values.',
+        'Node 4 joins -10 and 4 for a candidate of -2, and passes up 4 + 4 = 8.',
+        'Node 3 joins 8 and 5 for a candidate of 16, which is the best leaf to leaf path 4, 4, 3, 5.',
+      ],
+      output: '16',
+    },
+    pitfalls: [
+      'A root with only one child is not a leaf. Treating it as one allows paths that the problem does not count.',
+      'A node with one child must pass through it. Taking 0 for the missing side would end a path at a node that is not a leaf.',
+      'Values can be negative, so start the best candidate at the smallest integer rather than 0.',
+      'A recursive post order walk can overflow the stack on a skewed tree. Walking the level order list backwards avoids recursion.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
