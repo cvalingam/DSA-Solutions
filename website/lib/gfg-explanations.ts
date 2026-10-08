@@ -10134,6 +10134,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-frequency-with-k-increments': {
+    intuition:
+      'Increments only raise values, so the target value should be one that already exists, and the cheapest numbers to raise are the ones just below it. After sorting, those numbers form a window that ends at the target. Making the whole window equal to its right end costs the right value times the window size minus the window sum. A sliding window keeps that cost within k, and because only the best size matters, the window never needs to shrink.',
+    algorithm: [
+      'Sort the array.',
+      'Move the right end forward one element at a time and add it to the window sum.',
+      'If the right value times the window size minus the sum is more than k, drop the leftmost element so the window slides forward without shrinking.',
+      'Use a long for the cost, because the product can exceed the int range.',
+      'Return the array length minus the final left index, which is the largest window that ever fit.',
+    ],
+    example: {
+      input: 'arr = [1,4,8,13], k = 5',
+      steps: [
+        'Raising 4 to 8 costs 4, so the window 4, 8 fits with size 2.',
+        'Adding 13 would cost 13 times 3 minus 25, which is 14, too much.',
+        'The window 8, 13 costs 5 and also has size 2, and no window of size 3 fits.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Only increments are allowed, so raise smaller numbers toward the largest one in the window.',
+      'Compute the cost with a long. A large value times a large window can overflow an int.',
+      'The window size never goes down, so the final size is the answer and no separate maximum is needed.',
+      'Sorting dominates the running time. The window itself takes linear time.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

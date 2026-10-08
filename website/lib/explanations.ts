@@ -4010,6 +4010,32 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Mod at every step prevents overflow.'],
   },
 
+  1021: {
+    intuition:
+      'The string splits into primitive pieces, and each piece starts when the depth leaves 0 and ends when it comes back to 0. The parentheses to drop are exactly those boundary characters. An opening parenthesis is outermost when the depth is 0 just before it, and a closing parenthesis is outermost when the depth returns to 0 just after it. Everything else is copied as is, so one depth counter replaces the stack.',
+    algorithm: [
+      'Allocate a character buffer the size of the input and set the depth to 0.',
+      'On an opening parenthesis, copy it if the depth is already above 0, then increase the depth.',
+      'On a closing parenthesis, decrease the depth first, then copy it if the depth is still above 0.',
+      'Build the answer from the filled part of the buffer.',
+    ],
+    example: {
+      input: 's = "(()())(())"',
+      steps: [
+        'The first piece is (()()). Its outer pair is dropped, leaving ()().',
+        'The second piece is (()). Its outer pair is dropped, leaving ().',
+        'Joining the inner parts gives ()()().',
+      ],
+      output: '"()()()"',
+    },
+    pitfalls: [
+      'Check the depth before increasing it for an opener, and after decreasing it for a closer. Swapping the order keeps the wrong characters.',
+      'A piece like () has no inner part, so it contributes nothing.',
+      'The input is valid, so the depth never goes below 0.',
+      'A stack of opening parentheses only ever reports its size. A counter stores that size in constant space.',
+    ],
+  },
+
   1022: {
     intuition: 'DFS tracking current binary value. At leaf: add value to sum. Pass accumulated value down.',
     algorithm: [
