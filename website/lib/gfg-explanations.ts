@@ -10161,6 +10161,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-operations-to-reach-n': {
+    intuition:
+      'Starting from 0, the allowed moves are adding 1 or doubling. Thinking backwards from n is easier: an odd number can only come from adding 1, and an even number is best reached by doubling half of it. Each set bit of n therefore costs one addition, and each step from the top bit down costs one doubling. The answer is the number of set bits plus the bit length minus one, and both counts are single instructions in Java.',
+    algorithm: [
+      'If n is 0, no operations are needed.',
+      'Count the set bits of n with Integer.bitCount.',
+      'Find the bit length minus one as 31 minus the number of leading zeros.',
+      'Return the sum of those two values.',
+    ],
+    example: {
+      input: 'n = 7',
+      steps: [
+        'In binary, 7 is 111, which has three set bits and a length of three.',
+        'The moves are 0 to 1, double to 2, add to 3, double to 6, and add to 7.',
+        'That is three additions plus two doublings, for five operations.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'The first move from 0 must be an addition, because doubling 0 stays at 0.',
+      'Subtracting when n is odd and halving when it is even is the same greedy rule, but it loops once per bit.',
+      'A power of two needs one addition and then only doublings.',
+      'Use the built in bit functions instead of a loop to get constant time.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
