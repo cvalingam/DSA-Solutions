@@ -1004,6 +1004,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2326: ['array', 'linked-list', 'matrix', 'simulation'],
   2327: ['dynamic-programming'],
   2331: ['tree', 'depth-first-search', 'binary-tree'],
+  2333: ['array', 'binary-search', 'greedy', 'sorting', 'heap'],
   2337: ['two-pointers', 'string'],
   2338: ['math', 'dynamic-programming', 'combinatorics', 'number-theory'],
   2342: ['array', 'hash-table', 'sorting'],

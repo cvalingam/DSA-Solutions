@@ -6341,6 +6341,33 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Post-order evaluation. OR=2, AND=3. Return boolean.'],
   },
 
+  2333: {
+    intuition:
+      'Only the absolute difference at each index matters, and a change to either array moves that difference by one, so k1 and k2 merge into a single budget k. Squares grow fastest at the top, so every unit should lower the current largest difference. Spending units that way flattens the largest values together. Since differences are bounded, counting them in buckets and sweeping levels from the top finds the final shape directly, without a heap.',
+    algorithm: [
+      'Compute every difference, its total, and the largest one. If the total is at most k, every difference can reach 0, so return 0.',
+      'Count how many indexes have each difference value.',
+      'Sweep levels from the largest down. The group is every index at or above the current level. Lowering the whole group by one level costs its size.',
+      'Stop at the first level where k is smaller than the group. There, k of the group drop one more level and the rest stay.',
+      'Add the squares for that group and for every smaller bucket, using long arithmetic.',
+    ],
+    example: {
+      input: 'nums1 = [1,4,10,12], nums2 = [5,8,6,9], k1 = 1, k2 = 1',
+      steps: [
+        'The differences are 4, 4, 4, and 3, and the budget is 2.',
+        'Three indexes share the top level 4, so the group cannot drop as a whole. Two of them go down to 3.',
+        'The values become 3, 3, 4, and 3, so the sum of squares is 9 + 9 + 16 + 9.',
+      ],
+      output: '43',
+    },
+    pitfalls: [
+      'Add k1 and k2 as long values. Each can be up to a billion, so their sum overflows an int.',
+      'Return 0 early when the budget covers every difference, or the sweep runs past level 0.',
+      'Squares can reach about 10 to the power 10 each, so the answer needs a long.',
+      'A max heap that lowers one level per step is also correct, but the bucket sweep avoids the log factor and the allocations.',
+    ],
+  },
+
   2337: {
     intuition: 'Check if you can reach destination with k-1 moves and 1 final step. From position x with k moves: can reach positions x-k+1 to x (move left any amount, then step right).',
     algorithm: [

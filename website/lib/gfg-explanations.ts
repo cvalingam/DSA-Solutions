@@ -10187,6 +10187,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'balancing-with-distinct-powers': {
+    intuition:
+      'Each weight a to the power i can be left out, put on the pan opposite b, or put on the same pan as b. So b must be a sum of powers of a with coefficients of minus one, zero, or one. Reading b in base a from the lowest digit decides each power in turn. A remainder of 0 leaves that power unused, a remainder of 1 places it opposite b, and a remainder of a minus 1 places it beside b and carries one into the next power. Any other remainder cannot be fixed.',
+    algorithm: [
+      'Copy b into a long so the carry step cannot overflow.',
+      'While the value is positive, take its remainder modulo a.',
+      'For remainder 0, divide by a. For remainder 1, subtract 1 and divide.',
+      'For remainder a minus 1, add 1 and divide. That weight sits on the same pan as b.',
+      'For any other remainder, return false. When the value reaches 0, return true.',
+    ],
+    example: {
+      input: 'a = 3, b = 7',
+      steps: [
+        '7 leaves remainder 1, so weight 1 goes opposite b and the value becomes 2.',
+        '2 leaves remainder 2, which is a minus 1, so weight 3 goes beside b and the value becomes 1.',
+        '1 leaves remainder 1, so weight 9 goes opposite b. That balances because 7 plus 3 equals 9 plus 1.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'A remainder of 1 and a remainder of a minus 1 coincide when a is 2. Either branch works there.',
+      'The carry adds 1 before dividing. With an int, b equal to the largest int wraps negative and gives a wrong answer.',
+      'Each power may be used only once, so a remainder between 2 and a minus 2 makes the answer false.',
+      'The loop runs once per base a digit, so it takes logarithmic time.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
