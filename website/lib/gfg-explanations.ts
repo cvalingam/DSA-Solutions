@@ -10214,6 +10214,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'sort-two-parts-sorted': {
+    intuition:
+      'The array is made of two parts that are each already sorted, so sorting from scratch throws that order away. The first place where a value is smaller than the one before it marks where the second part begins. From there, this is the merge step of merge sort. Only one part needs a spare copy, so copying the shorter one keeps the extra memory small. The direction of the merge decides which part must be copied: filling from the front is safe when the left part is in the buffer, and filling from the back is safe when the right part is.',
+    algorithm: [
+      'Scan forward while each value is at least the one before it. The index where this stops is mid, the start of the second part.',
+      'If the scan reached the end, the array is already sorted, so return.',
+      'If the left part is no longer than the right, copy it into a buffer. Merge the buffer with the right part from the front, writing at index 0 upward, and finish by copying any leftover buffer values.',
+      'Otherwise copy the right part into a buffer. Merge the left part with the buffer from the back, writing at the last index downward, and finish by copying any leftover buffer values.',
+      'Leftover values still sitting in the array are already in their final places, so they need no copy.',
+    ],
+    example: {
+      input: 'arr = [2,3,8,-1,7,10]',
+      steps: [
+        'The order drops between 8 and -1, so the parts are 2, 3, 8 and -1, 7, 10.',
+        'Both parts have length 3, so the left part goes into the buffer and the merge runs from the front.',
+        'Picking the smaller head each time writes -1, 2, 3, 7, and 8. The value 10 is already in the last slot.',
+      ],
+      output: '[-1,2,3,7,8,10]',
+    },
+    pitfalls: [
+      'Calling a full sort ignores the two sorted parts and costs n log n time instead of linear time.',
+      'Merging from the front with the right part in the buffer can overwrite left values before they are read. Match the merge direction to the copied part.',
+      'Use a strict drop to find the split. Equal neighbors belong to the same sorted part.',
+      'If there is no drop at all, return early rather than merging an empty part.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

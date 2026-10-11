@@ -7180,6 +7180,35 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2778: {
+    intuition:
+      'A 1-indexed position i is special when it divides n, the length of the array. So the task is really to list the divisors of n and add up the squares of the values sitting there. Divisors come in pairs: whenever d divides n, so does n / d, and one of the two is at most the square root of n. Trying d only up to that square root finds both members of every pair, so the scan is far shorter than walking the whole array.',
+    algorithm: [
+      'Let n be the array length and start the answer at 0.',
+      'Loop d from 1 while d times d is at most n.',
+      'Skip d when n is not divisible by it.',
+      'Otherwise add the square of nums[d - 1], converting the position to a 0-based index.',
+      'Let pair be n / d. If pair is different from d, also add the square of nums[pair - 1].',
+      'Return the answer once the loop ends.',
+    ],
+    example: {
+      input: 'nums = [2,7,1,19,18,3]',
+      steps: [
+        'n is 6, so d runs over 1 and 2, because 3 times 3 is already larger than 6.',
+        'd = 1 divides 6 and pairs with 6, adding 2 squared and 3 squared for 4 + 9 = 13.',
+        'd = 2 divides 6 and pairs with 3, adding 7 squared and 1 squared for 49 + 1 = 50.',
+        'The special positions are 1, 2, 3, and 6, and the total is 13 + 50.',
+      ],
+      output: '63',
+    },
+    pitfalls: [
+      'Positions are 1-indexed. Position d lives at index d - 1 in the array.',
+      'When n is a perfect square, d and n / d are the same position. Count it only once.',
+      'Checking every index against n works but takes linear time, while divisor pairs need only the square root of n steps.',
+      'Write the loop bound as d * d <= n to avoid floating point square roots.',
+    ],
+  },
+
   2779: {
     intuition: 'Maximum beauty of array: change each element by at most k, then find longest equal-element subarray. Each element can become any value in [nums[i]-k, nums[i]+k]. Find max overlapping intervals.',
     algorithm: [
