@@ -7360,6 +7360,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Answer = (sum of non-divisible) - (sum of divisible). Direct formula.'],
   },
 
+  2897: {
+    intuition:
+      'The operation replaces two numbers with their AND and their OR. Looking at one bit at a time, it can move a set bit from one number to the other, but it never creates or destroys one, so the count of each bit across the array stays fixed. Squaring rewards big numbers, so the best plan piles as many bits as possible into the same few numbers. If you build the largest number first, then the next largest, and so on, number j has bit b exactly when more than j inputs had bit b. That means 30 counters describe every number you could build.',
+    algorithm: [
+      'Count how many inputs have each of the 30 bits set, visiting only the set bits of each number.',
+      'Track the largest count. Built numbers past that index are 0 and add nothing.',
+      'For each j from 0 up to the smaller of k and the largest count, set bit b in the value when its count is more than j.',
+      'Add the square of that value to the answer modulo 1e9+7, using a 64-bit integer for the product.',
+      'Return the answer.',
+    ],
+    example: {
+      input: 'nums = [2,6,5,8], k = 2',
+      steps: [
+        'Bit 0 appears once, bit 1 twice, bit 2 twice, and bit 3 once.',
+        'The first built number takes all four bits and is 15.',
+        'The second takes bits 1 and 2, which still have a count left, and is 6.',
+        '15 squared plus 6 squared is 225 + 36.',
+      ],
+      output: '261',
+    },
+    pitfalls: [
+      'The values can reach 1e9, so square them in a 64-bit integer before taking the modulus.',
+      'Do not try to simulate the operation on pairs. Counting bits gives the final numbers directly.',
+      'Choosing the k largest original values is wrong, because the operation can make numbers larger than any input.',
+      'Storing all n built numbers works, but the 30 bit counts already describe each one.',
+    ],
+  },
+
   2900: {
     intuition: 'Find longest valid sequence by removing some elements. Subsequence where adjacent difference alternates sign.',
     algorithm: [

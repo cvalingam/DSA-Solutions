@@ -10241,6 +10241,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-squares-with-full-cuts': {
+    intuition:
+      'Every cut must run straight across the whole current piece, from one edge to the opposite edge. On an n by m rectangle with n at most m, the only cut that frees a square takes an n by n square off the long side. Doing that as often as it fits removes m / n squares and leaves an n by (m mod n) rectangle. That is one step of the Euclidean algorithm for the GCD, so the total number of squares is the sum of the quotients it produces.',
+    algorithm: [
+      'Start the count at 0.',
+      'While both sides are positive, swap them if needed so n is the shorter side.',
+      'Add m / n to the count, since that many n by n squares come off the long side.',
+      'Replace m with m mod n, the strip left over after those cuts.',
+      'When one side reaches 0, the rectangle is fully cut. Return the count.',
+    ],
+    example: {
+      input: 'n = 4, m = 11',
+      steps: [
+        '11 / 4 gives two 4 by 4 squares, leaving a 4 by 3 rectangle.',
+        '4 / 3 gives one 3 by 3 square, leaving a 3 by 1 rectangle.',
+        '3 / 1 gives three 1 by 1 squares and the rectangle is gone.',
+        'The total is 2 + 1 + 3.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'Subtracting one square per loop is the same idea, but it takes m / n steps instead of one division.',
+      'Make sure the shorter side is the divisor on every step, or the quotient becomes 0 and nothing is cut.',
+      'Full cuts mean you cannot carve a large square out of the middle, so the general tiling answer does not apply.',
+      'The count never exceeds the longer side, so an int is enough.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
