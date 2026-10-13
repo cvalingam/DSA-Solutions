@@ -10269,6 +10269,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'adding-ones': {
+    intuition:
+      'The array starts as n zeros, and each update k adds 1 to every position from k to the end. Applying every update directly could touch almost the whole array each time. Instead, each update only records where its range starts. The final value at a position is the number of updates whose start is at or before it, which is a prefix sum of those marks. Because that running count can only grow, neighboring positions often share the same value, and the same boxed number can be reused for all of them.',
+    algorithm: [
+      'Create a count array of size n. For each update k, increment index k - 1.',
+      'Presize the result list to n.',
+      'Walk the positions from left to right, adding each mark to a running count.',
+      'When the count changes, box the new value once. Append the current boxed value at every position.',
+      'Return the list.',
+    ],
+    example: {
+      input: 'n = 4, updates = [1,1,2,3]',
+      steps: [
+        'The marks are 2 at index 0, 1 at index 1, and 1 at index 2.',
+        'The running count becomes 2, then 3, then 4.',
+        'The last position adds nothing new and keeps 4.',
+      ],
+      output: '[2, 3, 4, 4]',
+    },
+    pitfalls: [
+      'Updates are 1 based, so update k marks index k - 1.',
+      'Adding 1 to every position for every update takes n times q time and is too slow for large inputs.',
+      'The range always runs to the end of the array, so no end marker is needed.',
+      'Boxed Integer values above 127 are new objects each time, so reusing one for a run of equal counts saves allocations.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

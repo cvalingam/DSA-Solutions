@@ -11026,6 +11026,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3727: {
+    intuition:
+      'You may rearrange the array freely, and the score adds the squares at even indices and subtracts the squares at odd indices. With n elements there are n / 2 odd slots, so exactly n / 2 squares are subtracted and the rest are added. To make the score as large as possible, the subtracted squares should be the smallest ones. The score is then the total of all squares minus twice the smallest half. A square depends only on the absolute value, and those values are small, so counting them replaces a full sort.',
+    algorithm: [
+      'In one pass, add every square to a 64-bit total and record the largest absolute value.',
+      'Count how many times each absolute value appears.',
+      'Walk the counts from 0 upward, taking values until n / 2 of them have been taken, and add up their squares.',
+      'Return the total minus twice that smallest half sum.',
+    ],
+    example: {
+      input: 'nums = [1,-1,2,-2,3,-3]',
+      steps: [
+        'The squares are 1, 1, 4, 4, 9, 9, which add up to 28.',
+        'n / 2 is 3, so the three smallest squares 1, 1, and 4 are subtracted. Their sum is 6.',
+        'An order such as [3,1,-3,-1,2,-2] adds 9, 9, and 4 and subtracts 1, 1, and 4.',
+        'The score is 28 minus 2 times 6.',
+      ],
+      output: '16',
+    },
+    pitfalls: [
+      'Negative numbers have the same square as their absolute value, so sort or count by absolute value.',
+      'With an odd length, the extra element goes to an even index and is added, so only n / 2 squares are subtracted.',
+      'Squares can reach 1.6e9, and their sum overflows an int. Keep the total in a long.',
+      'Sorting works but costs n log n time. Counting the small absolute values is linear.',
+    ],
+  },
+
   2948: {
     intuition:
       'You may swap two values only when their absolute difference is at most limit. That relation is transitive along a chain of nearby values, so after sorting the numbers, consecutive gaps of size at most limit glue them into connected components. Inside one component every value can move to any index that belongs to that same component. The lexicographically smallest layout puts the sorted values of the component into the sorted indices of the component.',
