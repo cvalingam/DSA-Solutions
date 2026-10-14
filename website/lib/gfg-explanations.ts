@@ -10296,6 +10296,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'roll-characters-of-string': {
+    intuition:
+      'A roll of r moves each of the first r characters one letter forward, with z wrapping around to a. Doing each roll directly could touch most of the string every time. The key question for one character is only how many rolls reach it. Character i is reached by every roll with r larger than i, so the count is a suffix sum. Mark each roll at its last index, sweep from the right while adding the marks, and that running total is exactly the shift for each character.',
+    algorithm: [
+      'Create a count array of size n. For each roll r above 0, increment index r - 1.',
+      'Copy the string into a character array and set a running total to 0.',
+      'Walk from the last index to the first, adding the count at each index to the running total.',
+      'Replace the character with the letter that is running total steps later, taking the result modulo 26.',
+      'Return a new string from the character array.',
+    ],
+    example: {
+      input: 's = "bca", roll = [1,2,3]',
+      steps: [
+        'The marks are one each at indices 0, 1, and 2.',
+        'From the right, index 2 has total 1, so a becomes b.',
+        'Index 1 has total 2, so c becomes e. Index 0 has total 3, so b becomes e.',
+      ],
+      output: '"eeb"',
+    },
+    pitfalls: [
+      'A roll of r covers indices 0 through r - 1, so the mark goes at r - 1.',
+      'A roll of 0 shifts nothing. Skip it so it does not index position -1.',
+      'Wrap with modulo 26 after adding the total, or letters past z become symbols.',
+      'Applying each roll directly takes n times q time, which is too slow for long inputs.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

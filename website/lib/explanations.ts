@@ -11026,6 +11026,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3723: {
+    intuition:
+      'You need a number with exactly num digits whose digits add up to sum, and among those the one with the largest sum of squared digits, breaking ties by the larger number. Squares reward big digits: moving one unit from a smaller digit to a larger one always raises the total of squares. So the best digits pack the sum into as many 9s as possible, then one leftover digit, then zeros. Writing the 9s first, then the leftover, then the zeros also gives the largest number with those digits.',
+    algorithm: [
+      'If num times 9 is less than sum, even all 9s cannot reach it, so return an empty string.',
+      'Let nines be sum / 9 and rest be sum % 9.',
+      'Write nines copies of 9 at the front of a string of length num.',
+      'If rest is above 0, write that digit next.',
+      'Fill the remaining positions with 0 and return the string.',
+    ],
+    example: {
+      input: 'num = 2, sum = 17',
+      steps: [
+        '17 / 9 is 1 with remainder 8, so one 9 and then an 8.',
+        'No positions are left for zeros.',
+        'The squares add up to 81 + 64 = 145, more than any other two-digit split of 17.',
+      ],
+      output: '"98"',
+    },
+    pitfalls: [
+      'If sum is more than 9 times num, no answer exists, so return "".',
+      'Do not append a 0 for the remainder. A zero remainder means the 9s already reach sum exactly.',
+      'Putting zeros first would give a smaller number, and with leading zeros it would not even have num digits.',
+      'Build the string in one buffer. Joining several temporary strings copies the digits more than once.',
+    ],
+  },
+
   3727: {
     intuition:
       'You may rearrange the array freely, and the score adds the squares at even indices and subtracts the squares at odd indices. With n elements there are n / 2 odd slots, so exactly n / 2 squares are subtracted and the rest are added. To make the score as large as possible, the subtracted squares should be the smallest ones. The score is then the total of all squares minus twice the smallest half. A square depends only on the absolute value, and those values are small, so counting them replaces a full sort.',
