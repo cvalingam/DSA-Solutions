@@ -7428,6 +7428,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['OR is monotonically non-decreasing (bits only get set). Simple prefix accumulation.'],
   },
 
+  2913: {
+    intuition:
+      'Fix the right end r of a subarray and track, for every left end l, how many distinct values nums[l..r] holds. Moving r one step adds nums[r]. That raises the count by one only for left ends after the previous place nums[r] appeared, because earlier left ends already contain it. Raising a count c to c + 1 raises its square by 2c + 1. So the total of squares for all subarrays ending at r grows by twice the sum of the old counts in that range plus the range length. Range add and range sum are exactly what a pair of Fenwick trees supports.',
+    algorithm: [
+      'Keep two Fenwick trees that together support adding a value to a range and summing a range of counts.',
+      'For each right end r, look up the last index where nums[r] appeared. The affected left ends run from just after it through r.',
+      'Add twice the current sum of counts over that range, plus its length, to a running total of squares.',
+      'Add 1 to every count in that range and record r as the last place nums[r] appeared.',
+      'Add the running total to the answer, which now covers every subarray ending at r.',
+    ],
+    example: {
+      input: 'nums = [1,2,1]',
+      steps: [
+        'r = 0: the range is just index 0, so the total of squares becomes 1.',
+        'r = 1: value 2 is new, so both left ends gain one. The old counts sum to 1, so the total grows by 2 times 1 plus 2 and becomes 5.',
+        'r = 2: value 1 was last at index 0, so only left ends 1 and 2 gain one. Their old counts sum to 1, so the total grows by 4 and becomes 9.',
+        'The totals 1, 5, and 9 add up to the answer.',
+      ],
+      output: '15',
+    },
+    pitfalls: [
+      'Only left ends after the previous occurrence gain a new distinct value. Updating every left end overcounts repeats.',
+      'Read the sum of counts before adding 1, because the 2c + 1 formula uses the old counts.',
+      'The running total can reach about n cubed over 3, so keep it in a 64-bit integer.',
+      'Checking every subarray with a set takes quadratic time. That passes here but does not scale to the larger version of the problem.',
+    ],
+  },
+
   2914: {
     intuition: 'Minimum string changes to make string good (each character has even count). Count characters with odd frequency.',
     algorithm: [

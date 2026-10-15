@@ -10323,6 +10323,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-without-3-consecutive-set-bits': {
+    intuition:
+      'The only allowed change is turning a 1 into a 0, and the result must not contain three 1s in a row. A bit is worth more than all the bits below it put together, so the best answer keeps every high bit it possibly can. Reading from the most significant bit down, a set bit only has to go when the two bits just above it are both kept 1s. Clearing it breaks the run, and nothing lower down can make up for losing a higher bit instead.',
+    algorithm: [
+      'Start a run counter at 0 and walk the bits from position 30 down to 0.',
+      'If the bit is 0, reset the run to 0.',
+      'If the bit is 1 and the run is already 2, clear that bit in n and reset the run to 0.',
+      'Otherwise the bit is 1 and is kept, so increase the run.',
+      'Return n after the last bit.',
+    ],
+    example: {
+      input: 'n = 15, which is 1111 in binary',
+      steps: [
+        'Bits 3 and 2 are kept, so the run reaches 2.',
+        'Bit 1 would make three in a row, so it is cleared and the run resets.',
+        'Bit 0 is kept, giving 1101 in binary.',
+      ],
+      output: '13',
+    },
+    pitfalls: [
+      'Clear the lowest bit of a run of three, not the highest. Dropping a higher bit loses more value.',
+      'After clearing a bit, the run starts over, so a long run of 1s keeps two and drops one repeatedly.',
+      'Only bits can be cleared. Setting a 0 to 1 is not allowed, even if it would give a larger value.',
+      'An input of 0 or one with no three 1s in a row is returned unchanged.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
