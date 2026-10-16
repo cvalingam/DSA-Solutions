@@ -10350,6 +10350,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'successful-binary-searches-irrespective-of-pivot': {
+    intuition:
+      'Ordinary binary search depends on which mid is chosen when several indices are valid. Here the question is which values are found no matter how that choice is made. If every value to the left of arr[i] is smaller and every value to the right is larger, then a mid on the left always moves right and a mid on the right always moves left, so the search is forced onto i. That is exactly the positions that are a left-to-right maximum and sit strictly below the minimum of the suffix to their right.',
+    algorithm: [
+      'Build an array suf where suf[i] is the minimum of arr[i] through arr[n - 1], scanning from the right.',
+      'Walk from left to right while tracking the maximum seen so far.',
+      'For each index before the last, if arr[i] is greater than that maximum and strictly less than suf[i + 1], count it.',
+      'Update the running maximum whenever arr[i] is larger.',
+      'After the loop, count the last index if it is greater than the running maximum, because it has no right side to check.',
+    ],
+    example: {
+      input: 'arr = [1, 3, 2]',
+      steps: [
+        'The suffix minima are 1, 2, 2.',
+        'Index 0 holds 1, which is a new maximum and is less than the suffix minimum 2 on its right, so it counts.',
+        'Index 1 holds 3, which beats the left maximum 1, but 3 is not less than the right minimum 2, so it does not count.',
+        'Index 2 holds 2, which is not greater than the left maximum 3.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'The right side test is strict. Equal values on the right can send the search the wrong way.',
+      'Only left-to-right maxima can qualify, so positions that lose to an earlier larger value are skipped.',
+      'The last index has an empty right side, so it only needs to beat the left maximum.',
+      'Building the suffix minima takes linear extra memory. Recomputing the right minimum for every index would be quadratic.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

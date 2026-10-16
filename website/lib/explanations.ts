@@ -7464,6 +7464,34 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Each swap can fix two odd-frequency characters. Minimum changes = floor(oddCount/2).'],
   },
 
+  2916: {
+    intuition:
+      'This is the same counting problem as the easy version, but n reaches 1e5, so every subarray cannot be scanned. Fix the right end r and let c[l] be how many distinct values sit in nums[l..r]. Moving r forward adds nums[r], which raises c[l] by one only for left ends after the previous place that value appeared. Raising a count from c to c + 1 raises its square by 2c + 1, so the sum of squares over all left ends grows by twice the sum of the old counts on that range plus the range length. Range add and range sum are enough, and a pair of Fenwick trees answers both in logarithmic time per step.',
+    algorithm: [
+      'Keep two Fenwick trees that together support adding a value on a range and summing counts on a range.',
+      'Store the last index of each value in a fixed array sized to the value limit.',
+      'For each right end r, let l be one past the previous occurrence of nums[r], or 1 if it is new.',
+      'Add twice the current sum of counts from l through r, plus the length of that range, to a running total of squares.',
+      'Add 1 on the range [l, r], record r as the last place nums[r] appeared, and add the running total to the answer modulo 1e9+7.',
+    ],
+    example: {
+      input: 'nums = [1,2,1]',
+      steps: [
+        'r = 1: only left end 1, so the total of squares becomes 1.',
+        'r = 2: value 2 is new, so both left ends gain one. The old counts sum to 1, so the total grows by 4 and becomes 5.',
+        'r = 3: value 1 was last at index 1, so only left ends 2 and 3 gain one. The total grows by 4 and becomes 9.',
+        'The per-right-end totals 1, 5, and 9 add up to 15.',
+      ],
+      output: '15',
+    },
+    pitfalls: [
+      'Only left ends after the previous occurrence gain a new distinct value. Updating every left end overcounts repeats.',
+      'Read the range sum before adding 1, because the 2c + 1 formula uses the old counts.',
+      'The running sum of squares can reach about n cubed over 3, so keep it in a 64-bit integer and reduce only the answer.',
+      'A lazy segment tree that stores sums of squares also works, but two Fenwick trees use less memory and less constant time.',
+    ],
+  },
+
   2924: {
     intuition: 'Find champion in tournament DAG: node with in-degree 0. Only one team can beat all others.',
     algorithm: [
