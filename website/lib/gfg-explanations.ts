@@ -10378,6 +10378,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'convert-one-string-to-another-with-constraints': {
+    intuition:
+      'Both strings use A, B, and empty slots marked #. Letters keep their relative order: A can only slide left into empties, and B can only slide right. So after dropping the empties the two letter sequences must match, and each matched letter must be able to travel from its index in s1 to its index in s2 under those one-way moves. That means an A may not need to move right, and a B may not need to move left.',
+    algorithm: [
+      'Return false immediately when the lengths differ.',
+      'Advance two pointers, skipping # in each string, so they land on the next letters.',
+      'If one pointer runs out before the other, the letter counts differ, so return false.',
+      'If the letters differ, return false.',
+      'For A, reject when the s1 index is less than the s2 index. For B, reject when the s1 index is greater than the s2 index.',
+      'Advance both pointers and repeat until both strings are exhausted.',
+    ],
+    example: {
+      input: 's1 = "#A#B#", s2 = "A##B#"',
+      steps: [
+        'Skipping empties, the first letters are both A at indices 1 and 0. A moves left, which is allowed.',
+        'The next letters are both B at indices 3 and 3, already in place.',
+        'Both pointers finish together, so the conversion is possible.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Letters cannot pass each other. Matching only the multisets of A and B is not enough.',
+      'An A that sits left of its target would have to move right, which is forbidden.',
+      'A B that sits right of its target would have to move left, which is forbidden.',
+      'Empty slots are free to fill from either side; only the letter indices matter for the move checks.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

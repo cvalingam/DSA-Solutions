@@ -10379,6 +10379,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3551: {
+    intuition:
+      'The target order sorts by digit sum first and by the number itself when those sums match. With distinct values that order is just a permutation of the current positions, and the fewest swaps that realize a permutation equal n minus the number of cycles, counting fixed points. Digit sums of 32-bit positives never exceed 81, so the indices can be ordered in linear time: radix sort by value, then a stable counting sort by digit sum.',
+    algorithm: [
+      'Compute the digit sum of every value and fill an index array 0..n-1.',
+      'LSD radix sort the indices by nums[index] using four byte passes.',
+      'Stable counting sort those indices by digit sum into 82 buckets.',
+      'Build target[idx[j]] = j so each current position maps to where its value belongs.',
+      'Walk every unvisited index through the target map as one cycle, then return n minus the cycle count.',
+    ],
+    example: {
+      input: 'nums = [18, 43, 34, 16]',
+      steps: [
+        'Digit sums are 9, 7, 7, 7, so the target order is 16, 34, 43, 18.',
+        'Positions form cycles that need two swaps to reach that order.',
+        'Fixed points would contribute zero swaps and still count as cycles.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Values must be distinct for the value-to-position map to be a true permutation.',
+      'Sort by digit sum first. Sorting only by value gives the wrong target.',
+      'Min swaps equal n minus cycles, not the number of cycles alone.',
+      'A comparison sort also works but costs n log n. The radix plus counting path stays linear.',
+    ],
+  },
+
   3014: {
     intuition:
       'A phone keypad has 8 letter keys. Each key can hold several letters stacked by push count (1st letter = 1 push, 2nd = 2 pushes, ...). To minimize total pushes, put the most frequent letters in the cheapest slots. With at most 26 letters, the eight cheapest slots are the first press on each key, then the second press, and so on.',

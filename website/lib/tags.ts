@@ -1360,6 +1360,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3524: ['array', 'math', 'dynamic-programming'],
   3525: ['array', 'segment-tree', 'math'],
   3550: ['array', 'math'],
+  3551: ['array', 'hash-table', 'sorting'],
   3014: ['array', 'string', 'greedy', 'sorting', 'counting'],
 }
 
