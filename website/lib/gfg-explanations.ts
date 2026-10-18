@@ -10406,6 +10406,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'shortest-path-from-1-to-n': {
+    intuition:
+      'Starting at 1, each move either adds 1 or multiplies by 3. Filling a DP table up to n works but is linear in n. The same distances appear by walking backward from n: subtract 1, or divide by 3 whenever n is a multiple of 3. Taking the divide whenever it is available is optimal, because each forward multiply covers a long stretch that would otherwise need many additions.',
+    algorithm: [
+      'Start steps at 0.',
+      'While n is greater than 1, if n is divisible by 3 replace it with n / 3, otherwise replace it with n - 1.',
+      'Increase steps by one after each change.',
+      'When n reaches 1, return steps.',
+    ],
+    example: {
+      input: 'n = 10',
+      steps: [
+        '10 is not a multiple of 3, so subtract to 9.',
+        '9 divides by 3 to give 3, then 3 divides by 3 to give 1.',
+        'Three backward moves match the forward path 1 to 3 to 9 to 10.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'n = 1 needs zero steps. Return 0 without entering the loop.',
+      'Do not multiply by 2; the only jump move is multiply by 3.',
+      'A full DP array is correct but uses linear time and memory that the backward walk avoids.',
+      'Always divide when divisible by 3. Skipping a divide to subtract first never shortens the path.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

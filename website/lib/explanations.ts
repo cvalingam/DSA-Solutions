@@ -10821,6 +10821,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1569: {
+    intuition:
+      'Every reorder that builds the same BST must keep the same relative order inside the left subtree and inside the right subtree. After the root is fixed as the first element, the remaining values split into those two subsequences, and any interleaving of them that preserves each side\'s order is valid. The number of those interleavings is the binomial coefficient C(left + right, left), and each side multiplies by the same count computed recursively. Subtract one at the end so the given order itself is not counted.',
+    algorithm: [
+      'Precompute Pascal\'s triangle of binomial coefficients modulo 1e9+7 up to n.',
+      'If the current sequence has length at most 2, return 1.',
+      'Partition everything after the first value into a left array of smaller values and a right array of larger ones, keeping relative order.',
+      'Multiply C(leftCount + rightCount, leftCount) by the recursive answers on left and right.',
+      'At the top level return that product minus 1, reduced modulo 1e9+7.',
+    ],
+    example: {
+      input: 'nums = [3,1,2,5,4,6]',
+      steps: [
+        'Root 3 sends 1,2 to the left and 5,4,6 to the right.',
+        'Those five later values can be interleaved in C(5,2) = 10 ways while keeping each side\'s order.',
+        'The left side of length 2 has 1 local way. The right side rooted at 5 contributes more through its own split.',
+        'The product of all local choices is 20, so after subtracting the original order the answer is 19.',
+      ],
+      output: '19',
+    },
+    pitfalls: [
+      'Subtract 1 only once at the top. The recursive helper counts all orders including the current one.',
+      'Keep relative order when building left and right. Sorting them would describe different BSTs.',
+      'Use modular multiplication with a 64-bit temporary so the product does not overflow before the remainder.',
+      'Pascal\'s triangle needs size n, because the top call asks for C(n - 1, leftCount).',
+    ],
+  },
+
   2029: {
     intuition:
       'The game only cares about stone values mod 3. Playing a stone adds its residue to a running total that must stay non-zero mod 3 after each move. Type 0 never changes the residue; types 1 and 2 alternate. Counting the three residues is enough to decide whether Alice has a winning strategy.',
