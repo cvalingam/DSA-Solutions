@@ -5883,6 +5883,32 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Beautiful numbers have at most 1+2+3+...+9 = 45 digits. Very few exist. Enumerate and check.'],
   },
 
+  2089: {
+    intuition:
+      'Sorting the array would put every value smaller than target first, then every copy of target in one contiguous block. The indices of that block are completely determined by how many values are smaller and how many equal the target, so the array never needs to be sorted. One pass counts both quantities, and the answer is the consecutive indices that start at the smaller-count.',
+    algorithm: [
+      'Scan nums once. Count values strictly less than target and values equal to target.',
+      'Presize a list to the equal count.',
+      'Append less, less + 1, ..., less + eq - 1.',
+      'Return that list, which is empty when the target never appears.',
+    ],
+    example: {
+      input: 'nums = [1,2,5,2,3], target = 2',
+      steps: [
+        'One value is less than 2, and two values equal 2.',
+        'After a conceptual sort the twos sit at indices 1 and 2.',
+        'The answer list is therefore [1, 2].',
+      ],
+      output: '[1, 2]',
+    },
+    pitfalls: [
+      'Do not sort. Counting smaller and equal values is enough and stays linear.',
+      'Indices are 0-based and must be returned in increasing order, which the consecutive range already gives.',
+      'Values greater than target never affect the answer indices.',
+      'If the target is missing, the equal count is 0 and the result is an empty list.',
+    ],
+  },
+
   2090: {
     intuition: 'K-radius average: for each index i, average of nums[i-k..i+k]. Use prefix sums for O(n) computation.',
     algorithm: [

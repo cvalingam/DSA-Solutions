@@ -943,6 +943,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2070: ['array', 'binary-search', 'sorting'],
   2071: ['array', 'binary-search', 'greedy', 'sorting', 'heap'],
   2081: ['math'],
+  2089: ['array', 'binary-search', 'sorting'],
   2090: ['array', 'sliding-window'],
   2091: ['array', 'greedy'],
   2092: ['depth-first-search', 'breadth-first-search', 'union-find', 'graph', 'sorting'],

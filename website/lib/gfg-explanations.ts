@@ -10432,6 +10432,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-indices-that-escape-array': {
+    intuition:
+      'From each index you jump by exactly arr[i] steps, so every node has one outgoing edge and the structure is a functional graph. An index is good when following those jumps eventually leaves the array bounds, and bad when the walk hits a zero jump or loops forever. Painting each node as visiting, good, or bad while walking means every edge is processed a constant number of times, and later starts that land on a painted node reuse that answer immediately.',
+    algorithm: [
+      'Keep a state array: 0 unknown, 1 visiting, 2 escapes, 3 trapped.',
+      'For each start whose state is still unknown, walk forward, marking each new node as visiting.',
+      'Stop when the next index is out of bounds (escape), the jump is 0, a visiting node appears again (cycle), or a painted node is reached.',
+      'Rewalk from the start along nodes still marked visiting and paint them with the final state.',
+      'Count how many indices end with state 2.',
+    ],
+    example: {
+      input: 'arr = [2, 1, -1, 0, 2]',
+      steps: [
+        'Index 0 jumps to 2, then to 1, then to 2 again, which is a cycle, so those nodes are trapped.',
+        'Index 3 has jump 0, so it is trapped.',
+        'Index 4 jumps to 6, which is outside, so only index 4 escapes.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'A zero jump is a dead end. It does not leave the array.',
+      'Hitting a node still marked visiting means the current walk found a cycle.',
+      'Negative jumps are allowed and escape when the index goes below 0.',
+      'Storing the whole path in a list works but is unnecessary; rewalking the visiting chain paints the same nodes.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
