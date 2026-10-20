@@ -1348,6 +1348,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3871: ['math'],
   3875: ['array', 'math'],
   3876: ['array', 'math'],
+  3886: ['array', 'math', 'enumeration', 'sorting'],
   3903: ['array', 'prefix-sum'],
   3904: ['array', 'prefix-sum'],
   1979: ['array', 'math', 'number-theory'],

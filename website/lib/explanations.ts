@@ -11376,6 +11376,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3886: {
+    intuition:
+      'A divisor k is sortable when each consecutive block of length k can be cyclically rotated into non-decreasing order and those sorted blocks then form one global non-decreasing array. A block is a cyclic shift of a sorted sequence exactly when it has at most one strict circular descent. Once every block is rotated that way, the concatenation is sorted precisely when, at each block start, the maximum of the prefix before it is at most the minimum of the suffix from there. Prefix maxima, suffix minima, and a descent prefix sum make every block check constant time.',
+    algorithm: [
+      'Build prefMax[i] as the max of nums[0..i-1], suffMin[i] as the min of nums[i..n-1], and prefDrop[i] as the number of adjacent descents among the first i pairs.',
+      'Enumerate every positive divisor k of n.',
+      'For each block start, let drops be the linear descents inside the block plus one when the wrap pair descends.',
+      'Reject the divisor if any block has drops above 1 or prefMax[start] greater than suffMin[start].',
+      'Add every divisor that passes all of its blocks.',
+    ],
+    example: {
+      input: 'nums = [3,1,2]',
+      steps: [
+        'For k = 1 the single-element blocks cannot reorder [3,1,2] into sorted order.',
+        'For k = 3 the one block has a single circular descent and rotates to [1,2,3].',
+        'Only 3 is sortable, so the sum is 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Having the same multiset as the matching sorted segment is not enough. The block must be a cyclic rotation, not an arbitrary permutation.',
+      'Count the wrap pair nums[end] against nums[start] when measuring circular descents.',
+      'prefMax[0] must be a sentinel below every array value so the first block always clears the prefix check.',
+      'Trying every rotation explicitly is too slow for n = 1e5. The descent and prefix checks are enough.',
+    ],
+  },
+
   3903: {
     intuition:
       'Stability at index i compares the tallest value on the left closed segment with the shortest value on the right closed segment. Precompute every suffix minimum once, then walk left to right with a running maximum. The first place where that gap is at most k is the answer.',

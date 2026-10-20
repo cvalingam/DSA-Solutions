@@ -10459,6 +10459,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-with-same-parity-adjacent-swaps': {
+    intuition:
+      'You may swap two neighbors only when they share the same parity. That means an even can bubble past other evens, and an odd past other odds, but neither can cross a value of the opposite parity. So the array breaks into maximal runs of equal parity, and inside each run every permutation is reachable. The lexicographically largest array is obtained by sorting every run in descending order and leaving the run boundaries fixed.',
+    algorithm: [
+      'Walk the array while the current run keeps the same parity bit.',
+      'When the run ends, if it has more than one element, sort that subarray ascending and reverse it to get descending order.',
+      'Start the next run at the first index with a different parity.',
+      'Copy the finished array into a result list and return it.',
+    ],
+    example: {
+      input: 'arr = [1, 3, 5, 2, 4, 6]',
+      steps: [
+        'The first run is the odds 1, 3, 5, which sort descending to 5, 3, 1.',
+        'The second run is the evens 2, 4, 6, which sort descending to 6, 4, 2.',
+        'The runs stay separated because an odd and an even cannot swap.',
+      ],
+      output: '[5, 3, 1, 6, 4, 2]',
+    },
+    pitfalls: [
+      'Use a bit test for parity. In Java, a negative odd number has remainder -1 under %, so comparing % 2 values can split one odd run.',
+      'Values cannot jump over a different parity. Sorting the whole array would be wrong.',
+      'A single-element run is already optimal; skip sorting it.',
+      'Descending order inside each run is required for the lexicographically largest answer, not ascending.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
