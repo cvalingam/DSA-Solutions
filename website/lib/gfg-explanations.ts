@@ -10485,6 +10485,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-sum-subarray': {
+    intuition:
+      'The minimum sum of any contiguous subarray is the smallest among the minimum sums that end at each index. The best sum ending at i is a local choice: start fresh at arr[i], or extend the best sum that ended at i - 1. Extending is useful only while that previous sum is negative, because a positive prefix would only make the total larger. One running value stores the ending sum, and a second value stores the best answer seen so far.',
+    algorithm: [
+      'Start both the running ending sum and the answer at arr[0].',
+      'For each later index, set the ending sum to the smaller of arr[i] and the previous ending sum plus arr[i].',
+      'Update the answer with that ending sum.',
+      'Return the answer after the last index.',
+    ],
+    example: {
+      input: 'arr = [-2, 1, -3, 4, -1]',
+      steps: [
+        'The ending sum starts at -2.',
+        'At 1 the ending sum becomes -1, and the answer stays -2.',
+        'At -3 the ending sum becomes -4, from the prefix [-2, 1, -3].',
+        'Later endings are 0 and -1, so -4 remains the smallest.',
+      ],
+      output: '-4',
+    },
+    pitfalls: [
+      'This is the minimum sum, so a negative running total should be extended and a positive one should be dropped.',
+      'A single element is a valid subarray, including the case where every value is positive and the answer is the smallest element.',
+      'Resetting only when the sum hits zero misses a negative element that should start a new subarray earlier.',
+      'The scan is already linear. Building every subarray sum takes quadratic time.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

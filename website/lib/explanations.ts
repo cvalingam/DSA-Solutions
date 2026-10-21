@@ -10027,6 +10027,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3863: {
+    intuition:
+      'One operation sorts any substring except the whole string. That is enough to park the smallest letter at the front or the largest letter at the back, but not both when each lives only at the opposite end. So the answer is a small case split. An already nondecreasing string needs nothing. A length of 2 that is out of order cannot be fixed, because the only substring that contains both letters is the whole string. Otherwise the first index of the minimum and the last index of the maximum tell you whether one, two, or three sorts are enough.',
+    algorithm: [
+      'Scan once, tracking whether the string is nondecreasing, the first index of the minimum, and the last index of the maximum.',
+      'If the string never drops, return 0.',
+      'If the length is 2, return -1.',
+      'If the minimum is already first or the maximum is already last, return 1.',
+      'If the minimum is only at the last index and the maximum is only at the first index, return 3.',
+      'Otherwise a minimum or maximum sits in the middle, so return 2.',
+    ],
+    example: {
+      input: 's = "card"',
+      steps: [
+        'The letters are not sorted. The minimum a first appears at index 1, and the maximum r last appears at index 2.',
+        'Neither endpoint is already correct, and the minimum is in the middle, so two operations are enough.',
+        'Sorting "car" gives "acr", then sorting "rd" gives "acdr".',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'A length of 2 that is out of order returns -1. No proper substring contains both characters.',
+      'Use the first minimum and the last maximum. A later copy of the minimum does not cancel a minimum already at the front.',
+      'Equal neighbors are allowed. Only a strict drop means the string is not sorted.',
+      'Copying the string into an array is unnecessary. The indices can be tracked while reading the original string.',
+    ],
+  },
+
   3867: {
     intuition:
       'The problem defines the pairs for you: first build prefixGcd[i] = gcd(nums[i], max of the prefix ending at i), then sort that array and pair the smallest leftover with the largest leftover until nothing remains (odd middle ignored). So simulate the construction, sort, and sum gcd of end-pairs - no combinatorial search needed.',

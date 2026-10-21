@@ -1343,6 +1343,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3336: ['array', 'math', 'dynamic-programming', 'number-theory'],
   3312: ['array', 'hash-table', 'math', 'binary-search', 'number-theory', 'counting'],
   3658: ['math', 'number-theory'],
+  3863: ['string', 'greedy'],
   3867: ['array', 'math', 'number-theory', 'sorting', 'two-pointers'],
   3870: ['math'],
   3871: ['math'],
