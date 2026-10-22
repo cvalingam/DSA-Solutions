@@ -10512,6 +10512,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'palindrome-with-replacement': {
+    intuition:
+      'The finished string has to read the same forwards and backwards, so position i and its mirror must end up as the same letter. If both are already letters and they differ, no replacement works. A question mark copies the letter opposite it. A pair of question marks can be any letter, and the cheapest choice is to change gradually between the fixed letters on either side. The total variation of that gradual change is exactly the absolute gap between those two letters, so the blanks themselves never need to be written down.',
+    algorithm: [
+      'Walk i from the left. Let the mirror index be n - 1 - i.',
+      'While i is still left of its mirror, return -1 if both characters are letters and they differ.',
+      'Resolve the character at i: use its own letter, otherwise the mirror letter, otherwise skip it.',
+      'Add the absolute difference between this letter and the previous resolved letter.',
+      'Return the sum after the last index.',
+    ],
+    example: {
+      input: 's = "a???c??c????"',
+      steps: [
+        'The ends must both be a, and the two c positions already match their mirrors.',
+        'The fixed letters in order are a, c, c, a.',
+        'The gaps are 2, 0, and 2. Filling each gap one letter at a time costs exactly that much.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Return -1 only when a mirrored pair holds two different letters. A letter opposite a question mark is fine.',
+      'Question marks that mirror each other add no cost. Skipping them is the minimum, not an approximation.',
+      'The sum uses successive fixed letters in left to right order, including letters that were copied from the opposite side.',
+      'Building a new character array works but uses linear extra memory. Reading each pair from the original string is enough.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

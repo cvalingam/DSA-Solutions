@@ -11484,6 +11484,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3942: {
+    intuition:
+      'The only moves are reversing the whole array and rotating it one step to the left. Both moves keep the cyclic order of the values, so the array can become 0, 1, ..., n - 1 only when walking away from 0 already produces that sequence, either clockwise or counterclockwise. Each direction has two ways to pay for the alignment: rotate until 0 is in place, or reverse, rotate, and reverse again. The answer is the cheaper of the directions that actually match, or -1 when neither does.',
+    algorithm: [
+      'Find the index of 0.',
+      'Walk clockwise from that index and accept the direction when the values are exactly 0, 1, 2, and so on.',
+      'If it matches, the cost is the minimum of the index itself and n minus that index plus 2.',
+      'Walk counterclockwise the same way. If it matches, the cost is the minimum of the index plus 2 and n minus the index.',
+      'Return the smaller accepted cost, or -1 when both walks fail.',
+    ],
+    example: {
+      input: 'nums = [1, 0, 2]',
+      steps: [
+        '0 sits at index 1. Clockwise the next values are 2 then 1, which is not 0, 1, 2.',
+        'Counterclockwise the values are 0, then 1, then 2.',
+        'That direction costs min(1 + 2, 3 - 1) = 2. Reverse to [2, 0, 1], then rotate once to [0, 1, 2].',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'An already sorted array has 0 at index 0 and costs 0. Do not add a reverse.',
+      'Both directions can be valid for n less than 3. Take the smaller cost.',
+      'The walk must be exactly 0, 1, 2, ..., not merely nondecreasing with a gap.',
+      'Simulating every rotate is too slow for n = 1e5. One pass in each direction is enough.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
