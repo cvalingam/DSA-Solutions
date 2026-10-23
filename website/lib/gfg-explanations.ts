@@ -10539,6 +10539,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-pairs-violating-bst-property': {
+    intuition:
+      'In a valid BST the inorder sequence is sorted. A pair violates that property when the node that appears earlier in inorder has the larger value. Those pairs are exactly the inversions of the inorder sequence, so the tree question becomes an inversion count. Merge sort counts them while it sorts: whenever a value from the right half is taken first, it is smaller than every value still waiting in the left half.',
+    algorithm: [
+      'Walk the tree inorder with an explicit stack and store the values in an int array.',
+      'Return 0 when the tree has fewer than two nodes.',
+      'Merge adjacent runs from width 1 upward, writing each merged run into a second buffer.',
+      'When the next right value is smaller, add the number of remaining left values to the inversion total.',
+      'Swap the two buffers after each width and return the total.',
+    ],
+    example: {
+      input: 'inorder sequence 3, 1, 2',
+      steps: [
+        'The pair (3, 1) is out of order, and so is (3, 2).',
+        'The pair (1, 2) is already in order.',
+        'Merge sort reports both inversions, so the answer is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Equal values are not inversions. Take the left value first when the two heads are equal.',
+      'A valid BST has a sorted inorder and therefore zero violating pairs.',
+      'A skewed tree makes a recursive inorder as deep as the node count. An explicit stack keeps that walk on the heap.',
+      'The inversion total can be about n squared over 2, so accumulate it in a 64-bit integer.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

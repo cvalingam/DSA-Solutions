@@ -10027,6 +10027,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3644: {
+    intuition:
+      'You may swap two values only when their bitwise AND equals k, and the goal is the largest k that can still sort the permutation. A value already sitting at its own index never has to move, so it does not restrict k. Every value that is out of place must be able to swap with the others that are out of place, which means every bit set in k has to be set in all of those values. The largest mask with that property is their bitwise AND. If nothing is out of place, no swap is required and the answer is 0.',
+    algorithm: [
+      'Start the running AND at all ones, which in two\'s complement is -1.',
+      'For each index i, skip nums[i] when it already equals i.',
+      'Otherwise AND nums[i] into the running value.',
+      'If that value becomes 0, return 0 immediately. Later values cannot turn a 0 bit back on.',
+      'If the scan finishes without a misplaced value, return 0. Otherwise return the running AND.',
+    ],
+    example: {
+      input: 'nums = [0, 3, 2, 1]',
+      steps: [
+        'Index 0 holds 0 and index 2 holds 2, so both are already home.',
+        'The misplaced values are 3 and 1.',
+        '3 AND 1 is 1, and swapping those two values sorts the array.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'AND the misplaced values, not the indices and not the values that are already correct.',
+      'A sorted permutation must return 0. Leaving the initial all-ones mask in place would be wrong.',
+      'Once the running AND is 0, the answer is fixed. The rest of the array cannot raise it.',
+      'k has to work for every required swap. Using the AND of only one pair can be too large.',
+    ],
+  },
+
   3863: {
     intuition:
       'One operation sorts any substring except the whole string. That is enough to park the smallest letter at the front or the largest letter at the back, but not both when each lives only at the opposite end. So the answer is a small case split. An already nondecreasing string needs nothing. A length of 2 that is out of order cannot be fixed, because the only substring that contains both letters is the whole string. Otherwise the first index of the minimum and the last index of the maximum tell you whether one, two, or three sorts are enough.',
