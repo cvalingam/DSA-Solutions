@@ -10566,6 +10566,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'trace-path': {
+    intuition:
+      'The command string fixes the shape of the route. Choosing a different start cell only slides that shape around the grid. So it is enough to walk the commands from a relative origin and remember the lowest and highest row and column that the walk touches, including the start. The route fits somewhere exactly when that box is no taller than n and no wider than m.',
+    algorithm: [
+      'Start the row and column offsets at 0, and start every bound at 0.',
+      'For L decrease the column, for R increase it. For D decrease the row, and for U increase it.',
+      'Update the minimum and maximum row and column after every command.',
+      'Return true when the row span is at most n and the column span is at most m.',
+    ],
+    example: {
+      input: 'n = 2, m = 3, s = "LLRU"',
+      steps: [
+        'The relative positions are (0, 0), (0, -1), (0, -2), (0, -1), and (1, -1).',
+        'Rows run from 0 to 1, a span of 2. Columns run from -2 to 0, a span of 3.',
+        'Both spans fit, so a start such as row 1, column 3 stays inside.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'D moves the row up and U moves it down. They are not the usual compass directions.',
+      'The start position is part of the path. A command string of one move still has two positions.',
+      'The span is the highest offset minus the lowest, plus one. Compare that height with n.',
+      'Trying every start cell is correct but takes n times m times the string length.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

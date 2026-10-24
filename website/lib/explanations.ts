@@ -6571,24 +6571,27 @@ const explanations: Record<number, RichExplanation> = {
 
   2409: {
     intuition:
-      'Count calendar days both Alice and Bob are present in Rome. Convert MM-DD strings to day-of-year numbers, then count days d where arriveAlice ≤ d ≤ leaveAlice and arriveBob ≤ d ≤ leaveBob.',
+      'Alice and Bob each stay for one inclusive stretch of a non-leap year. Once every MM-DD is a day number from 1 to 365, the question is how many days sit in both stretches. Two intervals overlap from the later arrival through the earlier departure. If the later arrival is after the earlier departure, they miss each other and the count is 0.',
     algorithm: [
-      'Parse each date to day index 1..365 using month length table.',
-      'Loop day from 1 to 365 (or use overlap formula: max(0, min(leaveA,leaveB) - max(arriveA,arriveB) + 1)).',
-      'Increment when day lies in both inclusive intervals.',
-      'Return count.',
+      'Turn each date into a day of the year with a prefix of the twelve month lengths. January 1 is day 1 and December 31 is day 365.',
+      'The shared start is the larger of the two arrival days.',
+      'The shared end is the smaller of the two departure days.',
+      'Return max(0, end - start + 1). The plus one counts both endpoints.',
     ],
     example: {
-      input: 'Alice 08-06 to 08-09, Bob 08-01 to 08-09',
+      input: 'Alice 08-15 to 08-18, Bob 08-16 to 08-19',
       steps: [
-        'Overlap days 08-06 through 08-09 → 4 days together.',
+        'August 15 is day 227 and August 19 is day 231.',
+        'The later arrival is August 16 and the earlier departure is August 18.',
+        'Those three days, the 16th, 17th, and 18th, are the overlap.',
       ],
-      output: '4',
+      output: '3',
     },
     pitfalls: [
-      'Non-leap-year calendar in problem - fixed month lengths.',
-      'Intervals are inclusive on both ends.',
-      'Overlap formula avoids loop if you prefer O(1).',
+      'The year has no February 29. Month lengths are the usual non-leap lengths.',
+      'Both the arrival day and the departure day count. Dropping the plus one shortens every overlap.',
+      'A later arrival after an earlier departure is zero days, not a negative number.',
+      'Scanning all 365 days gives the same count, but the two endpoints already determine it.',
     ],
   },
 
