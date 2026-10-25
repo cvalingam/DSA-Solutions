@@ -4387,6 +4387,32 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Direct sliding window for "exactly k" is tricky. Difference of at-most functions is cleaner.'],
   },
 
+  1254: {
+    intuition:
+      'A closed island is a patch of land, the cells marked 0, that never touches the border of the grid. Water is marked 1. One land cell on the first row, the last row, the first column, or the last column opens the whole patch to the outside. A grid with fewer than three rows or fewer than three columns has no interior cell, so its answer is 0. Every land cell belongs to exactly one patch, so flooding each patch once is enough.',
+    algorithm: [
+      'Return 0 when the grid has fewer than 3 rows or fewer than 3 columns.',
+      'Scan every cell. On unvisited land, flood that patch with an explicit stack and mark each cell as water.',
+      'While flooding, remember whether any cell of the patch sits on the border.',
+      'Count the patch only when every cell stayed in the interior.',
+    ],
+    example: {
+      input: 'three rows: 0 0 1 0 0 / 0 1 0 1 0 / 0 1 1 1 0',
+      steps: [
+        'The land on the left, cells (0,0), (0,1), and (1,0), touches the border, so that patch is open.',
+        'The single 0 at row 1, column 2 is surrounded by water and never reaches an edge, so it is closed.',
+        'The land on the right touches the top and the bottom, so it is open too.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Land is 0 and water is 1. Marking a visited land cell as 1 keeps a later scan from starting the same patch again.',
+      'A border cell makes the whole patch open. Finish the flood so the remaining cells are marked, then reject the patch.',
+      'All four neighbors still need to be expanded after a border cell is found. Stopping early leaves unmarked land that a later start would count as another island.',
+      'A recursive flood on a long snake of land can overflow the call stack. An explicit stack of packed row and column indices stays on the heap.',
+    ],
+  },
+
   1261: {
     intuition: 'BFS/DFS the contaminated tree. Each node gets value 2*parent or 2*parent+1. Store all recovered values in a HashSet for O(1) find.',
     algorithm: [

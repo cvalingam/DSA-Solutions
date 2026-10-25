@@ -10592,6 +10592,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'sum-of-beauty-of-all-substrings': {
+    intuition:
+      'The beauty of a substring is its highest letter count minus its lowest count among letters that actually appear. There are n squared substrings, and each one is the previous substring plus one letter. That letter changes only one frequency. The new maximum is the larger of the old maximum and the new count. The minimum moves in two cases only. A letter that was absent now has count 1, so the minimum becomes 1. If that letter was the last one sitting at the old minimum, every other letter was already at least one higher, so the minimum rises by exactly 1. Every other addition leaves the minimum where it was.',
+    algorithm: [
+      'For each start index, clear a frequency array of 26 and a count of counts array whose index is a frequency.',
+      'Extend the end one letter at a time. Move that letter from its old frequency bucket into the next bucket.',
+      'Raise the maximum when the new frequency beats it.',
+      'Set the minimum to 1 when the letter is new. Raise the minimum by 1 when its old bucket is now empty and that bucket was the minimum.',
+      'Add maximum minus minimum to the answer.',
+    ],
+    example: {
+      input: 's = "aabcb"',
+      steps: [
+        'The substring "aa" uses only a, twice, so its beauty is 0.',
+        'Extending it to "aab" gives a count of 2 and b a count of 1. Beauty is 2 minus 1, which is 1.',
+        'The five substrings aab, aabc, aabcb, abcb, and bcb each contribute 1. Every other substring contributes 0.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'A letter with frequency 0 is absent. Counting it would pull every minimum down to 0 and make beauty equal the maximum.',
+      'When several letters share the minimum and one of them is incremented, the minimum stays. It rises only when the old minimum bucket becomes empty.',
+      'A brand new letter always has frequency 1, even when the current minimum is higher. The minimum drops back to 1.',
+      'A single letter, and any substring where every present letter has the same count, contributes 0.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -608,6 +608,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1200: ['array', 'sorting'],
   1233: ['array', 'string', 'depth-first-search', 'trie'],
   1248: ['array', 'hash-table', 'math', 'sliding-window', 'prefix-sum'],
+  1254: ['array', 'depth-first-search', 'breadth-first-search', 'union-find', 'matrix'],
   1261: ['hash-table', 'tree', 'depth-first-search', 'breadth-first-search', 'design', 'binary-tree'],
   1262: ['array', 'dynamic-programming'],
   1266: ['array', 'math'],
