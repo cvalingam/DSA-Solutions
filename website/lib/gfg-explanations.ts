@@ -10619,6 +10619,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimize-max-min-diff-with-subarray-removal': {
+    intuition:
+      'You delete one contiguous block of k cells and want the smallest gap between the largest and smallest value that remains. The surviving cells are always a prefix plus a suffix, and either side can be empty. Suffix minimums and maximums are built once by walking backward, and only suffixes that start at index k or later can remain. The prefix side grows as the deleted block slides right: it gains exactly the cell that just fell out of the block. Two running numbers track that prefix, so each candidate gap is a constant time combination of the two sides. When k is at least the array length, nothing remains and the gap is 0.',
+    algorithm: [
+      'Return 0 when k is at least n.',
+      'Store the minimum and maximum of every suffix that starts at index k or later. There are n minus k such suffixes.',
+      'Start the answer with the range of the suffix that begins at k, which is what remains after deleting the opening block.',
+      'Slide the start of the block from 1 through n minus k minus 1. Combine the current prefix bounds with the suffix that begins just after the block, then fold the cell at the block start into the prefix.',
+      'The prefix now covers everything except the final block. Take that range as well and return the smallest gap.',
+    ],
+    example: {
+      input: 'arr = [2, 3, 1, 4, 6, 7], k = 3',
+      steps: [
+        'Deleting [2, 3, 1] leaves [4, 6, 7], and 7 minus 4 is 3.',
+        'Deleting [3, 1, 4] leaves [2, 6, 7], and 7 minus 2 is 5.',
+        'Deleting [1, 4, 6] leaves [2, 3, 7], and 7 minus 2 is 5.',
+        'Deleting [4, 6, 7] leaves [2, 3, 1], and 3 minus 1 is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'An empty side contributes no bound. The range comes only from the side that still has cells.',
+      'Score the current window before growing the prefix. Updating the prefix first would count a cell that is still inside the deleted block.',
+      'Suffix entries before index k still contain cells from the deleted block, so they are not stored.',
+      'When k is 0 the block is empty, every cell remains, and the answer is the range of the whole array.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

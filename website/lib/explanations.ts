@@ -8749,6 +8749,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3619: {
+    intuition:
+      'An island is a 4-connected group of cells whose values are positive. Cells that hold 0 are water and never join an island. The question only asks whether the island sum is divisible by k, so the flood keeps a running residue. Each newly reached cell adds its own value modulo k, and the residue drops by k once it reaches k. The cell is then set to 0, so a later scan will not start the same island again. Cells that still need expanding wait on an explicit stack, which keeps a long snake of land on the heap.',
+    algorithm: [
+      'Allocate one stack large enough to hold every cell.',
+      'Scan the grid and skip cells that are already 0.',
+      'From each positive cell, flood the island. Add the cell value modulo k into the residue, mark the cell 0, and push its four neighbors.',
+      'Count the island when the residue that comes back is 0.',
+    ],
+    example: {
+      input: 'grid = [[0,2,1,0,0],[0,5,0,0,5],[0,0,1,0,0],[0,1,4,7,0],[0,2,0,0,8]], k = 5',
+      steps: [
+        'The cells 2, 1, and 5 form one island. Their sum is 8, and 8 modulo 5 is 3, so this island does not count.',
+        'The lone 5 on the second row has residue 0, so it counts.',
+        'The cells 1, 1, 4, 7, and 2 sum to 15, which is divisible by 5, so that island counts.',
+        'The lone 8 leaves residue 3.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Land starts out positive. Setting a visited land cell to 0 is safe, because a real water cell was already 0.',
+      'Add the cell value modulo k. A single subtraction of k is then enough, since both the old residue and the added piece are smaller than k.',
+      'Keep expanding all four neighbors after the residue hits 0. Stopping early leaves unmarked land that a later start would count as a second island.',
+      'A recursive flood on a snake of 100000 land cells can overflow the call stack. The explicit stack stays on the heap.',
+    ],
+  },
+
   3620: {
     intuition:
       'Each valid path has a score equal to its minimum edge cost. We want the largest such minimum - a classic maximize-the-bottleneck problem. Binary search that threshold: for a candidate mid, keep only edges with cost ≥ mid on online endpoints and ask whether Dijkstra can reach n−1 with total cost ≤ k.',
