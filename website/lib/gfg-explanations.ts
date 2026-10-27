@@ -10647,6 +10647,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-weight-transformation-of-string': {
+    intuition:
+      'Each character is worth 1 if it is left as a single. Two neighbors can be taken as a pair instead. A pair of different letters is already alternating, so it is worth 4, which is 2 more than the two singles. A pair of equal letters needs one toggle to become alternating, so it is worth 4 minus that toggle, which is 3, only 1 more than the two singles. Pairs cannot share a character. Choosing the best set of these bonuses is the same recurrence as the house robber problem: at each boundary, skip the pair or take it and skip the previous boundary. Only the previous two answers are required, and the final weight is the length plus the best bonus.',
+    algorithm: [
+      'Start both previous answers at 0.',
+      'Walk each boundary between neighbors. The bonus is 2 when the letters differ and 1 when they match.',
+      'The new answer is the larger of skipping this boundary and taking its bonus on top of the answer from two steps back.',
+      'Shift the two saved answers forward.',
+      'Return the length plus the latest answer. An empty string returns 0 and a single character returns 1.',
+    ],
+    example: {
+      input: 's = "ABB"',
+      steps: [
+        'The first boundary is A and B, which differ, so the bonus is 2. The best bonus so far is 2.',
+        'The next boundary is B and B, which match, so the bonus is 1. Taking it would replace the earlier bonus of 2, so the best bonus stays 2.',
+        'Three characters plus a bonus of 2 is 5. That is the pair AB worth 4, plus the leftover B worth 1.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Equal letters are still worth pairing. After one toggle the pair is worth 3, which beats two singles worth 2.',
+      'Adjacent pairs overlap. Taking both boundaries that touch the same character counts that character twice.',
+      'The bonus is added on top of the length. Returning only the bonus drops the value of every single character.',
+      'An empty string has length 0 and no boundary, so the weight is 0.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

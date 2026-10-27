@@ -11594,6 +11594,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3963: {
+    intuition:
+      'A right and down path branches whenever a cell has both an open cell to the right and an open cell below. Closing every cell under the first row, except the last column, removes those branches. From the top left the only open moves are rightward along the first row. The only down move from that row is in the last column, and from there the only open moves are downward. That is one route. Every lower row is the same pattern, a wall of hashes with a dot at the end, so that string is built once and shared. A grid with a single row is just a line of dots.',
+    algorithm: [
+      'Build the first row as n dots.',
+      'When there is only one row, return that row.',
+      'Build one wall string of length n: a hash in every column except the last, which is a dot.',
+      'Point every later row at that same string.',
+    ],
+    example: {
+      input: 'm = 3, n = 3',
+      steps: [
+        'The first row is three dots.',
+        'The shared lower row is two hashes and a final dot, so the grid is "...", "##.", "##.".',
+        'A down step from the first row exists only in the last column, and the path then continues down to the bottom right.',
+      ],
+      output: '["...","##.","##."]',
+    },
+    pitfalls: [
+      'A single row has no lower row to share. Returning n dots is the whole grid, and the only path is rightward.',
+      'A single column is a stack of dots. The only path is downward, one cell at a time.',
+      'Opening any extra cell in a lower row, left of the last column, creates a second way down from the first row.',
+      'The lower rows share one string because those characters never change. The first row stays a separate string of dots.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
