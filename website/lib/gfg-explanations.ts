@@ -10674,6 +10674,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'nth-in-concatenated-decimal-string': {
+    intuition:
+      'The infinite string is the positive integers written one after another, 123456789101112 and so on. Counting characters one by one is too slow when the index is near two billion. Numbers with the same width form a block. There are 9 one digit numbers, 90 two digit numbers, 900 three digit numbers, and each number contributes that many characters. Subtract a whole block from the index while the index is still past the end of the block. What remains names one number and one offset inside it. The number is the first value of the block plus the quotient, and the offset is the remainder. Dividing that number by the right power of ten reads the chosen digit directly.',
+    algorithm: [
+      'Start at the one digit block. Its first number is 1 and it holds 9 numbers.',
+      'While the remaining index is larger than the width times the count of numbers, subtract that many characters and move to the next width.',
+      'The number is the block start plus (remaining minus 1) divided by the width.',
+      'The place inside that number is the remainder. Shift until that digit sits in the ones place.',
+      'Return that digit as a character.',
+    ],
+    example: {
+      input: 'n = 11',
+      steps: [
+        'The one digit block 1 through 9 uses 9 characters, so index 11 has 2 left inside the two digit block.',
+        'Those two characters are the start of the number 10.',
+        'The second of them is 0.',
+      ],
+      output: '0',
+    },
+    pitfalls: [
+      'The index is 1 based. Dividing n by the width, instead of n minus 1, lands on the next number.',
+      'Subtract a block only when the index is strictly past it. The last character of a block still belongs to that block.',
+      'The product of width and count passes a 32 bit int once numbers have 9 digits. Keep the running index in a 64 bit integer.',
+      'Building the decimal text of the chosen number only to read one character repeats work the division already did.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

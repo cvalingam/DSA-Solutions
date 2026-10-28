@@ -11514,6 +11514,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3882: {
+    intuition:
+      'A path cost is the XOR of every cell on a right and down route from the top left to the bottom right. Keeping only the smallest XOR that reaches a cell fails, because later cells can turn a larger prefix into a smaller finish. Every grid value is at most 1023, so it fits in 10 bits, and the XOR of any path stays inside that same range. The useful range can be tighter. R is the next power of two above the largest cell, and it is never more than 1024. Each cell stores a yes or no for every XOR from 0 through R minus 1. Those flags come from the cell above and the cell to the left, each combined with the current value. After a row is finished, the row above it is no longer needed.',
+    algorithm: [
+      'Find the largest cell and set R to the next power of two above it. A grid of zeros uses R equal to 1.',
+      'Seed the previous row so that XOR 0 is reachable before any cell is applied.',
+      'For each cell, mark k XOR the cell value whenever k is reachable from above or from the left.',
+      'Swap the two row buffers and continue.',
+      'Return the smallest marked value in the last column of the final row.',
+    ],
+    example: {
+      input: 'grid = [[1,2],[3,4]]',
+      steps: [
+        'Right then down is 1 XOR 2 XOR 4, which is 7.',
+        'Down then right is 1 XOR 3 XOR 4, which is 6.',
+        'Both values reach the bottom right, and 6 is the smaller one.',
+      ],
+      output: '6',
+    },
+    pitfalls: [
+      'A single minimum per cell is not enough. A larger prefix XOR can become the smaller answer after later cells.',
+      'The start cell is included. Seed a phantom XOR of 0 and then XOR the first cell into it, so a one cell grid returns that cell.',
+      'R must be a power of two strictly above the biggest cell. Otherwise k XOR the cell can land past the end of the array.',
+      'Moves are only right and down. A value reached by stepping left or up is not a valid path.',
+    ],
+  },
+
   3903: {
     intuition:
       'Stability at index i compares the tallest value on the left closed segment with the shortest value on the right closed segment. Precompute every suffix minimum once, then walk left to right with a running maximum. The first place where that gap is at most k is the answer.',
