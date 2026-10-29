@@ -9721,6 +9721,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3841: {
+    intuition:
+      'A string can be rearranged into a palindrome when at most one letter appears an odd number of times. The path between two nodes of a tree is unique, so the question is the parity of each of the 26 letters on that path. Those parities fit in one integer, one bit per letter. The bits from the root down to a node form a prefix. The path from u to v is prefix[u] XOR prefix[v] XOR the letter at their lowest common ancestor, because that ancestor sat in both prefixes and was cancelled. An update changes one node, and every node in its subtree still has that node as an ancestor, so the same bit difference is applied to the whole subtree. A depth-first numbering turns a subtree into one contiguous range. A Fenwick tree writes that range XOR and reads a single prefix. Binary lifting finds the ancestor. The mask is a palindrome when it is zero or a single bit.',
+    algorithm: [
+      'Build the undirected tree and number every subtree with an iterative depth-first walk, recording depth and the parent used for lifting.',
+      'Fill the higher lifting rows, then XOR each node letter into its subtree range.',
+      'On an update, XOR the old letter with the new one across that subtree and store the new letter.',
+      'On a query, find the lowest common ancestor and combine the two prefixes with that ancestor letter.',
+      'Accept the path when the mask has no two bits set.',
+    ],
+    example: {
+      input: 'n = 3, edges = [[0,1],[1,2]], s = "aac", then query 0 2, update 1 to b, query 0 2',
+      steps: [
+        'The path 0, 1, 2 reads a, a, c. Letter a is even and c is odd, so aca is a palindrome.',
+        'Node 1 changes from a to b, and the labels are now a, b, c.',
+        'Those three letters are all odd, so the path cannot be rearranged into a palindrome.',
+      ],
+      output: '[true, false]',
+    },
+    pitfalls: [
+      'The ancestor is present in both prefixes, so it has to be XORed back in once. Leaving it out drops the middle letter.',
+      'A query from a node to itself is just that one letter, and one letter always has a single odd count.',
+      'A subtree range includes the node and stops before the next node after the subtree. An off by one writes the change onto a cousin.',
+      'A recursive numbering walk on a chain of 50000 nodes can overflow the call stack. The walk here uses an explicit stack.',
+    ],
+  },
+
   2130: {
     intuition:
       'Twin pairs are symmetric positions from the ends of the list: first with last, second with second-last, and so on. Finding every twin by indexing from both ends would need extra space or repeated traversals. Instead, locate the start of the second half with slow/fast pointers, reverse that half in place, and walk both halves together to evaluate each twin sum.',

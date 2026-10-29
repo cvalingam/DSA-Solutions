@@ -10701,6 +10701,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'optimal-file-merge': {
+    intuition:
+      'Merging two files of sizes x and y costs x plus y, and the combined file can be merged again. Each later merge pays that size once more, so a file chosen early is paid the most times. Every step should therefore join the two smallest sizes still available. A binary heap keeps the sizes and returns those two in logarithmic time. Their sum is added to the total and pushed back as a new file. One file, or none, needs no merge and costs 0. The heap stores plain numbers rather than boxed integers.',
+    algorithm: [
+      'Return 0 when fewer than two files are present.',
+      'Copy the sizes into a binary heap and heapify them.',
+      'While at least two files remain, remove the two smallest, add their sum to the cost, and push that sum back.',
+      'Return the accumulated cost.',
+    ],
+    example: {
+      input: 'files = [2, 3, 4]',
+      steps: [
+        'The two smallest are 2 and 3. Merging them costs 5, and the files are now 4 and 5.',
+        'Merging 4 and 5 costs 9.',
+        'The total is 5 plus 9, which is 14.',
+      ],
+      output: '14',
+    },
+    pitfalls: [
+      'Merging the two largest first leaves the small files inside every later sum, so they are paid again and again.',
+      'The order of the input does not matter. Only the multiset of sizes does.',
+      'The merged size has to be pushed back. Forgetting that reinsertion drops the file from every later step.',
+      'Two large sizes can overflow a 32 bit sum before the total does. Keep the heap values in 64 bit integers.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
