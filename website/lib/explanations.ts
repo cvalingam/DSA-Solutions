@@ -11674,6 +11674,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3970: {
+    intuition:
+      'Every edge weight is positive, so the cheapest route from node 0 to node n minus 1 is a Dijkstra search. The plain shortest path can walk through more than k identical labels in a row, while a dearer path stays legal by changing letters. Arriving at the same node with a longer current run leaves less room for another copy of that letter, so one distance per node is not enough. The state is the node together with the length of the run that ends there, and that length is at most k. The starting letter is already a run of 1. The next letter grows the run when it matches and resets the run to 1 when it differs. A run past k is discarded. Distances are kept in 64 bit integers so a long sum does not wrap while the heap is still running. The first time the destination leaves the heap, its distance is the answer.',
+    algorithm: [
+      'Link every directed edge from its source in one pass.',
+      'Set the distance of node 0 with run length 1 to 0, and push that state.',
+      'Pop the cheapest state. Skip it when a better distance to the same state was already recorded.',
+      'Return that distance when the node is n minus 1.',
+      'For each outgoing edge, set the next run to the old run plus 1 or to 1, and relax the neighbor when the run is still at most k.',
+      'Return minus 1 when the heap empties first.',
+    ],
+    example: {
+      input: 'n = 3, edges = [[0,1,1],[1,2,1],[0,2,3]], labels = "aab"',
+      steps: [
+        'With k = 1 the path 0, 1, 2 reads a, a, b. Two a letters in a row are too many, so that path is dropped.',
+        'The direct edge from 0 to 2 reads a, b and costs 3.',
+        'With k = 2 the path through node 1 is legal and costs 1 plus 1, which is 2.',
+      ],
+      output: '3 when k is 1, and 2 when k is 2',
+    },
+    pitfalls: [
+      'The starting node counts. Its label is a run of length 1, even though no edge has been used yet.',
+      'A smaller distance with a longer run is not always better. The shorter run may be the only one that can continue.',
+      'Adding edge weights in a 32 bit integer can wrap on a long path and look smaller than a real distance.',
+      'The first time the destination is popped is the answer. Later pops of the same node have a larger or equal cost.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

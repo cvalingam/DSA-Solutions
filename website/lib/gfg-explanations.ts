@@ -10727,6 +10727,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'subsets-with-mex-in-range': {
+    intuition:
+      'The MEX of a subset is the smallest missing non negative integer, and the empty subset has MEX 0. A subset has MEX k exactly when every value from 0 through k minus 1 appears at least once and k itself is left out. Each value below k has freq copies, and at least one copy must be taken, which can happen in 2 to the freq minus 1 ways. Every value above k, and every negative value, may be kept or dropped without changing that MEX. Those free choices contribute a power of two. The product for the required values grows by one integer as k increases, so each MEX in the range is scored from the previous one. The MEX of an array of n elements cannot exceed n, and it cannot pass the first missing value, so the scan stops there.',
+    algorithm: [
+      'Return 0 when the range is empty or its lower end is above n. Raise a negative lower end to 0.',
+      'Count how often each value from 0 through min(r, n) appears, and precompute the powers of two up to 2 to the n.',
+      'Walk the values below l. If one of them is missing, return 0. Otherwise multiply in 2 to the freq minus 1.',
+      'For each k from l through the bound, add the required product times 2 to the power of the leftover elements.',
+      'Stop when k itself is missing, then return the total modulo 1000000007.',
+    ],
+    example: {
+      input: 'arr = [2, 0, 1, 0], l = 1, r = 2',
+      steps: [
+        'MEX 1 needs at least one 0 and no 1. The two zeros and the free 2 give 6 such subsets.',
+        'MEX 2 needs at least one 0, the 1, and no 2. The two zeros give 3 such subsets.',
+        'The subsets that also keep 2 have MEX 3, which is outside the range. The total is 6 plus 3, which is 9.',
+      ],
+      output: '9',
+    },
+    pitfalls: [
+      'The empty subset has MEX 0. A range that includes 0 must count every subset that contains no zero.',
+      'A missing value below l makes every MEX in the range impossible. The answer is 0.',
+      'Values larger than n, and negative values, never fill a MEX slot. They still double the count of every subset that ignores them.',
+      'Once a value is missing, no larger MEX is possible. Continuing the scan would add nothing.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
