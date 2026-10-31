@@ -11702,6 +11702,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3665: {
+    intuition:
+      'The robot begins on the empty cell at the top left and must reach the empty cell at the bottom right. From an empty cell it may step right or down. A mirror changes that step before the robot enters the mirror cell. A rightward step into a mirror continues downward into the cell directly below the mirror. A downward step into a mirror continues rightward into the cell directly beside the mirror. When the landing cell is another mirror, the same rule runs again, using the direction of the step that just entered it. The chain stops on an empty cell, on the goal, or when the next cell would lie outside the grid. An outside step makes the whole path invalid. Every successful step increases the row or the column, so arrivals at a cell come only from the cell above and the cell to the left. Each cell keeps those two arrival counts. An empty cell can leave either way, so both counts are sent onward. A mirror sends only the count that bounces through it: the left arrival continues downward, and the arrival from above continues rightward. The previous row holds everything the next row needs, and the left neighbor is already updated in the current row. The answer is the sum of the two arrivals at the bottom right, modulo 1000000007.',
+    algorithm: [
+      'Place one arrival from above on the top left cell, which lets the robot leave right or down.',
+      'Scan each row from left to right.',
+      'Fill the arrival from above using the cell in the previous row. An empty cell contributes both of its counts. A mirror contributes only the count that arrived from its left.',
+      'Fill the arrival from the left using the cell just written in this row. An empty cell contributes both of its counts. A mirror contributes only the count that arrived from above.',
+      'Return the two arrival counts of the bottom right cell, added modulo 1000000007.',
+    ],
+    example: {
+      input: 'grid = [[0,1,0],[0,0,1],[1,0,0]]',
+      steps: [
+        'A right step from (0, 0) hits the mirror at (0, 1) and lands on (1, 1). A down step lands on the empty cell (1, 0).',
+        'From (1, 1), a right step hits the mirror at (1, 2) and lands on (2, 2). A down step reaches (2, 1) and then walks right to the goal.',
+        'From (1, 0), a down step hits the mirror at (2, 0) and lands on (2, 1), which then walks to the goal. The other routes through (1, 1) are separate paths.',
+        'Those choices make five paths that finish on (2, 2). A bounce that would leave the grid is dropped.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'The robot chooses a direction only on an empty cell. The direction of the step that entered a mirror decides where that bounce goes next.',
+      'A reflection that lands on another mirror keeps going. The step ends on an empty cell, on the goal, or outside the grid.',
+      'An empty cell forwards every arrival it holds. A mirror forwards only the arrival that matches the bounce.',
+      'Both arrivals at the bottom right are valid endings. Add them modulo 1000000007.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

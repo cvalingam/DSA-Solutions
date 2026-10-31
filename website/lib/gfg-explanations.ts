@@ -10754,6 +10754,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-packages-within-time': {
+    intuition:
+      'The locations stand in a line, and arr[i] is the number of packages waiting at location i. Every location costs one unit of time. The agent may start at any location, and the locations it visits after that must be consecutive. In totalTime units it can cover k locations, where k is the smaller of totalTime and the length of the line. The packages delivered are the sum of that contiguous block, so the answer is the largest sum of any block of length k. The first k locations are added into a running total, and that total is the first candidate. Each later location extends the running total. At the same moment the location that has slipped out of the left side of the block is added into a second total. The packages in the current block are the first total minus the second. The larger of that difference and the best candidate so far is kept. When totalTime covers the whole line, the first total is already the answer and the second loop does not run. When totalTime is zero, the two totals stay equal on every step and the difference is zero.',
+    algorithm: [
+      'Set k to the smaller of totalTime and n, and add arr[0] through arr[k minus 1] into the running total.',
+      'Start the answer at that total, and start the fallen out total at zero.',
+      'For each remaining index, add the new location to the running total and add the location that leaves the window to the fallen out total.',
+      'Replace the answer with the larger of the answer and the running total minus the fallen out total.',
+      'Return the answer.',
+    ],
+    example: {
+      input: 'arr = [2, 1, 3, 5, 0, 1, 4], totalTime = 3',
+      steps: [
+        'The first three locations sum to 2 plus 1 plus 3, which is 6.',
+        'The next block drops 2 and adds 5, so 1 plus 3 plus 5 is 9.',
+        'The block after that is 3 plus 5 plus 0, which is 8. The remaining blocks sum to 6 and 5.',
+        'The largest of those sums is 9, from the locations holding 1, 3, and 5.',
+      ],
+      output: '9',
+    },
+    pitfalls: [
+      'The window cannot be longer than the array. k is the smaller of totalTime and n.',
+      'A totalTime of zero visits no location. The difference of the two totals stays zero.',
+      'The two totals are prefixes of the array. Their difference is the current block of packages.',
+      'Each location is added once to the running total and at most once to the fallen out total.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
