@@ -10782,6 +10782,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'maximum-subarray-sum-with-one-square-allowed': {
+    intuition:
+      'At most one element may be replaced by its square, and the answer is the largest sum of a contiguous block after that choice. A block that ends at the current index has two forms worth keeping. The plain form has squared nothing. It is the current value alone, or that value added to the best plain form that ended on the previous index. The squared form has already used its one square. It can start fresh at the square of the current value, extend a plain form by that square, or extend an earlier squared form by the current value left as it is. Those three choices put the square on the current element as a new start, on the current element after a plain prefix, or somewhere earlier in the block. The best value among every plain form and every squared form is the answer. Only those two running sums are stored, so the extra memory stays constant. Both sums stay in 64 bit integers, because the square of a large element overflows a 32 bit product.',
+    algorithm: [
+      'Start the plain sum at the first value and the squared sum at the square of that value.',
+      'For each later value, save both of the previous sums first.',
+      'Set the next plain sum to the value itself, or to the previous plain sum plus the value.',
+      'Set the next squared sum to the square, to the previous plain sum plus the square, or to the previous squared sum plus the value.',
+      'Keep the larger of the answer and the two new sums, then return the answer.',
+    ],
+    example: {
+      input: 'arr = [-4, -4, -2, 5, 2, -1]',
+      steps: [
+        'The squares of the opening negative values are 16, 16, and 4.',
+        'At 5 the squared form becomes 25, which is a block that starts on that square.',
+        'Adding the following 2 extends that form to 27.',
+        'The block {5, 2} with 5 squared is 25 plus 2, and that is the best sum.',
+      ],
+      output: '27',
+    },
+    pitfalls: [
+      'Build the squared form from the previous plain sum before that plain sum is replaced. The new plain sum already contains the current value.',
+      'When a running sum is negative, the next form starts at the current value or at its square.',
+      'The square of a large element does not fit in a 32 bit product. Both running sums stay in 64 bit integers.',
+      'An empty array has no block to score. The method returns 0.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

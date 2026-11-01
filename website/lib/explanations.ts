@@ -11730,6 +11730,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  453: {
+    intuition:
+      'One move increments every element except one. The gaps between the numbers do not change if, instead, that one excluded element is decreased by 1. Relative to the rest of the array, the two operations are the same. Making every element equal is then the same as lowering values until they all meet the current minimum, because the minimum never needs to come down. Element i must be lowered nums[i] minus the minimum times, and each of those unit drops is one move. The total is the sum of the array minus the minimum multiplied by the length. A single pass records both the sum and the minimum. The sum is kept in a 64 bit integer, because an array of length 100000 with values near a billion overflows a 32 bit total before the subtraction. The final move count itself fits in a 32 bit integer, so that difference is returned as an int.',
+    algorithm: [
+      'Walk the array once.',
+      'Add each value into a 64 bit sum and keep the smallest value seen.',
+      'Multiply that minimum by the length in 64 bit arithmetic.',
+      'Return the sum minus that product, as a 32 bit integer.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3]',
+      steps: [
+        'The minimum is 1. The gaps above it are 0, 1, and 2.',
+        'The gaps add to 3, which is the array sum 6 minus 1 times 3.',
+        'The moves raise the array through [2, 3, 3] and [3, 4, 3] to [4, 4, 4].',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'A 32 bit running sum wraps on a long array of large values. The sum is a 64 bit integer.',
+      'Multiply the minimum by the length as a 64 bit product before subtracting it from the sum.',
+      'When every element is already equal, every gap is 0 and the answer is 0.',
+      'Negative values still meet at the current minimum. A gap below that minimum does not occur.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
