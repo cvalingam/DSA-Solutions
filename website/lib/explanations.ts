@@ -11756,6 +11756,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  462: {
+    intuition:
+      'One move raises or lowers a single element by 1, and every element must finish on the same value. The meeting value that minimizes the total travel is a median. For an odd length that is the middle element. For an even length either of the two central elements gives the same total, so the lower of those two ranks is enough. Three way quickselect finds the element at rank (n minus 1) divided by 2. A random pivot splits the active range into values below the pivot, values equal to it, and values above it. When the rank falls inside the equal band, the pivot is the median and the search stops. Otherwise the search continues in the one band that still holds the rank. Grouping the equal values together finishes a long run of duplicates in a single partition. The search is a loop, so the call stack stays flat. After the median is known, each element contributes the absolute gap between itself and that median. The gaps are added in a 64 bit integer, because a long array of large gaps can pass 2 to the 31 before the total is returned as an int.',
+    algorithm: [
+      'Ask three way quickselect for the element at rank (n minus 1) divided by 2.',
+      'Pick a random pivot in the active range and split that range into a lower band, an equal band, and an upper band.',
+      'Return the pivot when the rank sits in the equal band. Otherwise shrink the range to the band that contains the rank.',
+      'Add the absolute gap from every element to that median in a 64 bit integer.',
+      'Return the total.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 3]',
+      steps: [
+        'The middle rank is 1, and the value there is 2.',
+        'The gaps from 2 are 1, 0, and 1.',
+        'Two moves turn the array into [2, 2, 2].',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'For an even length, either central value gives the same total. Rank (n minus 1) divided by 2 selects the lower one.',
+      'A split that keeps equals on one side partitions a run of duplicates over and over. The equal band finishes that run at once.',
+      'The sum of the gaps can pass a 32 bit integer. The total is accumulated in a 64 bit integer.',
+      'Quickselect rearranges the array while it searches. The gaps are read after the median is known.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

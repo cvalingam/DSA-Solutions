@@ -10810,6 +10810,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'largest-sum-cycle': {
+    intuition:
+      'Each cell has at most one outgoing edge, and a value of minus 1 means the cell stops. Following edges from any cell walks a single chain. The chain reaches a cell with no outgoing edge, joins a chain that was already finished, or returns to a cell that is still on the current chain. That last case closes a cycle. A chain holds at most one cycle, and the cells that only lead into the cycle stay outside the sum. A cell is marked active while its chain is being followed. When the next cell is still active, the walk has looped. Starting at that cell and following edges until it reappears adds each cycle index once. The sum is a 64 bit integer, because a cycle through a long array can pass 2 to the 31. The same chain is then walked again and every active cell is marked finished. A later start that runs into a finished cell stops there. Those outgoing edges were already explored, so that chain holds no new cycle. When no chain ever closes, the answer stays minus 1.',
+    algorithm: [
+      'Mark every cell unvisited, and start the best sum at minus 1.',
+      'From each unvisited cell, follow edges and mark cells active until the next cell is missing, already active, or finished.',
+      'When the next cell is active, add the indices around that cycle and keep the larger sum.',
+      'Walk the chain again and mark every active cell finished.',
+      'Return the best sum. The result stays minus 1 when no cycle was closed.',
+    ],
+    example: {
+      input: 'edge = [1, 2, 0, -1]',
+      steps: [
+        'From cell 0 the chain visits 0, then 1, then 2, and the next step returns to 0.',
+        'The cycle indices are 0, 1, and 2. Their sum is 3.',
+        'Cell 3 has no outgoing edge, so that chain adds no cycle.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Cells that only lead into a cycle stay outside the sum. The sum starts at the cell where the chain meets itself.',
+      'Mark the chain finished after it is scored. A later start that reaches a finished cell ends there.',
+      'The cycle sum is a 64 bit integer. Adding every index of a long cycle overflows a 32 bit total.',
+      'A cell whose edge is minus 1 ends the chain. A cycle needs the walk to return to an active cell.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
