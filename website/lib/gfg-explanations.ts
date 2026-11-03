@@ -10837,6 +10837,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-tree-paths-with-limited-max-edge-weight': {
+    intuition:
+      'A path between two nodes of a tree is unique, and the heaviest edge on that path is the threshold that decides whether the path is allowed for a query x. Keeping only edges of weight at most x breaks the tree into connected components. Every pair of nodes inside the same component has a path whose heaviest edge is at most x, and every such pair is counted once. Sorting the edges by weight and merging them with a disjoint set grows those components in increasing threshold order. When components of sizes a and b join across an edge of weight w, every node of the first component forms a new valid path with every node of the second, so a times b paths are added and their heaviest edge is exactly w. Queries are sorted the same way. As edges are added, each query reads the running path count when every edge of weight at most its limit has been merged. The original order of the queries is restored by writing into the matching index. The product of the two sizes is formed in a 64 bit integer so a large merge does not wrap before it is stored.',
+    algorithm: [
+      'Start each node in its own component of size 1, and sort the edges by weight.',
+      'Pack each query with its original index and sort those packs by the query limit.',
+      'Walk the sorted queries. While the next edge weight is at most the current limit, merge its endpoints.',
+      'When two different components merge, add the product of their sizes to the running path count and attach the smaller root under the larger one.',
+      'Store the running path count at the original index of the query, then return the list.',
+    ],
+    example: {
+      input: 'n = 7, edges = [[1, 2, 3], [2, 3, 1], [2, 4, 9], [3, 6, 7], [3, 5, 8], [5, 7, 4]], queries = [1, 3, 5]',
+      steps: [
+        'For limit 1 the edge of weight 1 joins nodes 2 and 3, so one path is counted.',
+        'For limit 3 the edge of weight 3 joins node 1 with that component of size 2, adding two paths. The total becomes 3.',
+        'For limit 5 the edge of weight 4 joins nodes 5 and 7, adding one more path. The total becomes 4.',
+      ],
+      output: '[1, 3, 4]',
+    },
+    pitfalls: [
+      'A path needs at least one edge. A lone node does not contribute a path.',
+      'Merge only when the roots differ. An edge inside an existing component adds no new path.',
+      'Multiply the component sizes as a 64 bit product before adding them to the running count.',
+      'Answer queries offline in sorted order, then write each count back to its original index.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

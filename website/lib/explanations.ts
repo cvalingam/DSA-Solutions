@@ -11783,6 +11783,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3736: {
+    intuition:
+      'Each move raises a single element by 1, and every element must finish on the same value. Because values cannot fall, that shared value cannot sit below the current maximum. Raising every element past that maximum only adds extra moves for every index, including the ones that already hold the maximum. The cheapest target is therefore the maximum itself. Element i needs max minus nums[i] increments, and the total of those gaps is the maximum multiplied by the length minus the sum of the array. One pass records both the maximum and the sum, then that product minus the sum is the answer.',
+    algorithm: [
+      'Walk the array once.',
+      'Keep the largest value seen and add every value into a running sum.',
+      'Return the largest value times the length minus the sum.',
+    ],
+    example: {
+      input: 'nums = [2, 1, 3]',
+      steps: [
+        'The maximum is 3, and the sum of the array is 6.',
+        'Three times the length is 9. The gaps above the values are 1, 2, and 0.',
+        'Nine minus 6 is 3, which raises the array to [3, 3, 3].',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'A target below the maximum is impossible. Values cannot be decreased.',
+      'A target above the maximum adds the same extra move to every element. That cannot shrink the total.',
+      'When every element is already equal, the sum equals the maximum times the length and the answer is 0.',
+      'The formula is the total of the gaps. It does not sort the array or pick a median.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
