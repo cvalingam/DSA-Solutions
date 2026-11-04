@@ -10864,6 +10864,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'xor-of-all-subarray-xors': {
+    intuition:
+      'Every subarray has a XOR of its own elements, and the answer is the XOR of all of those values. Element arr[i] sits in every subarray that starts at or before i and ends at or after i, so it appears in (i + 1) * (n - i) subarrays. XOR cancels a value that appears an even number of times and keeps a value that appears an odd number of times. The product (i + 1) * (n - i) is odd only when both factors are odd. That forces n to be odd and i to be even. When n is even, every product is even and the answer is 0. When n is odd, the answer is the XOR of the elements at the even indices. The scan steps by 2, so each kept value is read once.',
+    algorithm: [
+      'Read the length n.',
+      'Return 0 when n is even.',
+      'When n is odd, start a running XOR at 0 and walk the even indices.',
+      'XOR each even index into the running value.',
+      'Return that value.',
+    ],
+    example: {
+      input: 'arr = [1, 2, 4]',
+      steps: [
+        'The length is 3, which is odd, so some elements survive.',
+        'Index 0 appears in 3 subarrays, index 1 appears in 4, and index 2 appears in 3.',
+        'Only the odd counts matter, so the answer is 1 XOR 4, which is 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'An even length cancels every element. The method returns 0 without reading the values.',
+      'Odd indices never survive when n is odd. The loop steps by 2 from index 0.',
+      'The count (i + 1) * (n - i) can overflow a 32 bit product on a long array. The parity form avoids that multiply.',
+      'The answer is a XOR of values, not a sum of subarray XORs.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

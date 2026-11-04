@@ -11808,6 +11808,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3505: {
+    intuition:
+      'Each chosen block has fixed length x, the blocks cannot overlap, and every value inside a block must finish equal. The cheapest target for one block is its median, so the cost of a window is the total absolute gap from that median. Sliding windows of length x share almost the same multiset, so the costs are built once while the window moves. Values are compressed to ranks. Two Fenwick trees store how many window values sit at each rank and what those values sum to. Binary lifting on the count tree finds the rank of the ((x + 1) / 2) th element, which is the median used for that window. The cost formula splits the window into the values below that rank and the rest, including ties on the median itself. After every start index has a cost, choosing k non overlapping windows is a short DP because k is at most 15. One row holds the best score with the previous window count, and the next row either skips the current end or places a window that ends there.',
+    algorithm: [
+      'Sort a copy of the array and keep each distinct value once. Map every original element to its 1 based rank.',
+      'Load the first window of length x into the count and sum Fenwick trees, and keep the window total.',
+      'For each window start, lift on the count tree to the median rank, score the absolute gaps, then slide the window one step.',
+      'Run a DP with k layers. At end index i, either keep the previous best for the same window count or add the cost of the window that ends at i.',
+      'Return the best score that uses exactly k windows on the full array.',
+    ],
+    example: {
+      input: 'nums = [5, -2, 1, 3, 7, 3, 6, 4, -1], x = 3, k = 2',
+      steps: [
+        'Each length 3 window is scored by its distance to its median.',
+        'Two non overlapping windows are chosen from those starts.',
+        'The cheapest pair of windows costs 8 operations in total.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'The median rank is ((x + 1) / 2), which matches a lower half that is never smaller than the upper half.',
+      'Equal values share one rank. Values equal to the median still contribute 0 to the absolute gap formula.',
+      'Products of a median and a count must use 64 bit arithmetic.',
+      'The DP rows must be swapped after each window count. Reusing one row in place mixes the previous count with the current count.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
