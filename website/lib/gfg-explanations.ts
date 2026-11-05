@@ -10891,6 +10891,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-days': {
+    intuition:
+      'The string is finished when no two neighboring letters are equal. A question mark may sit beside anything, because the rule only constrains a letter that is still present. The number of equal neighboring pairs is therefore the only quantity that matters. That count is taken once at the start. Each day replaces one index from the permutation with a question mark. That replacement can break the pair on its left and the pair on its right, and it cannot create a new forbidden pair, because a question mark never forces a mismatch. When the live count of equal pairs reaches zero, the string already satisfies the rule, and that day number is the answer. If the original string has no equal neighbors, the answer is 0 without using the permutation.',
+    algorithm: [
+      'Copy the string into a character array and count every index i where the character equals the next one.',
+      'Return 0 when that count is already zero.',
+      'For each day, read the index from the permutation.',
+      'If the left neighbor equals the current character, lower the count by one. If the right neighbor equals the current character, lower the count by one.',
+      'Replace the current character with a question mark. Return the day number when the count hits zero.',
+    ],
+    example: {
+      input: 's = "aabb", p = [2, 1, 3, 0]',
+      steps: [
+        'The original string has one equal pair at indices 0 and 1, so the count starts at 1.',
+        'Day 1 replaces index 2 and leaves the pair "aa" in place.',
+        'Day 2 replaces index 1, breaks that pair, and the count falls to 0, so the answer is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'A question mark beside a letter is allowed. Do not count those pairs as forbidden.',
+      'The permutation visits each index once, so a position is never replaced twice.',
+      'Decrement the equal pair count before writing the question mark. The old letter is what matched its neighbors.',
+      'If the string is already valid, return 0. Do not wait for the first replacement.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -11835,6 +11835,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1385: {
+    intuition:
+      'An element of arr1 counts toward the distance value when every value in arr2 sits more than d away from it. Equivalently, the closed interval from a minus d to a plus d must contain no entry of arr2. Sorting arr2 once turns that check into a binary search. The insertion point of a is the first index whose value is at least a. Only that neighbor and the previous one can be the closest values in arr2, because every earlier entry is smaller and every later entry is larger. If both of those gaps are greater than d, then a is counted. The same test works when a is missing from arr2, because the bitwise complement of a negative BinarySearch result is the insertion index.',
+    algorithm: [
+      'Sort arr2 in nondecreasing order.',
+      'For each value a in arr1, binary search for a in arr2 and turn a miss into its insertion index.',
+      'Read the value at that index when it exists, and the value just before it when the index is positive.',
+      'Count a when both of those gaps are greater than d.',
+      'Return the count.',
+    ],
+    example: {
+      input: 'arr1 = [4, 5, 8], arr2 = [10, 9, 1, 8], d = 2',
+      steps: [
+        'After sorting, arr2 is [1, 8, 9, 10].',
+        'For 4 the neighbors around the insertion point are 1 and 8. Both gaps are greater than 2, so 4 counts.',
+        'For 5 the same neighbors give gaps of 4 and 3, so 5 counts. For 8 the match at 8 has gap 0, so 8 is dropped.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'A gap of exactly d fails the test. The check is a strict greater than d.',
+      'When the insertion index is 0, there is no left neighbor to check.',
+      'When the insertion index equals the length of arr2, there is no right neighbor to check.',
+      'Sorting arr2 is enough. Sorting arr1 does not change the count.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
