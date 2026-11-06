@@ -11862,6 +11862,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2747: {
+    intuition:
+      'Each query asks how many servers received no request in the closed interval from the query time minus x through the query time. Scanning every log for every query is too slow once both lists reach length 100000. Sorting the logs by time and the queries by time lets one window slide forward. The right pointer adds every log whose time is at most the current query. The left pointer drops every log whose time is strictly before the query minus x, so a log that lands on the left endpoint stays inside the inclusive interval. A count array stores how many logs each server still has in the window. A server becomes active when its count rises from 0 to 1, and it leaves when the count falls back to 0. The idle count is n minus the number of active servers. Each query is packed with its original index, so the answers are written back in the input order.',
+    algorithm: [
+      'Pack each query time with its original index and sort those values. Sort the logs by time.',
+      'Keep a count for every server and a count of servers that appear at least once in the window.',
+      'For each query in time order, advance the right pointer through logs at or before the query time.',
+      'Advance the left pointer through logs that fall before the query time minus x.',
+      'Store n minus the active server count at the original query index, then return that array.',
+    ],
+    example: {
+      input: 'n = 3, logs = [[1,3],[2,6],[1,5]], x = 5, queries = [10,11]',
+      steps: [
+        'Query 10 covers times 5 through 10. Server 1 logged at 5 and server 2 logged at 6.',
+        'Server 3 has no log in that window, so one server is idle.',
+        'Query 11 covers times 6 through 11. The log at time 5 has left, only server 2 remains, and two servers are idle.',
+      ],
+      output: '[1, 2]',
+    },
+    pitfalls: [
+      'The window is closed on both ends. A log at time query minus x stays, and a log at the query time stays.',
+      'Drop a server from the active count only when its own count returns to 0. One server can have several logs in the same window.',
+      'Write each answer at the original query index. The queries are processed in time order.',
+      'Server ids run from 1 through n. The count array has a slot for each of them.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

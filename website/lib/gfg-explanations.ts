@@ -10918,6 +10918,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'balanced-binary-tree-counter': {
+    intuition:
+      'A binary tree of height h is balanced when the subtree heights at every node differ by at most 1. The count of distinct balanced trees of exact height h follows from the root. One subtree must have height h minus 1, otherwise the whole tree would be shorter. The other subtree then has height h minus 1, or height h minus 2. Two subtrees of height h minus 1 can be chosen in f of h minus 1 squared ways. A taller left subtree and a shorter right subtree can be chosen in f of h minus 1 times f of h minus 2 ways, and swapping the sides gives the same number again. So f of h equals the square of the previous height plus twice the product of the previous two heights. Height 0 is the empty tree and height 1 is a single node, and both counts are 1. Only those two previous counts are stored. Each product is reduced modulo 1000000007. The loop builds the count one height at a time, which matches a recurrence that multiplies the previous two values.',
+    algorithm: [
+      'Start the counts for height 0 and height 1 at 1.',
+      'For each height from 2 through h, form the square of the previous height and twice the product of the previous two heights.',
+      'Reduce that sum modulo 1000000007 and store it as the newest count.',
+      'Shift the two stored counts forward.',
+      'Return the count for height h.',
+    ],
+    example: {
+      input: 'h = 3',
+      steps: [
+        'Heights 0 and 1 each have one tree.',
+        'Height 2 is 1 squared plus 2 times 1 times 1, which is 3.',
+        'Height 3 is 3 squared plus 2 times 3 times 1, which is 15.',
+      ],
+      output: '15',
+    },
+    pitfalls: [
+      'Height 1 is a single node, and the empty tree is height 0. Both counts start at 1.',
+      'The two mixed shapes, taller on the left and taller on the right, are different trees. The factor of 2 counts both.',
+      'Reduce every product modulo 1000000007. A raw square of a large count overflows a 32 bit integer.',
+      'The loop stops at height h. One extra step would count trees of height h plus 1.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
