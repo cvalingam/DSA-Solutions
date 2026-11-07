@@ -890,6 +890,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   1873: ['database'],
   1877: ['array', 'two-pointers', 'greedy', 'sorting'],
   1878: ['array', 'greedy', 'matrix'],
+  1882: ['array', 'heap', 'simulation'],
   1886: ['array', 'matrix'],
   1888: ['string', 'greedy', 'sliding-window'],
   1894: ['array', 'binary-search', 'prefix-sum', 'simulation'],

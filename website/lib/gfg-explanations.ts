@@ -10945,6 +10945,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'generate-usernames': {
+    intuition:
+      'Each requested name has to become a username that nobody else receives, and the choice is made in the order the names appear. Before that walk starts, every string in the input is reserved. A reserved string can still be given to the first user who asks for it, but it cannot be invented later as a suffix of some other request. The first time a name is reached in the walk, it has not been assigned yet, so that user keeps the name unchanged. A later request for the same name has to grow a suffix. The suffix is the smallest positive integer, starting at 1, such that the name with that integer on the end is neither reserved nor already assigned. The second copy of a therefore skips a1 when a1 appears anywhere in the input, and it takes a2. The original a1 is still given unchanged when its own turn arrives, and the next copy of a then takes a3. A map remembers the next suffix worth trying for each base name. The following request for that base starts there and only moves forward through suffixes that are reserved or already taken.',
+    algorithm: [
+      'Put every input string into a reserved set.',
+      'Keep an assigned set, and a map from each base name to the next suffix to try.',
+      'For each name, keep it unchanged when it is not in the assigned set, then mark it assigned.',
+      'Otherwise start at the stored suffix, or at 1 when that name has no stored suffix.',
+      'Advance while the candidate is reserved or already assigned.',
+      'Store the following suffix, mark the candidate assigned, and append it to the answer.',
+    ],
+    example: {
+      input: 'arr = ["a", "a", "a1", "a"]',
+      steps: [
+        'The reserved names are a and a1. The first a has not been assigned, so it stays a.',
+        'The second a finds a1 reserved, so the smallest free positive suffix is a2.',
+        'The request a1 has not been assigned yet, so it stays a1. The last a skips a1 and a2 and becomes a3.',
+      ],
+      output: '[a, a2, a1, a3]',
+    },
+    pitfalls: [
+      'Suffixes start at 1. A suffix of 0 is not a positive integer, so a0 is never generated.',
+      'A name that appears later in the input is reserved from the beginning. Assigning it early as a suffix would take it from the user who asked for it.',
+      'The first request for a reserved name still keeps that name. Reservation blocks suffixes. It does not block the original assignment.',
+      'Each base name keeps its own next suffix. A rejected candidate for one base does not move the counter of a different base.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

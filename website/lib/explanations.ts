@@ -11889,6 +11889,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1882: {
+    intuition:
+      'Tasks arrive one per second, and each task is given to one server. Among the servers that are free when a task starts, the smallest weight wins, and the smaller index breaks a tie. A free heap stores those servers in that order. A busy heap stores the rest by the second they next become free, then by weight and index. Before task i is assigned, every busy server whose free time is at most i moves back to the free heap. When that heap still has a server, the task starts at second i on the lightest free server. A heavier free server is used even if a lighter server is still busy, because a free server can start now. When the free heap is empty, the task starts on the busy server that frees first, at that server\'s own free time, which can be later than i. The new free time is the start second plus the task length. Those free times are 64 bit integers. One server can stack a long chain of tasks, and the finish time can pass two billion, so a 32 bit value would wrap and hand later tasks to the wrong server. Each heap stores server indices, and the weight is read from the servers array when the priority is built. The answer at position i is the index of the chosen server.',
+    algorithm: [
+      'Place every server index on a free heap ordered by weight, then by index. Keep a 64 bit free time for each server.',
+      'For task i, move every busy server whose free time is at most i onto the free heap.',
+      'If a free server exists, take the lightest one and start the task at second i.',
+      'If none is free, take the busy server that frees first and start the task at that free time.',
+      'Record the server index, set its next free time to the start plus the task length, and place it on the busy heap.',
+      'Return the array of server indices.',
+    ],
+    example: {
+      input: 'servers = [3, 3, 2], tasks = [1, 2, 3, 2, 1, 2]',
+      steps: [
+        'At second 0 the lightest server is index 2. It takes the task of length 1 and is free again at second 1.',
+        'At second 1 server 2 is free again and takes the task of length 2, so it stays busy until second 3. At second 2 servers 0 and 1 are both free and both weigh 3, so index 0 takes the task of length 3.',
+        'Server 2 frees at second 3 and takes the next task. Server 1 takes the task at second 4. At second 5 every server is free, and the lightest one, server 2, takes the last task.',
+      ],
+      output: '[2, 2, 0, 2, 1, 2]',
+    },
+    pitfalls: [
+      'Store free times in a 64 bit integer. A 32 bit finish time wraps once one server\'s tasks run past two billion seconds.',
+      'When every server is busy, the task starts at the chosen server\'s free time. That second can be later than the task index.',
+      'A free heavier server beats a lighter server that is still busy. Weight is compared only among servers that can start at the same second.',
+      'Release every busy server whose free time is at most the current second before choosing. One second can return several servers to the free heap.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
