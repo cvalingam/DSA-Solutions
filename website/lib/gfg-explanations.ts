@@ -10973,6 +10973,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'minimum-time-with-2-scanners': {
+    intuition:
+      'Both scanners can run at the same time, and each one finishes its own pile of documents on its own clock. If the faster scanner takes i documents and the slower one takes the rest, the job ends at the later of i times s1 and (n minus i) times s2. As i grows, the first side rises and the second side falls, so the maximum of the two sides first drops and then rises. The lowest point sits where the two sides meet, which is near n times s2 over s1 plus s2. Only the floor and the next integer of that balance need to be checked. Putting every document on the faster scanner is also compared, because that choice can win when the slower scanner is much slower. Products are kept in 64 bit integers so a large n times a large scan time does not wrap.',
+    algorithm: [
+      'Swap the two scan times when needed so that s1 is the faster scanner.',
+      'Start the answer at n times s1, the time to give every document to the faster scanner.',
+      'Compute i as the floor of n times s2 divided by s1 plus s2.',
+      'For i and for i plus 1, when the index lies between 0 and n, take the maximum of that scanner load and the other scanner load.',
+      'Keep the smallest of those finish times and return it.',
+    ],
+    example: {
+      input: 'n = 2, s1 = 1, s2 = 3',
+      steps: [
+        'Scanner 1 is faster. Giving both documents to it finishes in time 2.',
+        'The balance point is near 2 times 3 over 4, which is 1.5, so the candidates are 1 and 2 documents on scanner 1.',
+        'One document each finishes at max(1, 3) = 3, which is worse than 2, so the answer is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'The finish time is the maximum of the two scanners, not their sum. They work at the same time.',
+      'A distribution that leaves the slower scanner idle can still be best when that scanner is much slower than the other.',
+      'Use 64 bit products for i times s1 and for (n minus i) times s2. Both factors can be large enough to overflow a 32 bit integer.',
+      'Only the floor of the balance and the next integer are required. A full sweep over every i is unnecessary.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

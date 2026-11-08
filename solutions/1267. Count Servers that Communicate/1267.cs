@@ -1,5 +1,8 @@
-// Approach: Count servers per row and per column; a server communicates if its row count > 1 or its column count > 1.
-// Time: O(m·n) Space: O(m+n)
+// Approach: Count servers in every row and every column. A server can talk to
+// another when its row has more than one server or its column has more than
+// one. A second pass counts those servers. Every cell must be read, so the
+// bound is already tight.
+// Time: O(m · n) Space: O(m + n)
 
 public class Solution
 {

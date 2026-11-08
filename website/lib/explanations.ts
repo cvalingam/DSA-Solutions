@@ -4442,12 +4442,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1267: {
-    intuition: 'A server communicates if it shares a row or column with another server. Count cells that are 1 and in a row/column with at least one other 1.',
+    intuition:
+      'Two servers communicate when they sit in the same row or the same column. A server that is alone in both its row and its column has nobody to talk to, so it is left out of the answer. Building a graph of servers would work, but the grid itself already carries the needed information. One pass counts how many servers live in each row and each column. A second pass visits every cell that holds a server and keeps it when its row count is greater than 1 or its column count is greater than 1. Empty cells never enter the answer. Every cell of the grid has to be read at least once, so the linear scan in the size of the grid is already the tight bound.',
     algorithm: [
-      'Count servers per row and per column.',
-      'For each server: if row_count[r]>1 or col_count[c]>1, it communicates.',
+      'Allocate a row count array of length m and a column count array of length n.',
+      'Walk the grid once and raise the matching row and column counts for every cell that holds a server.',
+      'Walk the grid again. For each server, add one to the answer when its row count or its column count is greater than 1.',
+      'Return that total.',
     ],
-    pitfalls: ['Two passes: first count rows/cols, then determine communicating servers.'],
+    example: {
+      input: 'grid = [[1,0],[0,1]]',
+      steps: [
+        'Row counts are [1, 1] and column counts are [1, 1].',
+        'The server at (0, 0) is alone in its row and its column, so it is dropped.',
+        'The server at (1, 1) is also alone, so the answer is 0.',
+      ],
+      output: '0',
+    },
+    pitfalls: [
+      'A row or column count of exactly 1 means that server is alone on that line. Both lines must be alone for the server to be excluded.',
+      'Count every server in the first pass before deciding. A later server in the same row can only be seen after the full count is known.',
+      'Do not require a server to have company in both its row and its column. Either line is enough for it to communicate.',
+      'The answer counts servers, not pairs. Two servers in one row still contribute two to the total.',
+    ],
   },
 
   1277: {
