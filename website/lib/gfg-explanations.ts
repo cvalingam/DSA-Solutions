@@ -11000,6 +11000,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-group-occurrences': {
+    intuition:
+      'A group is a maximal run of one letter, so aaabbcca has four groups: aaa, bb, cc, and a. The task is to count how many distinct letters form exactly k such groups. Scanning the string once is enough. At the start of every run, raise a counter for that letter in a 26 slot array. Letters that never appear stay at zero. After the scan, count how many slots equal k. The length of a run does not matter, only that the run began. Jumping through equal characters keeps each group charged once. Every character of the string must be read, so the linear pass is already the tight bound.',
+    algorithm: [
+      'Allocate a counter of length 26 for the lowercase letters.',
+      'Walk the string by runs. At the first character of a run, raise that letter\'s counter, then skip the rest of the run.',
+      'Scan the 26 counters and add one to the answer for every value that equals k.',
+      'Return that answer.',
+    ],
+    example: {
+      input: 's = "geeksforgeeks", k = 2',
+      steps: [
+        'The runs include g, ee, k, s, f, o, r, g, ee, k, s.',
+        'Letters g, e, k, and s each start exactly two runs. The others start one.',
+        'Four letters match k equals 2, so the answer is 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Count groups, not raw character frequency. The string aaaaa is one group of a, even though a appears five times.',
+      'A letter that returns after a different letter starts a new group. In aaabbcca the final a is a second group for a.',
+      'Only letters whose group count equals k are kept. A letter with more groups than k does not count.',
+      'The alphabet size is fixed at 26, so the counter uses constant extra space.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

@@ -11934,6 +11934,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  1606: {
+    intuition:
+      'Request i prefers server i modulo k. If that server is busy, the next free server in circular order takes the job, and if every server is busy the request is dropped. A busy min-heap stores each working server by the time it finishes. A free min-heap stores idle servers as shifted ids i plus (server minus i modulo k), so the preferred id rises to the top and wraparound to smaller ids follows from the same order. Before request i is assigned, every busy server whose end time is at most the arrival time goes back onto the free heap with a fresh shift built from the current i. When the free heap is empty the request is skipped. Otherwise the top server handles it, its count rises by one, and it returns to the busy heap with end time equal to arrival plus load. After every request, every server whose count equals the maximum count is collected into the answer.',
+    algorithm: [
+      'Push every server id onto a free min-heap with itself as the priority.',
+      'For each request i, move every busy server whose end time is at most arrival[i] onto the free heap with priority i plus (server minus i modulo k).',
+      'If the free heap is empty, drop the request and continue.',
+      'Take the free heap top, raise its count, and push it onto the busy heap with end time arrival[i] plus load[i].',
+      'Find the maximum count and return every server index that matches it.',
+    ],
+    example: {
+      input: 'k = 3, arrival = [1, 2, 3, 4, 5], load = [5, 2, 3, 3, 3]',
+      steps: [
+        'Request 0 takes server 0 until time 6. Request 1 takes server 1 until time 4. Request 2 takes server 2 until time 6.',
+        'Request 3 arrives at time 4. Server 1 is free again and is preferred after the wrap from 3 modulo 3, so server 1 takes it until time 7.',
+        'Request 4 finds every remaining free choice busy or already counted toward server 1 as the unique busiest server with two requests.',
+      ],
+      output: '[1]',
+    },
+    pitfalls: [
+      'A server that finishes at exactly the arrival time is free. Compare end time with less than or equal to arrival.',
+      'When the free heap is empty the request must be dropped. Do not wait for a later free server.',
+      'Rebuild the free heap priority from the current request index when a server is released. An old priority no longer matches the wrap order.',
+      'Return every server that ties the maximum count. The answer can hold more than one index.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
