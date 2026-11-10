@@ -11026,6 +11026,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'at-least-k-occurrences': {
+    intuition:
+      'The answer is the first value whose running count reaches k while the array is scanned from left to right. That moment is the earliest k-th occurrence of any value, so later values that also reach k do not replace it. Because every array entry lies between 0 and one million, a frequency array of fixed length replaces a hash map. Each visit raises the slot for that value by one. When the slot equals k, that value is returned at once. If the scan ends without any slot hitting k, the answer is -1.',
+    algorithm: [
+      'Allocate a frequency array large enough for every allowed value.',
+      'For each entry in order, raise its frequency by one.',
+      'Return that entry as soon as its frequency equals k.',
+      'Return -1 when the scan finishes without a hit.',
+    ],
+    example: {
+      input: 'arr = [1, 7, 4, 3, 4, 8, 7], k = 2',
+      steps: [
+        'The first four values each appear once, so nothing returns yet.',
+        'The second 4 raises the count of 4 to 2, which equals k, so 4 is returned.',
+        'The later second 7 also reaches two occurrences, but it appears after 4 already answered.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Return at the moment the count hits k. Waiting until the full array is tallied can pick a later value.',
+      'When k equals 1, the first array entry is always the answer.',
+      'A value that appears fewer than k times must not be returned, even if it is the most frequent overall.',
+      'The value range is fixed, so the frequency array uses constant extra space relative to that range.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

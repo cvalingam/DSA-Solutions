@@ -11961,6 +11961,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3693: {
+    intuition:
+      'Steps are numbered from 0 to n, and the cost array stores the cost of steps 1 through n. From any step you may jump forward by 1, 2, or 3. Landing on step i after a jump of distance d costs costs[i - 1] plus d squared. The cheapest way to reach step i therefore depends only on the cheapest ways to reach i minus 1, i minus 2, and i minus 3. Those three candidates are compared for every i from 1 to n. Only the previous three answers are kept, so the walk uses constant extra space. The value at step n is the answer. Step 0 starts at cost 0 and is never charged a landing cost.',
+    algorithm: [
+      'Keep three rolling values a, b, and c for steps i minus 3, i minus 2, and i minus 1, with c starting at 0 for step 0.',
+      'For each step i from 1 to n, read costs[i - 1].',
+      'Build the next cost as the minimum of c plus cost plus 1, b plus cost plus 4, and a plus cost plus 9, skipping any predecessor that is still unreachable.',
+      'Shift a, b, and c forward and continue.',
+      'Return c after step n.',
+    ],
+    example: {
+      input: 'n = 4, costs = [1, 2, 3, 4]',
+      steps: [
+        'Step 1 costs 1 plus 1 from step 0, so the running total is 2.',
+        'Step 2 can come from step 1 for 3 more, totaling 5, or from step 0 for 2 plus 4, totaling 6. The cheaper total is 5.',
+        'An optimal path is 0 to 1 to 2 to 4. The last jump adds 4 plus 4, so the total is 13.',
+      ],
+      output: '13',
+    },
+    pitfalls: [
+      'costs is 0-indexed in code. The cost of step i is costs[i - 1].',
+      'The jump surcharge is the square of the distance. A jump of 2 adds 4, and a jump of 3 adds 9.',
+      'Do not charge a cost for standing on step 0. The walk begins there for free.',
+      'Only three previous states are needed. Allocating a full dp array of length n plus 1 is unnecessary.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
