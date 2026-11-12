@@ -11052,6 +11052,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'closest-in-bst': {
+    intuition:
+      'In a BST, every left child is smaller than its parent and every right child is larger. That order points to the only subtree that can hold a closer value to k. Starting at the root, the absolute difference to k is recorded, then the walk moves left when k is smaller than the node and right otherwise. Each step can only improve or keep the closest difference found so far. When a node equals k the difference is 0 and the search stops. Because only one child is chosen at every node, the walk follows a single root-to-leaf path and never needs a full tree scan.',
+    algorithm: [
+      'Start at the root with the closest difference set to a large sentinel.',
+      'While the current node exists, update the closest difference with the absolute gap between the node value and k.',
+      'Return 0 immediately when that gap is 0.',
+      'Move to the left child when k is smaller than the node value, otherwise move to the right child.',
+      'Return the closest difference after the path ends.',
+    ],
+    example: {
+      input: 'root = [10, 2, 11, 1, 5, N, N, N, N, 3, 6], k = 13',
+      steps: [
+        'At 10 the gap is 3. Because 13 is larger, the walk moves right to 11.',
+        'At 11 the gap is 2, which is better, and the right child is empty.',
+        'No closer node remains on that path, so the answer is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Use the BST order. Visiting every node works but is slower than a single path walk.',
+      'An exact match should return 0 at once. Continuing the walk cannot improve on zero.',
+      'Compare with absolute difference. The closest node may be larger or smaller than k.',
+      'The iterative walk uses constant extra space. A recursive version spends stack space equal to the height.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

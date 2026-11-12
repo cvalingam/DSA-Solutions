@@ -7931,12 +7931,31 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   3105: {
-    intuition: 'Find longest strictly increasing then strictly decreasing subarray. DP on both directions.',
+    intuition:
+      'The goal is the longest contiguous stretch that is either strictly rising or strictly falling. Equals break both patterns, so a plateau restarts both run lengths at 1. While scanning left to right, one counter tracks the current strictly increasing run and another tracks the current strictly decreasing run. A rise extends the increasing counter and resets the decreasing one. A fall does the opposite. After every step the answer is the larger of those two counters. A single pass is enough because only the active run at the right edge can grow.',
     algorithm: [
-      'inc[i] = length of longest strictly increasing ending at i. dec[i] = longest strictly decreasing starting at i.',
-      'Answer = max(inc[i] + dec[i] - 1) where both > 1 (actual peak).',
+      'Start the answer and both run lengths at 1.',
+      'For each adjacent pair, compare the new value with the previous one.',
+      'On a rise, grow the increasing run and reset the decreasing run to 1.',
+      'On a fall, grow the decreasing run and reset the increasing run to 1.',
+      'On an equal pair, reset both runs to 1.',
+      'Keep the maximum of the two runs after each step and return it.',
     ],
-    pitfalls: ['Peak must have both inc and dec > 1. Maximum mountain length.'],
+    example: {
+      input: 'nums = [1, 4, 3, 3, 2]',
+      steps: [
+        '1 to 4 raises the increasing run to 2. 4 to 3 starts a decreasing run of length 2.',
+        '3 to 3 is equal, so both runs reset to 1.',
+        '3 to 2 starts a decreasing run of length 2. The longest run seen is 2.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'The subarray must be contiguous. Skipping elements is not allowed.',
+      'Equal neighbors break both directions. Do not keep either run alive across a plateau.',
+      'A single element is a valid monotonic subarray of length 1, so the answer is at least 1.',
+      'Track increasing and decreasing separately. Mixing both directions in one counter would describe a mountain, which is a different problem.',
+    ],
   },
 
   3108: {

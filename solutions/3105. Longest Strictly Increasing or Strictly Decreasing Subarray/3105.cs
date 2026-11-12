@@ -1,4 +1,8 @@
-// Approach: Track current run lengths for both increasing and decreasing; update max.
+// Approach: Walk the array once while keeping the length of the current
+// strictly increasing run and the current strictly decreasing run. A rise
+// extends the increasing run and resets the decreasing one, a fall does the
+// opposite, and an equal pair resets both. The answer is the longest run
+// seen. Every element must be read, so the bound is already tight.
 // Time: O(n) Space: O(1)
 
 public class Solution
