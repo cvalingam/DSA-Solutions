@@ -12007,6 +12007,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3420: {
+    intuition:
+      'Making a subarray non-decreasing means raising every position up to the maximum value seen to its left inside that subarray. The total raise is the operation cost. Longer windows never cost less, so for each left end there is a farthest right end whose cost still fits in k. Scanning from right to left builds a window [i, j] and a monotonic deque of indices whose values act as the live left maxima after those raises. When nums[i] enters, every smaller segment to its right is lifted to nums[i], and the cost grows by the segment length times the lift. While the cost is larger than k, the rightmost index is dropped and its lift is refunded. Once the window is affordable again, every subarray that starts at i and ends anywhere from i through j is valid, so j minus i plus 1 is added to the answer. Each index enters and leaves the deque once, so the walk is linear.',
+    algorithm: [
+      'Start with an empty array deque and cost 0, and set both pointers at the last index.',
+      'For each left index i from right to left, pop every deque back index whose value is smaller than nums[i] and add the raise cost for that segment.',
+      'Push i onto the deque.',
+      'While cost is greater than k, subtract the lift of the current rightmost index and move j left, popping the deque front when it equals j.',
+      'Add j minus i plus 1 to the answer.',
+      'Return the total after every left index is processed.',
+    ],
+    example: {
+      input: 'nums = [6, 3, 1, 2, 4, 4], k = 7',
+      steps: [
+        'There are 21 subarrays in total. Four of them need more than 7 raises to become non-decreasing: [6,3,1], [6,3,1,2], [6,3,1,2,4], and [6,3,1,2,4,4].',
+        'Every other subarray fits inside the budget of 7 operations.',
+        'So the count is 21 minus 4, which is 17.',
+      ],
+      output: '17',
+    },
+    pitfalls: [
+      'Use 64 bit integers for the cost and the answer. A raise of a large value across many positions overflows a 32 bit integer.',
+      'Each subarray is independent. Raises used for one window do not carry over to another.',
+      'Shrink from the right when the cost exceeds k. Growing only the left pointer without refunding the rightmost lift breaks the window cost.',
+      'The deque stores indices, not values. The segment length between consecutive deque indices is what multiplies the lift.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

@@ -11079,6 +11079,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'common-nodes-in-two-bsts': {
+    intuition:
+      'Inorder traversal of a BST visits values in sorted order, so the common nodes are exactly the intersection of two sorted streams. Instead of writing both streams into arrays, two stacks walk the trees together. Each stack always holds the path down to the next unread inorder node. The tops are compared like the merge step of two sorted lists. Equal tops are common values and both sides advance into their right subtrees. When one top is smaller, only that side advances. The walk stops when either stack runs out, because no further matches are possible. Only O(height) nodes sit on each stack at once.',
+    algorithm: [
+      'Push every left child from the first root onto the first stack, and do the same for the second root.',
+      'While both stacks are nonempty, compare their top nodes.',
+      'If the values match, append the value to the answer, pop both tops, and continue from their right children.',
+      'If the first top is smaller, pop it and continue from its right child while leaving the second side still.',
+      'Otherwise pop the second top and continue from its right child.',
+      'Return the collected values, which are already sorted.',
+    ],
+    example: {
+      input: 'r1 = [5, 1, 10, 0, 4, 7, 9], r2 = [10, 7, 20, 4, 9]',
+      steps: [
+        'The inorder stream of the first tree begins 0, 1, 4, 5, 7, 9, 10.',
+        'The inorder stream of the second tree begins 4, 7, 9, 10, 20.',
+        'Merging those streams keeps the shared values 4, 7, 9, and 10.',
+      ],
+      output: '[4, 7, 9, 10]',
+    },
+    pitfalls: [
+      'Advance only the smaller side when the tops differ. Advancing both sides would skip a possible later match.',
+      'After a match, move into both right subtrees. Staying on the same node would duplicate a value or stall.',
+      'Do not materialize full inorder arrays unless space is not a concern. The two stacks already expose the next sorted values.',
+      'An empty tree has no common nodes with anything. Stop as soon as either stack is empty.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
