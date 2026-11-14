@@ -12035,6 +12035,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3364: {
+    intuition:
+      'The answer is the smallest positive sum among contiguous windows whose length sits between l and r. With n at most 100, every allowed length can be scanned directly. For a fixed length, a sliding window maintains the running sum in constant time per move. Only sums greater than zero compete for the answer. Because the values are integers, no positive sum can be smaller than 1, so the search can stop as soon as that value appears. If every window sum is non-positive, the method returns -1.',
+    algorithm: [
+      'Initialize the answer to a large sentinel.',
+      'For every window length from l through r, build the sum of the first window of that length.',
+      'If that sum is positive, keep it as a candidate minimum.',
+      'Slide the window across the rest of the array, adding the entering value and removing the leaving value, and update the answer on every positive sum.',
+      'Return 1 as soon as the answer becomes 1. Otherwise return the best positive sum, or -1 when none exists.',
+    ],
+    example: {
+      input: 'nums = [3, -2, 1, 4], l = 2, r = 3',
+      steps: [
+        'Length 2 windows include [3, -2] with sum 1 and [1, 4] with sum 5.',
+        'Length 3 windows include [3, -2, 1] with sum 2 and [-2, 1, 4] with sum 3.',
+        'The smallest positive sum among those windows is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Zero and negative sums do not qualify. Only strictly positive sums update the answer.',
+      'The window length must stay inside [l, r]. A shorter or longer subarray is invalid even if its sum is smaller.',
+      'Return -1 when no positive window exists. Do not return 0 in that case.',
+      'Finding sum 1 is enough to stop. No integer array can produce a smaller positive sum.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',

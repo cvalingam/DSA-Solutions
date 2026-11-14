@@ -11107,6 +11107,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'max-equal-sum-in-3-stacks': {
+    intuition:
+      'Each array is a stack with its top at index 0. The only allowed move is to discard a prefix of tops from any stack. The largest common remaining sum is found by first totaling every stack, then always discarding from the stack that currently holds the largest remaining sum. Shrinking the heaviest stack is the only way the three totals can meet. When all three sums become equal, that shared value is the maximum possible equal sum, because every earlier step only removed mass from a side that was too heavy. If any stack runs out of elements before the sums match, no common positive total exists and the answer is 0.',
+    algorithm: [
+      'Compute the sum of every element in each of the three stacks.',
+      'Keep an index at the current top of each stack.',
+      'While every stack still has elements, return the shared sum when all three totals are equal.',
+      'Otherwise subtract the current top from the stack with the largest remaining sum and advance that top index.',
+      'Return 0 when any stack is emptied before the sums match.',
+    ],
+    example: {
+      input: 's1 = [3, 2, 1, 1, 1], s2 = [4, 3, 2], s3 = [2, 5, 4, 1]',
+      steps: [
+        'The initial sums are 8, 9, and 12. Remove 2 from s3, then 5 from s3, leaving sums 8, 9, and 5.',
+        'Remove 4 from s2 and 3 from s1. The three remaining sums are all 5.',
+        'No larger common total survives those forced removals, so the answer is 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'The first array index is the top. Removals always advance from the front of each list.',
+      'Compare the three remaining sums, not the original totals. Only the unpopped suffixes count.',
+      'When two stacks tie for the largest sum, either may be reduced. Both keep the same invariant.',
+      'An empty stack ends the search with 0. An equal sum of 0 is reported the same way.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
