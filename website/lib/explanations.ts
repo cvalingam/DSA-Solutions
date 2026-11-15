@@ -5176,12 +5176,30 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1524: {
-    intuition: 'Count subarrays with odd sum. Track parity of prefix sums. When prefix is odd, pair with previous even prefix sums; when even, pair with odd.',
+    intuition:
+      'A subarray sum is odd exactly when it contains an odd number of odd values. Equivalently, keep how many even-sum and odd-sum subarrays end at the previous index. An odd value flips every previous parity and also starts a brand new odd subarray that contains only itself, so the old even count becomes the new odd count after adding one, and the old odd count becomes the new even count. An even value extends every previous even subarray by one element and leaves the odd count unchanged, while also starting one new even subarray. After each update, the current odd count is the number of odd-sum subarrays that end here, and those are added into the answer modulo 1000000007. Only two integers are needed, so the walk uses constant extra space.',
     algorithm: [
-      'even_count=1, odd_count=0. running_sum=0.',
-      'For each element: running_sum += element. If odd: result += even_count, odd_count++. Else: result += odd_count, even_count++.',
+      'Start with even = 0, odd = 0, and ans = 0.',
+      'For each value, if it is odd, set nextEven to the old odd count, set odd to even plus 1, then set even to nextEven.',
+      'If the value is even, only increase even by 1.',
+      'Add the current odd count into ans and reduce modulo 1000000007.',
+      'Return ans after the whole array is scanned.',
     ],
-    pitfalls: ['Start with even_count=1 for the empty prefix. Odd+even or even+odd sums create odd result.'],
+    example: {
+      input: 'arr = [1, 2, 3, 4, 5, 6, 7]',
+      steps: [
+        'After 1 the odd ending count is 1. After 2 it stays 1 because the even value only grows the even side.',
+        'After 3 the odd ending count becomes 2, and later odd values keep flipping the two counters.',
+        'Summing the odd ending counts across the array yields 16.',
+      ],
+      output: '16',
+    },
+    pitfalls: [
+      'Use bitwise and with 1 to test oddness. A remainder test on negative values can return -1 in some languages.',
+      'When the current value is odd, compute the next even count from the old odd count before overwriting odd.',
+      'Reduce the answer modulo 1000000007 after each addition. The total can exceed a 32 bit integer.',
+      'An even value does not create new odd subarrays by itself. Only the existing odd count is carried forward.',
+    ],
   },
 
   1526: {

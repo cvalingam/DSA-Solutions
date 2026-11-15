@@ -11134,6 +11134,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'sum-of-all-digit-subsequences': {
+    intuition:
+      'The task is the sum of every digit across every non-empty subsequence, not the sum of the integers those subsequences spell. Fix one digit. Each of the other n minus 1 digits may either join that subsequence or stay out, so that fixed digit appears in exactly 2 to the power n minus 1 subsequences. Its contribution is therefore its value times that power. Summing over every digit factors into the plain digit sum multiplied by the same power. The product is taken modulo 1000000007. Reading the string once to total the digits is unavoidable, and the power is computed with binary exponentiation.',
+    algorithm: [
+      'Return 0 when the string is empty.',
+      'Add every digit value into a running sum.',
+      'Compute 2 to the power n minus 1 under the modulus with binary exponentiation.',
+      'Return the digit sum times that power, reduced modulo 1000000007.',
+    ],
+    example: {
+      input: 's = "123"',
+      steps: [
+        'The digits sum to 6. There are 2 to the power 2 equals 4 subsequences that contain any fixed digit.',
+        'Each digit therefore contributes four times its value, for a total of 24.',
+        'Listing the subsequences [1], [2], [3], [1,2], [1,3], [2,3], [1,2,3] and adding their digits confirms 24.',
+      ],
+      output: '24',
+    },
+    pitfalls: [
+      'Count digit appearances inside subsequences. Do not treat a subsequence as a multi-digit integer with place values.',
+      'Use modular multiplication. For long strings, 2 to the power n minus 1 overflows a plain 32 bit integer.',
+      'An empty string has no subsequences, so return 0 before computing a negative exponent.',
+      'Zero digits still occupy subsequence slots. They add nothing to the digit sum, but they still count toward n.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

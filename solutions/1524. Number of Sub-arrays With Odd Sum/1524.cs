@@ -1,34 +1,37 @@
-// Approach: DP tracking count of even-sum subarrays ending here; an odd current element swaps even/odd counts.
-// Time: O(n) Space: O(n)
+// Approach: Keep how many even-sum and odd-sum subarrays end at the previous
+// index. An odd value swaps those counts and starts one new odd subarray. An
+// even value extends every previous even subarray and keeps the odd count.
+// Only the running odd count is added to the answer, so the arrays collapse
+// to two integers.
+// Time: O(n) Space: O(1)
 
 public class Solution
 {
     public int NumOfSubarrays(int[] arr)
     {
-        const int kMod = 1_000_000_007;
-        int n = arr.Length;
-        long ans = 0;
+        const int Mod = 1_000_000_007;
+        int even = 0;
+        int odd = 0;
+        int ans = 0;
 
-        // dp0[i] := the number of subarrays that end in arr[i - 1] with an even sum
-        int[] dp0 = new int[n + 1];
-        // dp1[i] := the number of subarrays that end in arr[i - 1] with an odd sum
-        int[] dp1 = new int[n + 1];
-
-        for (int i = 1; i <= n; ++i)
+        foreach (int num in arr)
         {
-            if (arr[i - 1] % 2 == 1)
+            if ((num & 1) == 1)
             {
-                dp0[i] = dp1[i - 1];
-                dp1[i] = dp0[i - 1] + 1;
+                int nextEven = odd;
+                odd = even + 1;
+                even = nextEven;
             }
             else
             {
-                dp0[i] = dp0[i - 1] + 1;
-                dp1[i] = dp1[i - 1];
+                even++;
             }
-            ans = (ans + dp1[i]) % kMod;
+
+            ans += odd;
+            if (ans >= Mod)
+                ans -= Mod;
         }
 
-        return (int)ans;
+        return ans;
     }
 }
