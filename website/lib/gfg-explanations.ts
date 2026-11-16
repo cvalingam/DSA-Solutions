@@ -11160,6 +11160,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'k-th-missing-in-natural-numbers': {
+    intuition:
+      'Natural numbers start at 1. After the given distinct values are sorted, the value at index i should have been i plus 1 if nothing were missing. The gap arr[i] minus (i plus 1) is therefore how many naturals are absent before that entry. Those gaps grow as i moves right, so binary search can find the first index where the gap is at least k. At that boundary the k-th missing number equals the index plus k. If every index still shows fewer than k missing numbers, the answer sits after the whole array and equals n plus k.',
+    algorithm: [
+      'Sort the array in nondecreasing order.',
+      'Binary search for the smallest index lo where arr[mid] minus (mid plus 1) is at least k.',
+      'While the mid gap is still smaller than k, move the search to the right half.',
+      'Otherwise move to the left half.',
+      'Return lo plus k.',
+    ],
+    example: {
+      input: 'arr = [2, 3, 4, 7, 11], k = 5',
+      steps: [
+        'Before 2 there is one missing number, before 7 there are three, and before 11 there are six.',
+        'The first index whose missing count reaches 5 is the index of 11.',
+        'That index plus k is 4 plus 5, which is 9, the fifth missing natural.',
+      ],
+      output: '9',
+    },
+    pitfalls: [
+      'Sort first when the input is not already ordered. Binary search needs the missing counts to be monotonic.',
+      'The formula uses i plus 1 as the expected value at index i. Off by one here shifts every answer.',
+      'If the array contains 1 through n with no gaps, the answer is simply n plus k.',
+      'Return lo plus k after the search ends. Do not read arr[lo] when lo equals n.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

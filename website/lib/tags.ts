@@ -991,6 +991,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2225: ['array', 'hash-table', 'sorting', 'counting'],
   2226: ['array', 'binary-search'],
   2236: ['tree', 'binary-tree'],
+  2243: ['string', 'simulation'],
   2257: ['array', 'matrix', 'simulation'],
   2264: ['string'],
   2265: ['tree', 'depth-first-search', 'binary-tree'],

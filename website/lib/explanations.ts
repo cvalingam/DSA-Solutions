@@ -12080,6 +12080,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2243: {
+    intuition:
+      'The string is repeatedly rewritten until its length is at most k. In one round it is cut into consecutive blocks of size k, with a shorter final block when the length is not a multiple of k. Each block is replaced by the decimal representation of the sum of its digits. Because a sum of at most k nines is a short number, the new string is shorter than the old one whenever the old length exceeded k, so the process ends quickly. The final string is the answer. Simulation is enough: every character of the current string must be read in each round.',
+    algorithm: [
+      'While the current string is longer than k, prepare a fresh builder.',
+      'Walk the string in steps of k. For each block, add its digit values and append that sum as text.',
+      'Replace the current string with the builder contents and repeat.',
+      'Return the string once its length is at most k.',
+    ],
+    example: {
+      input: 's = "11111222223", k = 3',
+      steps: [
+        'The first round groups as 111, 112, 222, 23 and rewrites them as 3, 4, 6, 5, so the string becomes 3465.',
+        'The next round groups as 346 and 5, which become 13 and 5, so the string becomes 135.',
+        'The length is now 3, which equals k, so the process stops at 135.',
+      ],
+      output: '135',
+    },
+    pitfalls: [
+      'Append the full decimal form of each group sum. A sum of 10 or more contributes more than one character.',
+      'The final block may be shorter than k when the length is not divisible by k. Still sum every remaining digit.',
+      'Stop when the length is less than or equal to k. Do not run one more unnecessary round.',
+      'Each round builds a new string. Reusing the old buffer without clearing it would mix rounds.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
