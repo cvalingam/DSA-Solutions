@@ -11187,6 +11187,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'repeated-pattern-check': {
+    intuition:
+      'The string may use only the letters x and y, and it is valid when it is a concatenation of blocks of the form x to the n followed by y to the n. That means each block is a run of one or more x characters followed immediately by a run of equally many y characters. Walking left to right, count the next run of x, then the following run of y. Those two counts must be positive and equal; then the next block begins. A leading y, a shortfall of y after some x run, or leftover x characters at the end all fail. A plain balance counter that only tracks total x minus y is not enough, because it would accept strings such as xxxyyxyy that are not made of clean x n y n blocks.',
+    algorithm: [
+      'Start an index at the beginning of the string.',
+      'While characters remain, count consecutive x characters, then consecutive y characters.',
+      'Return false when the x count is zero or the two counts differ.',
+      'Otherwise continue with the next block.',
+      'Return true after every block succeeds through the end of the string.',
+    ],
+    example: {
+      input: 's = "xxyyxy"',
+      steps: [
+        'The first block is xx followed by yy, so both counts are 2 and the block is valid.',
+        'The next block is x followed by y, so both counts are 1 and the block is valid.',
+        'The string ends with no leftover characters, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Require consecutive runs. Mixing x back in after y has started breaks the current block.',
+      'An empty x run before a y run is invalid. The string cannot start a block with y.',
+      'Equal total counts of x and y are not enough. The pairing must happen block by block.',
+      'After the last valid block there must be nothing left. Trailing x characters alone fail.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

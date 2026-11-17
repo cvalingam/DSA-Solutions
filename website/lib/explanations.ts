@@ -12106,6 +12106,34 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2911: {
+    intuition:
+      'A semi-palindrome is a string whose characters fall into residue classes under a proper divisor d of its length, and each class reads as a palindrome when stepped by d. For every substring, every proper divisor is tried and the mismatches along those stepped pairs are counted; the cheapest divisor becomes the substring cost. The original string must then be cut into exactly k such pieces. dp[i][j] stores the fewest changes needed to finish s[i:] using j pieces. The first piece ends at some index l, costs cost[i][l], and the remainder is solved with j minus 1 pieces. Each piece needs length at least 2, so the cut leaves enough characters for every later piece. With n at most 200, precomputing all substring costs and filling the partition table is practical.',
+    algorithm: [
+      'Precompute every proper divisor of each length up to n.',
+      'For every substring s[i..j], try each proper divisor d and count stepped mismatches; store the minimum as cost[i][j].',
+      'Set dp[n][0] = 0 and every other dp state to a large sentinel.',
+      'For i from n minus 1 down to 0 and for each part count j, try every cut end l that leaves at least 2 characters for each remaining part.',
+      'Update dp[i][j] with dp[l + 1][j - 1] plus cost[i][l].',
+      'Return dp[0][k].',
+    ],
+    example: {
+      input: 's = "abcac", k = 2',
+      steps: [
+        'The substring abc can be made a semi-palindrome with one change, and ac already fits a semi-palindrome with no changes.',
+        'Splitting after the third character therefore costs 1 in total.',
+        'No cheaper split into two valid parts exists, so the answer is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'd must be a proper divisor of the substring length. Using d equal to the length is not allowed for a semi-palindrome.',
+      'Every part needs length at least 2. Leaving a single character for a later part makes that state unreachable.',
+      'Precompute costs once. Recomputing divisor mismatch scans inside the DP would multiply the work by another factor of n.',
+      'Initialize unused dp cells to a sentinel at least n. Zero would look like a free partition.',
+    ],
+  },
+
   115: {
     intuition:
       'Count distinct subsequences of s that equal t. When characters match, you may use s[i] to extend t or skip it. When they differ, you must skip s[i]. A rolling array tracks how many ways exist for each prefix of t after scanning s.',
