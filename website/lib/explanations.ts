@@ -7547,11 +7547,28 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   2914: {
-    intuition: 'Minimum string changes to make string good (each character has even count). Count characters with odd frequency.',
+    intuition:
+      'A binary string is beautiful when it can be split into even length blocks of identical bits. Any even length block of equal bits can itself be split into length 2 blocks of the same bit, so it is enough to force every adjacent pair s[2i], s[2i+1] to match. Each mismatched pair needs exactly one change. Scanning those pairs once counts the answer, and every character must be read, so the linear bound is already tight.',
     algorithm: [
-      'Count frequencies. Odd frequency chars must pair up. Min changes = oddCount / 2.',
+      'Walk the string with step 2, looking at indices 0, 2, 4, and so on.',
+      'Whenever the character at i differs from the character at i plus 1, add one to the answer.',
+      'Return the total after every pair has been checked.',
     ],
-    pitfalls: ['Each swap can fix two odd-frequency characters. Minimum changes = floor(oddCount/2).'],
+    example: {
+      input: 's = "1001"',
+      steps: [
+        'The first pair is 1 and 0, which differ, so one change is needed.',
+        'The second pair is 0 and 1, which also differ, so another change is needed.',
+        'Two changes make every length 2 block equal, and that is the minimum.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Only even indices start a pair. Comparing overlapping odd and even neighbors overcounts.',
+      'Changing one bit inside a mismatched pair is enough. You never need to flip both characters.',
+      'Larger even blocks of equal bits are already covered by the length 2 view, so no extra cases are required.',
+      'The string length is even by the problem statement. Do not add special handling for a leftover last character.',
+    ],
   },
 
   2916: {

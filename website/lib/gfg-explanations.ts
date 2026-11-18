@@ -11214,6 +11214,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'xor-of-number-range': {
+    intuition:
+      'The XOR of every integer from 1 through n follows a short cycle of length 4. When n modulo 4 is 0 the prefix XOR equals n, when it is 1 the prefix equals 1, when it is 2 the prefix equals n plus 1, and when it is 3 the prefix equals 0. Because XOR cancels identical prefixes, the XOR of the closed range from l to r is exactly the prefix through r XOR the prefix through l minus 1. That formula answers the query in constant time without walking the interval.',
+    algorithm: [
+      'Define a helper that maps n to the XOR of 1 through n using n modulo 4.',
+      'Return xorUpto(r) XOR xorUpto(l minus 1).',
+      'Treat the empty prefix for l equals 1 as xorUpto(0), which is 0.',
+    ],
+    example: {
+      input: 'l = 4, r = 8',
+      steps: [
+        'xorUpto(8) is 8 because 8 modulo 4 is 0.',
+        'xorUpto(3) is 0 because 3 modulo 4 is 3.',
+        '8 XOR 0 equals 8, which matches 4 XOR 5 XOR 6 XOR 7 XOR 8.',
+      ],
+      output: '8',
+    },
+    pitfalls: [
+      'Use the prefix through l minus 1, not through l. Including l twice would cancel it out of the range.',
+      'The cycle depends on n modulo 4. Off by one in the residue cases flips every answer.',
+      'xorUpto(0) must return 0 so ranges that start at 1 stay correct.',
+      'A loop from l to r is correct but too slow when the bounds are large. Prefer the constant formula.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
