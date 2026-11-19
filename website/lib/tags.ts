@@ -1077,6 +1077,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2561: ['array', 'greedy'],
   2563: ['array', 'two-pointers', 'binary-search', 'sorting'],
   2566: ['math', 'greedy'],
+  2567: ['array', 'greedy', 'sorting'],
   2570: ['array', 'hash-table', 'two-pointers'],
   2572: ['array', 'math', 'dynamic-programming', 'bit-manipulation', 'number-theory'],
   2573: ['string', 'dynamic-programming', 'matrix'],

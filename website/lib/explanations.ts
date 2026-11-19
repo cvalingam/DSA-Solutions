@@ -7019,6 +7019,31 @@ const explanations: Record<number, RichExplanation> = {
     pitfalls: ['Min must not create leading zeros. Special case for first digit.'],
   },
 
+  2567: {
+    intuition:
+      'The score is the sum of the smallest and largest pairwise absolute differences. With two free changes you can always copy an existing value and force the low score to 0, so the problem reduces to minimizing the high score. After ordering the values, the useful moves are to discard the two smallest entries, the two largest, or one from each end. That means only the three smallest and three largest matter, and a single linear pass that tracks those six order statistics is enough.',
+    algorithm: [
+      'Scan the array once while keeping the three smallest values a, b, c and the three largest values x, y, z.',
+      'Candidate high scores are x minus c, z minus a, and y minus b.',
+      'Return the minimum of those three candidates.',
+    ],
+    example: {
+      input: 'nums = [1, 4, 3, 7, 4, 1, 1]',
+      steps: [
+        'The three smallest are 1, 1, 1 and the three largest are 7, 4, 4.',
+        'Dropping two mins gives high 6, dropping two maxes gives 3, and dropping one of each also gives 3.',
+        'The minimum high score is 3, and the low score can be made 0, so the answer is 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Do not add the low score after the changes. It can always be driven to 0 with a duplicate.',
+      'A full sort works but is unnecessary. Only six extreme values are required.',
+      'When n equals 3, discarding two extremes leaves a single value and the high score becomes 0.',
+      'Track multiplicity carefully. Repeated equal values still occupy distinct slots among the three extremes.',
+    ],
+  },
+
   2570: {
     intuition: 'Merge two sorted lists, removing elements in both. Subtract list2 from list1, combine, sort.',
     algorithm: [

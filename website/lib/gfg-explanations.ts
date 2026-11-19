@@ -5876,11 +5876,28 @@ const gfgExplanations: Record<string, RichExplanation> = {
   },
 
   'sort-in-specific-order': {
-    intuition: 'Sort array where odd numbers come first (sorted descending) then even numbers (sorted ascending).',
+    intuition:
+      'Every odd value must appear before every even value. Within the odd block the order is descending, and within the even block it is ascending. Extra lists for each parity waste linear space. An in place partition moves every odd entry to a growing prefix, after which that prefix can be sorted ascending and reversed, and the even suffix can be sorted ascending on its own.',
     algorithm: [
-      'Separate odd and even. Sort odds descending, evens ascending. Concatenate odds + evens.',
+      'Scan the array and swap each odd value into the next open slot at the front, counting how many odds were placed.',
+      'Sort the odd prefix ascending, then reverse it so the odds become descending.',
+      'Sort the remaining even suffix ascending.',
     ],
-    pitfalls: ['Partition then sort each group. O(n log n). Specific ordering depends on problem variant.'],
+    example: {
+      input: 'arr = [1, 2, 3, 5, 4, 7, 10]',
+      steps: [
+        'After the partition the odds sit first, for example [1, 3, 5, 7, 4, 2, 10].',
+        'Sorting and reversing the odd prefix yields [7, 5, 3, 1].',
+        'Sorting the even suffix yields [2, 4, 10], so the full array becomes [7, 5, 3, 1, 2, 4, 10].',
+      ],
+      output: '[7, 5, 3, 1, 2, 4, 10]',
+    },
+    pitfalls: [
+      'Treat 0 as even. It belongs in the ascending even block, not with the odds.',
+      'Reverse only the odd prefix. Reversing the whole array after one sort breaks the even half.',
+      'A custom comparator sort is fine, but building two ArrayLists uses more memory than the partition.',
+      'Comparison sorting still costs O(n log n). The win here is constant extra space.',
+    ],
   },
 
   'sort-the-given-array-after-applying-the-given-equation': {
