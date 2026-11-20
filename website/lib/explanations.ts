@@ -12441,6 +12441,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3041: {
+    intuition:
+      'Each value may stay the same or rise by one, then you want the longest set of distinct consecutive integers you can form. Sorting puts possible predecessors next to their successors. Process values left to right and keep the best consecutive chain length ending at each reachable key. The current number can become num and extend a chain ending at num minus 1, or become num plus 1 and extend a chain ending at num. Updating the num plus 1 state first avoids using the same element twice through a freshly written num entry.',
+    algorithm: [
+      'Sort the array in nondecreasing order.',
+      'Maintain a map from ending value to the longest consecutive chain length that ends there.',
+      'For each num, set the length ending at num plus 1 to one more than the length ending at num.',
+      'Then set the length ending at num to one more than the length ending at num minus 1.',
+      'Track the maximum length written into the map and return it.',
+    ],
+    example: {
+      input: 'nums = [2, 1, 5, 1, 1]',
+      steps: [
+        'After sorting the values are 1, 1, 1, 2, 5.',
+        'The three ones and the two can be shaped into the chain 1, 2, 3 of length 3.',
+        'Five stays isolated, so the best answer remains 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'Write the num plus 1 transition before the num transition. The reverse order reuses one element.',
+      'Selected values must be strictly consecutive with no duplicates in the final set.',
+      'Distant values cannot join one chain even after a single plus one, so isolated numbers contribute only 1.',
+      'Sorting is required so that chains ending at nearby values already exist when a later number arrives.',
+    ],
+  },
+
 }
 
 export default explanations

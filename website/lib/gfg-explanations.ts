@@ -11256,6 +11256,31 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'min-flips-for-alternate': {
+    intuition:
+      'A binary string is alternating when it matches either 0101... or 1010.... Those two targets are bitwise complements of each other at every index, so a character that mismatches the first pattern automatically matches the second. Counting mismatches against 0101... is therefore enough: the flip cost for 1010... is n minus that count, and the answer is the smaller of the two.',
+    algorithm: [
+      'Walk the string once and count positions where the character differs from 0 on even indices and 1 on odd indices.',
+      'Let that count be mismatch.',
+      'Return the minimum of mismatch and n minus mismatch.',
+    ],
+    example: {
+      input: 's = "001"',
+      steps: [
+        'The target 010 differs from the string only at index 1, so one flip is enough for that pattern.',
+        'The target 101 differs at two positions, which equals length minus one.',
+        'The cheaper option needs one flip, so the answer is 1.',
+      ],
+      output: '1',
+    },
+    pitfalls: [
+      'Only two alternating targets exist for a binary alphabet. Do not search over other patterns.',
+      'The complement shortcut assumes every character is 0 or 1. Mixed alphabets would need both counters.',
+      'Index parity starts at 0. Flipping which pattern you count against still yields the same minimum.',
+      'A full second pass is unnecessary once you store n minus the first mismatch count.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

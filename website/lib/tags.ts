@@ -1179,6 +1179,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3020: ['array', 'hash-table', 'math'],
   3025: ['array', 'math', 'sorting', 'geometry', 'enumeration'],
   3027: ['array', 'math', 'sorting', 'geometry', 'enumeration'],
+  3041: ['array', 'dynamic-programming', 'sorting'],
   3042: ['array', 'string', 'trie', 'hash-function', 'rolling-hash'],
   3043: ['array', 'string', 'trie', 'hash-function', 'rolling-hash'],
   3047: ['array', 'math', 'sorting', 'enumeration'],
