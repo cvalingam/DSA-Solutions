@@ -12468,6 +12468,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3331: {
+    intuition:
+      'Each non root node may reattach to the closest ancestor that shares its letter, otherwise it keeps its old parent. Walking every ancestor for every node is quadratic. A DFS of the original tree can keep the latest node seen for each letter on the root to current path. That latest same letter node is exactly the closest matching ancestor. After every edge is rewritten, a second DFS on the new tree fills the subtree sizes.',
+    algorithm: [
+      'Build adjacency lists for the original parent array.',
+      'DFS from the root while storing the previous path node for the current letter, then set the current node as the latest for that letter.',
+      'For each non root node, link it in the new tree to that latest same letter ancestor, or to its original parent when none exists.',
+      'Backtrack the letter pointer when leaving the node.',
+      'DFS the new tree and store each subtree size in the answer array.',
+    ],
+    example: {
+      input: 'parent = [-1, 0, 0, 1, 1, 1], s = "abaabc"',
+      steps: [
+        'Node 2 has letter a and finds ancestor 0 with the same letter, so it reattaches under 0.',
+        'Nodes 3 and 4 keep nearer same letter ancestors when present; otherwise they keep their old parents.',
+        'After the rebuild, the subtree sizes from the new root are 6, 3, 1, 1, 1, 1.',
+      ],
+      output: '[6, 3, 1, 1, 1, 1]',
+    },
+    pitfalls: [
+      'Backtrack the per letter last seen index. Leaving a stale value breaks later sibling paths.',
+      'If no same letter ancestor exists, keep the original parent. Do not hang the node from the root by default.',
+      'Compute sizes on the rebuilt tree. Sizes from the original tree are wrong after reparenting.',
+      'The root never changes parent. Skip rewiring node 0.',
+    ],
+  },
+
 }
 
 export default explanations

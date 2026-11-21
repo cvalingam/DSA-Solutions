@@ -1241,6 +1241,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   3318: ['array', 'hash-table', 'sliding-window', 'heap', 'ordered-set'],
   3321: ['array', 'hash-table', 'sliding-window', 'heap', 'ordered-set'],
   3330: ['string', 'counting'],
+  3331: ['array', 'hash-table', 'tree', 'dfs', 'string'],
   3333: ['string', 'dynamic-programming'],
   3335: ['hash-table', 'math', 'string', 'dynamic-programming', 'counting'],
   3337: ['hash-table', 'math', 'string', 'dynamic-programming', 'counting', 'matrix'],

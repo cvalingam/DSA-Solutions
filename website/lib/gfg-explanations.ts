@@ -11281,6 +11281,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'smallest-subarray-sum-greater-than-x': {
+    intuition:
+      'All array values are non negative, so a contiguous window sum only grows when the right end moves forward and only shrinks when the left end moves forward. That monotonicity lets one sliding window find every minimal length that beats x. Expand right to include the next value, then shrink left while the sum stays strictly greater than x, remembering the shortest window seen. If no window ever qualifies, the answer is 0.',
+    algorithm: [
+      'Initialize left at 0, running sum at 0, and minLen at a large sentinel.',
+      'For each right index, add arr[right] into the running sum.',
+      'While the sum is greater than x, update minLen with the current window length and remove arr[left] while advancing left.',
+      'Return 0 when minLen never changed, otherwise return minLen.',
+    ],
+    example: {
+      input: 'arr = [1, 4, 45, 6, 0, 19], x = 51',
+      steps: [
+        'The prefix 1, 4, 45 sums to 50 and is still not greater than 51.',
+        'Adding 6 makes the sum 56, so a valid window appears.',
+        'After shrinking from the left, the shortest window whose sum exceeds 51 is 4, 45, 6 with length 3.',
+      ],
+      output: '3',
+    },
+    pitfalls: [
+      'The condition is strictly greater than x. Equality is not enough to stop shrinking.',
+      'This two pointer method needs non negative values. Negatives can make the sum non monotonic.',
+      'Return 0 when every prefix stays at most x. Do not return the sentinel length.',
+      'Update the answer before removing the left element so the current valid window is recorded.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
