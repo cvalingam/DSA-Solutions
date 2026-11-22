@@ -12495,6 +12495,29 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  2124: {
+    intuition:
+      'The string uses only a and b. Every a must appear before every b, which means once a b shows up you can never see an a again. That forbidden pattern is exactly the two character substring ba. Searching once for ba is therefore enough: if it never occurs the order is valid, and if it does the string fails.',
+    algorithm: [
+      'Return whether the string does not contain the substring ba.',
+    ],
+    example: {
+      input: 's = "aaabbb"',
+      steps: [
+        'The characters stay in a block of a then a block of b.',
+        'There is no place where b is immediately followed by a.',
+        'The check succeeds, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'An empty string or a string of only one letter is valid. There is no ba to find.',
+      'Equal counts of a and b are not enough. The order of the characters is what matters.',
+      'Any a that appears after some b creates a ba transition in an a/b string, so the substring test is complete.',
+      'A linear scan that remembers whether a b was seen is equivalent and also O(n).',
+    ],
+  },
+
 }
 
 export default explanations

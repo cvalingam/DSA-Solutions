@@ -11307,6 +11307,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'longest-subarray-sum-divisible-by-k': {
+    intuition:
+      'A contiguous sum is divisible by k exactly when two prefix sums leave the same remainder modulo k. To make the segment as long as possible, remember the earliest index where each remainder appeared. Meeting that remainder again at index i gives a candidate length of i minus that earlier index. Remainder 0 is seeded at index minus 1 so a prefix that is itself divisible by k is counted from the start.',
+    algorithm: [
+      'Allocate an array first of length k filled with a sentinel meaning unseen, and set first[0] to -1.',
+      'Scan the array while keeping a running prefix sum.',
+      'Normalize the remainder as ((sum % k) + k) % k so negatives land in 0 through k minus 1.',
+      'If that remainder was seen before, update the answer with i minus first[rem]; otherwise store i as the first occurrence.',
+      'Return the best length found.',
+    ],
+    example: {
+      input: 'arr = [2, 7, 6, 1, 4, 5], k = 3',
+      steps: [
+        'Prefix remainders include a repeat of remainder 0 between early and later indices that spans length 4.',
+        'That window is 7, 6, 1, 4 whose sum 18 is divisible by 3.',
+        'No longer valid window exists, so the answer is 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Store only the first index of each remainder. Overwriting with a later index shortens every later candidate.',
+      'Normalize negative mods. In Java sum % k can be negative when the prefix is negative.',
+      'Use a 64 bit prefix sum. Large values can overflow a 32 bit accumulator before the mod.',
+      'An array of size k beats a hash map under the usual constraint that k is at most about 1e6.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

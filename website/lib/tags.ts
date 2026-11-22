@@ -959,6 +959,7 @@ export const PROBLEM_TAGS: Record<number, Tag[]> = {
   2110: ['array', 'dynamic-programming'],
   2115: ['array', 'hash-table', 'breadth-first-search', 'graph', 'topological-sort'],
   2116: ['string', 'greedy', 'stack'],
+  2124: ['string'],
   2125: ['array', 'math', 'matrix'],
   2127: ['depth-first-search', 'graph', 'topological-sort'],
   2131: ['array', 'hash-table', 'string', 'greedy', 'counting'],
