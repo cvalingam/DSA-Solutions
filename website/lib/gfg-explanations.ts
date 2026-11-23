@@ -11334,6 +11334,35 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'character-at-position-in-infinite-string': {
+    intuition:
+      'The infinite string is built by repeated expansion: from the current string S, step t produces S, then t dollar signs, then the reverse of S. Length therefore follows len = 2 * len + t and grows exponentially, so only a logarithmic number of expansions reach any given position. First grow until the length covers pos, then unwind those expansions. A hit inside the dollar block is immediate; a hit in the reversed half mirrors onto the front half; otherwise the position stays in the front half.',
+    algorithm: [
+      'Start with len equal to s.length, target equal to pos, and step equal to 0.',
+      'While len is less than target, increment step and set len to 2 * len + step.',
+      'While target is still past the original string length, let prevLen be (len - step) / 2.',
+      'If target sits in the open dollar interval after prevLen, return dollar.',
+      'If target sits in the reversed half, replace target with len - target + 1.',
+      'Set len to prevLen, decrement step, and continue.',
+      'Return s.charAt(target - 1).',
+    ],
+    example: {
+      input: 's = "ab", pos = 5',
+      steps: [
+        'One expansion makes ab$ba with length 5, which already covers position 5.',
+        'Position 5 lies in the reversed half, so it mirrors to position 1.',
+        'That maps to the first character of the original string, which is a.',
+      ],
+      output: 'a',
+    },
+    pitfalls: [
+      'Positions are one based. Convert with charAt(target - 1) only after the walk finishes.',
+      'Use 64 bit lengths while expanding. Intermediate lengths can exceed a 32 bit int even when pos fits in one.',
+      'Mirror with len - target + 1 for the reversed half. Off by one here picks the wrong original character.',
+      'Do not materialize the expanded string. Building it explicitly is linear in the huge length and will time out.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

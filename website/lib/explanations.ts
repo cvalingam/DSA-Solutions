@@ -4682,12 +4682,29 @@ const explanations: Record<number, RichExplanation> = {
   },
 
   1352: {
-    intuition: 'Maintain a running product with a pointer. Use a deque or array storing products. getProduct(k) = total_product / product_before_last_k.',
+    intuition:
+      'Queries ask for the product of the most recent k numbers in a growing stream. Prefix products answer that in constant time: the product of the last k values is the latest prefix divided by the prefix from just before that window. A zero breaks ordinary division, so on zero the stream is cleared and restarted. Any later GetProduct whose window would reach back through that zero is then answered as 0 because the prefix list is shorter than k plus the sentinel.',
     algorithm: [
-      'Store prefix products. When adding: multiply into running product. For getProduct(k): return product of last k = prefix[-1] / prefix[-1-k].',
-      'Handle zeros: reset running product on zero.',
+      'Keep a list of prefix products that starts with the sentinel value 1.',
+      'On Add of a non zero value, append last prefix times that value.',
+      'On Add of zero, clear the list and put 1 back as the only entry.',
+      'On GetProduct(k), return 0 when k is at least the list length; otherwise return last / prefix[n - k - 1].',
     ],
-    pitfalls: ['Division by zero when list contains 0. Track index of last zero; if within last k, product is 0.'],
+    example: {
+      input: 'Add(3), Add(0), Add(2), Add(5), GetProduct(2), GetProduct(3)',
+      steps: [
+        'After Add(3) the prefixes are [1, 3].',
+        'Add(0) clears the stream back to [1]. Add(2) and Add(5) make [1, 2, 10].',
+        'GetProduct(2) is 10 / 1 = 10. GetProduct(3) asks past the last zero, so it returns 0.',
+      ],
+      output: '10 then 0',
+    },
+    pitfalls: [
+      'Reset on zero. Dividing across a zero in the prefix list is undefined and wrong.',
+      'Keep the leading 1 sentinel so a window of length equal to the whole current stream still divides cleanly.',
+      'Clear and reuse the list on zero instead of leaking a new allocation every time.',
+      'The problem guarantees the product fits in a 32 bit int when the window contains no zero.',
+    ],
   },
 
   1353: {

@@ -1,25 +1,34 @@
-// Approach: Running prefix product; reset on 0; GetProduct(k) = prefix.last / prefix[n-k] or 0 if a zero is within the window.
-// Time: O(1) per op Space: O(n)
+// Approach: Keep a prefix product stream starting at 1. A non-zero appends
+// last * num. A zero clears the stream because every product that includes
+// that zero is 0. GetProduct(k) is then last / prefix[n - k - 1], or 0 when
+// k reaches back past the most recent zero.
+// Time: O(1) per operation Space: O(n)
 
 public class ProductOfNumbers
 {
-    private List<int> prefix;
+    private readonly List<int> prefix = new List<int> { 1 };
+
     public ProductOfNumbers()
     {
-        prefix = new List<int> { 1 };
     }
 
     public void Add(int num)
     {
         if (num == 0)
-            prefix = new List<int> { 1 };
+        {
+            prefix.Clear();
+            prefix.Add(1);
+        }
         else
+        {
             prefix.Add(prefix[prefix.Count - 1] * num);
+        }
     }
 
     public int GetProduct(int k)
     {
-        return k >= prefix.Count ? 0 : prefix[prefix.Count - 1] / prefix[prefix.Count - k - 1];
+        int n = prefix.Count;
+        return k >= n ? 0 : prefix[n - 1] / prefix[n - k - 1];
     }
 }
 
