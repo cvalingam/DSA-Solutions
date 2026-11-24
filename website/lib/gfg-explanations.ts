@@ -11363,6 +11363,34 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'two-pairs-with-same-sum': {
+    intuition:
+      'The task is four distinct indices forming two pairs with equal sums, and among all answers the lexicographically smallest index quadruplet wins. Enumerating pairs in order of (i, j) visits them from earliest to latest. Store the first pair for each sum. Any later pair with that sum is already later in lexicographic pair order, so if the four indices are distinct the candidate (first, current) is a valid ordered answer. Scanning every such candidate and keeping the minimum quadruplet yields the global lex best in quadratic time.',
+    algorithm: [
+      'Create a map from pair sum to the first index pair that produced it.',
+      'For every i < j, compute sum = arr[i] + arr[j].',
+      'If the sum is new, store (i, j) and continue.',
+      'Otherwise let (a, b) be the stored pair. Skip when any index collides with i or j.',
+      'Form the candidate [a, b, i, j] and keep it when it is lexicographically smaller than the best so far.',
+      'Return the best candidate, or four minus ones when none exists.',
+    ],
+    example: {
+      input: 'arr = [3, 4, 7, 1, 2, 9, 8]',
+      steps: [
+        'Pairs that sum to 10 include (0, 2) for 3 + 7 and (3, 5) for 1 + 9.',
+        'Those four indices are distinct, so [0, 2, 3, 5] is a valid candidate.',
+        'No lexicographically smaller valid quadruplet exists, so that is the answer.',
+      ],
+      output: '[0, 2, 3, 5]',
+    },
+    pitfalls: [
+      'Keep the lexicographically smallest result. Returning the first collision found can miss an earlier quadruplet from another sum.',
+      'Require four distinct indices. Two pairs that share a vertex are invalid even when the sums match.',
+      'Do not require b < c. Only the pair order (a, b) before (c, d) matters, and the scan already enforces that.',
+      'Building every pair list and rescanning them can reach O(n^4). One stored pair per sum is enough for the expected method.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

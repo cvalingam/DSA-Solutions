@@ -12535,6 +12535,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3411: {
+    intuition:
+      'A subarray is product equivalent when its product equals its LCM times its GCD. With length at most 100 and values at most 10, every subarray can be checked while rolling those three quantities. The right hand side is at most lcm of 1 through 10 times 10, so once the running product grows past that bound the identity can never hold and the inner scan can stop.',
+    algorithm: [
+      'For each left endpoint i, start product at 1, LCM at 1, and GCD at 0.',
+      'Extend the right endpoint j, multiplying nums[j] into the product and folding it into the LCM and GCD.',
+      'Break early when the product exceeds 2520 times 10.',
+      'Whenever product equals LCM times GCD, update the answer with the window length.',
+      'Return the longest length seen.',
+    ],
+    example: {
+      input: 'nums = [1, 2, 1, 2, 1, 1, 1]',
+      steps: [
+        'Short windows that mix 1 and 2 satisfy the identity because the product stays small.',
+        'The window [1, 2, 1, 1, 1] has product 2, LCM 2, and GCD 1, so it qualifies with length 5.',
+        'No longer product equivalent window exists, so the answer is 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Use a 64 bit product. Even with early breaks, an int multiply can overflow before the bound check.',
+      'Compute LCM as a / gcd(a, b) * b to reduce intermediate overflow risk.',
+      'A single element x works only when x equals x times x, so only 1 is product equivalent alone.',
+      'Do not forget that GCD starts at 0 so the first fold becomes the first element.',
+    ],
+  },
+
 }
 
 export default explanations
