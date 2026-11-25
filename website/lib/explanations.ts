@@ -12562,6 +12562,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3934: {
+    intuition:
+      'A unique subarray is one whose exact sequence appears only once. If some unique subarray of length L exists, extending it keeps a unique longer subarray, so the minimal L is monotone and can be binary searched. For a fixed length, every window is turned into a double rolling hash in constant time from precomputed prefixes, then a frequency map asks whether any hash appears exactly once.',
+    algorithm: [
+      'Build two modular prefix hashes and their power tables once for the whole array.',
+      'Binary search the answer length between 1 and n.',
+      'For a candidate mid, hash every window of that length and count frequencies.',
+      'If any frequency equals 1, shrink the search to mid; otherwise raise the lower bound.',
+      'Return the lower bound after the search ends.',
+    ],
+    example: {
+      input: 'nums = [1, 1, 2, 2, 1]',
+      steps: [
+        'Every length 1 value repeats, so length 1 fails the uniqueness check.',
+        'Several length 2 windows such as [1, 1] and [2, 1] appear only once.',
+        'Binary search therefore settles on 2 as the minimum unique length.',
+      ],
+      output: '2',
+    },
+    pitfalls: [
+      'Precompute powers and prefixes once. Rebuilding them inside every mid check wastes a full O(n log n) factor.',
+      'Normalize negative residues after subtraction. In C sharp a negative value modulo a prime stays negative.',
+      'Use two independent moduli. A single hash can collide at n equals 1e5 and accept a wrong length.',
+      'The full array is always unique, so an answer always exists and the search upper bound can start at n.',
+    ],
+  },
+
 }
 
 export default explanations

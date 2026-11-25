@@ -11391,6 +11391,33 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'geeks-destination-with-special-jump': {
+    intuition:
+      'Geek walks with an a forward then b back cycle, and for each jump length j the best time is T(d minus j) plus one second for the jump. Those times form a sparse sequence: a solid block 1 through a plus 1, then repeating gaps of length 2b. The sum of all sequence values up to t is therefore the triangular number t(t plus 1) over 2 minus the sum of the missing blocks, which has a closed form. Summing over every j in [l, r] becomes a prefix difference on that sequence, with jumps j at least d each contributing time 1 on their own.',
+    algorithm: [
+      'If r is at least d, add one for every jump from max(l, d) through r.',
+      'Restrict the remaining jumps to [l, min(r, d minus 1)] so the remaining distance is positive.',
+      'Let t1 be the jump time for the largest remaining distance and t0 the jump time just before the smallest.',
+      'Add prefix(t1) minus prefix(t0) modulo 1000000007.',
+      'prefix(t) is t(t plus 1)/2 minus the summed missing 2b blocks that start at a plus 2 and repeat every a plus b.',
+    ],
+    example: {
+      input: 'a = 2, b = 1, d = 5, l = 3, r = 4',
+      steps: [
+        'For j = 3 the remaining distance is 2, so the jump time is 3.',
+        'For j = 4 the remaining distance is 1, so the jump time is 2.',
+        'The sum of those times is 5, which matches the sample.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Always reduce the answer modulo 1000000007. Large [l, r] ranges overflow a raw 64 bit total past the expected residue.',
+      'Count j greater than or equal to d separately. Those positions all share time 1 and break a naive prefix difference.',
+      'Use modular multiplication with the modular inverse of 2 when summing triangular numbers and block totals.',
+      'T(x) for x at most a is simply x. Extra cycle counting starts only after the first forward run.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
