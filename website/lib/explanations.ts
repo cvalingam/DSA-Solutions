@@ -12589,6 +12589,31 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3360: {
+    intuition:
+      'The game has no choices. Players must remove 10 stones, then 9, then 8, and so on down by one each turn, with Alice going first. Simulate that forced sequence until the next required count exceeds the stones left. The player who faces that impossible move loses, so Alice wins exactly when that failed turn belongs to Bob, which is when the required count is odd.',
+    algorithm: [
+      'Start with take equal to 10 and the given pile size n.',
+      'While take is at most n, subtract take from n and decrease take by 1.',
+      'When take first exceeds n, return whether take is odd.',
+    ],
+    example: {
+      input: 'n = 12',
+      steps: [
+        'Alice removes 10 and leaves 2.',
+        'Bob needs 9 stones but only 2 remain, so Bob loses.',
+        'Required count 9 is odd, so the answer is true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Do not search for alternate moves. The problem fixes the removal counts in decreasing order.',
+      'Alice owns the even counts 10, 8, 6, and so on. Bob owns the odd counts.',
+      'Constraints keep n small enough that the loop ends before take reaches zero, so no special empty case is required.',
+      'Returning take % 2 == 0 would invert the winner.',
+    ],
+  },
+
 }
 
 export default explanations

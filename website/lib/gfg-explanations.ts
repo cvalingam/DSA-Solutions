@@ -11418,6 +11418,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'range-vowel-count-queries': {
+    intuition:
+      'Each query asks how many vowels sit inside an inclusive index range. Scanning the substring for every query is linear per query and too slow when both the string and the query list are long. A prefix array of vowel counts turns each range into a pair of lookups: the count up to r minus the count before l.',
+    algorithm: [
+      'Allocate pref of length n plus 1 with pref[0] equal to 0.',
+      'For each index i, set pref[i + 1] to pref[i] plus one when s[i] is a vowel.',
+      'For every query [l, r], append pref[r + 1] minus pref[l] to the answer list.',
+      'Treat only lowercase a, e, i, o, u as vowels unless the statement says otherwise.',
+    ],
+    example: {
+      input: 's = "geeks", queries = [[0, 2], [1, 4], [0, 4]]',
+      steps: [
+        'The prefix vowel counts become 0, 0, 1, 2, 2, 2.',
+        'Query [0, 2] is 2 minus 0, which is 2 for the two e characters.',
+        'Queries [1, 4] and [0, 4] likewise equal 2.',
+      ],
+      output: '[2, 2, 2]',
+    },
+    pitfalls: [
+      'Use pref[r + 1] minus pref[l]. Off by one on either end drops a boundary character.',
+      'Build the prefix once. Recomputing vowel counts inside each query loses the linear overall bound.',
+      'Only count the five vowels. Letters such as y are consonants here.',
+      'Pre-size the result list when the language allows it to avoid repeated growth of the answer array.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
