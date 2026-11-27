@@ -12614,6 +12614,32 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3946: {
+    intuition:
+      'The first time you buy each item type, you also receive one free copy of every other type whose factor is a multiple of yours. Extra copies after that do not unlock more frees, so leftover money is best spent on the cheapest price. Model the set of first time purchases as a 0-1 knapsack where buying type i costs its price and yields the count of item factors divisible by factor_i. Precompute those counts with a multiples sieve on factor frequencies, then for every knapsack spend s add floor of (budget minus s) over the minimum price.',
+    algorithm: [
+      'Find the maximum factor and the minimum price while scanning the items.',
+      'Build a frequency array of factors and, for each possible factor i, sum frequencies of multiples of i into total[i].',
+      'Run a 0-1 knapsack over the budget: for each item, update dp from high to low with value total[factor].',
+      'Return the maximum of dp[s] plus floor((budget - s) / minPrice) over every spend s.',
+    ],
+    example: {
+      input: 'items = [[6, 2], [2, 6], [3, 4]], budget = 9',
+      steps: [
+        'Buying type 2 once costs 4 and unlocks a free copy of type 0 because 3 divides 6.',
+        'Two copies of type 0 can also be bought for 4, using 8 of the budget in total.',
+        'That yields 3 purchased copies and 1 free copy, for an answer of 4.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'Count every type whose factor is a multiple of yours, including yourself, so the purchased copy is included once.',
+      'Keep the knapsack 0-1 for first purchases. Unlimited knapsack would grant free copies more than once per type.',
+      'Precompute multiples with a sieve. Scanning all pairs of items for each type is quadratic and slow near the limits.',
+      'After the knapsack, always spend leftovers on the global cheapest price, not on another first purchase.',
+    ],
+  },
+
 }
 
 export default explanations

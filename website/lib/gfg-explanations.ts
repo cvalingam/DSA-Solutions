@@ -11444,6 +11444,30 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'count-edges-in-graph': {
+    intuition:
+      'An undirected adjacency list stores every edge twice, once at each endpoint. The handshaking lemma therefore says the edge count is exactly half the sum of all neighbor list lengths. Adding those sizes in one pass and dividing by two avoids filtering with index comparisons and still runs in linear time over the graph.',
+    algorithm: [
+      'Initialize degSum to 0.',
+      'For each vertex, add the size of its adjacency list to degSum.',
+      'Return degSum divided by 2.',
+    ],
+    example: {
+      input: 'adj for vertices 0..3 with edges 0-1, 0-2, 1-2, 2-3',
+      steps: [
+        'The list sizes are 2, 2, 3, and 1, which sum to 8.',
+        'Half of 8 is 4, matching the four undirected edges.',
+      ],
+      output: '4',
+    },
+    pitfalls: [
+      'This formula assumes each undirected edge appears in both adjacency lists. A directed representation would not divide by two.',
+      'Self loops break the simple half sum unless the problem states how they are stored.',
+      'Do not sort or rebuild the graph. A single degree sum is enough.',
+      'Use integer division only after the full sum. Rounding early loses edges when the running total is odd mid way.',
+    ],
+  },
+
 }
 
 export default gfgExplanations
