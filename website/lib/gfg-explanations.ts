@@ -11468,6 +11468,32 @@ const gfgExplanations: Record<string, RichExplanation> = {
     ],
   },
 
+  'path-exists-between-two-vertices': {
+    intuition:
+      'The question is ordinary reachability on a graph given as an adjacency list. A BFS (or DFS) from u explores every vertex that can be reached by following edges. If v appears during that search, a path exists; if the reachable component is exhausted without seeing v, it does not. Marking visited vertices keeps the work linear in the size of the explored component.',
+    algorithm: [
+      'Return true immediately when u equals v.',
+      'Allocate a visited array and a queue, then enqueue u and mark it visited.',
+      'While the queue is not empty, pop a node and scan its neighbors.',
+      'Skip already visited neighbors. If a neighbor equals v, return true; otherwise mark it and enqueue it.',
+      'Return false after the queue drains.',
+    ],
+    example: {
+      input: 'edges 0-1, 1-2, 2-3 with query u = 0, v = 3',
+      steps: [
+        'BFS starts at 0 and reaches 1, then 2, then 3.',
+        'When 3 is discovered the search returns true.',
+      ],
+      output: 'true',
+    },
+    pitfalls: [
+      'Mark a vertex visited when it is enqueued, not when it is dequeued, to avoid duplicate queue entries.',
+      'Handle u equals v before searching. An empty path is still a valid path.',
+      'ArrayDeque is a better Java queue than LinkedList for this BFS.',
+      'Directed and undirected inputs both work with the same search; only the adjacency list construction changes.',
+    ],
+  },
+
 }
 
 export default gfgExplanations

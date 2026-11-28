@@ -12640,6 +12640,33 @@ const explanations: Record<number, RichExplanation> = {
     ],
   },
 
+  3947: {
+    intuition:
+      'Each purchased copy of item i can unlock at most one free copy of another item whose factor is a multiple of factor_i, and each ordered pair (i, j) unlocks at most once. So if gain[i] is that out degree, buying c copies of i contributes c plus min(c, gain[i]) total copies. That means the first gain[i] copies are value 2 marginal units and every later copy is value 1. All leftover value 1 copies should come from the cheapest item, so the only real choice is which value 2 batches to buy. Keep batches whose price is less than twice the minimum price, sort them by price, and take them greedily.',
+    algorithm: [
+      'Count factor frequencies and, for each factor f, sum frequencies of multiples of f; gain for an item is that total minus one.',
+      'Find the global minimum price minP.',
+      'Group value 2 slots by price for every item with price less than 2 times minP and gain greater than 0.',
+      'Sort those prices ascending and, for each price, buy as many slots as budget allows.',
+      'Spend any remaining budget on copies of the cheapest item and return the total copy count.',
+    ],
+    example: {
+      input: 'items = [[1, 6], [2, 4], [3, 5]], budget = 19',
+      steps: [
+        'Item 0 has gain 2, so two value 2 buys at price 6 are available.',
+        'Buying both costs 12 and yields 4 copies, leaving budget 7.',
+        'One more cheapest copy at price 4 brings the total to 5.',
+      ],
+      output: '5',
+    },
+    pitfalls: [
+      'Use 64 bit arithmetic for budget times price. Both can reach 1e9 and overflow a 32 bit int.',
+      'Skip value 2 units with price at least 2 times minP. Two cheapest singles dominate them.',
+      'Compute gain with a multiples sieve. Pairwise scanning is quadratic and fails at n equals 1e5.',
+      'Do not expand every boosted copy into its own list entry. Batch by price as the hint suggests.',
+    ],
+  },
+
 }
 
 export default explanations
